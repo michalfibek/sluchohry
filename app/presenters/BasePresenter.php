@@ -1,5 +1,5 @@
 <?php
-
+use Nette\Diagnostics\Debugger;
 namespace App\Presenters;
 
 use Nette,
@@ -11,5 +11,6 @@ use Nette,
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+
 
 }

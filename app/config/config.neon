@@ -6,7 +6,6 @@
 #
 parameters:
 
-
 php:
 	date.timezone: Europe/Prague
 
