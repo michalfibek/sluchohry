@@ -119,126 +119,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "reserse.md",
-			"settings":
-			{
-				"buffer_size": 939,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "zabezpeceni.md",
-			"settings":
-			{
-				"buffer_size": 387,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "navrh-databaze.md",
-			"settings":
-			{
-				"buffer_size": 184,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/presenters/SignPresenter.php",
-			"settings":
-			{
-				"buffer_size": 1286,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/presenters/BasePresenter.php",
-			"settings":
-			{
-				"buffer_size": 222,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/templates/Homepage/default.latte",
-			"settings":
-			{
-				"buffer_size": 286,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/templates/Sign/in.latte",
-			"settings":
-			{
-				"buffer_size": 140,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/templates/components/form.latte",
-			"settings":
-			{
-				"buffer_size": 343,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/presenters/PostPresenter.php",
-			"settings":
-			{
-				"buffer_size": 510,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/presenters/HomepagePresenter.php",
-			"settings":
-			{
-				"buffer_size": 458,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/model/UserManager.php",
-			"settings":
-			{
-				"buffer_size": 1948,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/templates/@layout.latte",
-			"settings":
-			{
-				"buffer_size": 727,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/W/diplomka/bin/create-user.php",
-			"settings":
-			{
-				"buffer_size": 463,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/E/web/php/fibek/app/presenters/SignPresenter.php",
-			"settings":
-			{
-				"buffer_size": 1307,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/W/diplomka/app/config/config.neon",
-			"settings":
-			{
-				"buffer_size": 515,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -329,7 +209,26 @@
 	},
 	"file_history":
 	[
+		"/W/diplomka/.gitignore",
+		"/W/diplomka/#prace/navrh-databaze.md",
+		"/W/diplomka/app/presenters/SignPresenter.php",
+		"/W/diplomka/app/presenters/HomepagePresenter.php",
+		"/W/diplomka/app/presenters/AdminPresenter.php",
+		"/W/diplomka/bin/create-user.php",
+		"/W/diplomka/app/model/UserManager.php",
 		"/W/diplomka/app/templates/Sign/in.latte",
+		"/W/diplomka/app/templates/Homepage/default.latte",
+		"/W/diplomka/bin/add-roles.php",
+		"/W/diplomka/app/presenters/BasePresenter.php",
+		"/W/diplomka/app/templates/@layout.latte",
+		"/W/diplomka/app/config/config.local.neon",
+		"/C/Users/Michal/Desktop/GitHubLog.txt",
+		"/W/diplomka/#prace/reserse.md",
+		"/W/diplomka/#prace/zabezpeceni.md",
+		"/W/diplomka/app/config/config.neon",
+		"/E/web/php/fibek/app/presenters/SignPresenter.php",
+		"/W/diplomka/app/templates/components/form.latte",
+		"/W/diplomka/app/presenters/PostPresenter.php",
 		"/E/web/php/fibek/app/models/Authenticator.php",
 		"/E/web/php/fibek/app/presenters/AdminPresenter.php",
 		"/E/Dropbox/projects/Jana Sládková/phplist.sql",
@@ -341,7 +240,6 @@
 		"/E/vm-mount/www-vg1/svatby.littlecube.dev/wp-content/themes/onetone/footer.php",
 		"/E/vm-mount/www-vg1/svatby.littlecube.dev/wp-content/themes/onetone/functions.php",
 		"/E/vm-mount/www-vg1/svatby.littlecube.dev/wp-content/themes/onetone/includes/theme-setup.php",
-		"/W/diplomka/#prace/reserse.md",
 		"/E/vm-mount/www-vg1/svatby.littlecube.dev/wp-content/themes/onetone/_info/poznamky.txt",
 		"/E/vm-mount/www-vg1/svatby.littlecube.dev/wp-content/themes/onetone/header.php",
 		"/C/Users/Michal/AppData/Local/Temp/scp39249/www/subdom/svatby/wp-content/themes/onetone/header.php",
@@ -358,12 +256,8 @@
 		"/C/Users/Michal/AppData/Local/Temp/scp08408/www/subdom/svatby/wp-content/themes/lcweddings/single-video.php",
 		"/C/Users/Michal/AppData/Local/Temp/scp08556/www/subdom/svatby/wp-content/themes/lcweddings/footer.php",
 		"/C/Users/Michal/AppData/Local/Temp/scp51533/www/subdom/svatby/wp-content/themes/lcweddings/style.css",
-		"/W/diplomka/app/presenters/HomepagePresenter.php",
-		"/W/diplomka/#prace/navrh-databaze.md",
 		"/W/diplomka/app/bootstrap.php",
 		"/W/diplomka/#prace/analyza-uzivatele.md",
-		"/W/diplomka/app/config/config.neon",
-		"/W/diplomka/app/config/config.local.neon",
 		"/W/diplomka/#prace/analyza-uzivatele.txt",
 		"/C/Users/Michal/AppData/Local/Temp/_tc/backup-db-db_zsgm_cz-2014-06-21.sql",
 		"/E/video/Spectrum Brands/15-01 Los Vivancos/zdroje/spot minuly.txt",
@@ -378,18 +272,13 @@
 		"/E/web/projekty/svatby.littlecube.cz/wp-config.php",
 		"/E/web/projekty/svatby.littlecube.cz/2015-01-25-littlecube.cz.sql",
 		"/W/diplomka/app/templates/Post/show.latte",
-		"/W/diplomka/app/presenters/PostPresenter.php",
 		"/W/diplomka/www/css/screen.css",
-		"/W/diplomka/app/templates/Homepage/default.latte",
-		"/W/diplomka/app/presenters/BasePresenter.php",
 		"/W/diplomka/log/exception.log",
 		"/W/diplomka/app/presenters/ErrorPresenter.php",
 		"/W/diplomka/log/info.log",
-		"/W/diplomka/app/templates/@layout.latte",
 		"/W/diplomka/log/error.log",
 		"/W/diplomka/composer.lock",
 		"/W/diplomka/www/adminer/index.php",
-		"/W/diplomka/app/model/UserManager.php",
 		"/W/diplomka/app/router/RouterFactory.php",
 		"/W/diplomka/vendor/composer/autoload_real.php",
 		"/W/diplomka/vendor/autoload.php",
@@ -447,16 +336,7 @@
 		"/D/filmy/filmy (CZ titulky)/Oliver Twist (2005)/Oliver-Twist(0000190491).srt",
 		"/E/Dropbox/shared little cube/_Rozpracované projekty/11_Svatební expo/Informace k veletrhu/jak si to máš přebrat.txt",
 		"/E/Dropbox/skola/5. semestr/VUI2/testy/zk priporiska.txt",
-		"/E/Dropbox/skola/5. semestr/VUI2/ke zkoušce.txt",
-		"/D/knihy/#Calibre/Neznamy/zk priporiska (33)/zk priporiska - Neznamy.txt",
-		"/D/hry/Thps3/Skate3.exe",
-		"/E/GitHub/diplomka/README.md",
-		"/E/video/Tadeas Danek/Napisto/text psani lukas.txt",
-		"/E/video/Spectrum Brands/15-01 IKEA/instrukce.txt",
-		"/C/Users/Michal/AppData/Local/Temp/scp18945/www/scripts/gensizes-galose.php",
-		"/C/Users/Michal/AppData/Local/Temp/scp18777/www/scripts/update_prices.php",
-		"/C/Users/Michal/AppData/Local/Temp/scp12451/www/scripts/gensizes-detske.php",
-		"/E/Dropbox/sdilene buddy/V – Projekt/Fio.txt"
+		"/E/Dropbox/skola/5. semestr/VUI2/ke zkoušce.txt"
 	],
 	"find":
 	{
@@ -633,451 +513,8 @@
 	"groups":
 	[
 		{
-			"selected": 14,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "reserse.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 939,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								820,
-								820
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "zabezpeceni.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 387,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								206,
-								206
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "navrh-databaze.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 184,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								184,
-								184
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/MarkdownEditing/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/W/diplomka/app/presenters/SignPresenter.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1286,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								139,
-								139
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/W/diplomka/app/presenters/BasePresenter.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 222,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 10,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "/W/diplomka/app/templates/Homepage/default.latte",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 286,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								166,
-								166
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "/W/diplomka/app/templates/Sign/in.latte",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 140,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								69,
-								69
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "/W/diplomka/app/templates/components/form.latte",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 343,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								241,
-								241
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 12,
-					"type": "text"
-				},
-				{
-					"buffer": 8,
-					"file": "/W/diplomka/app/presenters/PostPresenter.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 510,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								224,
-								224
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "/W/diplomka/app/presenters/HomepagePresenter.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 458,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								451,
-								451
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "/W/diplomka/app/model/UserManager.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1948,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								341,
-								341
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "/W/diplomka/app/templates/@layout.latte",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 727,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								167,
-								167
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "/W/diplomka/bin/create-user.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 463,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								120,
-								120
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "/E/web/php/fibek/app/presenters/SignPresenter.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1307,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								474,
-								474
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "/W/diplomka/app/config/config.neon",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 515,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								404,
-								404
-							]
-						],
-						"settings":
-						{
-							"color_scheme": "Packages/User/Color Highlighter/themes/Brogrammer.tmTheme",
-							"syntax": "Packages/Text/Plain text.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
