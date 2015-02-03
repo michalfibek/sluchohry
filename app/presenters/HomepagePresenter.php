@@ -19,9 +19,9 @@ class HomepagePresenter extends BasePresenter
 
 	public function renderDefault()
 	{
-		$this->template->posts = $this->database->table('posts')
-			->order('created_at DESC')
-			->limit(5);
+		// $this->template->posts = $this->database->table('posts')
+		// 	->order('created_at DESC')
+		// 	->limit(5);
 	}
 
 }
