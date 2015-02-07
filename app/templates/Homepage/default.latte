@@ -2,3 +2,8 @@
 
 <h1 n:block="title">Diplomka Michal Fíbek</h1>
 
+{if $user->loggedIn}
+	<a n:href="Sign:out">Odhlásit</a>
+{else}
+	<a n:href="Sign:in">Přihlásit</a>
+{/if}
