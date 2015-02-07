@@ -1,7 +1,8 @@
 log/*
 temp/*
-vendor/*
-!vendor/others
+# nette packages unignored
+# vendor/*
+# !vendor/others
 
 .DS_Store
 !.gitignore
