@@ -9,3 +9,5 @@ temp/*
 !.htaccess
 !web.config
 app/config/config.local.neon
+.idea/*
+@dropbox/*
