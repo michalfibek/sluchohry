@@ -11,3 +11,8 @@ temp/*
 app/config/config.local.neon
 .idea/*
 @dropbox/*
+
+# Ignore everything in output
+@prace/out/*
+# Except thesis output
+!@prace/out/thesis.pdf
