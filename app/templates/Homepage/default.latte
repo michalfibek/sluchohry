@@ -1,9 +1,10 @@
 {block content}
 
-<h1 n:block="title">Diplomka Michal Fíbek</h1>
+<h1 n:block="title">Sluchohry</h1>
 
-{if $user->loggedIn}
-	<a n:href="Sign:out">Odhlásit</a>
+{if !$user->loggedIn}
+	{control signInForm}
 {else}
-	<a n:href="Sign:in">Přihlásit</a>
+	Přihlášen uživatel.
+	<a n:href="signOut">Odhlásit</a>
 {/if}
