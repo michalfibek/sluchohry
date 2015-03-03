@@ -1,5 +1,4 @@
 <?php
-use Nette\Diagnostics\Debugger;
 namespace App\Presenters;
 
 use Nette,

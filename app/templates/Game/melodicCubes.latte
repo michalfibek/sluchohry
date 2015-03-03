@@ -1,0 +1,60 @@
+{block content}
+
+<h1 n:block="title">Hudební kostky</h1>
+
+
+<button id="ex1-pause">Pause</button> <button id="ex1-stop">Stop</button>
+<br />&nbsp;<br />
+
+<div class="row" id="cubes">
+    <div class="col-md-3">1 <button id="ex1-play">Play 1</button></div>
+    <div class="col-md-3">2 <button id="ex2-play">Play 2</button></div>
+    <div class="col-md-3">3 <button id="ex3-play">Play 3</button></div>
+</div>
+
+{/block}
+
+
+{block scripts}
+{include parent}
+        <script src="{$basePath}/assets/vendor/Sortable/jquery.fn.sortable.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('#ex1-play').on('click', function(){
+                    sound1.stop().play('a');
+                });
+                $('#ex2-play').on('click', function(){
+                    sound1.stop().play('b');
+                });
+                $('#ex3-play').on('click', function(){
+                    sound1.stop().play('c');
+                });
+                $('#ex1-pause').on('click', function(){
+                    sound1.pause();
+                });
+                $('#ex1-stop').on('click', function(){
+                    sound1.stop();
+                });
+                $('#ex1-loop').on('click', function(){
+                    sound1.loop(true);
+                });
+
+                var sound1 = new Howl({
+                    src: ['/assets/sounds/songs/the_fox_1min.mp3'],
+                    sprite: {
+                        a: [0, 5000],
+                        b: [5001, 5000],
+                        c: [10001, 5000]
+                    }
+                });
+
+                $("#cubes").sortable({
+                    animation: 150
+                }); // sortable init
+
+            });
+
+
+
+        </script>
+{/block}
