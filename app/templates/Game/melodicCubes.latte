@@ -3,13 +3,13 @@
 <h1 n:block="title">Hudební kostky</h1>
 
 
-<button id="ex1-pause">Pause</button> <button id="ex1-stop">Stop</button>
-<br />&nbsp;<br />
+<button id="ex1-play-current">Play by given order</button> <button id="ex1-play-original">Play original</button> <button id="ex1-pause">Pause</button> <button id="ex1-stop">Stop</button>
+<br />&nbsp;<br /> {$song->author} - {$song->title}
 
-<div class="row" id="cubes">
-    <div class="col-md-3">1 <button id="ex1-play">Play 1</button></div>
-    <div class="col-md-3">2 <button id="ex2-play">Play 2</button></div>
-    <div class="col-md-3">3 <button id="ex3-play">Play 3</button></div>
+<div class="row hidden" id="play-cubes">
+    {for $i = 0; $i< $splitCount; $i++}
+    <div class="col-md-3 single-cube" id="part{$shuffledOrder[$i]}"><button id="song-part{$shuffledOrder[$i]}">Play {$shuffledOrder[$i]}</button></div>
+    {/for}
 </div>
 
 {/block}
@@ -20,36 +20,111 @@
         <script src="{$basePath}/assets/vendor/Sortable/jquery.fn.sortable.js"></script>
         <script type="text/javascript">
             $(function(){
-                $('#ex1-play').on('click', function(){
-                    sound1.stop().play('a');
+                var cubeBank = [],
+                    song1,
+                    songCubesChain,
+                    arrayMove,
+                    cubesOrder,
+                    getCubesCurOrder,
+                    playChain,
+                    stopPlay = false;
+
+                /**
+                 * Moves item in array by key position
+                 * @param from
+                 * @param to
+                 */
+                Array.prototype.move = function(from, to) {
+                    this.splice(to, 0, this.splice(from, 1)[0]);
+                };
+
+                /**
+                 * Define array of current play cubes' order on page
+                 */
+                {for $i = 0; $i < $splitCount; $i++}
+                cubeBank[{$i}] = 'part{$shuffledOrder[$i]}';
+                {/for}
+
+                /**
+                 * Define all clickable buttons
+                 */
+                {for $i = 0; $i < $splitCount; $i++}
+                $('#song-part{$i+1}').on('click', function(){
+                    song1.stop().play('part{$i+1}');
                 });
-                $('#ex2-play').on('click', function(){
-                    sound1.stop().play('b');
+                {/for}
+
+                $('#ex1-play-current').on('click', function(){
+//                    cubesOrder = getCubesCurOrder($(".single-cube").get());
+//                    console.log(cubesOrder);
+//                    var g = getCubesCurOrder(cubeBank);
+                    songCubesChain[0](playChain(1));
+
                 });
-                $('#ex3-play').on('click', function(){
-                    sound1.stop().play('c');
+                $('#ex1-play-original').on('click', function(){
+                    song1.stop().play('complete');
                 });
                 $('#ex1-pause').on('click', function(){
-                    sound1.pause();
+                    song1.pause();
                 });
                 $('#ex1-stop').on('click', function(){
-                    sound1.stop();
-                });
-                $('#ex1-loop').on('click', function(){
-                    sound1.loop(true);
+                    song1.stop();
+                    stopPlay = true;
                 });
 
-                var sound1 = new Howl({
-                    src: ['/assets/sounds/songs/the_fox_1min.mp3'],
+                song1 = new Howl({
+                    src: ['/assets/sounds/songs/{$song->filename|noescape}.mp3'],
                     sprite: {
-                        a: [0, 5000],
-                        b: [5001, 5000],
-                        c: [10001, 5000]
+                        {for $i = 0; $i< $splitCount; $i++}
+                        part{$i+1}: [{$i*$splitDuration}, {$splitDuration}],
+                        {/for}
+                        complete: [0, {$song->duration}]
+                    },
+                    onload: function() { // after sound file loads, do these...
+                        $("#play-cubes:hidden").fadeIn(150).removeClass("hidden");
                     }
                 });
 
-                $("#cubes").sortable({
-                    animation: 150
+                songCubesChain = [
+                        function(fn) {
+                            stopPlay = false;
+                            fn();
+                        },
+                    {for $i = 0; $i < $splitCount; $i++}
+                        function(fn) {
+                            if (stopPlay == false) {
+                                song1.play(cubeBank[{$i}]);
+                                setTimeout(fn, {$splitDuration});
+                            };
+                        }{if $i+1 != $splitCount},{/if}
+                    {/for}
+                ];
+
+                playChain = function (i) {
+                    console.log('playing:'+i);
+                    return function () {
+                        if (songCubesChain[i]) {
+                            songCubesChain[i](playChain(++i));
+                        } else {
+                            console.log('play finished');
+                        }
+                    };
+                };
+
+                getCubesCurOrder = function ( bank ) {
+                    for (var i = 0; i < bank.length; i++) {
+                        console.log(bank[i]);
+                    }
+                };
+
+                $("#play-cubes").sortable({
+                    animation: 150,
+                    onEnd: function(evt) {
+                        evt.oldIndex;  // element's old index within parent
+                        evt.newIndex;  // element's new index within parent
+                        cubeBank.move(evt.oldIndex, evt.newIndex);
+//                        console.log(evt.oldIndex + ' -> ' + evt.newIndex);
+                    }
                 }); // sortable init
 
             });
