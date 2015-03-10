@@ -18,3 +18,4 @@ app/config/config.local.neon
 # Except thesis output
 !@prace/out/thesis.pdf
 *.mp3
+*.bak
