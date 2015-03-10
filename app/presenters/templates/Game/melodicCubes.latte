@@ -47,11 +47,12 @@
 
                 /**
                  * Moves item in array by key position
+                 * @param array
                  * @param from
                  * @param to
                  */
-                Array.prototype.move = function(from, to) {
-                    this.splice(to, 0, this.splice(from, 1)[0]);
+                arrayMove = function(arr, from, to) {
+                    arr.splice(to, 0, arr.splice(from, 1)[0]);
                 };
 
                 /**
@@ -68,7 +69,7 @@
                 $('#song-part{$i+1}').on('click', function(){
                     $('[id^=song').parent().removeClass('cube-highlight');
                     song1.stop().play('part{$i+1}');
-                    $(this).parent().toggleClass('cube-highlight');
+                    $(this).parent().addClass('cube-highlight');
                 });
                 {/for}
 
@@ -135,8 +136,8 @@
                     onEnd: function(evt) {
                         evt.oldIndex;  // element's old index within parent
                         evt.newIndex;  // element's new index within parent
-                        cubeBank.move(evt.oldIndex, evt.newIndex);
-//                        console.log(evt.oldIndex + ' -> ' + evt.newIndex);
+                        arrayMove(cubeBank, evt.oldIndex, evt.newIndex);
+//                        console.log(cubeBank[evt.oldIndex] + ' -> ' + cubeBank[evt.newIndex]);
                     }
                 }); // sortable init
 
