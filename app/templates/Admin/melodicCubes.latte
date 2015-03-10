@@ -1,0 +1,91 @@
+{block styles}
+<link rel="stylesheet" href="{$basePath}/assets/vendor/jquery.fine-uploader/fine-uploader.min.css">
+{include parent}
+<style>
+    /* For the bootstrapped demos */
+    li.alert-success {
+        background-color: #DFF0D8;
+    }
+
+    li.alert-error {
+        background-color: #F2DEDE;
+    }
+
+    .alert-error .qq-upload-failed-text {
+        display: inline;
+    }
+</style>
+{/block}
+
+
+{block content}
+
+<h1 n:block="title">Melodic cubes</h1>
+
+<!-- Fine Uploader DOM Element
+====================================================================== -->
+<div id="file-uploader"></div>
+
+<!-- Fine Uploader template
+====================================================================== -->
+<script type="text/template" id="qq-template-bootstrap">
+    <div class="qq-uploader-selector qq-uploader span12">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+            <span>Drop files here to upload</span>
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto;">
+            <div><i class="icon-upload icon-white"></i>Upload a file</div>
+        </div>
+    <span class="qq-drop-processing-selector qq-drop-processing">
+      <span>Processing dropped files...</span>
+      <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+    </span>
+        <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+            <li>
+                <div class="qq-progress-bar-container-selector">
+                    <div class="qq-progress-bar-selector qq-progress-bar"></div>
+                </div>
+                <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+                <span class="qq-upload-file-selector qq-upload-file"></span>
+                <span class="qq-upload-size-selector qq-upload-size"></span>
+                <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+                <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+            </li>
+        </ul>
+    </div>
+</script>
+
+
+{/block}
+
+
+{block scripts}
+{include parent}
+        <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
+        <script src="{$basePath}/assets/vendor/jquery.fine-uploader/jquery.fine-uploader.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                $.nette.init();
+                $("#file-uploader").fineUploader({
+                    debug: true,
+                    multiple: false,
+                    element: $('#file-uploader'),
+                    request: {
+                        endpoint: 'admin?do=uploadFile'
+                    },
+                    validation: {
+                        allowedExtensions: ['mp3', 'wav', 'ogg'],
+                        sizeLimit: 10485760 // 10 MB - size is in bytes
+                    },
+                    template: 'qq-template-bootstrap',
+                    classes: {
+                        success: 'alert alert-success',
+                        fail: 'alert alert-error'
+                    }
+//                }).on('complete', function (event, id, name, responseJSON) {
+//                    console.log('ha!');
+                });
+            });
+
+        </script>
+{/block}
