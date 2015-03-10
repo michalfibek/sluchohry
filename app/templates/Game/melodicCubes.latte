@@ -1,15 +1,30 @@
 {block content}
 
-<h1 n:block="title">Hudební kostky</h1>
+<h1 n:block="title">Melodic cubes</h1>
 
+<h2>{$song->author} - {$song->title}</h2>
 
-<button id="ex1-play-current">Play by given order</button> <button id="ex1-play-original">Play original</button> <button id="ex1-pause">Pause</button> <button id="ex1-stop">Stop</button>
-<br />&nbsp;<br /> {$song->author} - {$song->title}
+<div class="game-main">
+    <button type="button" class="btn btn-default" id="ex1-play-current"><span class="glyphicon glyphicon-play"></span> Play by given order</button>
+    <button type="button" class="btn btn-default" id="ex1-play-original">Play original</button>
+    <button type="button" class="btn btn-default" id="ex1-pause"><span class="glyphicon glyphicon-pause"></span> Pause</button>
+    <button type="button" class="btn btn-default" id="ex1-stop"><span class="glyphicon glyphicon-stop"></span> Stop</button>
+    <br />&nbsp;<br />
 
-<div class="row hidden" id="play-cubes">
-    {for $i = 0; $i< $splitCount; $i++}
-    <div class="col-md-3 single-cube" id="part{$shuffledOrder[$i]}"><button id="song-part{$shuffledOrder[$i]}">Play {$shuffledOrder[$i]}</button></div>
-    {/for}
+    <div class="container-fluid">
+        <div class="row" id="play-cubes">
+            {for $i = 0; $i< $splitCount; $i++}
+            <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}">Play {$shuffledOrder[$i]}</button></div>
+            {/for}
+        </div>
+    </div>
+</div>
+<div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
 </div>
 
 {/block}
@@ -20,12 +35,13 @@
         <script src="{$basePath}/assets/vendor/Sortable/jquery.fn.sortable.js"></script>
         <script type="text/javascript">
             $(function(){
+                $(".game-main").css({ opacity: 0 });
+
                 var cubeBank = [],
                     song1,
                     songCubesChain,
                     arrayMove,
                     cubesOrder,
-                    getCubesCurOrder,
                     playChain,
                     stopPlay = false;
 
@@ -50,14 +66,13 @@
                  */
                 {for $i = 0; $i < $splitCount; $i++}
                 $('#song-part{$i+1}').on('click', function(){
+                    $('[id^=song').parent().removeClass('cube-highlight');
                     song1.stop().play('part{$i+1}');
+                    $(this).parent().toggleClass('cube-highlight');
                 });
                 {/for}
 
                 $('#ex1-play-current').on('click', function(){
-//                    cubesOrder = getCubesCurOrder($(".single-cube").get());
-//                    console.log(cubesOrder);
-//                    var g = getCubesCurOrder(cubeBank);
                     songCubesChain[0](playChain(1));
 
                 });
@@ -70,6 +85,7 @@
                 $('#ex1-stop').on('click', function(){
                     song1.stop();
                     stopPlay = true;
+                    $('[id^=song').parent().removeClass('cube-highlight');
                 });
 
                 song1 = new Howl({
@@ -81,7 +97,8 @@
                         complete: [0, {$song->duration}]
                     },
                     onload: function() { // after sound file loads, do these...
-                        $("#play-cubes:hidden").fadeIn(150).removeClass("hidden");
+                        $(".spinner").transition({ opacity: 0 }, 300);
+                        $(".game-main").transition({ opacity: 1 }, 300);
                     }
                 });
 
@@ -93,7 +110,11 @@
                     {for $i = 0; $i < $splitCount; $i++}
                         function(fn) {
                             if (stopPlay == false) {
+                                {if $i != 0}
+                                    $('#song-'+cubeBank[{$i-1}]).parent().removeClass('cube-highlight');
+                                {/if}
                                 song1.play(cubeBank[{$i}]);
+                                $('#song-'+cubeBank[{$i}]).parent().addClass('cube-highlight');
                                 setTimeout(fn, {$splitDuration});
                             };
                         }{if $i+1 != $splitCount},{/if}
@@ -101,20 +122,12 @@
                 ];
 
                 playChain = function (i) {
-                    console.log('playing:'+i);
+//                    console.log('playing:'+i);
                     return function () {
                         if (songCubesChain[i]) {
                             songCubesChain[i](playChain(++i));
-                        } else {
-                            console.log('play finished');
-                        }
+                        };
                     };
-                };
-
-                getCubesCurOrder = function ( bank ) {
-                    for (var i = 0; i < bank.length; i++) {
-                        console.log(bank[i]);
-                    }
                 };
 
                 $("#play-cubes").sortable({

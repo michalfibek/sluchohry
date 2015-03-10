@@ -5,10 +5,13 @@
 {if !$user->loggedIn}
 	{control signInForm}
 {else}
-	<div class="user-info">Přihlášen uživatel {$user->identity->realname}. <a n:href="signOut">Odhlásit</a></div>
+	<div class="user-info">Currently logged: {$user->identity->realname}. <a n:href="signOut">Logout</a></div>
 
-	<h2>Hry</h2>
-	<a n:href="Game:melodicCubes">Melodické kostky</a><br />
-	<a n:href="Game:pexeso">Hudební pexeso</a>
+	<h2>Games</h2>
+	<a n:href="Game:melodicCubes">Melodic cubes</a><br />
+	<a n:href="Game:pexeso">Pexeso</a>
+
+	<h2>Administrator</h2>
+	<a n:href="Admin:melodicCubes">Melodic cubes</a><br />
 
 {/if}
