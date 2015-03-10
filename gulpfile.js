@@ -27,6 +27,15 @@ gulp.task('compileLessUser', function() {
     .on('error', swallowError)
     .pipe(gulp.dest(targetCssDir))
 });
+gulp.task('compileLessUserAndBootstrap', function() {
+  return gulp.src(['www/assets/vendor/bootstrap/less/bootstrap.less', sourceLessUser+'main.less'])
+  	.pipe(concat('main.less'))
+    .pipe(less({
+    	plugins: [autoprefix] // add cleancss in final iteration
+    }))
+    .on('error', swallowError)
+    .pipe(gulp.dest(targetCssDir))
+});
 
 // reports css warnings
 gulp.task('cssLint', function() {
@@ -36,7 +45,8 @@ gulp.task('cssLint', function() {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(sourceLessUser+'/*.less', ['compileLessUser']);
+  // gulp.watch(sourceLessUser+'/*.less', ['compileLessUser']);
+  gulp.watch(sourceLessUser+'/*.less', ['compileLessUserAndBootstrap']);
 
 });
 

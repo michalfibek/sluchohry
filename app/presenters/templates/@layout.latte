@@ -10,7 +10,7 @@
 
 	<title>{ifset title}{include title|striptags} | {/ifset}Nette Sandbox</title>
 	{block styles}
-	<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">
+	{*<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">*}
 	<link rel="stylesheet" href="{$basePath}/assets/css/main.css">
 	{/block}
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
@@ -21,7 +21,7 @@
 
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
-	<div class="container">
+	<div class="container{ifCurrent Admin:*} admin{/ifCurrent}">
 		{include content}
 	</div>
 
