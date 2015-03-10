@@ -61,33 +61,34 @@
 
     <div id="song-01" class="song col-sm-5">
         <form n:name="songInfoForm" class="form-horizontal">
+            <input n:name="songId" id="song-id" type="hidden">
             <div class="form-group">
-                <label n:name="artist" for="song-artist" class="col-sm-4 control-label">Artist:</label>
+                <label n:name="artist" for="artist" class="col-sm-4 control-label">Artist:</label>
                 <div class="col-sm-8">
-                    <input n:name="artist" type="text" class="form-control" id="song-artist">
+                    <input n:name="artist" type="text" class="form-control" id="artist">
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="title" for="song-title" class="col-sm-4 control-label">Title:</label>
+                <label n:name="title" for="title" class="col-sm-4 control-label">Title:</label>
                 <div class="col-sm-8">
-                    <input n:name="title" type="text" class="form-control" id="song-title">
+                    <input n:name="title" type="text" class="form-control" id="title">
                 </div>
             </div>
             <div class="form-group">
-                <label for="song-duration" class="col-sm-4 control-label">Duration:</label>
+                <label for="duration" class="col-sm-4 control-label">Duration:</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static" id="song-duration"></p>
+                    <p class="form-control-static" id="duration"></p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="song-filename" class="col-sm-4 control-label">Original file name:</label>
+                <label for="filename" class="col-sm-4 control-label">Original file name:</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static" id="song-filename"></p>
+                    <p class="form-control-static" id="filename"></p>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-8">
-                    <button n:name="send" type="submit" class="btn btn-default">Save</button>
+                    <button n:name="update" type="submit" class="btn btn-default">Update</button>
                 </div>
             </div>
         </form>
@@ -125,14 +126,15 @@
                         fail: 'alert alert-error'
                     }
                 }).on('complete', function (event, id, name, responseJSON) {
-                    var s = new Song(responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
+                    var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
                     s.show();
                     songEditors.push(this.s);
                 });
 
                 var Song = $class({
 
-                    constructor: function(artist, title, duration, filename) {
+                    constructor: function(songId, artist, title, duration, filename) {
+                        this.songId = String(songId);
                         this.artist = artist;
                         this.title = title;
                         this.duration = duration;
@@ -145,10 +147,11 @@
                     },
 
                     populateForm: function() {
-                        $('#song-artist').val(this.artist);
-                        $('#song-title').val(this.title);
-                        $('#song-duration').append(this.duration);
-                        $('#song-filename').append(this.filename);
+                        $('#song-id').val(this.songId);
+                        $('#artist').val(this.artist);
+                        $('#title').val(this.title);
+                        $('#duration').append(this.duration);
+                        $('#filename').append(this.filename);
                     }
                 });
             });

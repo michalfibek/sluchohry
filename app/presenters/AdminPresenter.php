@@ -12,23 +12,39 @@ use Nette,
  */
 class AdminPresenter extends BasePresenter
 {
+	/** @var Nette\Database\Context */
+	private $database;
+
+	public function __construct(Nette\Database\Context $database)
+	{
+		$this->database = $database;
+	}
+
 	protected function createComponentSongInfoForm()
 	{
 		$form = new Form;
-		$form->addText('artist', 'Artist:')
+		$form->addText('artist', 'Artist:');
+		$form->addText('title', 'Title:')
 			->setRequired();
-		$form->addText('title', 'Title:');
-		$form->addSubmit('send', 'Save');
+		$form->addSubmit('update', 'Update');
+		$form->addHidden('songId');
 
-		$form->onSuccess[] = array($this, 'songInfoFormSubmitted'); // a přidat událost po odeslání
+		$form->onSuccess[] = array($this, 'songInfoFormSucceed'); // a přidat událost po odeslání
 
 		return $form;
 	}
 
-	public function songInfoFormSubmitted($form, $values)
+	public function songInfoFormSucceed($form, $values)
 	{
-		$this->flashMessage("Příspěvek byl úspěšně publikován.", 'success');
-		$this->redirect('Homepage:');
+		$songId = $this->getParameter('songId');
+
+		if ($songId) {
+			$song = $this->database->table('song')->get($songId);
+			$song->update($values);
+		}
+
+		$this->flashMessage("Song description been successfully updated.", 'success');
+		$this->redirect('this');
 	}
 
 	public function actionSetRole($userId, $roleName)
@@ -64,16 +80,26 @@ class AdminPresenter extends BasePresenter
 			$artist = implode(' & ', $fileInfo['comments']['artist']); // merges artist names if more of them are present
 			$title = $fileInfo['comments']['title'][0];
 
+			$targetFilePath = $targetDirName . $result['uuid'] . '.' . $fileInfo['fileformat'];
+
+			Nette\Utils\FileSystem::copy($uploadFilePath, $targetFilePath);
+			Nette\Utils\FileSystem::delete(__DIR__ . '/../../uploads/' . $result['uuid']);
+
+			$songRecord['artist'] = $artist;
+			$songRecord['title'] = $title;
+			$songRecord['duration'] = $duration;
+			$songRecord['filename'] = $result['uuid'];
+
+//			$song = $this->database->table('song')->insert($songRecord);
+			$song['id'] = 2;
+
 			$result['ext'] = $uploader->getFileExtension();
 			$result['artist'] = $artist;
 			$result['title'] = $title;
 			$result['duration'] = $duration/1000 . ' s';
 			$result['filename'] = $uploader->getUploadName();
+			$result['songId'] = 2;
 
-			$targetFilePath = $targetDirName . $result['uuid'] . '.' . $fileInfo['fileformat'];
-
-			Nette\Utils\FileSystem::copy($uploadFilePath, $targetFilePath);
-			Nette\Utils\FileSystem::delete(__DIR__ . '/../../uploads/' . $result['uuid']);
 		} catch (\Exception $exc) {
 			$this->sendResponse(new Nette\Application\Responses\JsonResponse(array(
 				'error' => $exc->getMessage(),
