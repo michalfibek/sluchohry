@@ -24,7 +24,7 @@
 
 <!-- Fine Uploader DOM Element
 ====================================================================== -->
-<div id="file-uploader"></div>
+<div id="file-uploader" class="col-xs-5"></div>
 
 <!-- Fine Uploader template
 ====================================================================== -->
@@ -55,6 +55,46 @@
     </div>
 </script>
 
+<div class="clearfix"></div>
+
+<div class="container song-editor {*hidden*}">
+
+    <div id="song-01" class="song col-sm-5">
+        <form n:name="songInfoForm" class="form-horizontal">
+            <div class="form-group">
+                <label n:name="artist" for="song-artist" class="col-sm-4 control-label">Artist:</label>
+                <div class="col-sm-8">
+                    <input n:name="artist" type="text" class="form-control" id="song-artist">
+                </div>
+            </div>
+            <div class="form-group">
+                <label n:name="title" for="song-title" class="col-sm-4 control-label">Title:</label>
+                <div class="col-sm-8">
+                    <input n:name="title" type="text" class="form-control" id="song-title">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="song-duration" class="col-sm-4 control-label">Duration:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" id="song-duration"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="song-filename" class="col-sm-4 control-label">Original file name:</label>
+                <div class="col-sm-8">
+                    <p class="form-control-static" id="song-filename"></p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <button n:name="send" type="submit" class="btn btn-default">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
 
 {/block}
 
@@ -66,6 +106,8 @@
         <script type="text/javascript">
             $(function(){
                 $.nette.init();
+                var songEditors = [];
+
                 $("#file-uploader").fineUploader({
                     debug: true,
                     multiple: false,
@@ -82,8 +124,32 @@
                         success: 'alert alert-success',
                         fail: 'alert alert-error'
                     }
-//                }).on('complete', function (event, id, name, responseJSON) {
-//                    console.log('ha!');
+                }).on('complete', function (event, id, name, responseJSON) {
+                    var s = new Song(responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
+                    s.show();
+                    songEditors.push(this.s);
+                });
+
+                var Song = $class({
+
+                    constructor: function(artist, title, duration, filename) {
+                        this.artist = artist;
+                        this.title = title;
+                        this.duration = duration;
+                        this.filename = filename;
+                    },
+
+                    show: function() {
+                        $('.song-editor').removeClass('hidden');
+                        this.populateForm();
+                    },
+
+                    populateForm: function() {
+                        $('#song-artist').val(this.artist);
+                        $('#song-title').val(this.title);
+                        $('#song-duration').append(this.duration);
+                        $('#song-filename').append(this.filename);
+                    }
                 });
             });
 
