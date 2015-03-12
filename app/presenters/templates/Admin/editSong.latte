@@ -131,6 +131,7 @@
                     canvas_width = 600,
                     canvas_height = 100,
                     songControl,
+                    markerList = [],
                     songId,
                     songArtist,
                     songTitle,
@@ -143,7 +144,8 @@
                     songDuration = {$song->duration},
                     songFilename = {$song->filename},
                     {/ifset}
-                    waveformImage;
+                    waveformImage,
+                    markerOffset = canvas_width / songDuration * 1000;
 
                 var Song = $class({
 
@@ -209,6 +211,8 @@
                         });
                         $('#ex1-stop').on('click', function(){
                             songControl.stop();
+                            scope.drawWaveform();
+                            scope.updateLineMarker();
                         });
 
                     },
@@ -220,14 +224,26 @@
 //                                wave_color: '#ff0000',
                             onComplete: function(png, pixels) {
                                 scope.waveformImage = pixels;
-                                ctx.putImageData(scope.waveformImage, 0, 0);
+                                scope.drawWaveform();
                             }
                         });
                      },
 
-                    updateLineMarker: function(markerPos) {
-                        var x = markerPos;
+                    drawWaveform: function () {
                         ctx.putImageData(scope.waveformImage, 0, 0);
+                    },
+
+                    updateLineMarker: function() {
+                        // TODO for cyklus pro vsechny markery
+                        var x = markerList[0]*markerOffset;
+//                        console.log('MARK:' + x);
+                        scope.lineDraw(x, 0, x, canvas.height, '#00ff00');
+                    },
+
+                    updateLineSongPos: function(markerPos) {
+                        var x = markerPos;
+                        scope.drawWaveform();
+                        scope.updateLineMarker();
                         scope.lineDraw(x, 0, x, canvas.height);
                     },
 
@@ -236,14 +252,18 @@
                         var r = canvas.getBoundingClientRect(),
                             x = e.clientX - r.left,
                             y = e.clientY - r.top;
-                        ctx.putImageData(scope.waveformImage, 0, 0);
-                        scope.lineDraw(x, 0, x, canvas.height);
+                        scope.drawWaveform();
+                        scope.lineDraw(x, 0, x, canvas.height, '#ff5555');
                     },
 
-                    lineDraw: function(x1, y1, x2, y2) {
+                    lineDraw: function(x1, y1, x2, y2, color) {
                         ctx.beginPath();
-                        ctx.moveTo(x1, y1);
-                        ctx.lineTo(x2, y2);
+//                        ctx.moveTo(x1, y1);
+//                        ctx.lineTo(x2, y2);
+                        ctx.rect(x1, y1, 2, y2);
+                        ctx.fillStyle = color;
+                        ctx.fill();
+                        ctx.strokeStyle = color;
                         ctx.stroke();
                     },
                     showPlayMarker: function() {
@@ -257,19 +277,21 @@
 //                        ctx.stroke();
 //                        ctx.putImageData(image, 0, 0);
                         /// listen to mouse move (or use jQuery on('mousemove') instead)
-                        var markerOffset = canvas_width / songDuration * 1000;
+
                         window.setInterval(function() {
                             if (songControl.seek() != 0) {
-                                var markerPos = songControl.seek();
-                                scope.updateLineMarker(markerPos*markerOffset);
+                                var currentTime = songControl.seek();
+                                scope.updateLineSongPos(currentTime*markerOffset);
+//                                console.log('POS:'+currentTime*markerOffset);
                             }
-                        }, 20);
+                        }, 50);
 //                        canvas.onmousemove = scope.updateLineCursor; // track mouse movement
                     },
 
                     setTimeMark: function() {
                         var curTime = songControl.seek();
                         curTime = curTime.toFixed(3);
+                        markerList.push(curTime);
                         $('#time-marks').append('<div class=\'time-single-mark\'>' + curTime + '</div>');
                     }
 
