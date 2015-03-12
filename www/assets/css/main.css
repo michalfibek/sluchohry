@@ -6482,9 +6482,9 @@ div.flash {
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  color: #3c763d;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
 }
 div.flash h4 {
   margin-top: 0;
@@ -6501,10 +6501,61 @@ div.flash > p + p {
   margin-top: 5px;
 }
 div.flash hr {
-  border-top-color: #c9e2b3;
+  border-top-color: #a6e1ec;
 }
 div.flash .alert-link {
+  color: #245269;
+}
+div.flash.success {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+div.flash.success h4 {
+  margin-top: 0;
+  color: inherit;
+}
+div.flash.success .alert-link {
+  font-weight: bold;
+}
+div.flash.success > p,
+div.flash.success > ul {
+  margin-bottom: 0;
+}
+div.flash.success > p + p {
+  margin-top: 5px;
+}
+div.flash.success hr {
+  border-top-color: #c9e2b3;
+}
+div.flash.success .alert-link {
   color: #2b542c;
+}
+div.flash.error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+div.flash.error hr {
+  border-top-color: #e4b9c0;
+}
+div.flash.error .alert-link {
+  color: #843534;
+}
+div.flash.warning {
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  color: #8a6d3b;
+}
+div.flash.warning hr {
+  border-top-color: #f7e1b5;
+}
+div.flash.warning .alert-link {
+  color: #66512c;
 }
 /*
 GAME: melodic cubes
