@@ -120,7 +120,12 @@
         <script type="text/javascript">
             $(function(){
 //                $.nette.init();
-                var songEditors = [];
+                var songEditors = [],
+                    defaultUri = '/assets/sounds/songs/',
+                    canvas = $('#waveform').get(0),
+                    ctx = canvas.getContext('2d'),
+                    canvas_width = 600,
+                    canvas_height = 100;
 
                 var Song = $class({
 
@@ -130,7 +135,6 @@
                         this.title = title;
                         this.duration = duration;
                         this.filename = filename;
-                        this.defaultUri = '/assets/sounds/songs/';
                     },
 
                     show: function() {
@@ -147,18 +151,16 @@
 
                     generateWaveform: function() {
                         var xhr = new XMLHttpRequest();
-                        var url = this.defaultUri + this.filename + '.mp3';
+                        var url = defaultUri + this.filename + '.mp3';
                         xhr.open('GET', url, true);
                         xhr.responseType = 'blob';
                         xhr.onload = function() {
                             SoundCloudWaveform.generate(xhr.response, {
-                                canvas_width: 600,
-                                canvas_height: 100,
+                                canvas_width: canvas_width,
+                                canvas_height: canvas_height,
 //                                wave_color: '#ff0000',
                                 onComplete: function(png, pixels) {
-                                    var canvas = $('#waveform').get(0);
-                                    var context = canvas.getContext('2d');
-                                    context.putImageData(pixels, 0, 0);
+                                    ctx.putImageData(pixels, 0, 0);
                                 }
                             });
                         };
@@ -166,7 +168,15 @@
                      },
 
                     showPlayMarker: function() {
-
+                        var image = ctx.getImageData(0, 0, canvas_width, canvas_height);
+                        ctx.beginPath();
+                        ctx.rect(20, 30, 5, 5);
+                        ctx.fillStyle = '#8ED6FF';
+                        ctx.fill();
+                        ctx.lineWidth = 20;
+                        ctx.strokeStyle = 'black';
+                        ctx.stroke();
+                        ctx.putImageData(image, 0, 0);
                     },
 
                     initPlayer: function() {
@@ -188,6 +198,7 @@
                 var s = new Song({$song->id}, {$song->artist}, {$song->title}, {$song->duration}, {$song->filename});
                 s.initPlayer();
                 s.generateWaveform();
+                s.showPlayMarker();
                 {else}
                 $("#file-uploader").fineUploader({
                     debug: true,
