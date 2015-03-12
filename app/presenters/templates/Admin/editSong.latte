@@ -94,16 +94,26 @@
                     <button n:name="delete" type="submit" class="btn btn-default">Delete</button>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <canvas width='453' height='66' id='waveform'></canvas>
+                </div>
+
+            </div>
         </form>
     </div>
 
+
+
 </div>
+
 
 
 {/block}
 
 {block scripts}
 {include parent}
+
         <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
 <script src="{$basePath}/assets/vendor/jquery.fine-uploader/jquery.fine-uploader.min.js"></script>
 <script src="{$basePath}/assets/vendor/soundcloud-waveform-generator/soundcloud-waveform.js"></script>
@@ -112,6 +122,66 @@
 //                $.nette.init();
                 var songEditors = [];
 
+                var Song = $class({
+
+                    constructor: function(songId, artist, title, duration, filename) {
+                        this.songId = String(songId);
+                        this.artist = artist;
+                        this.title = title;
+                        this.duration = duration;
+                        this.filename = filename;
+                        this.defaultUri = '/assets/sounds/songs/';
+                    },
+
+                    show: function() {
+                        $('.song-editor').removeClass('hidden');
+                        this.generateWaveform();
+                    },
+
+                    populateForm: function() {
+                        $('#songId').val(this.songId);
+                        $('#artist').val(this.artist);
+                        $('#title').val(this.title);
+                        $('#duration').append(this.duration);
+                    },
+
+                    generateWaveform: function() {
+                        var xhr = new XMLHttpRequest();
+                        var url = this.defaultUri + this.filename + '.mp3';
+                        xhr.open('GET', url, true);
+                        xhr.responseType = 'blob';
+                        xhr.onload = function() {
+                            SoundCloudWaveform.generate(xhr.response, {
+                                onComplete: function(png, pixels) {
+                                    var canvas = document.getElementById('waveform');
+                                    var context = canvas.getContext('2d');
+                                    context.putImageData(pixels, 0, 0);
+                                }
+                            });
+                        };
+                        xhr.send();
+                     },
+
+                    initPlayer: function() {
+                        $('#ex1-play-original').on('click', function(){
+                            song1.stop().play();
+                        });
+                        $('#ex1-stop').on('click', function(){
+                            song1.stop();
+                        });
+
+                        song1 = new Howl({
+                            src: [this.defaultUri + '{$song->filename|noescape}.mp3']
+                        });
+                    }
+                });
+
+
+                {ifset $song}
+                var s = new Song({$song->id}, {$song->artist}, {$song->title}, {$song->duration}, {$song->filename});
+                s.initPlayer();
+                s.generateWaveform();
+                {else}
                 $("#file-uploader").fineUploader({
                     debug: true,
                     multiple: false,
@@ -129,44 +199,13 @@
                         fail: 'alert alert-error'
                     }
                 }).on('complete', function (event, id, name, responseJSON) {
-                    var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"]);
+                    var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
                     s.show();
+                    s.populateForm();
                     songEditors.push(this.s);
                 });
-
-                var Song = $class({
-
-                    constructor: function(songId, artist, title, duration) {
-                        this.songId = String(songId);
-                        this.artist = artist;
-                        this.title = title;
-                        this.duration = duration;
-                    },
-
-                    show: function() {
-                        $('.song-editor').removeClass('hidden');
-                        this.populateForm();
-                    },
-
-                    populateForm: function() {
-                        $('#songId').val(this.songId);
-                        $('#artist').val(this.artist);
-                        $('#title').val(this.title);
-                        $('#duration').append(this.duration);
-                    }
-                });
-                {ifset $song}
-                $('#ex1-play-original').on('click', function(){
-                    song1.stop().play();
-                });
-                $('#ex1-stop').on('click', function(){
-                    song1.stop();
-                });
-
-                song1 = new Howl({
-                    src: ['/assets/sounds/songs/{$song->filename|noescape}.mp3']
-                });
                 {/ifset}
+
             });
 
         </script>

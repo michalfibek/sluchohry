@@ -154,13 +154,13 @@ class AdminPresenter extends BasePresenter
 			$songRecord['filename'] = $result['uuid'];
 
 			$song = $this->database->table('song')->insert($songRecord);
-//			$song['id'] = 2;
 
 			$result['ext'] = $uploader->getFileExtension();
 			$result['artist'] = $artist;
 			$result['title'] = $title;
 			$result['duration'] = $this->getSongTimeFormat($duration);
 			$result['songId'] = $song->id;
+			$result['fileName'] = $song->filename;
 
 		} catch (\Exception $exc) {
 			$this->sendResponse(new Nette\Application\Responses\JsonResponse(array(
