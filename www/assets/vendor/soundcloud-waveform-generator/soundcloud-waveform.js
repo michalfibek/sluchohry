@@ -1,7 +1,7 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-Array.prototype.max = function() {
-  return Math.max.apply(null, this);
+arrayMax = function($arr) {
+  return Math.max.apply(null, $arr);
 };
 
 var SoundCloudWaveform = {
@@ -59,7 +59,7 @@ var SoundCloudWaveform = {
 	    }
 
 	    for (var j = 0; j < sections; j += this.settings.bar_width) {
-	        var scale = maxHeight / vals.max();
+	        var scale = maxHeight / arrayMax(vals);
 	        var val = this.bufferMeasure(j * len, len, buffer) * 10000;
 	        val *= scale;
 	        val += 1;
