@@ -5,6 +5,7 @@ namespace App\Presenters;
 use Nette,
 	App\Model,
 	Nette\Application\UI\Form;
+use Tracy\Debugger;
 
 
 /**
@@ -14,13 +15,22 @@ class AdminPresenter extends BasePresenter
 {
 	/** @var Nette\Database\Context */
 	private $database;
+	private $songList;
+	private $song;
 
 	public function __construct(Nette\Database\Context $database)
 	{
 		$this->database = $database;
 	}
 
-	protected function createComponentSongInfoForm()
+	protected function startup()
+	{
+		// TODO autorizovat korektne uzivatele podle urovne opravneni! + ukladat request pro aktualni stranku a vracet zpet pri prihlaseni
+		parent::startup();
+		if(!$this->user->loggedIn) $this->redirect('Homepage:');
+	}
+
+	protected function createComponentSongEditForm()
 	{
 		$form = new Form;
 		$form->addText('artist', 'Artist:');
@@ -29,34 +39,62 @@ class AdminPresenter extends BasePresenter
 		$form->addSubmit('update', 'Update');
 		$form->addHidden('songId');
 
-		$form->onSuccess[] = array($this, 'songInfoFormSucceed'); // a přidat událost po odeslání
+		$form->onSuccess[] = array($this, 'songEditFormSucceed'); // a přidat událost po odeslání
 
 		return $form;
 	}
 
-	public function songInfoFormSucceed($form, $values)
+	public function songEditFormSucceed($form, $values)
 	{
-		$songId = $this->getParameter('songId');
+		// sets song id by form hidden or by url parameter
+		$songId = (strlen($values->songId) > 0) ? $values->songId : $songId = $this->getParameter('id');
 
 		if ($songId) {
+			unset($values->songId);
+			$values['update_time'] = new Nette\Utils\DateTime;
 			$song = $this->database->table('song')->get($songId);
 			$song->update($values);
+			$this->flashMessage("Song description been successfully updated.", 'success');
 		}
-
-		$this->flashMessage("Song description been successfully updated.", 'success');
-		$this->redirect('this');
+		$this->redirect('songs');
 	}
 
 	public function actionSetRole($userId, $roleName)
 	{
 		$this->addRole('guest');
 		$this->getUser()->logout();
-		$this->flashMessage('The role has been successfully set.');
+		$this->flashMessage('The role has been successfully set.', 'success');
 		$this->redirect('Homepage:');
 	}
 
-	public function	renderMelodicCubes() {
+	public function actionSongs()
+	{
+		$this->songList = $this->database->table('song')
+			->order('create_time DESC');
+	}
 
+	public function	renderSongs()
+	{
+		$this->template->songList = $this->songList;
+	}
+
+	public function actionEditSong($id = null)
+	{
+		if (isset($id)) {
+			$this->song = $this->database->table('song')->get($id);
+			if (!$this->song) {
+				$this->flashMessage('Sorry, this song was not found.', 'error');
+				$this->redirect('Admin:');
+			}
+		}
+	}
+
+	public function	renderEditSong()
+	{
+		if (isset($this->song)) {
+			$this->template->song = $this->song;
+			$this['songEditForm']->setDefaults($this->template->song->toArray());
+		}
 	}
 
 	/**
@@ -90,8 +128,8 @@ class AdminPresenter extends BasePresenter
 			$songRecord['duration'] = $duration;
 			$songRecord['filename'] = $result['uuid'];
 
-//			$song = $this->database->table('song')->insert($songRecord);
-			$song['id'] = 2;
+			$song = $this->database->table('song')->insert($songRecord);
+//			$song['id'] = 2;
 
 			$result['ext'] = $uploader->getFileExtension();
 			$result['artist'] = $artist;
