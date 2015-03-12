@@ -17,10 +17,14 @@ class AdminPresenter extends BasePresenter
 	private $database;
 	private $songList;
 	private $song;
+	private $songBaseDir;
+	private $songDefaultFormat;
 
 	public function __construct(Nette\Database\Context $database)
 	{
 		$this->database = $database;
+		$this->songBaseDir = $_SERVER['DOCUMENT_ROOT'] . '/assets/sounds/songs/';
+		$this->songDefaultFormat = 'mp3';
 	}
 
 	protected function startup()
@@ -33,11 +37,13 @@ class AdminPresenter extends BasePresenter
 	protected function createComponentSongEditForm()
 	{
 		$form = new Form;
-		$form->addText('artist', 'Artist:');
-		$form->addText('title', 'Title:')
+		$form->addText('artist');
+		$form->addText('title')
 			->setRequired();
-		$form->addSubmit('update', 'Update');
 		$form->addHidden('songId');
+		$form->addSubmit('update'); // default
+		$form->addSubmit('delete')
+			->onClick[] = \callback($this, 'songDeleteClicked');
 
 		$form->onSuccess[] = array($this, 'songEditFormSucceed'); // a přidat událost po odeslání
 
@@ -56,6 +62,20 @@ class AdminPresenter extends BasePresenter
 			$song->update($values);
 			$this->flashMessage("Song description been successfully updated.", 'success');
 		}
+		$this->redirect('songs');
+	}
+
+	public function songDeleteClicked()
+	{
+		$songId = $this->getParameter('id');
+		$song = $this->database->table('song')->get($songId);
+		try {
+			Nette\Utils\FileSystem::delete($this->songBaseDir . $song->filename . '.' . $this->songDefaultFormat);
+			$song->delete();
+		} catch (\Exception $e) {
+			Debugger::log($e->getMessage());
+		}
+		$this->flashMessage("Song has been deleted.", 'success');
 		$this->redirect('songs');
 	}
 
@@ -103,7 +123,6 @@ class AdminPresenter extends BasePresenter
      */
 	public function handleUploadFile() {
 		$uploadDirName = __DIR__ . '/../../uploads/';
-		$targetDirName = $_SERVER['DOCUMENT_ROOT'] . '/assets/sounds/songs/';
 		$uploader = new \UploadHandler();
 		$uploader->allowedExtensions = array("mp3", "wav", "ogg");
 		try {
@@ -115,10 +134,16 @@ class AdminPresenter extends BasePresenter
 			$fileInfo = $getID3->analyze($uploadFilePath);
 			\getid3_lib::CopyTagsToComments($fileInfo); // merges all detected tags and copies them into single 'comments' array (or 'comments_html')
 			$duration = round($fileInfo['playtime_seconds']*1000);
-			$artist = implode(' & ', $fileInfo['comments']['artist']); // merges artist names if more of them are present
-			$title = $fileInfo['comments']['title'][0];
 
-			$targetFilePath = $targetDirName . $result['uuid'] . '.' . $fileInfo['fileformat'];
+			if (isset($fileInfo['comments'])) {
+				$artist = implode(' & ', $fileInfo['comments']['artist']); // merges artist names if more of them are present
+				$title = $fileInfo['comments']['title'][0];
+			} else {
+				$artist = "";
+				$title = str_replace('.mp3','',str_replace('_', ' ', $uploader->getUploadName()));
+			}
+
+			$targetFilePath = $this->songBaseDir . $result['uuid'] . '.' . $fileInfo['fileformat'];
 
 			Nette\Utils\FileSystem::copy($uploadFilePath, $targetFilePath);
 			Nette\Utils\FileSystem::delete(__DIR__ . '/../../uploads/' . $result['uuid']);
@@ -134,9 +159,8 @@ class AdminPresenter extends BasePresenter
 			$result['ext'] = $uploader->getFileExtension();
 			$result['artist'] = $artist;
 			$result['title'] = $title;
-			$result['duration'] = $duration/1000 . ' s';
-			$result['filename'] = $uploader->getUploadName();
-			$result['songId'] = 2;
+			$result['duration'] = $this->getSongTimeFormat($duration);
+			$result['songId'] = $song->id;
 
 		} catch (\Exception $exc) {
 			$this->sendResponse(new Nette\Application\Responses\JsonResponse(array(

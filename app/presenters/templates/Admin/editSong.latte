@@ -22,6 +22,7 @@
 
 <h1 n:block="title">{ifset $song}Edit {$song->title}{else}Upload new song{/ifset}</h1>
 
+{ifset $song}{else}
 <!-- Fine Uploader DOM Element
 ====================================================================== -->
 <div id="file-uploader" class="col-xs-5"></div>
@@ -54,10 +55,11 @@
         </ul>
     </div>
 </script>
+{/ifset}
 
 <div class="clearfix"></div>
 
-<div class="container song-editor {*hidden*}">
+<div class="container song-editor{ifset $song}{else} hidden{/ifset}">
 
     <div id="song-01" class="song col-sm-5">
         <form n:name="songEditForm" class="form-horizontal">
@@ -77,24 +79,26 @@
             <div class="form-group">
                 <label for="duration" class="col-sm-4 control-label">Duration:</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static" id="duration">{ifset $song}{$song->duration|songTime:milliseconds}{/ifset}</p>
+                    <p class="form-control-static" id="duration">{ifset $song}{$song->duration|songTime}{/ifset}</p>
                 </div>
             </div>
             <div class="form-group">
-                <label for="filename" class="col-sm-4 control-label">Original file name:</label>
-                <div class="col-sm-8">
-                    <p class="form-control-static" id="filename"></p>
+                <div class="col-sm-12 text-right">
+                    <button type="button" class="btn btn-default" id="ex1-play-original"><span class="glyphicon glyphicon-play"></span> Play</button>
+                    <button type="button" class="btn btn-default" id="ex1-stop"><span class="glyphicon glyphicon-stop"></span> Stop</button>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-8">
                     <button n:name="update" type="submit" class="btn btn-default">Update</button>
+                    <button n:name="delete" type="submit" class="btn btn-default">Delete</button>
                 </div>
             </div>
         </form>
     </div>
 
 </div>
+
 
 {/block}
 
@@ -124,19 +128,18 @@
                         fail: 'alert alert-error'
                     }
                 }).on('complete', function (event, id, name, responseJSON) {
-                    var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
+                    var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"]);
                     s.show();
                     songEditors.push(this.s);
                 });
 
                 var Song = $class({
 
-                    constructor: function(songId, artist, title, duration, filename) {
+                    constructor: function(songId, artist, title, duration) {
                         this.songId = String(songId);
                         this.artist = artist;
                         this.title = title;
                         this.duration = duration;
-                        this.filename = filename;
                     },
 
                     show: function() {
@@ -149,9 +152,20 @@
                         $('#artist').val(this.artist);
                         $('#title').val(this.title);
                         $('#duration').append(this.duration);
-                        $('#filename').append(this.filename);
                     }
                 });
+                {ifset $song}
+                $('#ex1-play-original').on('click', function(){
+                    song1.stop().play();
+                });
+                $('#ex1-stop').on('click', function(){
+                    song1.stop();
+                });
+
+                song1 = new Howl({
+                    src: ['/assets/sounds/songs/{$song->filename|noescape}.mp3']
+                });
+                {/ifset}
             });
 
         </script>

@@ -25,7 +25,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	 * @param $precision seconds or milliseconds
 	 * @return string properly formatted time
 	 */
-	protected function getSongTimeFormat($inputTime, $precision)
+	protected function getSongTimeFormat($inputTime, $precision = 'seconds')
 	{
 		$milliseconds = $inputTime % 1000;
 		$inputTime = floor($inputTime / 1000);
