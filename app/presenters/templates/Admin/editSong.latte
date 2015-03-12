@@ -221,6 +221,8 @@
                         SoundCloudWaveform.generate(scope.songData, {
                             canvas_width: canvas_width,
                             canvas_height: canvas_height,
+                            bar_width: 1,
+                            bar_gap: 0.4,
 //                                wave_color: '#ff0000',
                             onComplete: function(png, pixels) {
                                 scope.waveformImage = pixels;
@@ -235,9 +237,10 @@
 
                     updateLineMarker: function() {
                         // TODO for cyklus pro vsechny markery
-                        var x = markerList[0]*markerOffset;
-//                        console.log('MARK:' + x);
-                        scope.lineDraw(x, 0, x, canvas.height, '#00ff00');
+                        for (var i = 0; i < markerList.length; i++) {
+                            var x = markerList[i]*markerOffset;
+                            scope.lineDraw(x, 0, x, canvas.height, '#00ff00');
+                        }
                     },
 
                     updateLineSongPos: function(markerPos) {
@@ -267,17 +270,6 @@
                         ctx.stroke();
                     },
                     showPlayMarker: function() {
-//                        image = ctx.getImageData(0, 0, canvas_width, canvas_height);
-//                        ctx.beginPath();
-//                        ctx.rect(20, 30, 5, 5);
-//                        ctx.fillStyle = '#8ED6FF';
-//                        ctx.fill();
-//                        ctx.lineWidth = 20;
-//                        ctx.strokeStyle = 'black';
-//                        ctx.stroke();
-//                        ctx.putImageData(image, 0, 0);
-                        /// listen to mouse move (or use jQuery on('mousemove') instead)
-
                         window.setInterval(function() {
                             if (songControl.seek() != 0) {
                                 var currentTime = songControl.seek();
