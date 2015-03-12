@@ -131,11 +131,26 @@
                     canvas_width = 600,
                     canvas_height = 100,
                     songControl,
+                    songId,
+                    songArtist,
+                    songTitle,
+                    songDuration,
+                    songFilename,
+                    {ifset $song}
+                    songId = {$song->id},
+                    songArtist = {$song->artist},
+                    songTitle = {$song->title},
+                    songDuration = {$song->duration},
+                    songFilename = {$song->filename},
+                    {/ifset}
                     waveformImage;
 
                 var Song = $class({
 
+
                     constructor: function(songId, artist, title, duration, filename) {
+                        scope = this;
+
                         this.songId = String(songId);
                         this.artist = artist;
                         this.title = title;
@@ -145,7 +160,7 @@
                         $(document).keypress(function(e) {
                             var tag = e.target.tagName.toLowerCase();
                             if ( e.which === 32 && tag != 'input' && tag != 'textarea')
-                                s.setTimeMark();
+                                scope.setTimeMark();
                         });
                     },
 
@@ -167,25 +182,25 @@
                         xhr.open('GET', url, true);
                         xhr.responseType = 'blob';
                         xhr.onload = function() {
-                            s.songData = xhr.response;
-                            s._initPlayer();
-                            s.generateWaveform();
-                            s.showPlayMarker();
+                            scope.songData = xhr.response;
+                            scope._initPlayer();
+                            scope.generateWaveform();
                         }
                         xhr.send();
                     },
 
                     _initPlayer: function() {
-                        // encode source song to base 64
+                        // encode source song to base 64 for howler
                         var songBase64 = new window.FileReader();
-                        songBase64.readAsDataURL(s.songData);
+                        songBase64.readAsDataURL(scope.songData);
                         songBase64.onloadend = function() {
                             var base64data = songBase64.result;
                             songControl = new Howl({
-//                            src: [defaultUri + '{$song->filename|noescape}.mp3']
-                                src: base64data
+                                src: base64data,
+                                onplay: function() {
+                                    scope.showPlayMarker();
+                                }
                             });
-
                         };
 
                         $('#ex1-play-original').on('click', function(){
@@ -199,27 +214,33 @@
                     },
 
                     generateWaveform: function() {
-                        SoundCloudWaveform.generate(s.songData, {
+                        SoundCloudWaveform.generate(scope.songData, {
                             canvas_width: canvas_width,
                             canvas_height: canvas_height,
 //                                wave_color: '#ff0000',
                             onComplete: function(png, pixels) {
-                                s.waveformImage = pixels;
-                                ctx.putImageData(s.waveformImage, 0, 0);
+                                scope.waveformImage = pixels;
+                                ctx.putImageData(scope.waveformImage, 0, 0);
                             }
                         });
                      },
 
-                    _updateLine: function(e) {
-                        // fix mouse position relative to canvas
-                        var r = canvas.getBoundingClientRect(),
-                                x = e.clientX - r.left,
-                                y = e.clientY - r.top;
-                        ctx.putImageData(s.waveformImage, 0, 0);
-                        s._lineDraw(x, 0, x, canvas.height);
+                    updateLineMarker: function(markerPos) {
+                        var x = markerPos;
+                        ctx.putImageData(scope.waveformImage, 0, 0);
+                        scope.lineDraw(x, 0, x, canvas.height);
                     },
 
-                    _lineDraw: function(x1, y1, x2, y2) {
+                    updateLineCursor: function(e) {
+                        // fix mouse position relative to canvas
+                        var r = canvas.getBoundingClientRect(),
+                            x = e.clientX - r.left,
+                            y = e.clientY - r.top;
+                        ctx.putImageData(scope.waveformImage, 0, 0);
+                        scope.lineDraw(x, 0, x, canvas.height);
+                    },
+
+                    lineDraw: function(x1, y1, x2, y2) {
                         ctx.beginPath();
                         ctx.moveTo(x1, y1);
                         ctx.lineTo(x2, y2);
@@ -236,7 +257,14 @@
 //                        ctx.stroke();
 //                        ctx.putImageData(image, 0, 0);
                         /// listen to mouse move (or use jQuery on('mousemove') instead)
-                        canvas.onmousemove = this._updateLine;
+                        var markerOffset = canvas_width / songDuration * 1000;
+                        window.setInterval(function() {
+                            if (songControl.seek() != 0) {
+                                var markerPos = songControl.seek();
+                                scope.updateLineMarker(markerPos*markerOffset);
+                            }
+                        }, 20);
+//                        canvas.onmousemove = scope.updateLineCursor; // track mouse movement
                     },
 
                     setTimeMark: function() {
@@ -247,33 +275,33 @@
 
                 });
 
-                {ifset $song}
-                var s = new Song({$song->id}, {$song->artist}, {$song->title}, {$song->duration}, {$song->filename});
-                s.downloadSongData();
-                {else}
-                $("#file-uploader").fineUploader({
-                    debug: true,
-                    multiple: false,
-                    element: $('#file-uploader'),
-                    request: {
-                        endpoint: 'admin?do=uploadFile'
-                    },
-                    validation: {
-                        allowedExtensions: ['mp3', 'wav', 'ogg'],
-                        sizeLimit: 10485760 // 10 MB - size is in bytes
-                    },
-                    template: 'qq-template-bootstrap',
-                    classes: {
-                        success: 'alert alert-success',
-                        fail: 'alert alert-error'
-                    }
-                }).on('complete', function (event, id, name, responseJSON) {
-                    var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
-                    s.show();
-                    s.populateForm();
-                    songEditors.push(this.s);
-                });
-                {/ifset}
+                if (typeof songId != 'undefined' && songId != null) {
+                    var s = new Song(songId, songArtist, songTitle, songDuration, songFilename);
+                    s.downloadSongData();
+                } else {
+                    $("#file-uploader").fineUploader({
+                        debug: true,
+                        multiple: false,
+                        element: $('#file-uploader'),
+                        request: {
+                            endpoint: 'admin?do=uploadFile'
+                        },
+                        validation: {
+                            allowedExtensions: ['mp3', 'wav', 'ogg'],
+                            sizeLimit: 10485760 // 10 MB - size is in bytes
+                        },
+                        template: 'qq-template-bootstrap',
+                        classes: {
+                            success: 'alert alert-success',
+                            fail: 'alert alert-error'
+                        }
+                    }).on('complete', function (event, id, name, responseJSON) {
+                        var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
+                        s.show();
+                        s.populateForm();
+                        songEditors.push(this.s);
+                    });
+                }
 
             });
 
