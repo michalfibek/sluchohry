@@ -20,7 +20,7 @@
 
 {block content}
 
-<h1 n:block="title">Melodic cubes</h1>
+<h1 n:block="title">{ifset $song}Edit {$song->title}{else}Upload new song{/ifset}</h1>
 
 <!-- Fine Uploader DOM Element
 ====================================================================== -->
@@ -60,8 +60,8 @@
 <div class="container song-editor {*hidden*}">
 
     <div id="song-01" class="song col-sm-5">
-        <form n:name="songInfoForm" class="form-horizontal">
-            <input n:name="songId" id="song-id" type="hidden">
+        <form n:name="songEditForm" class="form-horizontal">
+            <input n:name="songId" id="songId" type="hidden">
             <div class="form-group">
                 <label n:name="artist" for="artist" class="col-sm-4 control-label">Artist:</label>
                 <div class="col-sm-8">
@@ -77,7 +77,7 @@
             <div class="form-group">
                 <label for="duration" class="col-sm-4 control-label">Duration:</label>
                 <div class="col-sm-8">
-                    <p class="form-control-static" id="duration"></p>
+                    <p class="form-control-static" id="duration">{ifset $song}{$song->duration|songTime:milliseconds}{/ifset}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -96,9 +96,7 @@
 
 </div>
 
-
 {/block}
-
 
 {block scripts}
 {include parent}
@@ -106,7 +104,7 @@
         <script src="{$basePath}/assets/vendor/jquery.fine-uploader/jquery.fine-uploader.min.js"></script>
         <script type="text/javascript">
             $(function(){
-                $.nette.init();
+//                $.nette.init();
                 var songEditors = [];
 
                 $("#file-uploader").fineUploader({
@@ -147,7 +145,7 @@
                     },
 
                     populateForm: function() {
-                        $('#song-id').val(this.songId);
+                        $('#songId').val(this.songId);
                         $('#artist').val(this.artist);
                         $('#title').val(this.title);
                         $('#duration').append(this.duration);

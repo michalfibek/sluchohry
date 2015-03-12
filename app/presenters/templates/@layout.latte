@@ -22,6 +22,7 @@
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 	<div class="container{ifCurrent Admin:*} admin{/ifCurrent}">
+		<a n:href="Homepage:">Home</a> / <a n:href="Admin:">Admin</a>
 		{include content}
 	</div>
 
