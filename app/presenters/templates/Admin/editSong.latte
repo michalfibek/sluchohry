@@ -130,7 +130,8 @@
                     ctx = canvas.getContext('2d'),
                     canvas_width = 600,
                     canvas_height = 100,
-                    songControl;
+                    songControl,
+                    waveformImage;
 
                 var Song = $class({
 
@@ -203,54 +204,29 @@
                             canvas_height: canvas_height,
 //                                wave_color: '#ff0000',
                             onComplete: function(png, pixels) {
-                                ctx.putImageData(pixels, 0, 0);
+                                s.waveformImage = pixels;
+                                ctx.putImageData(s.waveformImage, 0, 0);
                             }
                         });
                      },
 
                     _updateLine: function(e) {
-                        /// correct mouse position so it's relative to canvas
+                        // fix mouse position relative to canvas
                         var r = canvas.getBoundingClientRect(),
                                 x = e.clientX - r.left,
                                 y = e.clientY - r.top;
-
-                        /// draw background image to clear previous line
-                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-                        /// update line object and draw it
-                        line.x1 = x;
-                        line.y1 = 0;
-                        line.x2 = x;
-                        line.y2 = canvas.height;
-                        line.draw();
+                        ctx.putImageData(s.waveformImage, 0, 0);
+                        s._lineDraw(x, 0, x, canvas.height);
                     },
 
-                    _line: function() {
-
-                        var me = this;
-
-                        this.x1 = 0;
-                        this.x2 = 0;
-                        this.y1 = 0;
-                        this.y2 = 0;
-
-                        /// call this method to update line
-                        this.draw = function() {
-                            ctx.beginPath();
-                            ctx.moveTo(me.x1, me.y1);
-                            ctx.lineTo(me.x2, me.y2);
-                            ctx.stroke();
-                        }
+                    _lineDraw: function(x1, y1, x2, y2) {
+                        ctx.beginPath();
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                        ctx.stroke();
                     },
-
-                    setTimeMark: function() {
-                        var curTime = songControl.seek();
-                        curTime = curTime.toFixed(3);
-                        $('#time-marks').append('<div class=\'time-single-mark\'>' + curTime + '</div>');
-                    },
-
                     showPlayMarker: function() {
-                        var image = ctx.getImageData(0, 0, canvas_width, canvas_height);
+//                        image = ctx.getImageData(0, 0, canvas_width, canvas_height);
 //                        ctx.beginPath();
 //                        ctx.rect(20, 30, 5, 5);
 //                        ctx.fillStyle = '#8ED6FF';
@@ -261,7 +237,14 @@
 //                        ctx.putImageData(image, 0, 0);
                         /// listen to mouse move (or use jQuery on('mousemove') instead)
                         canvas.onmousemove = this._updateLine;
+                    },
+
+                    setTimeMark: function() {
+                        var curTime = songControl.seek();
+                        curTime = curTime.toFixed(3);
+                        $('#time-marks').append('<div class=\'time-single-mark\'>' + curTime + '</div>');
                     }
+
                 });
 
                 {ifset $song}
