@@ -17,6 +17,8 @@ class AdminPresenter extends BasePresenter
 	private $database;
 	private $songList;
 	private $song;
+	private $songMarkers;
+	private $genreList;
 	private $songBaseDir;
 	private $songDefaultFormat;
 
@@ -40,7 +42,11 @@ class AdminPresenter extends BasePresenter
 		$form->addText('artist');
 		$form->addText('title')
 			->setRequired();
+		$form->addSelect('genre_id')
+			->setItems($this->genreList->fetchPairs('id', 'name'));
 		$form->addHidden('songId');
+		$form->addHidden('markers')
+			->setValue(implode(',',$this->songMarkers->fetchPairs('id', 'timecode')));
 		$form->addSubmit('update'); // default
 		$form->addSubmit('delete')
 			->onClick[] = \callback($this, 'songDeleteClicked');
@@ -54,15 +60,35 @@ class AdminPresenter extends BasePresenter
 	{
 		// sets song id by form hidden or by url parameter
 		$songId = (strlen($values->songId) > 0) ? $values->songId : $songId = $this->getParameter('id');
-
-		if ($songId) {
+		try {
 			unset($values->songId);
+			$updateMarkers = ($values->markers != 0) ? explode(',',$values->markers) : null;
+			unset($values->markers);
 			$values['update_time'] = new Nette\Utils\DateTime;
+
 			$song = $this->database->table('song')->get($songId);
 			$song->update($values);
+
+			// if markers were set by the form, delete old and insert new
+			if ($updateMarkers != null) {
+				// delete old markers
+				foreach ($song->related('marker') as $singleMarker) {
+					$singleMarker->delete();
+				}
+				// insert new markers
+				foreach ($updateMarkers as $singleMarker) {
+					$this->database->table('marker')->insert( array(
+						'song_id' => $songId,
+						'timecode' => $singleMarker
+					));
+				}
+			}
+
 			$this->flashMessage("Song description been successfully updated.", 'success');
+			$this->redirect('songs');
+		} catch (\Exception $e) {
+			Debugger::log($e->getMessage());
 		}
-		$this->redirect('songs');
 	}
 
 	public function songDeleteClicked()
@@ -102,17 +128,21 @@ class AdminPresenter extends BasePresenter
 	{
 		if (isset($id)) {
 			$this->song = $this->database->table('song')->get($id);
+//			$this->genreList = $this->song->related('genre');
 			if (!$this->song) {
 				$this->flashMessage('Sorry, this song was not found.', 'error');
 				$this->redirect('Admin:');
 			}
+			$this->songMarkers = $this->song->related('marker');
 		}
+		$this->genreList = $this->database->table('genre'); // fetch genre list for form
 	}
 
 	public function	renderEditSong()
 	{
 		if (isset($this->song)) {
 			$this->template->song = $this->song;
+			$this->template->songMarkers = implode(',',$this->songMarkers->fetchPairs('id', 'timecode'));
 			$this['songEditForm']->setDefaults($this->template->song->toArray());
 		}
 	}
@@ -162,9 +192,9 @@ class AdminPresenter extends BasePresenter
 			$result['songId'] = $song->id;
 			$result['fileName'] = $song->filename;
 
-		} catch (\Exception $exc) {
+		} catch (\Exception $e) {
 			$this->sendResponse(new Nette\Application\Responses\JsonResponse(array(
-				'error' => $exc->getMessage(),
+				'error' => $e->getMessage(),
 			)));
 		}
 		$this->sendResponse(new Nette\Application\Responses\JsonResponse($result));

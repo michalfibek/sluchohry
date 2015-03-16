@@ -1,8 +1,8 @@
 {block content}
 
-<h1 n:block="title">Melodic cubes</h1>
-
-<h2>{$song->artist} - {$song->title}</h2>
+<header>
+<h1 n:block="title">Melodic cubes <small>{$song->artist} - {$song->title}</small></h1>
+</header>
 
 <div class="game-main hidden">
     <button type="button" class="btn btn-default" id="ex1-play-current"><span class="fa fa-play"></span> Play by given order</button>
