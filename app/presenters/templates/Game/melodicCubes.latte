@@ -4,11 +4,11 @@
 
 <h2>{$song->artist} - {$song->title}</h2>
 
-<div class="game-main">
-    <button type="button" class="btn btn-default" id="ex1-play-current"><span class="glyphicon glyphicon-play"></span> Play by given order</button>
+<div class="game-main hidden">
+    <button type="button" class="btn btn-default" id="ex1-play-current"><span class="fa fa-play"></span> Play by given order</button>
     <button type="button" class="btn btn-default" id="ex1-play-original">Play original</button>
-    <button type="button" class="btn btn-default" id="ex1-pause"><span class="glyphicon glyphicon-pause"></span> Pause</button>
-    <button type="button" class="btn btn-default" id="ex1-stop"><span class="glyphicon glyphicon-stop"></span> Stop</button>
+    <button type="button" class="btn btn-default" id="ex1-pause"><span class="fa fa-pause"></span> Pause</button>
+    <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> Stop</button>
     <br />&nbsp;<br />
 
     <div class="container-fluid">
@@ -35,8 +35,6 @@
         <script src="{$basePath}/assets/vendor/Sortable/jquery.fn.sortable.js"></script>
         <script type="text/javascript">
             $(function(){
-                $(".game-main").css({ opacity: 0 });
-
                 var cubeBank = [],
                     song1,
                     songCubesChain,
@@ -98,10 +96,18 @@
                         complete: [0, {$song->duration}]
                     },
                     onload: function() { // after sound file loads, do these...
-                        $(".spinner").transition({ opacity: 0 }, 300);
-                        $(".game-main").transition({ opacity: 1 }, 300);
+                        show();
                     }
                 });
+
+                show = function() {
+                    $(".spinner").transition({ opacity: 0 }, 300, function() {
+                        this.hide();
+                        $(".game-main").removeClass('hidden').transition({ opacity: 1 }, 300, function() {
+                            this.show();
+                        });
+                    });
+                }
 
                 songCubesChain = [
                         function(fn) {

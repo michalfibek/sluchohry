@@ -59,9 +59,9 @@
 
 <div class="clearfix"></div>
 
-<div class="container song-editor{ifset $song}{else} hidden{/ifset}">
+<div class="container song-editor hidden">
 
-    <div id="song-01" class="song col-sm-5">
+    <div id="song-01" class="song col-sm-6">
         <form n:name="songEditForm" class="form-horizontal">
             <input n:name="songId" id="songId" type="hidden">
             <div class="form-group">
@@ -85,14 +85,13 @@
             <div class="form-group">
                 <div class="col-sm-12 text-right">
                     <button type="button" class="btn btn-default" id="ex1-play-original"><span class="fa fa-play"></span> Play</button>
+                    <button type="button" class="btn btn-default hidden" id="ex1-pause"><span class="fa fa-pause"></span> Pause</button>
                     <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> Stop</button>
-                    <button type="button" class="btn btn-default" id="ex1-mark"><span class="fa fa-thumb-tack"></span> Mark (M)</button>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-8">
-                    <button n:name="update" type="submit" class="btn btn-default">Update</button>
-                    <button n:name="delete" type="submit" class="btn btn-default">Delete</button>
+                <div class="col-sm-12 text-right">
+                    <button type="button" class="btn btn-default btn-lg" id="ex1-mark"><span class="fa fa-thumb-tack fa-lg"></span> Mark (M)</button>
                 </div>
             </div>
             <div class="form-group">
@@ -101,15 +100,29 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-12">
-                    <div id="time-marks"></div>
+                <label class="col-sm-2">Markers:</label>
+                <div class="col-sm-10">
+                    <div id="time-markers"></div>
+                </div>
+            </div>
+            <div class="form-group main-buttons">
+                <div class="col-sm-12 text-right">
+                    <button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> Delete</button>
+                    <button n:name="update" id="button-update" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> Update</button>
                 </div>
             </div>
         </form>
     </div>
 
+</div>
 
 
+<div class="spinner">
+    <div class="rect1"></div>
+    <div class="rect2"></div>
+    <div class="rect3"></div>
+    <div class="rect4"></div>
+    <div class="rect5"></div>
 </div>
 
 
@@ -168,8 +181,13 @@
                     },
 
                     show: function() {
-                        $('.song-editor').removeClass('hidden');
-                        this.downloadSongData();
+//                        $('.song-editor').removeClass('hidden');
+                        $(".spinner").transition({ opacity: 0 }, 300, function() {
+                            this.hide();
+                            $(".song-editor").removeClass('hidden').transition({ opacity: 1 }, 300, function() {
+                                this.show();
+                            });
+                        });
                     },
 
                     populateForm: function() {
@@ -202,6 +220,10 @@
                                 src: base64data,
                                 onplay: function() {
                                     scope.showPlayMarker();
+                                },
+                                onpause: function() {
+                                    scope.drawWaveform();
+                                    scope.updateLineMarker();
                                 }
                             });
                         };
@@ -209,6 +231,9 @@
                         $('#ex1-play-original').on('click', function(){
                             songControl.stop().play();
                             $('#ex1-play-original').blur;
+                        });
+                        $('#ex1-pause').on('click', function(){
+                            songControl.pause();
                         });
                         $('#ex1-stop').on('click', function(){
                             songControl.stop();
@@ -231,6 +256,8 @@
                             onComplete: function(png, pixels) {
                                 scope.waveformImage = pixels;
                                 scope.drawWaveform();
+                                scope.show();
+                                return true;
                             }
                         });
                      },
@@ -240,7 +267,6 @@
                     },
 
                     updateLineMarker: function() {
-                        // TODO for cyklus pro vsechny markery
                         for (var i = 0; i < markerList.length; i++) {
                             var x = markerList[i]*markerOffset;
                             scope.lineDraw(x, 0, x, canvas.height, '#00ff00');
@@ -275,7 +301,7 @@
                     },
                     showPlayMarker: function() {
                         window.setInterval(function() {
-                            if (songControl.seek() != 0) {
+                            if ( (songControl.seek() != 0) && (songControl.playing(0)) ) {
                                 var currentTime = songControl.seek();
                                 scope.updateLineSongPos(currentTime*markerOffset);
 //                                console.log('POS:'+currentTime*markerOffset);
@@ -288,7 +314,7 @@
                         var curTime = songControl.seek();
                         curTime = curTime.toFixed(3);
                         markerList.push(curTime);
-                        $('#time-marks').append('<div class=\'time-single-mark\'>' + curTime + '</div>');
+                        $('#time-markers').append('<span class=\'marker\'>' + curTime + '</span>');
                     }
 
                 });
@@ -315,7 +341,7 @@
                         }
                     }).on('complete', function (event, id, name, responseJSON) {
                         var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
-                        s.show();
+                        s.downloadSongData();
                         s.populateForm();
                         songEditors.push(this.s);
                     });

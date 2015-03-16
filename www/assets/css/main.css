@@ -6557,6 +6557,15 @@ div.flash.warning hr {
 div.flash.warning .alert-link {
   color: #66512c;
 }
+form #button-delete {
+  float: left;
+}
+form #button-update {
+  float: right;
+}
+form .main-buttons {
+  margin-top: 50px;
+}
 /*
 GAME: melodic cubes
 */
@@ -6594,6 +6603,13 @@ ADMIN: applies only to admin presenter
 */
 .container.admin #file-uploader {
   margin: 30px 0;
+}
+.container.admin .song-editor canvas {
+  max-width: 100%;
+}
+.container.admin .song-editor .marker {
+  padding-right: 10px;
+  float: left;
 }
 /*
 CSS3 animations
