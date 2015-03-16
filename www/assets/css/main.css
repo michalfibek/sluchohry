@@ -6584,6 +6584,8 @@ GAME: melodic cubes
   display: block;
   padding: 50% 0;
   background-color: #bbb;
+  -webkit-transition: all 0.8s ease-in-out;
+          transition: all 0.8s ease-in-out;
 }
 .single-cube .btn:hover {
   background-color: #ff5555;
@@ -6612,7 +6614,7 @@ ADMIN: applies only to admin presenter
 .container.admin .song-editor canvas {
   max-width: 100%;
 }
-.container.admin .song-editor .marker {
+.container.admin .song-editor a.marker {
   float: left;
   display: inline;
   padding: 0.3em .6em .3em;
@@ -6625,6 +6627,14 @@ ADMIN: applies only to admin presenter
   border-radius: .25em;
   background-color: #777777;
   margin: 3px;
+  -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+}
+.container.admin .song-editor a.marker:hover {
+  background-color: #ff0000;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
 }
 /*
 CSS3 animations

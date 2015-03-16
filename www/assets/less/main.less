@@ -65,6 +65,7 @@ GAME: melodic cubes
     display: block;
     padding: 50% 0;
     background-color: #bbb;
+    transition: all 0.8s ease-in-out
   }
   .btn:hover {
     background-color: #ff5555;
@@ -92,7 +93,7 @@ ADMIN: applies only to admin presenter
     canvas {
       max-width: 100%;
     }
-    .marker {
+    a.marker {
 //      .label();
 //      .label-default();
 //      margin-right: 5px;
@@ -108,7 +109,12 @@ ADMIN: applies only to admin presenter
       border-radius: .25em;
       background-color: #777777;
       margin: 3px;
-
+      transition: all 0.2s ease-in-out
+    }
+    a.marker:hover {
+      background-color: #ff0000;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out
     }
   }
 }

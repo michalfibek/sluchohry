@@ -45,8 +45,10 @@ class AdminPresenter extends BasePresenter
 		$form->addSelect('genre_id')
 			->setItems($this->genreList->fetchPairs('id', 'name'));
 		$form->addHidden('songId');
-		$form->addHidden('markers')
-			->setValue(implode(',',$this->songMarkers->fetchPairs('id', 'timecode')));
+		$markers = $form->addHidden('markers');
+		if ($this->songMarkers) {
+			$markers->setValue(implode(',', $this->songMarkers->fetchPairs('id', 'timecode')));
+		}
 		$form->addSubmit('update'); // default
 		$form->addSubmit('delete')
 			->onClick[] = \callback($this, 'songDeleteClicked');
@@ -83,12 +85,11 @@ class AdminPresenter extends BasePresenter
 					));
 				}
 			}
-
-			$this->flashMessage("Song description been successfully updated.", 'success');
-			$this->redirect('songs');
 		} catch (\Exception $e) {
 			Debugger::log($e->getMessage());
 		}
+		$this->flashMessage("Song description been successfully updated.", 'success');
+		$this->redirect('this');
 	}
 
 	public function songDeleteClicked()
@@ -133,7 +134,7 @@ class AdminPresenter extends BasePresenter
 				$this->flashMessage('Sorry, this song was not found.', 'error');
 				$this->redirect('Admin:');
 			}
-			$this->songMarkers = $this->song->related('marker');
+			$this->songMarkers = $this->song->related('marker')->order('timecode ASC');
 		}
 		$this->genreList = $this->database->table('genre'); // fetch genre list for form
 	}
