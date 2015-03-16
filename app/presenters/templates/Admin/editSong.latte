@@ -84,8 +84,9 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right">
-                    <button type="button" class="btn btn-default" id="ex1-play-original"><span class="glyphicon glyphicon-play"></span> Play</button>
-                    <button type="button" class="btn btn-default" id="ex1-stop"><span class="glyphicon glyphicon-stop"></span> Stop</button>
+                    <button type="button" class="btn btn-default" id="ex1-play-original"><span class="fa fa-play"></span> Play</button>
+                    <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> Stop</button>
+                    <button type="button" class="btn btn-default" id="ex1-mark"><span class="fa fa-thumb-tack"></span> Mark (M)</button>
                 </div>
             </div>
             <div class="form-group">
@@ -161,7 +162,7 @@
                         this.songData;
                         $(document).keypress(function(e) {
                             var tag = e.target.tagName.toLowerCase();
-                            if ( e.which === 32 && tag != 'input' && tag != 'textarea')
+                            if ( (e.which === 77 || e.which === 109) && tag != 'input' && tag != 'textarea')
                                 scope.setTimeMark();
                         });
                     },
@@ -213,6 +214,9 @@
                             songControl.stop();
                             scope.drawWaveform();
                             scope.updateLineMarker();
+                        });
+                        $('#ex1-mark').on('click', function(){
+                            scope.setTimeMark();
                         });
 
                     },
