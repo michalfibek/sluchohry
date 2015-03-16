@@ -15,7 +15,7 @@ $container = require __DIR__ . '/../app/bootstrap.php';
 $manager = $container->getByType('App\Model\UserManager');
 
 try {
-	$manager->add($name, $password);
+	$manager->add($user, $password);
 	echo "User $user was added.\n";
 
 } catch (App\Model\DuplicateNameException $e) {
