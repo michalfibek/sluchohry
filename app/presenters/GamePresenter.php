@@ -13,6 +13,7 @@ class GamePresenter extends BasePresenter
 	private $database;
 	private $songCur;
 	private $splitDuration;
+	private $songMarkers;
 	protected $splitCount = 8;
 	protected $shuffledOrder;
 
@@ -21,17 +22,27 @@ class GamePresenter extends BasePresenter
 		$this->database = $database;
 	}
 
-	public function actionMelodicCubes()
+	public function actionMelodicCubes($id = null)
 	{
-		// select existing song, while loop is for conditions where some songs were removed from db
-		while (!$this->songCur) {
-			$songCount = $this->database->table('song')->count("*");
-			$randSongId = rand(1,$songCount);
-			$this->songCur = $this->database->table('song')->get($randSongId);
+		if (isset($id)) {
+			$this->songCur = $this->database->table('song')->get($id);
+		} else {
+			// select randomly existing song, while loop is for conditions where some songs were removed from db
+			while (!$this->songCur) {
+				$songCount = $this->database->table('song')->count("*");
+				$randSongId = rand(1,$songCount);
+				$this->songCur = $this->database->table('song')->get($randSongId);
+			}
 		}
-		$this->splitDuration = $this->songCur->duration/$this->splitCount;
-		$this->shuffledOrder = range(1,$this->splitCount);
-		shuffle($this->shuffledOrder);
+		$this->songMarkers = $this->songCur->related('marker');
+		// if there's no song markers' definition, split song randomly
+		if (!$this->songMarkers)
+		{
+			$this->splitDuration = $this->songCur->duration/$this->splitCount;
+			$this->shuffledOrder = range(1,$this->splitCount);
+			shuffle($this->shuffledOrder);
+
+		}
 	}
 
 	public function renderDefault()
@@ -49,6 +60,7 @@ class GamePresenter extends BasePresenter
 		$this->template->splitCount = $this->splitCount;
 		$this->template->splitDuration = $this->splitDuration;
 		$this->template->shuffledOrder = $this->shuffledOrder;
+		$this->template->songMarkers = $this->songMarkers->fetchPairs(null, 'timecode');
 	}
 
 }

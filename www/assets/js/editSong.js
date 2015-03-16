@@ -110,7 +110,7 @@ var Song = $class({
     updateLineMarker: function() {
         for (var i = 0; i < markerList.length; i++) {
             var x = markerList[i]*markerOffset;
-            scope.lineDraw(x, 0, x, canvas.height, '#00ff00');
+            scope.lineDraw(x, 0, x, canvas.height, '#ff0000');
         }
     },
 
@@ -127,14 +127,14 @@ var Song = $class({
             x = e.clientX - r.left,
             y = e.clientY - r.top;
         scope.drawWaveform();
-        scope.lineDraw(x, 0, x, canvas.height, '#ff5555');
+        scope.lineDraw(x, 0, x, canvas.height, '#ff0000');
     },
 
     lineDraw: function(x1, y1, x2, y2, color) {
         ctx.beginPath();
 //                        ctx.moveTo(x1, y1);
 //                        ctx.lineTo(x2, y2);
-        ctx.rect(x1, y1, 2, y2);
+        ctx.rect(x1, y1, 1, y2);
         ctx.fillStyle = color;
         ctx.fill();
         ctx.strokeStyle = color;
@@ -160,6 +160,7 @@ var Song = $class({
             return val + curTime; // in milliseconds
         });
         $('#time-markers').append('<a href="#" id="mark-' + curTime + '" title="delete marker" class="marker">' + curTime/1000 + '</a>');
+        $('#markers-updated').val('true');
     },
 
     delTimeMarker: function(timecode) {
@@ -177,6 +178,7 @@ var Song = $class({
         $('#mark-' + timecode).remove();
         scope.drawWaveform();
         scope.updateLineMarker();
+        $('#markers-updated').val('true');
 
     },
 

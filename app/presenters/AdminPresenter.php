@@ -45,6 +45,8 @@ class AdminPresenter extends BasePresenter
 		$form->addSelect('genre_id')
 			->setItems($this->genreList->fetchPairs('id', 'name'));
 		$form->addHidden('songId');
+		$form->addHidden('markersUpdated')
+			->setValue('false');
 		$markers = $form->addHidden('markers');
 		if ($this->songMarkers) {
 			$markers->setValue(implode(',', $this->songMarkers->fetchPairs('id', 'timecode')));
@@ -64,8 +66,9 @@ class AdminPresenter extends BasePresenter
 		$songId = (strlen($values->songId) > 0) ? $values->songId : $songId = $this->getParameter('id');
 		try {
 			unset($values->songId);
-			$updateMarkers = ($values->markers != 0) ? explode(',',$values->markers) : null;
+			$updateMarkers = ($values->markers != 0 && $values->markersUpdated == 'true') ? explode(',',$values->markers) : null;
 			unset($values->markers);
+			unset($values->markersUpdated);
 			$values['update_time'] = new Nette\Utils\DateTime;
 
 			$song = $this->database->table('song')->get($songId);
@@ -99,6 +102,11 @@ class AdminPresenter extends BasePresenter
 		try {
 			Nette\Utils\FileSystem::delete($this->songBaseDir . $song->filename . '.' . $this->songDefaultFormat);
 			$song->delete();
+
+			// delete old markers
+			foreach ($song->related('marker') as $singleMarker) {
+				$singleMarker->delete();
+			}
 		} catch (\Exception $e) {
 			Debugger::log($e->getMessage());
 		}
