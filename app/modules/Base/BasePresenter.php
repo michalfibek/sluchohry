@@ -1,5 +1,5 @@
 <?php
-namespace App\Presenters;
+namespace App\Module\Base\Presenters;
 
 use Nette,
 	App\Model;

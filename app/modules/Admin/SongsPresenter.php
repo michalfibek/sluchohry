@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenters;
+namespace App\Module\Admin\Presenters;
 
 use Nette,
 	App\Model,
@@ -11,7 +11,7 @@ use Tracy\Debugger;
 /**
  * Sign in/out presenters.
  */
-class AdminPresenter extends BasePresenter
+class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @var Nette\Database\Context */
 	private $database;
@@ -49,7 +49,7 @@ class AdminPresenter extends BasePresenter
 //					$this->flashMessage("You are not logged.", "error");
 //				}
 //			}
-			$this->redirect("Homepage");
+			$this->redirect(":Front:Default:");
 		}
 	}
 
@@ -131,40 +131,32 @@ class AdminPresenter extends BasePresenter
 		$this->redirect('songs');
 	}
 
-	public function actionSetRole($userId, $roleName)
-	{
-		$this->addRole('guest');
-		$this->getUser()->logout();
-		$this->flashMessage('The role has been successfully set.', 'success');
-		$this->redirect('Homepage:');
-	}
-
-	public function actionSongs()
+	public function actionList()
 	{
 		$this->songList = $this->database->table('song')
 			->order('create_time DESC');
 	}
 
-	public function	renderSongs()
+	public function	renderList()
 	{
 		$this->template->songList = $this->songList;
 	}
 
-	public function actionEditSong($id = null)
+	public function actionEdit($id = null)
 	{
 		if (isset($id)) {
 			$this->song = $this->database->table('song')->get($id);
 //			$this->genreList = $this->song->related('genre');
 			if (!$this->song) {
 				$this->flashMessage('Sorry, this song was not found.', 'error');
-				$this->redirect('Admin:');
+				$this->redirect(':Admin:Default:');
 			}
 			$this->songMarkers = $this->song->related('marker')->order('timecode ASC');
 		}
 		$this->genreList = $this->database->table('genre'); // fetch genre list for form
 	}
 
-	public function	renderEditSong()
+	public function	renderEdit()
 	{
 		if (isset($this->song)) {
 			$this->template->song = $this->song;

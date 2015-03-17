@@ -1,5 +1,5 @@
 <?php
-namespace App\Presenters;
+namespace App\Module\Front\Presenters;
 
 use Nette,
 	App\Model;
@@ -7,7 +7,7 @@ use Nette,
 /**
  * Homepage presenter.
  */
-class GamePresenter extends BasePresenter
+class GamePresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @var Nette\Database\Context */
 	private $database;

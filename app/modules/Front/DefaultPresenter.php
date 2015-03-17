@@ -1,5 +1,5 @@
 <?php
-namespace App\Presenters;
+namespace App\Module\Front\Presenters;
 
 use Nette,
 	App\Model;
@@ -7,7 +7,7 @@ use Nette,
 /**
  * Homepage presenter.
  */
-class HomepagePresenter extends BasePresenter
+class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @var Nette\Database\Context */
     private $database;
@@ -45,7 +45,7 @@ class HomepagePresenter extends BasePresenter
 
         try {
             $this->getUser()->login($values->username, $values->password);
-            $this->redirect('Homepage:');
+            $this->redirect('Default:');
 
         } catch (Nette\Security\AuthenticationException $e) {
             $form->addError($e->getMessage());
@@ -57,7 +57,7 @@ class HomepagePresenter extends BasePresenter
     {
         $this->getUser()->logout();
         $this->flashMessage('You have been signed out.');
-        $this->redirect('Homepage:');
+        $this->redirect('Default:');
     }
 
     public function __construct(Nette\Database\Context $database)

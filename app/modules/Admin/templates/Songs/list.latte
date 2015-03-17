@@ -1,0 +1,16 @@
+{block content}
+
+<h1 n:block="title">Song editor</h1>
+
+<div class="upload-new"><a n:href="edit">Upload new song</a></div>
+
+<ul id="song-edit-list">
+{foreach $songList as $song}
+    <li>
+        <a n:href="edit $song->id">{if mb_strlen($song->artist) > 0}{$song->artist} - {/if}{$song->title} ({$song->duration|songTime})</a>
+    </li>
+{/foreach}
+</ul>
+
+{/block}
+

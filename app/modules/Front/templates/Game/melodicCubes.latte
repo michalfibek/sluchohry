@@ -58,9 +58,8 @@
                  * Define array of current play cubes' order on page
                  */
                 for (var i = 0; i < songMarkers.length; i++) {
-                    cubeBank[i] = 'part{$shuffledOrder[$i]}';
+                    cubeBank[i] = 'part'+shuffledOrder[$i];
                 }
-                {/for}
 
                 /**
                  * Define all clickable buttons
