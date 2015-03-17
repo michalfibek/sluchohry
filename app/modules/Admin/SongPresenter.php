@@ -11,10 +11,8 @@ use Tracy\Debugger;
 /**
  * Sign in/out presenters.
  */
-class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
+class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
-	/** @var Nette\Database\Context */
-	private $database;
 	private $songList;
 	private $song;
 	private $songMarkers;
@@ -22,11 +20,12 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 	private $songBaseDir;
 	private $songDefaultFormat;
 
-	public function __construct(Nette\Database\Context $database)
+	/** @var Model\SongStorage */
+	private $songStorage;
+
+	public function __construct(Model\SongStorage $songStorage)
 	{
-		$this->database = $database;
-		$this->songBaseDir = $_SERVER['DOCUMENT_ROOT'] . '/assets/sounds/songs/';
-		$this->songDefaultFormat = 'mp3';
+		$this->songStorage = $songStorage;
 	}
 
 	protected function startup()
@@ -131,13 +130,13 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->redirect('songs');
 	}
 
-	public function actionList()
+	public function actionDefault()
 	{
 		$this->songList = $this->database->table('song')
 			->order('create_time DESC');
 	}
 
-	public function	renderList()
+	public function	renderDefault()
 	{
 		$this->template->songList = $this->songList;
 	}

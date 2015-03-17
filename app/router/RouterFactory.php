@@ -20,7 +20,7 @@ class RouterFactory
 	public static function createRouter()
 	{
 		$router = new RouteList();
-		
+
 		$router[] = new Route('index.php', 'Front:Default:default', Route::ONE_WAY);
 
 		$router[] = $adminRouter = new RouteList('Admin');
