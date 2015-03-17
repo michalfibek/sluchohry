@@ -57,8 +57,9 @@
                 /**
                  * Define array of current play cubes' order on page
                  */
-                {for $i = 0; $i < $splitCount; $i++}
-                cubeBank[{$i}] = 'part{$shuffledOrder[$i]}';
+                for (var i = 0; i < songMarkers.length; i++) {
+                    cubeBank[i] = 'part{$shuffledOrder[$i]}';
+                }
                 {/for}
 
                 /**

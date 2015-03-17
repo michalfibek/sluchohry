@@ -31,9 +31,26 @@ class AdminPresenter extends BasePresenter
 
 	protected function startup()
 	{
-		// TODO autorizovat korektne uzivatele podle urovne opravneni! + ukladat request pro aktualni stranku a vracet zpet pri prihlaseni
 		parent::startup();
-		if(!$this->user->loggedIn) $this->redirect('Homepage:');
+
+		// TODO autorizovat korektne uzivatele podle urovne opravneni! + ukladat request pro aktualni stranku a vracet zpet pri prihlaseni
+		/* user authorization */
+		if ($this->user->isLoggedIn()) {
+//			if (!$this->user->isAllowed($this->name, $this->action)) { // check if user is allowed
+//				$this->flashMessage("You are not allowed for this module.", "error");
+//				$this->redirect("Homepage");
+//			}
+		} else {
+//		} else if ($this->action != "login") {
+//			if ($this->action != "default") {
+//				if ($this->user->getLogoutReason() === User::INACTIVITY) {
+//					$this->flashMessage("You have been logged out due to inactivity.");
+//				} else {
+//					$this->flashMessage("You are not logged.", "error");
+//				}
+//			}
+			$this->redirect("Homepage");
+		}
 	}
 
 	protected function createComponentSongEditForm()
