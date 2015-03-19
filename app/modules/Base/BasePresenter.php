@@ -3,13 +3,14 @@ namespace App\Module\Base\Presenters;
 
 use Nette,
 	App\Model;
-
+use Tracy\Debugger;
 
 /**
  * Base presenter for all application presenters.
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+
 	protected function createTemplate($class = NULL)
 	{
 		$template = parent::createTemplate($class);

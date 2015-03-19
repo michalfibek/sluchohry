@@ -3,6 +3,7 @@ namespace App\Module\Front\Presenters;
 
 use Nette,
 	App\Model;
+use Tracy\Debugger;
 
 /**
  * Homepage presenter.
@@ -52,7 +53,6 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
         }
     }
 
-
     public function actionSignOut()
     {
         $this->getUser()->logout();
@@ -70,6 +70,8 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 		// $this->template->posts = $this->database->table('posts')
 		// 	->order('created_at DESC')
 		// 	->limit(5);
+        Debugger::barDump($this);
+
 	}
 
 }

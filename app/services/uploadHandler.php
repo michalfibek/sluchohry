@@ -1,13 +1,11 @@
 <?php
 
-/**
- * Do not use or reference this directly from your client-side code.
- * Instead, this should be required via the endpoint.php or endpoint-cors.php
- * file(s).
- *
- * source: https://github.com/FineUploader/server-examples/blob/master/php/traditional/handler.php
- */
+namespace App\Services;
 
+/**
+ * Upload handler for FineUploader JS form.
+ * http://fineuploader.com/
+ */
 class UploadHandler {
 
     public $allowedExtensions = array();

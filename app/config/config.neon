@@ -3,8 +3,9 @@
 # http://nette.org/security-warning
 #
 parameters:
-	songDir: www/assets/sounds/songs/
-	uploadDir: uploads/
+	song:
+		saveDir: %wwwDir%/assets/sounds/songs/
+		uploadDir: %appDir%/../uploads/
 
 php:
 	date.timezone: Europe/Prague
@@ -20,6 +21,10 @@ session:
 
 
 services:
-	- App\Model\UserManager
-	- App\Model\SongStorage
 	router: App\RouterFactory::createRouter
+	- App\Model\UserManager
+	- App\Model\SongStorage(%song.uploadDir%, %song.saveDir%)
+	- App\Services\UploadHandler
+	- App\Services\SongTagHandler
+	- \getID3
+
