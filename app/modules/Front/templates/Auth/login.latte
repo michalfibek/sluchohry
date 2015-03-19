@@ -1,0 +1,10 @@
+{block content}
+
+<h1 n:block="title">Sluchohry</h1>
+
+{if !$user->loggedIn}
+{control loginForm}
+{else}
+<div class="user-info">Currently logged: {$user->identity->realname}. <a n:href="logout">Logout</a></div>
+
+{/if}

@@ -19,14 +19,16 @@ class AuthorizatorFactory
 		$permission->addRole('editor', 'teacher');
 		$permission->addRole('admin', 'editor');
 
-		$permission->addResource(':Front:');
-		$permission->addResource(':Admin:Default');
-		$permission->addResource(':Admin:Song');
-		$permission->addResource(':Admin:User');
+		$permission->addResource('Front:Default');
+		$permission->addResource('Front:Game');
 
-		$permission->allow('student', array(':Front:'));
+		$permission->addResource('Admin:Default');
+		$permission->addResource('Admin:Song');
+		$permission->addResource('Admin:User');
 
-		$permission->allow('editor', array(':Admin:Default', ':Admin:Song', ':Admin:User'));
+		$permission->allow('student', array('Front:Default', 'Front:Game'));
+
+		$permission->allow('editor', array('Admin:Default', 'Admin:Song', 'Admin:User'));
 
 		$permission->allow('admin', Permission::ALL, Permission::ALL);
 

@@ -10,7 +10,7 @@
 <ul id="user-list">
 {foreach $users as $user}
     <li>
-        <a n:href="edit $user->id">{$user->username}{ifset $user->realname} ({$user->realname}){/ifset}</a>
+        <a n:href="edit $user->id">{$user->username}{if strlen($user->realname)>0} ({$user->realname}){/if}</a>
         <a n:href="delete $user->id" class="delete-item"><span class="fa fa-remove"></span> delete</a>
     </li>
 {/foreach}

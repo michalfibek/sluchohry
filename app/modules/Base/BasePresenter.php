@@ -11,6 +11,29 @@ use Tracy\Debugger;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 
+	protected function startup()
+	{
+		parent::startup();
+
+		if (!in_array($this->name, array('Front:Default', 'Front:Auth'))) {
+			if (!$this->user->isLoggedIn()) {
+				if ($this->user->getLogoutReason() === User::INACTIVITY) {
+					$this->flashMessage('Session timeout, you have been logged out');
+				}
+
+				$this->redirect(':Front:Default', array(
+					'backlink' => $this->storeRequest()
+				));
+
+			} else {
+				if (!$this->user->isAllowed($this->name, $this->action)) {
+					$this->flashMessage('Access denied', 'error');
+					$this->redirect(':Front:Auth:login');
+				}
+			}
+		}
+	}
+
 	protected function createTemplate($class = NULL)
 	{
 		$template = parent::createTemplate($class);
@@ -19,7 +42,6 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		});
 		return $template;
 	}
-
 
 	/**
 	 * @param $inputTime input time in whole milliseconds
