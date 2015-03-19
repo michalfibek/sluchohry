@@ -27,11 +27,20 @@ form {
   #button-delete {
     float: left;
   }
-  #button-update {
+  #button-update, #button-save {
     float: right;
   }
   .main-buttons {
     margin-top: 50px;
+  }
+  .pw-generated {
+    background-color: #ffee88;
+  }
+  .pw-match {
+    background-color: #87ff87;
+  }
+  #password-area {
+    margin: 50px 0 0 0;
   }
 }
 
@@ -94,9 +103,6 @@ ADMIN: applies only to admin presenter
       max-width: 100%;
     }
     a.marker {
-//      .label();
-//      .label-default();
-//      margin-right: 5px;
       float: left;
       display: inline;
       padding: 0.3em .6em .3em;
@@ -115,6 +121,31 @@ ADMIN: applies only to admin presenter
       background-color: #ff0000;
       text-decoration: none;
       transition: all 0.2s ease-in-out
+    }
+  }
+  #admin-item-editor {
+    .upload-new {
+      font-size: 1.6em;
+    }
+    ul {
+      list-style: none;
+      margin: 20px 0 20px 0;
+      padding: 0;
+
+      li {
+        margin: 5px 0;
+      }
+
+      .delete-item {
+        margin-left: 20px;
+        color: #ff0000;
+      }
+
+      .delete-item:hover {
+        text-decoration: none;
+        border-bottom: 1px solid;
+      }
+
     }
   }
 }

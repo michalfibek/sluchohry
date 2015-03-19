@@ -92,8 +92,12 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function songDeleteClicked()
 	{
-		$songId = $this->getParameter('id');
-		$this->songStorage->deleteSong($songId);
+		$this->actionDelete($this->getParameter('id'));
+	}
+
+	public function actionDelete($id)
+	{
+		$this->songStorage->deleteSong($id);
 
 		$this->flashMessage("Song has been deleted.", 'success');
 		$this->redirect('default');

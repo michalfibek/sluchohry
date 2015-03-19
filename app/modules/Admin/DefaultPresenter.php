@@ -47,16 +47,8 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 //					$this->flashMessage("You are not logged.", "error");
 //				}
 //			}
-			$this->redirect("Homepage");
+			$this->redirect(":Front:Default:");
 		}
-	}
-
-	public function actionSetRole($userId, $roleName)
-	{
-		$this->addRole('guest');
-		$this->getUser()->logout();
-		$this->flashMessage('The role has been successfully set.', 'success');
-		$this->redirect('Homepage:');
 	}
 
 }

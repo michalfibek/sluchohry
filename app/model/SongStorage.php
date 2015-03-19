@@ -9,6 +9,11 @@ use Nette,
  */
 class SongStorage extends Nette\Object
 {
+    const
+        TABLE_NAME_SONG = 'song',
+        TABLE_NAME_MARKER = 'marker',
+        TABLE_NAME_GENRE = 'genre';
+
     /** @var Nette\Database\Context */
     private $database;
     /** @var Services\UploadHandler */
@@ -45,23 +50,23 @@ class SongStorage extends Nette\Object
     /** @return Nette\Database\Table\Selection */
     public function getSongAll()
     {
-        return $this->database->table('song')
+        return $this->database->table(self::TABLE_NAME_SONG)
             ->order('create_time DESC');
     }
 
     public function getSongById($songId)
     {
-        return $this->database->table('song')->get($songId);
+        return $this->database->table(self::TABLE_NAME_SONG)->get($songId);
     }
 
     public function getMarkers($songId)
     {
-        return $this->database->table('song')->get($songId)->related('marker')->order('timecode ASC');
+        return $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC');
     }
 
     public function getGenres($songId)
     {
-        return $this->database->table('genre');
+        return $this->database->table(self::TABLE_NAME_GENRE);
     }
 
     public function handleUpload()
@@ -74,7 +79,7 @@ class SongStorage extends Nette\Object
     {
         try {
             $values['update_time'] = new Nette\Utils\DateTime;
-            $song = $this->database->table('song')->get($songId);
+            $song = $this->database->table(self::TABLE_NAME_SONG)->get($songId);
             $song->update($values);
         } catch (\Exception $e) {
             Debugger::log($e->getMessage());
@@ -89,7 +94,7 @@ class SongStorage extends Nette\Object
 
         // insert new markers
         foreach ($markers as $singleMarker) {
-            $this->database->table('marker')->insert( array(
+            $this->database->table(self::TABLE_NAME_MARKER)->insert( array(
                 'song_id' => $songId,
                 'timecode' => $singleMarker
             ));
@@ -141,7 +146,7 @@ class SongStorage extends Nette\Object
 
     public function deleteSong($songId)
     {
-        $song = $this->database->table('song')->get($songId);
+        $song = $this->database->table(self::TABLE_NAME_SONG)->get($songId);
         try {
             // delete song file
             Nette\Utils\FileSystem::delete($this->saveDir . $song->filename . '.' . $this->songDefaultExtension);
@@ -159,7 +164,7 @@ class SongStorage extends Nette\Object
 
     public function deleteMarkers($songId)
     {
-        $markers = $this->database->table('song')->get($songId)->related('marker');
+        $markers = $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER);
         foreach ($markers as $singleMarker) {
             $singleMarker->delete();
         }
@@ -167,7 +172,7 @@ class SongStorage extends Nette\Object
 
     private function insertSong($row)
     {
-        return $this->database->table('song')->insert($row);
+        return $this->database->table(self::TABLE_NAME_SONG)->insert($row);
     }
 
 

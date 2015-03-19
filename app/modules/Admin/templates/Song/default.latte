@@ -1,16 +1,20 @@
 {block content}
+<div id="admin-item-editor">
 
+<header>
 <h1 n:block="title">Song editor</h1>
+</header>
 
-<div class="upload-new"><a n:href="edit">Upload new song</a></div>
+<a n:href="edit" class="btn btn-primary upload-new"><span class="fa fa-upload"></span> Upload new song</a>
 
-<ul id="song-edit-list">
+<ul id="song-list">
 {foreach $songList as $song}
     <li>
         <a n:href="edit $song->id">{if mb_strlen($song->artist) > 0}{$song->artist} - {/if}{$song->title} ({$song->duration|songTime})</a>
+        <a n:href="delete $song->id" class="delete-item"><span class="fa fa-remove"></span> delete</a>
     </li>
 {/foreach}
 </ul>
 
+</div>
 {/block}
-

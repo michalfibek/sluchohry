@@ -22,8 +22,14 @@ session:
 
 services:
 	router: App\RouterFactory::createRouter
-	- App\Model\UserManager
+	authenticator: App\Model\UserAuthenticator
+
+	app.authorizatorFactory: App\Model\AuthorizatorFactory
+	app.authorizator: @app.authorizatorFactory::create
+
 	- App\Model\SongStorage(%song.uploadDir%, %song.saveDir%)
+	- App\Model\User
+
 	- App\Services\UploadHandler
 	- App\Services\SongTagHandler
 	- \getID3

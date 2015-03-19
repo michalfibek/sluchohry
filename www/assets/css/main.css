@@ -6485,11 +6485,21 @@ header {
 form #button-delete {
   float: left;
 }
-form #button-update {
+form #button-update,
+form #button-save {
   float: right;
 }
 form .main-buttons {
   margin-top: 50px;
+}
+form .pw-generated {
+  background-color: #ffee88;
+}
+form .pw-match {
+  background-color: #87ff87;
+}
+form #password-area {
+  margin: 50px 0 0 0;
 }
 div.flash {
   padding: 15px;
@@ -6635,6 +6645,25 @@ ADMIN: applies only to admin presenter
   text-decoration: none;
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
+}
+.container.admin #admin-item-editor .upload-new {
+  font-size: 1.6em;
+}
+.container.admin #admin-item-editor ul {
+  list-style: none;
+  margin: 20px 0 20px 0;
+  padding: 0;
+}
+.container.admin #admin-item-editor ul li {
+  margin: 5px 0;
+}
+.container.admin #admin-item-editor ul .delete-item {
+  margin-left: 20px;
+  color: #ff0000;
+}
+.container.admin #admin-item-editor ul .delete-item:hover {
+  text-decoration: none;
+  border-bottom: 1px solid;
 }
 /*
 CSS3 animations

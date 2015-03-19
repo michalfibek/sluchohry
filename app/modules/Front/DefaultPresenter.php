@@ -10,9 +10,6 @@ use Tracy\Debugger;
  */
 class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
-	/** @var Nette\Database\Context */
-    private $database;
-
     /**
      * Sign-in form factory.
      * @return Nette\Application\UI\Form
@@ -46,7 +43,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
         try {
             $this->getUser()->login($values->username, $values->password);
-            $this->redirect('Default:');
+            $this->redirect('this');
 
         } catch (Nette\Security\AuthenticationException $e) {
             $form->addError($e->getMessage());
@@ -60,18 +57,11 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
         $this->redirect('Default:');
     }
 
-    public function __construct(Nette\Database\Context $database)
-    {
-        $this->database = $database;
-    }
-
 	public function renderDefault()
 	{
 		// $this->template->posts = $this->database->table('posts')
 		// 	->order('created_at DESC')
 		// 	->limit(5);
-        Debugger::barDump($this);
-
 	}
 
 }
