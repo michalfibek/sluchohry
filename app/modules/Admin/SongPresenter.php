@@ -87,7 +87,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		if ($updateMarkers != null) $this->songStorage->updateMarkers($songId, $updateMarkers); // if markers were set by the form, delete old and insert new
 
 		$this->flashMessage("Song description been successfully updated.", 'success');
-		$this->redirect('this');
+		$this->redirect('default');
 	}
 
 	public function songDeleteClicked()
@@ -122,7 +122,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 				$this->flashMessage('Sorry, this song was not found.', 'error');
 				$this->redirect('default');
 			}
-			$this->songMarkers = $this->songStorage->getMarkers($id);
+			$this->songMarkers = $this->songStorage->getMarkersAll($id);
 		}
 		$this->genreList = $this->songStorage->getGenres($id); // fetch genre list for form
 	}

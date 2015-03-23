@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Nette,
     App\Services;
+use Tracy\Debugger;
 
 /**
  * Manipulate with song files.
@@ -59,9 +60,39 @@ class SongStorage extends Nette\Object
         return $this->database->table(self::TABLE_NAME_SONG)->get($songId);
     }
 
-    public function getMarkers($songId)
+    public function getSongRandom()
+    {
+        $songsAll = $this->database->table(self::TABLE_NAME_SONG)->fetchAll();
+        $key = array_rand($songsAll);
+        return $songsAll[$key];
+    }
+
+    public function getMarkersAll($songId)
     {
         return $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC');
+    }
+
+    /**
+     * @param $songId
+     * @param $cubeCount Count of splits
+     * @return array Associative array of markers -> eg. array(0 => 3491, 1 => 5979, 2 => 14291)
+     */
+    public function getCubeMarkersByCount($songId, $cubeCount)
+    {
+        $markersAll = $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC')->fetchAll();
+        $randKeys = array_rand($markersAll, $cubeCount);
+
+        $markers[] = array(0, $markersAll[$randKeys[0]]->timecode);
+
+        for ($i = 0; $i < $cubeCount-1; $i++)
+        {
+            $inPoint = $markersAll[$randKeys[$i]]->timecode;
+            $outPoint = $markersAll[$randKeys[$i+1]]->timecode - $markersAll[$randKeys[$i]]->timecode;
+            $markers[] = array($inPoint, $outPoint);
+        }
+        $markers[] = array($markersAll[$randKeys[$cubeCount-1]]->timecode, $this->getSongById($songId)->duration - $markersAll[$randKeys[$cubeCount-1]]->timecode);
+
+        return $markers;
     }
 
     public function getGenres($songId)

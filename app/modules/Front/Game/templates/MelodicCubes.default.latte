@@ -13,7 +13,7 @@
 
     <div class="container-fluid">
         <div class="row" id="play-cubes">
-            {for $i = 0; $i< $splitCount; $i++}
+            {for $i = 0; $i < count($markers); $i++}
             <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}">Play {$shuffledOrder[$i]}</button></div>
             {/for}
         </div>
@@ -39,9 +39,11 @@
                     song1,
                     songCubesChain,
                     arrayMove,
-                    cubesOrder,
                     playChain,
-                    songMarkers = {$songMarkers},
+                    songSource = {$song},
+                    songUrl = '/assets/sounds/songs/{$song->filename|noescape}.mp3';
+                    markers = {$markers},
+                    shuffledOrder = {$shuffledOrder},
                     stopPlay = false;
 
                 /**
@@ -57,17 +59,17 @@
                 /**
                  * Define array of current play cubes' order on page
                  */
-                for (var i = 0; i < songMarkers.length; i++) {
-                    cubeBank[i] = 'part'+shuffledOrder[$i];
-                }
+                {for $i = 0; $i < count($markers); $i++}
+                    cubeBank[{$i}] = 'part{$shuffledOrder[$i]}';
+                {/for}
 
                 /**
                  * Define all clickable buttons
                  */
-                {for $i = 0; $i < $splitCount; $i++}
-                $('#song-part{$i+1}').on('click', function(){
+                {for $i = 0; $i < count($markers); $i++}
+                $('#song-part{$i}').on('click', function(){
                     $('[id^=song').parent().removeClass('cube-highlight');
-                    song1.stop().play('part{$i+1}');
+                    song1.stop().play('part{$i}');
                     $(this).parent().addClass('cube-highlight');
                 });
                 {/for}
@@ -89,10 +91,10 @@
                 });
 
                 song1 = new Howl({
-                    src: ['/assets/sounds/songs/{$song->filename|noescape}.mp3'],
+                    src: songUrl,
                     sprite: {
-                        {for $i = 0; $i< $splitCount; $i++}
-                        part{$i+1}: [{$i*$splitDuration}, {$splitDuration}],
+                        {for $i = 0; $i < count($markers); $i++}
+                        part{$i}: [{$markers[$i][0]}, {$markers[$i][1]}],
                         {/for}
                         complete: [0, {$song->duration}]
                     },
@@ -115,17 +117,17 @@
                             stopPlay = false;
                             fn();
                         },
-                    {for $i = 0; $i < $splitCount; $i++}
+                    {for $i = 0; $i < count($markers); $i++}
                         function(fn) {
                             if (stopPlay == false) {
                                 {if $i != 0}
-                                    $('#song-'+cubeBank[{$i-1}]).parent().removeClass('cube-highlight');
+                                    $('#song-' + cubeBank[{$i-1}]).parent().removeClass('cube-highlight');
                                 {/if}
                                 song1.play(cubeBank[{$i}]);
                                 $('#song-'+cubeBank[{$i}]).parent().addClass('cube-highlight');
-                                setTimeout(fn, {$splitDuration});
+                                setTimeout(fn, {$markers[$i][1]});
                             };
-                        }{if $i+1 != $splitCount},{/if}
+                        }{if $i+1 != count($markers)},{/if}
                     {/for}
                 ];
 

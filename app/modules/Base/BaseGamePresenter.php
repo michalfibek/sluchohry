@@ -7,10 +7,26 @@ abstract class BaseGamePresenter extends BasePresenter {
 
     protected $difficulty;
     protected $gameAssets;
+    public $onStart = array();
+    public $onEnd = array();
+    public $onForceEnd = array();
 
-    abstract protected function getAssets();
-    abstract protected function onStart();
-    abstract protected function onEnd();
-    abstract protected function onForceEnd();
+    abstract protected function getAssetsById($id);
+    abstract protected function getAssetsRandom();
+
+    protected function handleForceEnd()
+    {
+        $this->onForceEnd($this);
+    }
+
+    public function renderDefault()
+    {
+        $this->onStart($this);
+    }
+
+    public function actionEvaluate()
+    {
+        $this->onEnd($this);
+    }
 
 }

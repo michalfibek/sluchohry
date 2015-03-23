@@ -8,8 +8,8 @@
 	<div class="user-info">Currently logged: {$user->identity->username}. <a n:href="Auth:logout">Logout</a></div>
 
 	<h2>Games</h2>
-	<a n:href="Game:melodicCubes">Melodic cubes</a><br />
-	<a n:href="Game:pexeso">Pexeso</a>
+	<a n:href=":Front:Game:MelodicCubes:">Melodic cubes</a> - <a n:href=":Front:Game:MelodicCubes: 13">id 13</a><br />
+	<a n:href=":Front:Game:Pexeso:">Pexeso</a>
 
 {if $user->isAllowed('Admin:Default')}
 	<a n:href=":Admin:Default:"><h2>Administrator</h2></a>

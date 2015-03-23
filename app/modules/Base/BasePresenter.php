@@ -10,6 +10,7 @@ use Tracy\Debugger;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	public $onStartup = array();
 
 	protected function startup()
 	{
@@ -32,6 +33,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 				}
 			}
 		}
+		$this->onStartup($this);
+
 	}
 
 	protected function createTemplate($class = NULL)
