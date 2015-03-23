@@ -17,11 +17,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 		if (!in_array($this->name, array('Front:Default', 'Front:Auth'))) {
 			if (!$this->user->isLoggedIn()) {
-				if ($this->user->getLogoutReason() === User::INACTIVITY) {
+				if ($this->user->getLogoutReason() === Nette\Security\IUserStorage::INACTIVITY) {
 					$this->flashMessage('Session timeout, you have been logged out');
 				}
 
-				$this->redirect(':Front:Default', array(
+				$this->redirect(':Front:Default:', array(
 					'backlink' => $this->storeRequest()
 				));
 

@@ -17,6 +17,8 @@ class GamePresenter extends \App\Module\Base\Presenters\BasePresenter
 	protected $splitCount = 8;
 	protected $shuffledOrder;
 
+	public $onStart;
+
 	public function __construct(Nette\Database\Context $database)
 	{
 		$this->database = $database;
@@ -24,6 +26,7 @@ class GamePresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function actionMelodicCubes($id = null)
 	{
+		$this->onStart();
 		if (isset($id)) {
 			$this->songCur = $this->database->table('song')->get($id);
 		} else {

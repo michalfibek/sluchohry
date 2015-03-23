@@ -17,7 +17,8 @@
 	"require": {
 		"php": ">= 5.3.7",
 		"nette/nette": "~2.3.0",
-		"james-heinrich/getid3": "~1.9"
+		"james-heinrich/getid3": "~1.9",
+		"kdyby/events": "~2.3"
 	},
 	"require-dev": {
 		"nette/tester": "~1.3"

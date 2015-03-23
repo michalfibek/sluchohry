@@ -19,6 +19,11 @@ application:
 session:
 	expiration: 14 days
 
+extensions:
+    events: Kdyby\Events\DI\EventsExtension
+
+events:
+    debugger: on # off
 
 services:
 	router: App\RouterFactory::createRouter
@@ -27,10 +32,15 @@ services:
 	app.authorizatorFactory: App\Model\AuthorizatorFactory
 	app.authorizator: @app.authorizatorFactory::create
 
+	logger:
+		class: App\Model\UserListener
+		tags: [kdyby.subscriber]
+
 	- App\Model\SongStorage(%song.uploadDir%, %song.saveDir%)
 	- App\Model\User
 
 	- App\Services\UploadHandler
 	- App\Services\SongTagHandler
 	- \getID3
+
 
