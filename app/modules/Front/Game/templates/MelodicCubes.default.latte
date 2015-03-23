@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row" id="play-cubes">
             {for $i = 0; $i < count($markers); $i++}
-            <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}">Play {$shuffledOrder[$i]}</button></div>
+            <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">Play {$shuffledOrder[$i]}</button></div>
             {/for}
         </div>
     </div>
@@ -125,7 +125,7 @@
                                 {/if}
                                 song1.play(cubeBank[{$i}]);
                                 $('#song-'+cubeBank[{$i}]).parent().addClass('cube-highlight');
-                                setTimeout(fn, {$markers[$i][1]});
+                                setTimeout(fn, $('#song-'+cubeBank[{$i}]).data('duration')); // gets cube playtime from html5 data field
                             };
                         }{if $i+1 != count($markers)},{/if}
                     {/for}

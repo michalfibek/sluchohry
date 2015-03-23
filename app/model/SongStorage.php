@@ -82,6 +82,9 @@ class SongStorage extends Nette\Object
         $cubeSplits = ($cubeCount > 2) ? $cubeCount-1 : $cubeCount;
 
         $markersAll = $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC')->fetchAll();
+
+        if (count($markersAll) < $cubeSplits) $cubeSplits = count($markersAll);
+
         $randKeys = array_rand($markersAll, $cubeSplits);
 
         $markers[] = array(0, $markersAll[$randKeys[0]]->timecode);
