@@ -79,18 +79,24 @@ class SongStorage extends Nette\Object
      */
     public function getCubeMarkersByCount($songId, $cubeCount)
     {
+        $cubeSplits = ($cubeCount > 2) ? $cubeCount-1 : $cubeCount;
+
         $markersAll = $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC')->fetchAll();
-        $randKeys = array_rand($markersAll, $cubeCount);
+        $randKeys = array_rand($markersAll, $cubeSplits);
 
         $markers[] = array(0, $markersAll[$randKeys[0]]->timecode);
 
-        for ($i = 0; $i < $cubeCount-1; $i++)
+        if ($cubeSplits > 2)
         {
-            $inPoint = $markersAll[$randKeys[$i]]->timecode;
-            $outPoint = $markersAll[$randKeys[$i+1]]->timecode - $markersAll[$randKeys[$i]]->timecode;
-            $markers[] = array($inPoint, $outPoint);
+            for ($i = 0; $i < $cubeSplits-1; $i++)
+            {
+                $inPoint = $markersAll[$randKeys[$i]]->timecode;
+                $outPoint = $markersAll[$randKeys[$i+1]]->timecode - $markersAll[$randKeys[$i]]->timecode;
+                $markers[] = array($inPoint, $outPoint);
+            }
         }
-        $markers[] = array($markersAll[$randKeys[$cubeCount-1]]->timecode, $this->getSongById($songId)->duration - $markersAll[$randKeys[$cubeCount-1]]->timecode);
+
+        $markers[] = array($markersAll[$randKeys[$cubeSplits-1]]->timecode, $this->getSongById($songId)->duration - $markersAll[$randKeys[$cubeSplits-1]]->timecode);
 
         return $markers;
     }

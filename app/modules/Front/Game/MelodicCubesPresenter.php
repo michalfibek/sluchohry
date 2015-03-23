@@ -22,7 +22,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	public function __construct(Model\SongStorage $songStorage)
 	{
 		$this->songStorage = $songStorage;
-		$this->difficulty = 2; // TODO this is hardcoded, remove after difficulty implementation
+		$this->difficulty = 3; // TODO this is hardcoded, remove after difficulty implementation
 		switch ($this->difficulty)
 		{
 			case 1:
@@ -64,7 +64,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		$this->template->song = $this->gameAssets['song'];
 		$this->template->markers = $this->gameAssets['markers'];
 
-		$shuffledOrder = range(0, $this->cubeCount);
+		$shuffledOrder = range(0, count($this->gameAssets['markers'])-1);
 		shuffle($shuffledOrder);
 		$this->template->shuffledOrder = $shuffledOrder;
 
