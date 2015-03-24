@@ -12,9 +12,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	public function renderDefault()
 	{
-		// $this->template->posts = $this->database->table('posts')
-		// 	->order('created_at DESC')
-		// 	->limit(5);
+
 	}
 
 }

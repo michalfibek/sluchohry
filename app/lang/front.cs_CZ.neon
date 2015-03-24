@@ -1,0 +1,31 @@
+homepage:
+    sluchohry: "Sluchohry"
+    homepage: "Hlavní strana"
+    admin: "Administrator"
+
+auth:
+    currentlyLogged: "Právě přihlášený:"
+    login: "Přihlásit"
+    logout: "Odhlásit"
+
+    loginForm:
+        username: "Jméno:"
+        password: "Heslo:"
+        requiredUsername: "Zadej prosím svoje přihlašovací jméno."
+        requiredPassword: "Nezapomeň zadat heslo."
+        remember: "Přihlásit na pořád."
+        loginButton: "Přihlásit"
+
+    flash:
+        logout: "Byl jsi odhlášen."
+        sessionTimeout: "Vypršel čas přihlášení, byl jsi automaticky odhlášen."
+        accessDenied: "Tady ne! Přístup zamítnut."
+
+game:
+    games: "Hry"
+    melodicCubes: "Melodické kostky"
+    pexeso: "Pexeso"
+
+melodicCubes:
+    play: "Spusť"
+    stop: "Zastav"

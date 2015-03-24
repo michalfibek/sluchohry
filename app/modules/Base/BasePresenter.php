@@ -10,6 +10,11 @@ use Tracy\Debugger;
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	/** @persistent */
+	public $locale;
+
+	/** @var \Kdyby\Translation\Translator @inject */
+	public $translator;
 	public $onStartup = array();
 
 	protected function startup()
@@ -19,7 +24,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		if (!in_array($this->name, array('Front:Default', 'Front:Auth'))) {
 			if (!$this->user->isLoggedIn()) {
 				if ($this->user->getLogoutReason() === Nette\Security\IUserStorage::INACTIVITY) {
-					$this->flashMessage('Session timeout, you have been logged out');
+					$this->flashMessage('front.auth.flash.sessionTimeout');
 				}
 
 				$this->redirect(':Front:Default:', array(
@@ -28,7 +33,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 			} else {
 				if (!$this->user->isAllowed($this->name, $this->action)) {
-					$this->flashMessage('Access denied', 'error');
+					$this->flashMessage('front.auth.flash.accessDenied', 'error');
 					$this->redirect(':Front:Auth:login');
 				}
 			}

@@ -1,10 +1,10 @@
 {block content}
 
-<h1 n:block="title">Sluchohry</h1>
+<h1 n:block="title">{_front.homepage.sluchohry}</h1>
 
 {if !$user->loggedIn}
 {control loginForm}
 {else}
-<div class="user-info">Currently logged: {$user->identity->realname}. <a n:href="logout">Logout</a></div>
+<div class="user-info">{_front.auth.currentlyLogged} {$user->identity->realname}. <a n:href="logout">{_front.auth.logout}</a></div>
 
 {/if}

@@ -1,0 +1,7 @@
+4xx:
+    title: "Oops..."
+    message: "Your browser sent a request that this server could not understand or process."
+
+404:
+    title: "Page not found"
+    message: "Sorry, the page you requested could not be found. It is possible that the address is incorrect, or that the page no longer exists. Please use a search engine to find what you are looking for."

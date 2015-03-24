@@ -24,10 +24,10 @@ class RouterFactory
 		$router[] = new Route('index.php', 'Front:Default:default', Route::ONE_WAY);
 
 		$router[] = $adminRouter = new RouteList('Admin');
-		$adminRouter[] = new Route('admin/<presenter>/<action>[/<id>]', 'Default:default');
+		$adminRouter[] = new Route('[<locale=cs cs|en>/]admin/<presenter>/<action>[/<id>]', 'Default:default');
 
 		$router[] = $frontRouter = new RouteList('Front');
-		$frontRouter[] = new Route('<presenter>/<action>[/<id>]', 'Default:default');
+		$frontRouter[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]', 'Default:default');
 
 		return $router;
 	}

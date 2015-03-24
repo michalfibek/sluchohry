@@ -20,15 +20,16 @@ class AuthPresenter extends \App\Module\Base\Presenters\BasePresenter
     protected function createComponentLoginForm()
     {
         $form = new Nette\Application\UI\Form;
-        $form->addText('username', 'Username:')
-            ->setRequired('Please enter your username.');
+        $form->setTranslator($this->translator);
+        $form->addText('username', 'front.auth.loginForm.username')
+            ->setRequired('front.auth.loginForm.username');
 
-        $form->addPassword('password', 'Password:')
-            ->setRequired('Please enter your password.');
+        $form->addPassword('password', 'front.auth.loginForm.password')
+            ->setRequired('front.auth.loginForm.requiredPassword');
 
-        $form->addCheckbox('remember', 'Keep me logged in');
+        $form->addCheckbox('remember', 'front.auth.loginForm.remember');
 
-        $form->addSubmit('send', 'Login');
+        $form->addSubmit('send', 'front.auth.loginForm.loginButton');
 
         $form->onSuccess[] = array($this, 'processLoginForm');
         return $form;
@@ -56,15 +57,13 @@ class AuthPresenter extends \App\Module\Base\Presenters\BasePresenter
     public function actionLogout()
     {
         $this->getUser()->logout();
-        $this->flashMessage('You have been logged out.');
+        $this->flashMessage('front.auth.flash.logout');
         $this->redirect('Default:');
     }
 
 	public function renderDefault()
 	{
-		// $this->template->posts = $this->database->table('posts')
-		// 	->order('created_at DESC')
-		// 	->limit(5);
+
 	}
 
 }

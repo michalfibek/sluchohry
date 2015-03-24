@@ -8,7 +8,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>{ifset title}{include title|striptags} | {/ifset}Sluchohry</title>
+	<title>{ifset title}{include title|striptags} | {/ifset}{_front.homepage.sluchohry}</title>
 	{block styles}
 	{*<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">*}
 	<link rel="stylesheet" href="{$basePath}/assets/css/main.css">
@@ -20,10 +20,10 @@
 
 <body>
 
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{_$flash->message}</div>
 
 	<div class="container{ifCurrent :Admin:Default:*} admin{/ifCurrent}">
-		<a n:href=":Front:Default:">Home</a>{if $user->isAllowed('Admin:Default')} / <a n:href=":Admin:Default:">Admin</a>{/if}
+		<a n:href=":Front:Default:">{_front.homepage.homepage}</a>{if $user->isAllowed('Admin:Default')} / <a n:href=":Admin:Default:">{_front.homepage.admin}</a>{/if}
 		{include content}
 	</div>
 

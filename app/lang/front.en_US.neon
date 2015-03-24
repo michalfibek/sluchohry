@@ -1,0 +1,31 @@
+homepage:
+    sluchohry: "Eargames"
+    homepage: "Home"
+    admin: "Administrator"
+
+auth:
+    currentlyLogged: "Currently logged:"
+    login: "Login"
+    logout: "Logout"
+
+    loginForm:
+        username: "Username:"
+        password: "Password:"
+        requiredUsername: "Please enter your username."
+        requiredPassword: "Please enter your password."
+        remember: "Keep me logged in"
+        loginButton: "Login"
+
+    flash:
+        logout: "You have been logged out."
+        sessionTimeout: "Session timeout, you have been logged out"
+        accessDenied: "Access denied"
+
+game:
+    games: "Games"
+    melodicCubes: "Melodic Cubes"
+    pexeso: "Pexeso"
+
+melodicCubes:
+    play: "Play"
+    stop: "Stop"

@@ -21,9 +21,16 @@ session:
 
 extensions:
     events: Kdyby\Events\DI\EventsExtension
+    translation: Kdyby\Translation\DI\TranslationExtension
 
 events:
     debugger: on # off
+
+translation:
+    default: cs
+    fallback: [cs_CZ, cs]
+    whitelist: ['cs', 'en']
+
 
 services:
 	router: App\RouterFactory::createRouter

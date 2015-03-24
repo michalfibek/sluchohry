@@ -1,20 +1,24 @@
 {block content}
 
+{var $debug = false}
+
 <header>
-<h1 n:block="title">Melodic cubes <small>{$song->artist} - {$song->title}</small></h1>
+<h1 n:block="title">{_front.game.melodicCubes} <small>{$song->artist} - {$song->title}</small></h1>
 </header>
 
 <div class="game-main hidden">
-    <button type="button" class="btn btn-default" id="ex1-play-current"><span class="fa fa-play"></span> Play by given order</button>
-    <button type="button" class="btn btn-default" id="ex1-play-original">Play original</button>
+    <button type="button" class="btn btn-default btn-lg" id="ex1-play-current"><span class="fa fa-play"></span> {_front.melodicCubes.play}</button>
+    {if $debug}
+    <button type="button" class="btn btn-default" id="ex1-play-original">Play original</button> {* debug only *}
     <button type="button" class="btn btn-default" id="ex1-pause"><span class="fa fa-pause"></span> Pause</button>
-    <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> Stop</button>
+    {/if}
+    <button type="button" class="btn btn-default btn-lg" id="ex1-stop"><span class="fa fa-stop"></span> {_front.melodicCubes.stop}</button>
     <br />&nbsp;<br />
 
     <div class="container-fluid">
         <div class="row" id="play-cubes">
             {for $i = 0; $i < count($markers); $i++}
-            <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">Play {$shuffledOrder[$i]}</button></div>
+            <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">{if $debug}Play {$shuffledOrder[$i]}{/if}</button></div>
             {/for}
         </div>
     </div>

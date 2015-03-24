@@ -1,18 +1,18 @@
 {block content}
 
-<h1 n:block="title">Sluchohry</h1>
+<h1 n:block="title">{_front.homepage.sluchohry}</h1>
 
 {if !$user->loggedIn}
-<a n:href="Auth:login">Login</a></div>
+<a n:href="Auth:login">{_front.auth.login}</a></div>
 {else}
-	<div class="user-info">Currently logged: {$user->identity->username}. <a n:href="Auth:logout">Logout</a></div>
+	<div class="user-info">{_front.auth.currentlyLogged} {$user->identity->username}. <a n:href="Auth:logout">{_front.auth.logout}</a></div>
 
-	<h2>Games</h2>
-	<a n:href=":Front:Game:MelodicCubes:">Melodic cubes</a> - <a n:href=":Front:Game:MelodicCubes: 13">id 13</a><br />
-	<a n:href=":Front:Game:Pexeso:">Pexeso</a>
+	<h2>{_front.game.games}</h2>
+	<a n:href=":Front:Game:MelodicCubes:">{_front.game.melodicCubes}</a> - <a n:href=":Front:Game:MelodicCubes: 13">id 13</a><br />
+	<a n:href=":Front:Game:Pexeso:">{_front.game.pexeso}</a>
 
 {if $user->isAllowed('Admin:Default')}
-	<a n:href=":Admin:Default:"><h2>Administrator</h2></a>
+	<a n:href=":Admin:Default:"><h2>{_front.homepage.admin}</h2></a>
 {/if}
 
 {/if}
