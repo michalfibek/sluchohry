@@ -21,6 +21,7 @@ class AuthorizatorFactory
 
 		$permission->addResource('Front:Default');
 		$permission->addResource('Front:Game:MelodicCubes');
+		$permission->addResource('Front:Game:Pexeso');
 
 		$permission->addResource('Admin:Default');
 		$permission->addResource('Admin:Song');
@@ -28,6 +29,7 @@ class AuthorizatorFactory
 
 		$permission->allow('student', array(
 			'Front:Default',
+			'Front:Game:MelodicCubes',
 			'Front:Game:MelodicCubes'
 		));
 
