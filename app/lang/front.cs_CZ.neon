@@ -13,7 +13,7 @@ auth:
         password: "Heslo:"
         requiredUsername: "Zadej prosím svoje přihlašovací jméno."
         requiredPassword: "Nezapomeň zadat heslo."
-        remember: "Přihlásit na pořád."
+        remember: "Přihlásit trvale"
         loginButton: "Přihlásit"
 
     flash:
