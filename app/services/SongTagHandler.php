@@ -31,13 +31,17 @@ class SongTagHandler {
 
     public function getArtistTitle()
     {
-        if (isset($this->fileInfo['comments'])) {
+        if (isset($this->fileInfo['comments']['artist']))
             $artist = implode(' & ', $this->fileInfo['comments']['artist']); // merges artist names if more of them are present
+        else
+            $artist = null;
+
+        if (isset($this->fileInfo['comments']['title']))
             $title = $this->fileInfo['comments']['title'][0];
-            return array($artist, $title);
-        } else {
-            return null;
-        }
+        else
+            $title = null;
+
+        return array($artist, $title);
     }
 
     /**
