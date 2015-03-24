@@ -1,5 +1,5 @@
 {block content}
-<div id="admin-item-editor">
+<div class="admin-item-editor">
 
 <header>
 <h1 n:block="title">Song editor</h1>
@@ -7,7 +7,7 @@
 
 <a n:href="edit" class="btn btn-primary upload-new"><span class="fa fa-upload"></span> Upload new song</a>
 
-<ul id="song-list">
+<ul id="song-list" class="item-list">
 {foreach $songList as $song}
     <li>
         <a n:href="edit $song->id">{if mb_strlen($song->artist) > 0}{$song->artist} - {/if}{$song->title} ({$song->duration|songTime})</a>

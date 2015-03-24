@@ -13,7 +13,7 @@ auth:
         password: "Password"
         requiredUsername: "Please enter your username."
         requiredPassword: "Please enter your password."
-        remember: "Keep me logged in"
+        remember: "keep me logged in"
         loginButton: "Login"
 
     flash:

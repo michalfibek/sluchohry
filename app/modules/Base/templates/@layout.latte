@@ -23,29 +23,42 @@
 
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{_$flash->message}</div>
 
-	<div class="container{ifCurrent :Admin:Default:*} admin{else} front{/ifCurrent}">
+	{if $user->loggedIn}
+	<header id="user-bar">
 
-		{if $user->loggedIn}
-		<div id="user-bar">
+		<div class="container">
 
-		{if $user->isAllowed('Admin:Default')}
-		<div id="admin-bar">
-			<a n:href=":Front:Default:">{_front.homepage.homepage}</a> / <a n:href=":Admin:Default:">{_front.homepage.admin}</a>
+			<div id="site-head-title">
+				<a n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
+
+				{if $user->isAllowed('Admin:Default')}
+				<div id="admin-bar">
+					<a n:href=":Admin:Default:"><i class="fa fa-tasks"></i> {_front.homepage.admin}</a>
+				</div>
+				{/if}
+				
+			</div>
+
+			<div id="user-profile">
+
+				<a n:href="logout" class="btn btn-default" id="user-logout">
+					<i class="fa fa-sign-out"></i> {_front.auth.logout}
+				</a>
+
+				<a href="#" id="user-profile-edit">
+					<i class="fa fa-user"></i> {$user->identity->username} {if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
+				</a>
+
+			</div>
+
 		</div>
-		{/if}
 
-		<div id="user-profile">
-			{$user->identity->username}
-			{if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
-			<a n:href="logout">{_front.auth.logout}</a>
-		</div>
+	</header>
+	{/if}
 
-		</div>
-
-		{/if}
-
+	<main class="container">
 		{include content}
-	</div>
+	</main>
 
 	{block scripts}
 	<script src="{$basePath}/assets/vendor/jquery/dist/jquery.js"></script>

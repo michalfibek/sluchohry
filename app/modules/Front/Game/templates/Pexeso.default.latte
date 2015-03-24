@@ -1,35 +1,16 @@
 {block content}
+<header>
+    <h1 n:block="title">Hudební pexeso</h1>
+</header>
 
-<h1 n:block="title">Hudební pexeso</h1>
 
-
-<button id="ex1-play">Play</button> <button id="ex1-pause">Pause</button> <button id="ex1-stop">Stop</button>
 
 
 {/block}
 
-
 {block scripts}
 {include parent}
-        <script type="text/javascript">
-            $(function(){
-                $('#ex1-play').on('click', function(){
-                    sound1.stop().play();
-                });
-                $('#ex1-pause').on('click', function(){
-                    sound1.pause();
-                });
-                $('#ex1-stop').on('click', function(){
-                    sound1.stop();
-                });
-                $('#ex1-loop').on('click', function(){
-                    sound1.loop(true);
-                });
-            });
-
-            var sound1 = new Howl({
-                src: ['/assets/sounds/Chewbaca.mp3']
-            });
+<script type="text/javascript">
 
 
 </script>

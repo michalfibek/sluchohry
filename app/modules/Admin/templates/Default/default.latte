@@ -1,12 +1,14 @@
 {block content}
 
+<header>
 <h1 n:block="title">Administrator</h1>
+</header>
 
-<h2><a n:href="Song:">Song editor</a><br /></h2>
-<a n:href="Song:edit">Upload new song</a><br />
 
-<h2><a n:href="User:">User manager</a><br /></h2>
-<a n:href="User:edit">Add new user</a><br />
+<ul id="settings-list">
+    <li><a n:href="Song:"><i class="fa fa-music"></i> Song editor</a></li>
+    <li><a n:href="User:"><i class="fa fa-users"></i> User manager</a><br /></li>
+</ul>
 
 {/block}
 

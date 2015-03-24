@@ -10,13 +10,19 @@ WEB VARIABLES
 @color-prim-1-border: darken(@color-prim-1, 20%);
 @color-sec-1-border: darken(@color-sec-1, 20%);
 
-
 /*
 GENERAL
 */
 body {
   font-family: 'Francois One', sans-serif;
   background-color: @color-light;
+}
+
+main {
+  header {
+    border: none;
+    margin: 22px 0;
+  }
 }
 
 // page
@@ -65,6 +71,11 @@ form {
 div.flash {
   .alert();
   .alert-info();
+  background-color: #21A3E5;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 0;
+  font-size: 1.6em;
 }
 div.flash.success {
   .alert();
@@ -75,6 +86,70 @@ div.flash.error {
 }
 div.flash.warning {
   .alert-warning();
+}
+
+header#user-bar {
+  background-color: @color-prim-2;
+  display: block;
+  color: #fff;
+  padding: 15px;
+  margin: 0 0 20px 0;
+  .clearfix();
+
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  #site-head-title {
+    float: left;
+
+    h1 {
+      margin: 5px 0;
+      text-transform: uppercase;
+      font-size: 3em;
+      font-weight: bold;
+      //      color: @color-prim-2;
+    }
+  }
+
+  #admin-bar {
+    text-align: right;
+    a {
+      text-decoration: none;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  #user-profile {
+    float: right;
+    font-size: 1.3em;
+    margin: 5px 0;
+
+    a#user-logout {
+      display: block;
+      padding: 10px;
+      background-color: @color-prim-1;
+      border-color: @color-prim-1-border;
+      &:hover {
+        background-color: @color-prim-1-border;
+        color: #fff;
+      }
+    }
+
+    a#user-profile-edit {
+      display: block;
+      margin: 10px 0 0 0;
+    }
+
+  }
 }
 
 #owl-onpage {
@@ -103,11 +178,12 @@ GAME: melodic cubes
     display: block;
     padding: 50% 0;
     background-color: #bbb;
-    transition: all 0.8s ease-in-out
-  }
-  .btn:hover {
-    background-color: #ff5555;
-    transition: all 0.2s ease-in-out
+    transition: all 0.8s ease-in-out;
+
+    &:hover {
+      background-color: #ff5555;
+      transition: all 0.2s ease-in-out;
+    }
   }
 }
 .cube-highlight .btn {
@@ -126,7 +202,6 @@ FRONT: applies only to front module
 .container.front {
 
 }
-
 
 
 .homepage {
@@ -153,10 +228,11 @@ FRONT: applies only to front module
       font-size: 26px;
       background-color: @color-sec-1;
       border-color: @color-sec-1-border;
-    }
 
-    #login-button:hover {
-      background-color: @color-sec-1-border;
+      &:hover {
+        background-color: @color-sec-1-border;
+      }
+
     }
 
     #remember-check {
@@ -169,6 +245,55 @@ FRONT: applies only to front module
 
 }
 
+#game-list {
+  list-style: none;
+  margin: 20px 0 20px 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+
+    i.fa {
+      display: block;
+      font-size: 4em;
+      line-height: 1.4em;
+    }
+
+    a {
+      .btn();
+      .btn-default();
+      font-size: 1.5em;
+      width: 300px;
+      height: 200px;
+      margin: 10px;
+      display: block;
+//      line-height: 180px;
+
+    }
+  }
+}
+
+#settings-list {
+  list-style: none;
+  margin: 20px 0 20px 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+
+    a {
+      .btn();
+      .btn-default();
+      font-size: 1.5em;
+      width: 300px;
+      height: 100px;
+      margin: 10px;
+      line-height: 85px;
+
+    }
+  }
+}
+
 
 /*
 ADMIN: applies only to admin module
@@ -177,57 +302,61 @@ ADMIN: applies only to admin module
   #file-uploader {
     margin: 30px 0;
   }
-  .song-editor {
-    canvas {
-      max-width: 100%;
-    }
-    a.marker {
-      float: left;
-      display: inline;
-      padding: 0.3em .6em .3em;
-      font-size: 85%;
-      line-height: 1;
-      color: #ffffff;
-      text-align: center;
-      white-space: nowrap;
-      vertical-align: baseline;
-      border-radius: .25em;
-      background-color: #777777;
-      margin: 3px;
-      transition: all 0.2s ease-in-out
-    }
-    a.marker:hover {
+}
+
+
+.song-editor {
+  canvas {
+    max-width: 100%;
+  }
+  a.marker {
+    float: left;
+    display: inline;
+    padding: 0.3em .6em .3em;
+    font-size: 85%;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    background-color: #777777;
+    margin: 3px;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
       background-color: #ff0000;
       text-decoration: none;
-      transition: all 0.2s ease-in-out
-    }
-  }
-  #admin-item-editor {
-    .upload-new {
-      font-size: 1.6em;
-    }
-    ul {
-      list-style: none;
-      margin: 20px 0 20px 0;
-      padding: 0;
-
-      li {
-        margin: 5px 0;
-      }
-
-      .delete-item {
-        margin-left: 20px;
-        color: #ff0000;
-      }
-
-      .delete-item:hover {
-        text-decoration: none;
-        border-bottom: 1px solid;
-      }
-
+      transition: all 0.2s ease-in-out;
     }
   }
 }
+
+.admin-item-editor {
+  .upload-new {
+    font-size: 1.6em;
+  }
+  .item-list {
+    list-style: none;
+    margin: 20px 0 20px 0;
+    padding: 0;
+
+    li {
+      margin: 5px 0;
+    }
+
+    .delete-item {
+      margin-left: 20px;
+      color: #ff0000;
+
+      &:hover {
+        text-decoration: none;
+        border-bottom: 1px solid;
+      }
+    }
+  }
+}
+
 
 
 /*
