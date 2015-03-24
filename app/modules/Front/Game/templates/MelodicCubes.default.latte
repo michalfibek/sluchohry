@@ -44,6 +44,7 @@
                     songCubesChain,
                     arrayMove,
                     playChain,
+                    chainTimeout,
                     songSource = {$song},
                     songUrl = '/assets/sounds/songs/{$song->filename|noescape}.mp3';
                     markers = {$markers},
@@ -60,6 +61,17 @@
                     arr.splice(to, 0, arr.splice(from, 1)[0]);
                 };
 
+                getRandomColor = function() {
+                    var letters = '0123456789ABCDEF'.split('');
+                    var color = '#';
+                    for (var i = 0; i < 6; i++ ) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+
+                $('#ex1-stop').hide(); // hide stop button by default
+
                 /**
                  * Define array of current play cubes' order on page
                  */
@@ -72,15 +84,20 @@
                  */
                 {for $i = 0; $i < count($markers); $i++}
                 $('#song-part{$i}').on('click', function(){
-                    $('[id^=song').parent().removeClass('cube-highlight');
-                    song1.stop().play('part{$i}');
+                    stopPlayback();
+                    startPlayback();
+                    song1.stop().once('end', function() {
+                        stopPlayback();
+                    }).play('part{$i}');
                     $(this).parent().addClass('cube-highlight');
                 });
+                $('#song-part{$i}').css("background-color", getRandomColor());
                 {/for}
 
                 $('#ex1-play-current').on('click', function(){
+                    stopPlayback();
+                    startPlayback();
                     songCubesChain[0](playChain(1));
-
                 });
                 $('#ex1-play-original').on('click', function(){
                     song1.stop().play('complete');
@@ -89,10 +106,22 @@
                     song1.pause();
                 });
                 $('#ex1-stop').on('click', function(){
-                    song1.stop();
-                    stopPlay = true;
-                    $('[id^=song').parent().removeClass('cube-highlight');
+                    stopPlayback();
                 });
+
+                var stopPlayback = function() {
+                    song1.stop();
+                    clearTimeout(chainTimeout);
+                    $('[id^=song').parent().removeClass('cube-highlight');
+                    $('#ex1-stop').hide();
+                    $('#ex1-play-current').show();
+                    stopPlay = true;
+                }
+
+                var startPlayback = function() {
+                    $('#ex1-stop').show();
+                    $('#ex1-play-current').hide();
+                }
 
                 song1 = new Howl({
                     src: songUrl,
@@ -129,10 +158,13 @@
                                 {/if}
                                 song1.play(cubeBank[{$i}]);
                                 $('#song-'+cubeBank[{$i}]).parent().addClass('cube-highlight');
-                                setTimeout(fn, $('#song-'+cubeBank[{$i}]).data('duration')); // gets cube playtime from html5 data field
+                                chainTimeout = setTimeout(fn, $('#song-'+cubeBank[{$i}]).data('duration')); // gets cube playtime from html5 data field
                             };
-                        }{if $i+1 != count($markers)},{/if}
+                        },
                     {/for}
+                        function(fn) {
+                            stopPlayback();
+                        }
                 ];
 
                 playChain = function (i) {

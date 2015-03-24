@@ -6652,13 +6652,11 @@ header#user-bar #user-profile {
 }
 header#user-bar #user-profile a#user-logout {
   display: block;
-  padding: 10px;
-  background-color: #c22f3f;
-  border-color: #701b24;
+  font-size: 0.9em;
+  color: #e8d9cb;
 }
 header#user-bar #user-profile a#user-logout:hover {
-  background-color: #701b24;
-  color: #fff;
+  color: #000;
 }
 header#user-bar #user-profile a#user-profile-edit {
   display: block;
@@ -6679,6 +6677,12 @@ header#user-bar #user-profile a#user-profile-edit {
 /*
 GAME: melodic cubes
 */
+#ex1-play-current,
+#ex1-stop {
+  width: 150px;
+  height: 71px;
+  font-size: 1.6em;
+}
 .single-cube {
   padding: 0;
   margin: 5px;
@@ -6691,20 +6695,21 @@ GAME: melodic cubes
   background-color: #bbb;
   -webkit-transition: all 0.8s ease-in-out;
           transition: all 0.8s ease-in-out;
+  opacity: 0.5;
 }
 .single-cube .btn:hover {
   background-color: #ff5555;
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
+  opacity: 1;
 }
 .cube-highlight .btn {
-  background-color: #ff0000;
   -webkit-transition: all 1s ease-in-out;
           transition: all 1s ease-in-out;
   -webkit-animation-name: blinker;
           animation-name: blinker;
-  -webkit-animation-duration: 1s;
-          animation-duration: 1s;
+  -webkit-animation-duration: 0.7s;
+          animation-duration: 0.7s;
   -webkit-animation-timing-function: linear;
           animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
@@ -7025,7 +7030,7 @@ CSS3 animations
     opacity: 1;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.2;
   }
   100% {
     opacity: 1;
@@ -7036,7 +7041,7 @@ CSS3 animations
     opacity: 1;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.2;
   }
   100% {
     opacity: 1;

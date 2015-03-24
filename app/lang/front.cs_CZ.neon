@@ -27,5 +27,5 @@ game:
     pexeso: "Pexeso"
 
 melodicCubes:
-    play: "Spusť"
-    stop: "Zastav"
+    play: "Hrej"
+    stop: "Stop"

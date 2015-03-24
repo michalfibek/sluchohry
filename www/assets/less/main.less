@@ -135,12 +135,10 @@ header#user-bar {
 
     a#user-logout {
       display: block;
-      padding: 10px;
-      background-color: @color-prim-1;
-      border-color: @color-prim-1-border;
+      font-size: 0.9em;
+      color: #e8d9cb;
       &:hover {
-        background-color: @color-prim-1-border;
-        color: #fff;
+        color: #000;
       }
     }
 
@@ -168,6 +166,13 @@ header#user-bar {
 /*
 GAME: melodic cubes
 */
+
+#ex1-play-current, #ex1-stop {
+  width: 150px;
+  height: 71px;
+  font-size: 1.6em;
+}
+
 .single-cube {
 //  background-color: #0000f6;
   padding: 0;
@@ -179,20 +184,32 @@ GAME: melodic cubes
     padding: 50% 0;
     background-color: #bbb;
     transition: all 0.8s ease-in-out;
+    opacity: 0.5;
 
     &:hover {
       background-color: #ff5555;
       transition: all 0.2s ease-in-out;
+      opacity: 1;
     }
   }
 }
 .cube-highlight .btn {
-  background-color: #ff0000;
+//  background-color: #ff0000;
   transition: all 1s ease-in-out;
   animation-name: blinker;
-  animation-duration: 1s;
+  animation-duration: 0.7s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
+
+//  &:before {
+//    font-family: FontAwesome;
+//    font-size: 30px;
+//    color: #ff0000;
+//    -webkit-font-smoothing: antialiased;
+//    content: "\f04b";
+//    z-index: 10;
+//    position: absolute;
+//  }
 }
 
 
@@ -365,7 +382,7 @@ CSS3 animations
 @keyframes blinker
 {
   0% {opacity: 1;}
-  50% {opacity: 0.8;}
+  50% {opacity: 0.2;}
   100% {opacity: 1;}
 }
 
