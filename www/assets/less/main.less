@@ -1,6 +1,23 @@
 /*
+WEB VARIABLES
+*/
+@color-prim-1: #C22F3F;
+@color-prim-2: #DA6E43;
+@color-sec-1: #52A573;
+@color-sec-2: #232840;
+@color-light: #F2ECDF;
+
+@color-prim-1-border: darken(@color-prim-1, 20%);
+@color-sec-1-border: darken(@color-sec-1, 20%);
+
+
+/*
 GENERAL
 */
+body {
+  font-family: 'Francois One', sans-serif;
+  background-color: @color-light;
+}
 
 // page
 @font-size-base: 16px;
@@ -44,10 +61,6 @@ form {
   }
 }
 
-#login-form {
-//  .center-block();
-}
-
 // display flash messages in bootstrap styles
 div.flash {
   .alert();
@@ -62,6 +75,18 @@ div.flash.error {
 }
 div.flash.warning {
   .alert-warning();
+}
+
+#owl-onpage {
+  display: block;
+  text-indent: -9999px;
+  width: 250px;
+  height: 250px;
+  right: 30px;
+  bottom: 0;
+  position: absolute;
+  background: url('/assets/images/owl10.svg') no-repeat; /* via http://www.flaticon.com/free-icon/owl-sage-symbol_42983 */
+  background-size: 250px 250px;
 }
 
 
@@ -96,7 +121,57 @@ GAME: melodic cubes
 
 
 /*
-ADMIN: applies only to admin presenter
+FRONT: applies only to front module
+*/
+.container.front {
+
+}
+
+
+
+.homepage {
+  .text-center();
+  .center-block();
+  float: none;
+
+  h1 {
+    margin: 50px 0;
+    text-transform: uppercase;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: @color-prim-2;
+  }
+
+  #login-form {
+    //  .center-block();
+    .text-left();
+
+    #login-button {
+      padding: 20px;
+      width: 100%;
+      margin: 20px 0 0 0;
+      font-size: 26px;
+      background-color: @color-sec-1;
+      border-color: @color-sec-1-border;
+    }
+
+    #login-button:hover {
+      background-color: @color-sec-1-border;
+    }
+
+    #remember-check {
+      margin: 20px 5px;
+      font-size: 20px;
+      line-height: 20px;
+//      text-align: center;
+    }
+  }
+
+}
+
+
+/*
+ADMIN: applies only to admin module
 */
 .container.admin {
   #file-uploader {
@@ -213,4 +288,31 @@ spinner via SpinKit http://tobiasahlin.com/spinkit/
        transform: scaleY(1.0);
        -webkit-transform: scaleY(1.0);
      }
+}
+
+
+/*
+MEDIA QUERIES section
+*/
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .homepage {
+
+    h1 {
+      font-size: 4.5em;
+    }
+
+  }
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+
 }

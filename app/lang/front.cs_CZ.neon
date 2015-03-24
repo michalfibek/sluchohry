@@ -9,12 +9,12 @@ auth:
     logout: "Odhlásit"
 
     loginForm:
-        username: "Jméno:"
-        password: "Heslo:"
+        username: "Přihlašovací jméno"
+        password: "Heslo"
         requiredUsername: "Zadej prosím svoje přihlašovací jméno."
         requiredPassword: "Nezapomeň zadat heslo."
-        remember: "Přihlásit trvale"
-        loginButton: "Přihlásit"
+        remember: "přihlašuji se doma"
+        loginButton: "Přihlásit se"
 
     flash:
         logout: "Byl jsi odhlášen."

@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
 	{/block}
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+	<link href='http://fonts.googleapis.com/css?family=Francois+One&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 	{block head}{/block}
 </head>
 
@@ -22,8 +23,8 @@
 
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{_$flash->message}</div>
 
-	<div class="container{ifCurrent :Admin:Default:*} admin{/ifCurrent}">
-		<a n:href=":Front:Default:">{_front.homepage.homepage}</a>{if $user->isAllowed('Admin:Default')} / <a n:href=":Admin:Default:">{_front.homepage.admin}</a>{/if}
+	<div class="container{ifCurrent :Admin:Default:*} admin{else} front{/ifCurrent}">
+		{if $user->isAllowed('Admin:Default')}<a n:href=":Front:Default:">{_front.homepage.homepage}</a> / <a n:href=":Admin:Default:">{_front.homepage.admin}</a>{/if}
 		{include content}
 	</div>
 

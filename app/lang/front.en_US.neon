@@ -9,8 +9,8 @@ auth:
     logout: "Logout"
 
     loginForm:
-        username: "Username:"
-        password: "Password:"
+        username: "Username"
+        password: "Password"
         requiredUsername: "Please enter your username."
         requiredPassword: "Please enter your password."
         remember: "Keep me logged in"
