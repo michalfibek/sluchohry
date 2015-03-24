@@ -3,9 +3,29 @@
 <h1 n:block="title">{_front.homepage.sluchohry}</h1>
 
 {if !$user->loggedIn}
-<a n:href="Auth:login">{_front.auth.login}</a></div>
+<div class="container">
+	<div id="login-form" class="col-md-4 col-md-offset-3">
+		<form n:name="loginForm">
+			<div class="form-group">
+				<label n:name="username" for="username">{_front.auth.loginForm.username}</label>
+				<input n:name="username" type="text" class="form-control" id="username" placeholder="Enter username">
+			</div>
+			<div class="form-group">
+				<label n:name="password" for="password">{_front.auth.loginForm.password}</label>
+				<input n:name="password" type="password" class="form-control" id="password" placeholder="Password">
+			</div>
+			<div class="checkbox">
+				<label>
+					<input n:name="remember" type="checkbox">{_front.auth.loginForm.remember}
+				</label>
+			</div>
+			<button n:name="send" type="submit" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> {_front.auth.loginForm.loginButton}</button>
+		</form>
+	</div>
+</div>
 {else}
-	<div class="user-info">{_front.auth.currentlyLogged} {$user->identity->username}. <a n:href="Auth:logout">{_front.auth.logout}</a></div>
+
+	<div class="user-info">{_front.auth.currentlyLogged} {$user->identity->username}{if strlen($user->identity->realname)} ({$user->identity->realname}){/if}. <a n:href="logout">{_front.auth.logout}</a></div>
 
 	<h2>{_front.game.games}</h2>
 	<a n:href=":Front:Game:MelodicCubes:">{_front.game.melodicCubes}</a> - <a n:href=":Front:Game:MelodicCubes: 13">id 13</a><br />
