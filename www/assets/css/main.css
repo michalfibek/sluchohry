@@ -6477,12 +6477,20 @@ button.close {
 /*
 WEB VARIABLES
 */
+.fa-inherit {
+  font-family: FontAwesome;
+  font-weight: normal;
+  display: inline-block;
+}
 /*
 GENERAL
 */
 body {
   font-family: 'Francois One', sans-serif;
   background-color: #f2ecdf;
+}
+main {
+  margin: 20px 0 0 0;
 }
 main header {
   border: none;
@@ -6520,11 +6528,11 @@ div.flash {
   background-color: #d9edf7;
   border-color: #bce8f1;
   color: #31708f;
-  background-color: #21A3E5;
+  background-color: #21a3e5;
   color: #FFFFFF;
-  border: none;
-  border-radius: 0;
-  font-size: 1.6em;
+  border-color: #FFFFFF;
+  font-size: 1.5em;
+  margin: 20px;
 }
 div.flash h4 {
   margin-top: 0;
@@ -6546,6 +6554,12 @@ div.flash hr {
 div.flash .alert-link {
   color: #245269;
 }
+div.flash:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  display: inline-block;
+  content: "\f129";
+}
 div.flash.success {
   padding: 15px;
   margin-bottom: 22px;
@@ -6554,6 +6568,9 @@ div.flash.success {
   background-color: #dff0d8;
   border-color: #d6e9c6;
   color: #3c763d;
+  background-color: #3c763d;
+  border-color: #3c763d;
+  color: #EFF5EF;
 }
 div.flash.success h4 {
   margin-top: 0;
@@ -6575,6 +6592,12 @@ div.flash.success hr {
 div.flash.success .alert-link {
   color: #2b542c;
 }
+div.flash.success:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  display: inline-block;
+  content: "\f058";
+}
 div.flash.error {
   background-color: #f2dede;
   border-color: #ebccd1;
@@ -6585,6 +6608,12 @@ div.flash.error hr {
 }
 div.flash.error .alert-link {
   color: #843534;
+}
+div.flash.error:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  display: inline-block;
+  content: "\f071";
 }
 div.flash.warning {
   background-color: #fcf8e3;
@@ -6597,12 +6626,18 @@ div.flash.warning hr {
 div.flash.warning .alert-link {
   color: #66512c;
 }
+div.flash.warning:before {
+  font-family: FontAwesome;
+  font-weight: normal;
+  display: inline-block;
+  content: "\f071";
+}
 header#user-bar {
   background-color: #da6e43;
   display: block;
   color: #fff;
   padding: 15px;
-  margin: 0 0 20px 0;
+  margin: 0;
 }
 header#user-bar:before,
 header#user-bar:after {
@@ -6677,11 +6712,24 @@ header#user-bar #user-profile a#user-profile-edit {
 /*
 GAME: melodic cubes
 */
-#ex1-play-current,
-#ex1-stop {
+#btn-play-current,
+#btn-stop {
   width: 150px;
   height: 71px;
   font-size: 1.6em;
+  background-color: #21a3e5;
+  border-color: #000;
+  color: #fff;
+}
+.game-eval-block {
+  text-align: right;
+}
+#btn-eval {
+  padding: 26px;
+  font-size: 1.6em;
+  color: #fff;
+  background-color: #52a573;
+  border-color: #306144;
 }
 .single-cube {
   padding: 0;
@@ -6696,6 +6744,7 @@ GAME: melodic cubes
   -webkit-transition: all 0.8s ease-in-out;
           transition: all 0.8s ease-in-out;
   opacity: 0.5;
+  border: 1px solid #3D3D3D;
 }
 .single-cube .btn:hover {
   background-color: #ff5555;
@@ -6706,10 +6755,11 @@ GAME: melodic cubes
 .cube-highlight .btn {
   -webkit-transition: all 1s ease-in-out;
           transition: all 1s ease-in-out;
+  background-color: #ff0000;
   -webkit-animation-name: blinker;
           animation-name: blinker;
-  -webkit-animation-duration: 0.7s;
-          animation-duration: 0.7s;
+  -webkit-animation-duration: 1.5s;
+          animation-duration: 1.5s;
   -webkit-animation-timing-function: linear;
           animation-timing-function: linear;
   -webkit-animation-iteration-count: infinite;
@@ -7028,23 +7078,29 @@ CSS3 animations
 @-webkit-keyframes blinker {
   0% {
     opacity: 1;
+    background-color: #ff0000;
   }
   50% {
-    opacity: 0.2;
+    opacity: 0.5;
+    background-color: #ff0000;
   }
   100% {
     opacity: 1;
+    background-color: #ff0000;
   }
 }
 @keyframes blinker {
   0% {
     opacity: 1;
+    background-color: #ff0000;
   }
   50% {
-    opacity: 0.2;
+    opacity: 0.5;
+    background-color: #ff0000;
   }
   100% {
     opacity: 1;
+    background-color: #ff0000;
   }
 }
 /*

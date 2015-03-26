@@ -6,9 +6,16 @@ WEB VARIABLES
 @color-sec-1: #52A573;
 @color-sec-2: #232840;
 @color-light: #F2ECDF;
+@color-ter-1: #21A3E5;
 
 @color-prim-1-border: darken(@color-prim-1, 20%);
 @color-sec-1-border: darken(@color-sec-1, 20%);
+
+.fa-inherit {
+  font-family: FontAwesome;
+  font-weight: normal;
+  display: inline-block;
+}
 
 /*
 GENERAL
@@ -19,6 +26,7 @@ body {
 }
 
 main {
+  margin: 20px 0 0 0;
   header {
     border: none;
     margin: 22px 0;
@@ -71,21 +79,45 @@ form {
 div.flash {
   .alert();
   .alert-info();
-  background-color: #21A3E5;
+  background-color: @color-ter-1;
   color: #FFFFFF;
-  border: none;
-  border-radius: 0;
-  font-size: 1.6em;
+  border-color: #FFFFFF;
+  font-size: 1.5em;
+  margin: 20px;
+
+  &:before {
+    .fa-inherit();
+    content: "\f129";
+  }
+
 }
 div.flash.success {
   .alert();
   .alert-success();
+  background-color: #3c763d;
+  border-color: #3c763d;
+  color: #EFF5EF;
+
+  &:before {
+    .fa-inherit();
+    content: "\f058";
+  }
 }
 div.flash.error {
   .alert-danger();
+
+  &:before {
+    .fa-inherit();
+    content: "\f071";
+  }
 }
 div.flash.warning {
   .alert-warning();
+
+  &:before {
+    .fa-inherit();
+    content: "\f071";
+  }
 }
 
 header#user-bar {
@@ -93,7 +125,7 @@ header#user-bar {
   display: block;
   color: #fff;
   padding: 15px;
-  margin: 0 0 20px 0;
+  margin: 0;
   .clearfix();
 
   a {
@@ -167,10 +199,25 @@ header#user-bar {
 GAME: melodic cubes
 */
 
-#ex1-play-current, #ex1-stop {
+#btn-play-current, #btn-stop {
   width: 150px;
   height: 71px;
   font-size: 1.6em;
+  background-color: @color-ter-1;
+  border-color: #000;
+  color: #fff;
+}
+
+.game-eval-block {
+  text-align: right;
+}
+
+#btn-eval {
+  padding: 26px;
+  font-size: 1.6em;
+  color: #fff;
+  background-color: @color-sec-1;
+  border-color: @color-sec-1-border;
 }
 
 .single-cube {
@@ -185,6 +232,7 @@ GAME: melodic cubes
     background-color: #bbb;
     transition: all 0.8s ease-in-out;
     opacity: 0.5;
+    border: 1px solid #3D3D3D;
 
     &:hover {
       background-color: #ff5555;
@@ -194,10 +242,10 @@ GAME: melodic cubes
   }
 }
 .cube-highlight .btn {
-//  background-color: #ff0000;
   transition: all 1s ease-in-out;
+  background-color: #ff0000;
   animation-name: blinker;
-  animation-duration: 0.7s;
+  animation-duration: 1.5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 
@@ -381,9 +429,9 @@ CSS3 animations
 */
 @keyframes blinker
 {
-  0% {opacity: 1;}
-  50% {opacity: 0.2;}
-  100% {opacity: 1;}
+  0% {opacity: 1; background-color: #ff0000;}
+  50% {opacity: 0.5; background-color: #ff0000;}
+  100% {opacity: 1; background-color: #ff0000;}
 }
 
 

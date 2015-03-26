@@ -21,8 +21,6 @@
 
 <body>
 
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{_$flash->message}</div>
-
 	{if $user->loggedIn}
 	<header id="user-bar">
 
@@ -55,6 +53,12 @@
 
 	</header>
 	{/if}
+
+	<div class="container">
+		<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
+			{_$flash->message}
+		</div>
+	</div>
 
 	<main class="container">
 		{include content}

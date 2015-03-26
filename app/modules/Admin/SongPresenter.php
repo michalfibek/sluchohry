@@ -97,9 +97,11 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function actionDelete($id)
 	{
-		$this->songStorage->deleteSong($id);
-
-		$this->flashMessage("Song has been deleted.", 'success');
+		if (!$this->songStorage->deleteSong($id)) {
+			$this->flashMessage("Song not found.", 'error');
+		} else {
+			$this->flashMessage("Song has been deleted.", 'success');
+		}
 		$this->redirect('default');
 	}
 

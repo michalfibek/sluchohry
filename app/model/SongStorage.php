@@ -187,6 +187,7 @@ class SongStorage extends Nette\Object
     public function deleteSong($songId)
     {
         $song = $this->database->table(self::TABLE_NAME_SONG)->get($songId);
+        if (!$song) return false;
         try {
             // delete song file
             Nette\Utils\FileSystem::delete($this->saveDir . $song->filename . '.' . $this->songDefaultExtension);
@@ -196,6 +197,8 @@ class SongStorage extends Nette\Object
 
             // finally, delete song itself from db
             $song->delete();
+
+            return true;
 
         } catch (\Exception $e) {
             throw $e;

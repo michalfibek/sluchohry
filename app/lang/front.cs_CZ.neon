@@ -18,7 +18,8 @@ auth:
 
     flash:
         logout: "Byl jsi odhlášen."
-        sessionTimeout: "Vypršel čas přihlášení, byl jsi automaticky odhlášen."
+        login: "Ahoj %name%!"
+        sessionTimeout: "Vypršel čas přihlášení, přihlaš se prosím znovu."
         accessDenied: "Tady ne! Přístup zamítnut."
 
 game:
@@ -29,3 +30,4 @@ game:
 melodicCubes:
     play: "Hrej"
     stop: "Stop"
+    evaluate: "Vyhodnoť!"

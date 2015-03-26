@@ -7,21 +7,28 @@
 </header>
 
 <div class="game-main hidden">
-    <button type="button" class="btn btn-default btn-lg" id="ex1-play-current"><span class="fa fa-play"></span> {_front.melodicCubes.play}</button>
+    <button type="button" class="btn btn-default btn-lg" id="btn-play-current"><span class="fa fa-play"></span> {_front.melodicCubes.play}</button>
     {if $debug}
-    <button type="button" class="btn btn-default" id="ex1-play-original">Play original</button> {* debug only *}
-    <button type="button" class="btn btn-default" id="ex1-pause"><span class="fa fa-pause"></span> Pause</button>
+    <button type="button" class="btn btn-default" id="btn-play-original">Play original</button> {* debug only *}
+    <button type="button" class="btn btn-default" id="btn-pause"><span class="fa fa-pause"></span> Pause</button>
     {/if}
-    <button type="button" class="btn btn-default btn-lg" id="ex1-stop"><span class="fa fa-stop"></span> {_front.melodicCubes.stop}</button>
+    <button type="button" class="btn btn-default btn-lg" id="btn-stop"><span class="fa fa-stop"></span> {_front.melodicCubes.stop}</button>
     <br />&nbsp;<br />
 
     <div class="container-fluid">
         <div class="row" id="play-cubes">
             {for $i = 0; $i < count($markers); $i++}
-            <div class="col-xs-3 col-md-1 single-cube cube-plain" id="part{$shuffledOrder[$i]}"><button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">{if $debug}Play {$shuffledOrder[$i]}{/if}</button></div>
+            <div class="col-xs-3 col-md-2 single-cube cube-plain" id="part{$shuffledOrder[$i]}">
+                <button type="button" class="btn btn-default" id="song-part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">{if $debug}Play {$shuffledOrder[$i]}{/if}</button>
+            </div>
             {/for}
         </div>
     </div>
+
+    <div class="container game-eval-block">
+        <button type="button" class="btn btn-default btn-lg" id="btn-eval"><span class="fa fa-check"></span> {_front.melodicCubes.evaluate}</button>
+    </div>
+
 </div>
 <div class="spinner">
     <div class="rect1"></div>
@@ -61,16 +68,12 @@
                     arr.splice(to, 0, arr.splice(from, 1)[0]);
                 };
 
+                var colors = ['#C8FF00', '#FF8800', '#7AE03E', '#30BDB8', '#6520DB', '#DB20CA', '#0047FF', '#00FF77', '#5BA5F9'];
                 getRandomColor = function() {
-                    var letters = '0123456789ABCDEF'.split('');
-                    var color = '#';
-                    for (var i = 0; i < 6; i++ ) {
-                        color += letters[Math.floor(Math.random() * 16)];
-                    }
-                    return color;
+                    return colors.splice([Math.floor(Math.random() * colors.length)],1);
                 }
 
-                $('#ex1-stop').hide(); // hide stop button by default
+                $('#btn-stop').hide(); // hide stop button by default
 
                 /**
                  * Define array of current play cubes' order on page
@@ -79,7 +82,16 @@
                     cubeBank[{$i}] = 'part{$shuffledOrder[$i]}';
                 {/for}
 
-                /**
+                var stopPlayback = function() {
+                    song1.stop();
+                    clearTimeout(chainTimeout);
+                    $('[id^=song').parent().removeClass('cube-highlight').transition();
+                    $('#btn-stop').hide();
+                    $('#btn-play-current').show();
+                    stopPlay = true;
+                }
+
+                 /**
                  * Define all clickable buttons
                  */
                 {for $i = 0; $i < count($markers); $i++}
@@ -94,33 +106,24 @@
                 $('#song-part{$i}').css("background-color", getRandomColor());
                 {/for}
 
-                $('#ex1-play-current').on('click', function(){
+                $('#btn-play-current').on('click', function(){
                     stopPlayback();
                     startPlayback();
                     songCubesChain[0](playChain(1));
                 });
-                $('#ex1-play-original').on('click', function(){
+                $('#btn-play-original').on('click', function(){
                     song1.stop().play('complete');
                 });
-                $('#ex1-pause').on('click', function(){
+                $('#btn-pause').on('click', function(){
                     song1.pause();
                 });
-                $('#ex1-stop').on('click', function(){
+                $('#btn-stop').on('click', function(){
                     stopPlayback();
                 });
 
-                var stopPlayback = function() {
-                    song1.stop();
-                    clearTimeout(chainTimeout);
-                    $('[id^=song').parent().removeClass('cube-highlight');
-                    $('#ex1-stop').hide();
-                    $('#ex1-play-current').show();
-                    stopPlay = true;
-                }
-
                 var startPlayback = function() {
-                    $('#ex1-stop').show();
-                    $('#ex1-play-current').hide();
+                    $('#btn-stop').show();
+                    $('#btn-play-current').hide();
                 }
 
                 song1 = new Howl({

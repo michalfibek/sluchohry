@@ -22,7 +22,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	public function __construct(Model\SongStorage $songStorage)
 	{
 		$this->songStorage = $songStorage;
-		$this->difficulty = 3; // TODO this is hardcoded, remove after difficulty implementation
+		$this->difficulty = 2; // TODO this is hardcoded, remove after difficulty implementation
 		switch ($this->difficulty)
 		{
 			case 1:
