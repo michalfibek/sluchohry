@@ -6723,6 +6723,7 @@ GAME: melodic cubes
 }
 .game-eval-block {
   text-align: right;
+  margin: 50px 0;
 }
 #btn-eval {
   padding: 26px;
