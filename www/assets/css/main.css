@@ -6786,7 +6786,6 @@ GAME: melodic cubes
   border: 1px solid #3D3D3D;
 }
 .single-cube .btn:hover {
-  background-color: #ff5555;
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
   opacity: 1;
