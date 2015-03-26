@@ -51,12 +51,11 @@ var Song = $class({
  */
 var Game = $class({
 
-    constructor: function(song, shuffledOrder, colors, chainDef, cubeBank) {
+    constructor: function(song, shuffledOrder, colors, chainDef) {
         scope = this;
         this.colors = colors;
         this.song = song;
         this.chainDef = chainDef;
-        this.cubeBank = cubeBank;
         this.songChain = [];
 
         scope.initButtons();
@@ -73,8 +72,13 @@ var Game = $class({
         });
     },
 
-    cubeBankMove: function(from, to) {
-        this.cubeBank.splice(to, 0, this.cubeBank.splice(from, 1)[0]);
+    getCubeBank: function() {
+        var cubeBank = [];
+        $('.single-cube').each( function(index, element) {
+            var thisId = $(this).find('.cube-play').data('part');
+            cubeBank.push(thisId);
+        });
+        return cubeBank;
     },
 
     getRandomColor: function() {
@@ -148,9 +152,8 @@ var Game = $class({
         $("#play-cubes").sortable({
             animation: 150,
             onEnd: function(evt) {
-                evt.oldIndex;  // element's old index within parent
-                evt.newIndex;  // element's new index within parent
-                scope.cubeBankMove(evt.oldIndex, evt.newIndex);
+                evt.oldIndex;
+                evt.newIndex;
                 scope.song.stop();
                 scope.switchStopBtn();
             }
@@ -160,13 +163,13 @@ var Game = $class({
     initChain: function () {
         var chainCount = scope.chainDef.length;
         for(var i = 0; i < chainCount; i++) {
-            this.songChain.push(scope.chainFunctionGenerator(i, scope.chainDef[i], scope.song.songCtrl, this.cubeBank));
+            this.songChain.push(scope.chainFunctionGenerator(i, scope.chainDef[i], scope.song.songCtrl, scope.getCubeBank));
         }
     },
 
-    chainFunctionGenerator: function(markerIndex, markerValue, songCtrl, cubeBank) {
+    chainFunctionGenerator: function(markerIndex, markerValue, songCtrl, cubeBankFn) {
         return function(fn) {
-            scope.clearHighlights();
+            var cubeBank = cubeBankFn();
             scope.addHighlight(cubeBank[markerIndex]);
 
             scope.song.playPart(cubeBank[markerIndex]);
@@ -191,9 +194,9 @@ var Game = $class({
 
     evalGame: function() {
         var okay = true;
-        var bankLength = scope.cubeBank.length;
+        var cubeBank = scope.getCubeBank();
+        var bankLength = cubeBank.length;
         btnEval = $('#btn-eval');
-        console.table(cubeBank);
         for(var i = 0; i < bankLength; i++) {
             if (cubeBank[i] !== 'part'+ i) {
                 okay = false;

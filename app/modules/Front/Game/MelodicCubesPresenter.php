@@ -3,6 +3,7 @@ namespace App\Module\Front\Game\Presenters;
 
 use Nette,
 	App\Model;
+use Tracy\Debugger;
 
 /**
  * Homepage presenter.
@@ -64,13 +65,17 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		$this->template->song = $this->gameAssets['song'];
 		$this->template->markers = $this->gameAssets['markers'];
 
-		$shuffledOrder = range(0, count($this->gameAssets['markers'])-1);
-		shuffle($shuffledOrder);
+		$originalOrder = $shuffledOrder = range(0, count($this->gameAssets['markers'])-1);
+		while ($originalOrder == $shuffledOrder)
+		{
+			shuffle($shuffledOrder);
+		}
+		Debugger::barDump($shuffledOrder);
 		$this->template->shuffledOrder = $shuffledOrder;
 
-		\Tracy\Debugger::barDump($this->gameAssets['song']);
-		\Tracy\Debugger::barDump($this->gameAssets['markers']);
-		\Tracy\Debugger::barDump($this->template->shuffledOrder);
+//		\Tracy\Debugger::barDump($this->gameAssets['song']);
+//		\Tracy\Debugger::barDump($this->gameAssets['markers']);
+//		\Tracy\Debugger::barDump($this->template->shuffledOrder);
 	}
 
 }

@@ -47,8 +47,8 @@
                 <h4 class="modal-title">{_front.melodicCubes.resultCorrectTitle}</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.melodicCubes.closeGame}</button>
-                <button type="button" class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.melodicCubes.nextGame}</button>
+                <a n:href=":Front:Default:" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.melodicCubes.closeGame}</a>
+                <a n:href="this"  class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.melodicCubes.nextGame}</a>
             </div>
         </div>
     </div>
@@ -101,16 +101,6 @@
                 { 0: {$m[0]}, 1: {$m[1]} }{sep}, {/sep}
             {/foreach}
             ];
-
-
-            /**
-             * Define array of current play cubes' order on page
-             */
-            cubeBank = [
-            {foreach $markers as $m}
-            'part{$shuffledOrder[$iterator->counter-1]}'{sep},{/sep}
-            {/foreach}
-            ]
 
             s = new Song(songUrl, markers, spriteDef);
             g = new Game(s, shuffledOrder, colors, chainDef, cubeBank);
