@@ -19,7 +19,7 @@
         <div class="row" id="play-cubes">
             {for $i = 0; $i < count($markers); $i++}
             <div class="col-xs-3 col-md-2 single-cube cube-plain">
-                <button type="button" class="cube-play btn btn-default" id="song-part{$shuffledOrder[$i]}" data-part="part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">{if $debug}Play {$shuffledOrder[$i]}{/if}</button>
+                <a class="cube-play btn btn-default" id="song-part{$shuffledOrder[$i]}" data-part="part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">{if $debug}Play {$shuffledOrder[$i]}{/if}</a>
             </div>
             {/for}
         </div>

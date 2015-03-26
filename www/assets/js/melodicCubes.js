@@ -177,7 +177,6 @@ var Game = $class({
                 fn();
                 if (markerIndex == cubeBank.length-1)
                 {
-                    scope.clearHighlights();
                     scope.switchStopBtn();
                 }
             }, $('#song-'+cubeBank[markerIndex]).data('duration'));
@@ -193,6 +192,8 @@ var Game = $class({
     },
 
     evalGame: function() {
+        scope.song.stop();
+        scope.switchStopBtn();
         var okay = true;
         var cubeBank = scope.getCubeBank();
         var bankLength = cubeBank.length;

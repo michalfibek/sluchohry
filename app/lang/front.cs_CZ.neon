@@ -31,7 +31,7 @@ melodicCubes:
     play: "Hrej"
     stop: "Stop"
     evaluate: "Vyhodnoť!"
-    resultWrong: "Chyba!"
+    resultWrong: "Špatně!"
     resultCorrectTitle: "Správně!"
     nextGame: "Další kolo"
     closeGame: "Ukončit"
