@@ -57,6 +57,7 @@ var Game = $class({
         this.song = song;
         this.chainDef = chainDef;
         this.songChain = [];
+        this.cubeMoveCount = 0;
 
         scope.initButtons();
         scope.initChain();
@@ -154,6 +155,7 @@ var Game = $class({
             onEnd: function(evt) {
                 evt.oldIndex;
                 evt.newIndex;
+                scope.cubeMoveCount++;
                 scope.song.stop();
                 scope.switchStopBtn();
             }
@@ -205,8 +207,10 @@ var Game = $class({
             }
         }
         //$('#modal-correct').modal('show');
+        console.log('moves: '+scope.cubeMoveCount);
         if (okay == true) {
             $('.modal-correct').modal('show');
+            $('.attempt-count').find('span').empty().append(scope.cubeMoveCount);
         } else {
             $('.modal-wrong').modal('show');
         }

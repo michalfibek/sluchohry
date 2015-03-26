@@ -36,3 +36,4 @@ melodicCubes:
     nextGame: "Další kolo"
     closeGame: "Ukončit"
     tryAgain: "Zkusit znovu"
+    moveCount: "pohybů kostek"
