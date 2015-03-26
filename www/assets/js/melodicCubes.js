@@ -31,6 +31,13 @@ var Song = $class({
         this.songCtrl.play(partId);
     },
 
+    playPartOnly: function(partId) {
+        this.songCtrl.once('end', function() {
+            g.clearHighlights();
+            g.switchStopBtn();
+        }).play(partId);
+    },
+
     stop: function() {
         this.songCtrl.stop();
         clearTimeout(scope.chainTimeout);
@@ -115,7 +122,7 @@ var Game = $class({
             scope.switchStopBtn();
             scope.switchPlayBtn();
             scope.song.stop();
-            scope.song.playPart(partId);
+            scope.song.playPartOnly(partId);
             scope.addHighlight(partId);
         });
         cubeBtns.each( function() {
@@ -132,7 +139,11 @@ var Game = $class({
         $('#btn-stop').on('click', function(){
             scope.song.stop();
             scope.switchStopBtn();
-        })
+        });
+
+        $('#btn-eval').on('mouseup', function(){
+            scope.evalGame();
+        });
 
         $("#play-cubes").sortable({
             animation: 150,
@@ -140,14 +151,15 @@ var Game = $class({
                 evt.oldIndex;  // element's old index within parent
                 evt.newIndex;  // element's new index within parent
                 scope.cubeBankMove(evt.oldIndex, evt.newIndex);
-//                        console.log(cubeBank[evt.oldIndex] + ' -> ' + cubeBank[evt.newIndex]);
+                scope.song.stop();
+                scope.switchStopBtn();
             }
         });
     },
 
     initChain: function () {
         var chainCount = scope.chainDef.length;
-        for(i = 0; i < chainCount; i++) {
+        for(var i = 0; i < chainCount; i++) {
             this.songChain.push(scope.chainFunctionGenerator(i, scope.chainDef[i], scope.song.songCtrl, this.cubeBank));
         }
     },
@@ -160,7 +172,6 @@ var Game = $class({
             scope.song.playPart(cubeBank[markerIndex]);
             scope.chainTimeout = setTimeout(function() {
                 fn();
-                console.log(markerIndex);
                 if (markerIndex == cubeBank.length-1)
                 {
                     scope.clearHighlights();
@@ -178,5 +189,23 @@ var Game = $class({
         };
     },
 
+    evalGame: function() {
+        var okay = true;
+        var bankLength = scope.cubeBank.length;
+        btnEval = $('#btn-eval');
+        console.table(cubeBank);
+        for(var i = 0; i < bankLength; i++) {
+            if (cubeBank[i] !== 'part'+ i) {
+                okay = false;
+                break;
+            }
+        }
+        //$('#modal-correct').modal('show');
+        if (okay == true) {
+            $('.modal-correct').modal('show');
+        } else {
+            $('.modal-wrong').modal('show');
+        }
+    }
 
 })

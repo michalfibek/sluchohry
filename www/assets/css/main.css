@@ -6632,6 +6632,44 @@ div.flash.warning:before {
   display: inline-block;
   content: "\f071";
 }
+.modal-open .modal {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  overflow-y: scroll;
+}
+.modal-simple .modal-content {
+  background-color: #52a573;
+  color: #fff;
+}
+.modal-simple .modal-title {
+  font-size: 40px;
+  text-align: center;
+}
+.modal-simple .modal-header {
+  border: none;
+  padding: 30px;
+}
+.modal-simple .modal-footer {
+  border: none;
+  text-align: center;
+  padding-bottom: 30px;
+}
+.modal-simple .btn-close-game {
+  background-color: #4A4A4A;
+  color: #fff;
+}
+.modal-simple .btn-next-game {
+  background-color: #21a3e5;
+  color: #fff;
+}
+.modal-simple.modal-correct .modal-content {
+  background-color: #52a573;
+  color: #fff;
+}
+.modal-simple.modal-wrong .modal-content {
+  background-color: #c22f3f;
+  color: #fff;
+}
 header#user-bar {
   background-color: #da6e43;
   display: block;
