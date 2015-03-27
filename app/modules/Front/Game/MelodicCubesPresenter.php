@@ -20,8 +20,12 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	protected $difficulty;
 	protected $cubeCount;
 
+
+
 	public function __construct(Model\SongStorage $songStorage)
 	{
+		parent::__construct();
+
 		$this->songStorage = $songStorage;
 		$this->difficulty = 2; // TODO this is hardcoded, remove after difficulty implementation
 		switch ($this->difficulty)
@@ -48,15 +52,35 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 
 	protected function getAssetsRandom()
 	{
-		$assets['song'] = $this->songStorage->getSongRandom();
-		$assets['markers'] = $this->songStorage->getCubeMarkersByCount($assets['song']->getPrimary(), $this->cubeCount);
+		$omitSongs = ($this->gameSession['melodicCubesHistory']) ? explode('-',$this->gameSession['melodicCubesHistory']) : null;
+		if ($song = $this->songStorage->getSongRandom($omitSongs))
+		{
+			$assets['song'] = $song;
+			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($song->getPrimary(), $this->cubeCount);
 
-		return $assets;
+			return $assets;
+		} else {
+			return null;
+		}
 	}
 
-	public function actionDefault($id = null)
+	public function actionDefault($id = null, $nextRound = null)
 	{
+		if (!$nextRound) {
+			unset($this->gameSession['melodicCubesHistory']);
+		}
 		$this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
+		if (!$this->gameAssets) {
+			$el = Nette\Utils\Html::el('span', $this->translator->translate('front.melodicCubes.flash.playedAll'));
+			$el->add( Nette\Utils\Html::el('a', $this->translator->translate('front.melodicCubes.flash.playAgain'))->href($this->link('default')) );
+			$this->flashMessage($el, 'success');
+			$this->redirect(':Front:Default:');
+		}
+		if ($nextRound)
+			$this->gameSession['melodicCubesHistory'] = $this->gameSession['melodicCubesHistory'].'-'.$this->gameAssets['song']['id'];
+		else
+			$this->gameSession['melodicCubesHistory'] = $this->gameAssets['song']['id'];
+		Debugger::barDump($this->gameSession);
 	}
 
 	public function renderDefault()
@@ -70,7 +94,6 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		{
 			shuffle($shuffledOrder);
 		}
-		Debugger::barDump($shuffledOrder);
 		$this->template->shuffledOrder = $shuffledOrder;
 
 //		\Tracy\Debugger::barDump($this->gameAssets['song']);

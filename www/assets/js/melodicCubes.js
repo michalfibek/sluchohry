@@ -98,11 +98,17 @@ var Game = $class({
 
     addHighlight: function(cubeIndex) {
         $('#song-'+cubeIndex).parent().addClass('cube-highlight');
+        $('#song-'+cubeIndex).find('.cube-spinner').show();
+    },
+
+    isHighlight: function(cubeIndex) {
+        return $('#song-'+cubeIndex).parent().hasClass('cube-highlight');
     },
 
     clearHighlights: function() {
         $('.single-cube').each( function() {
             $(this).removeClass('cube-highlight').transition();
+            $(this).find('.cube-spinner').hide();
         });
     },
 
@@ -120,15 +126,23 @@ var Game = $class({
     initButtons: function() {
 
         scope.switchStopBtn();
+        scope.clearHighlights();
 
         var cubeBtns = $('.cube-play');
         cubeBtns.on('click', function() {
             var partId = $(this).data('part');
-            scope.switchStopBtn();
-            scope.switchPlayBtn();
-            scope.song.stop();
-            scope.song.playPartOnly(partId);
-            scope.addHighlight(partId);
+            if (scope.isHighlight(partId)) // if user clicks on currently playing cube
+            {
+                scope.song.stop();
+                scope.switchStopBtn();
+            } else {
+                scope.switchStopBtn();
+                scope.switchPlayBtn();
+                scope.song.stop();
+                scope.song.playPartOnly(partId);
+                scope.addHighlight(partId);
+            }
+
         });
         cubeBtns.each( function() {
             $(this).css("background-color", scope.getRandomColor());
@@ -207,7 +221,6 @@ var Game = $class({
             }
         }
         //$('#modal-correct').modal('show');
-        console.log('moves: '+scope.cubeMoveCount);
         if (okay == true) {
             $('.modal-correct').modal('show');
             $('.attempt-count').find('span').empty().append(scope.cubeMoveCount);

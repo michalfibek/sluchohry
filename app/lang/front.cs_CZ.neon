@@ -27,6 +27,7 @@ game:
     melodicCubes: "Melodické kostky"
     pexeso: "Pexeso"
 
+
 melodicCubes:
     play: "Hrej"
     stop: "Stop"
@@ -37,3 +38,7 @@ melodicCubes:
     closeGame: "Ukončit"
     tryAgain: "Zkusit znovu"
     moveCount: "pohybů kostek"
+
+    flash:
+        playedAll: "Všechny písničky dohrány! "
+        playAgain: "Hrát znovu"

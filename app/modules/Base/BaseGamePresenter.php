@@ -3,7 +3,10 @@
 namespace App\Module\Base\Presenters;
 
 
-abstract class BaseGamePresenter extends BasePresenter {
+abstract class BaseGamePresenter extends BasePresenter
+{
+    /** @var \Nette\Http\SessionSection */
+    protected $gameSession;
 
     protected $difficulty;
     protected $gameAssets;
@@ -13,6 +16,12 @@ abstract class BaseGamePresenter extends BasePresenter {
 
     abstract protected function getAssetsById($id);
     abstract protected function getAssetsRandom();
+
+    public function startup() {
+
+        parent::startup();
+        $this->gameSession = $this->getSession('game');
+    }
 
     protected function handleForceEnd()
     {

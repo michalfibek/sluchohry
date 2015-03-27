@@ -60,11 +60,11 @@ class SongStorage extends Nette\Object
         return $this->database->table(self::TABLE_NAME_SONG)->get($songId);
     }
 
-    public function getSongRandom()
+    public function getSongRandom($omitSongs = null)
     {
-        $songsAll = $this->database->table(self::TABLE_NAME_SONG)->fetchAll();
+        $songsAll = $this->database->table(self::TABLE_NAME_SONG)->select('*')->where('(id NOT ?)', $omitSongs)->fetchAll();
         $key = array_rand($songsAll);
-        return $songsAll[$key];
+        if ($songsAll) return $songsAll[$key]; else return null;
     }
 
     public function getMarkersAll($songId)

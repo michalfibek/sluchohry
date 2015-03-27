@@ -17,7 +17,7 @@ application:
 		*: App\Module\*\Presenters\*Presenter
 
 session:
-	expiration: 14 days
+	expiration: 1 day
 
 extensions:
     events: Kdyby\Events\DI\EventsExtension

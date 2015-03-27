@@ -19,7 +19,10 @@
         <div class="row" id="play-cubes">
             {for $i = 0; $i < count($markers); $i++}
             <div class="col-xs-3 col-md-2 single-cube cube-plain">
-                <a class="cube-play btn btn-default" id="song-part{$shuffledOrder[$i]}" data-part="part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">{if $debug}Play {$shuffledOrder[$i]}{/if}</a>
+                <a class="cube-play btn btn-default" id="song-part{$shuffledOrder[$i]}" data-part="part{$shuffledOrder[$i]}" data-duration="{$markers[$shuffledOrder[$i]][1]}">
+                    <span class="cube-spinner"><i class="fa fa-refresh fa-spin"></i></span>
+                    {if $debug}Play {$shuffledOrder[$i]}{/if}
+                </a>
             </div>
             {/for}
         </div>
@@ -48,7 +51,7 @@
             </div>
             <div class="modal-footer">
                 <a n:href=":Front:Default:" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.melodicCubes.closeGame}</a>
-                <a n:href="this"  class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.melodicCubes.nextGame}</a>
+                <a n:href="this nextRound=>true"  class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.melodicCubes.nextGame}</a>
             </div>
         </div>
     </div>

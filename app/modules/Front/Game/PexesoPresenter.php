@@ -12,6 +12,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
 	public function __construct()
 	{
+		parent::__construct();
 
 	}
 

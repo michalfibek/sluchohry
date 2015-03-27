@@ -12,11 +12,11 @@ use Nette,
  */
 class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
-	private $user;
+	private $userRecord;
 
-	public function __construct(Model\User $user)
+	public function __construct(Model\User $userRecord)
 	{
-		$this->user = $user;
+		$this->userRecord = $userRecord;
 	}
 
 	protected function createComponentEditUserForm()
@@ -34,7 +34,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->addRule(Form::EMAIL, 'E-mail format is incorrect.');
 		$form->addText('realname');
 		$form->addSelect('role_id')
-			->setItems($this->user->getRoleArray())
+			->setItems($this->userRecord->getRoleArray())
 			->setDefaultValue(4);
 		$form->addSubmit('save');
 		$form->onSuccess[] = array($this, 'editUserFormSucceed');
@@ -54,7 +54,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function actionAdd($username, $password, $email, $realname, $roleId)
 	{
-		$this->user->add($username, $password, $email, $realname, $roleId);
+		$this->userRecord->add($username, $password, $email, $realname, $roleId);
 		$this->flashMessage('The user has been successfully added.', 'success');
 		$this->redirect('default');
 	}
@@ -68,7 +68,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	{
 		if ($id)
 		{
-			$userRow = $this->user->getById($id);
+			$userRow = $this->userRecord->getById($id);
 
 			if (!$userRow) {
 				$this->flashMessage('Sorry, this user was not found.', 'error');
@@ -82,7 +82,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function	renderDefault()
 	{
-		$this->template->users = $this->user->getAll();
+		$this->template->users = $this->userRecord->getAll();
 	}
 
 	public function actionSetRole($userId, $roleName)

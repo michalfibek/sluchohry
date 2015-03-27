@@ -6560,6 +6560,10 @@ div.flash:before {
   display: inline-block;
   content: "\f129";
 }
+div.flash a {
+  color: #fff;
+  text-decoration: underline;
+}
 div.flash.success {
   padding: 15px;
   margin-bottom: 22px;
@@ -6791,17 +6795,24 @@ GAME: melodic cubes
   opacity: 1;
 }
 .cube-highlight .btn {
+  -webkit-transition: all 0.5s ease-in-out;
+          transition: all 0.5s ease-in-out;
+  background-color: #ff0000 !important;
+  opacity: 1;
+}
+.cube-spinner {
   -webkit-transition: all 1s ease-in-out;
           transition: all 1s ease-in-out;
-  background-color: #ff0000;
-  -webkit-animation-name: blinker;
-          animation-name: blinker;
-  -webkit-animation-duration: 1.5s;
-          animation-duration: 1.5s;
-  -webkit-animation-timing-function: linear;
-          animation-timing-function: linear;
-  -webkit-animation-iteration-count: infinite;
-          animation-iteration-count: infinite;
+  color: #fff;
+  z-index: 20;
+  position: inherit;
+  vertical-align: middle;
+}
+.cube-spinner .fa-spin {
+  position: absolute;
+  left: 35%;
+  top: 35%;
+  font-size: 30px;
 }
 /*
 FRONT: applies only to front module
@@ -7115,30 +7126,24 @@ CSS3 animations
 */
 @-webkit-keyframes blinker {
   0% {
-    opacity: 1;
-    background-color: #ff0000;
+    opacity: 0.5;
   }
   50% {
-    opacity: 0.5;
-    background-color: #ff0000;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
-    background-color: #ff0000;
+    opacity: 0.5;
   }
 }
 @keyframes blinker {
   0% {
-    opacity: 1;
-    background-color: #ff0000;
+    opacity: 0.5;
   }
   50% {
-    opacity: 0.5;
-    background-color: #ff0000;
+    opacity: 1;
   }
   100% {
-    opacity: 1;
-    background-color: #ff0000;
+    opacity: 0.5;
   }
 }
 /*
@@ -7204,6 +7209,12 @@ MEDIA QUERIES section
 @media (min-width: 768px) {
   .homepage h1 {
     font-size: 4.5em;
+  }
+  .cube-spinner .fa-spin {
+    position: absolute;
+    left: 35%;
+    top: 35%;
+    font-size: 60px;
   }
 }
 /* Medium devices (desktops, 992px and up) */

@@ -90,6 +90,11 @@ div.flash {
     content: "\f129";
   }
 
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
 }
 div.flash.success {
   .alert();
@@ -297,12 +302,13 @@ GAME: melodic cubes
   }
 }
 .cube-highlight .btn {
-  transition: all 1s ease-in-out;
-  background-color: #ff0000;
-  animation-name: blinker;
-  animation-duration: 1.5s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  transition: all 0.5s ease-in-out;
+  background-color: #ff0000 !important;
+  opacity: 1;
+//  animation-name: blinker;
+//  animation-duration: 1.5s;
+//  animation-timing-function: linear;
+//  animation-iteration-count: infinite;
 
 //  &:before {
 //    font-family: FontAwesome;
@@ -314,6 +320,23 @@ GAME: melodic cubes
 //    position: absolute;
 //  }
 }
+.cube-spinner {
+  transition: all 1s ease-in-out;
+  color: #fff;
+  z-index: 20;
+  position: inherit;
+  vertical-align: middle;
+//  top: 50%;
+//  left: 50%;
+
+  .fa-spin {
+    position: absolute;
+    left: 35%;
+    top: 35%;
+    font-size: 30px;
+  }
+}
+
 
 
 /*
@@ -484,9 +507,9 @@ CSS3 animations
 */
 @keyframes blinker
 {
-  0% {opacity: 1; background-color: #ff0000;}
-  50% {opacity: 0.5; background-color: #ff0000;}
-  100% {opacity: 1; background-color: #ff0000;}
+  0% {opacity: 0.5;}
+  50% {opacity: 1;}
+  100% {opacity: 0.5;}
 }
 
 
@@ -553,6 +576,17 @@ MEDIA QUERIES section
     }
 
   }
+
+  .cube-spinner {
+
+    .fa-spin {
+      position: absolute;
+      left: 35%;
+      top: 35%;
+      font-size: 60px;
+    }
+  }
+
 
 }
 
