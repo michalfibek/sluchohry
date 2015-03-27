@@ -40,5 +40,6 @@ melodicCubes:
     moveCount: "pohybů kostek"
 
     flash:
+        noMarkers: "Tahle písnička ještě není připravená :("
         playedAll: "Všechny písničky dohrány! "
         playAgain: "Hrát znovu"

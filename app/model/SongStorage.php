@@ -52,17 +52,34 @@ class SongStorage extends Nette\Object
     public function getSongAll()
     {
         return $this->database->table(self::TABLE_NAME_SONG)
-            ->order('create_time DESC');
+            ->order('create_time ASC');
     }
 
-    public function getSongById($songId)
+    public function getSongById($songId, $requireMarkers = false)
     {
+        if ($requireMarkers) {
+            $hasMarkers = $this->database->query('SELECT * FROM marker WHERE song_id=?', $songId)->fetchAll();
+            if (!$hasMarkers) return false;
+        }
         return $this->database->table(self::TABLE_NAME_SONG)->get($songId);
+
     }
 
-    public function getSongRandom($omitSongs = null)
+    public function getSongRandom($omitSongs = null, $requireMarkers = false)
     {
-        $songsAll = $this->database->table(self::TABLE_NAME_SONG)->select('*')->where('(id NOT ?)', $omitSongs)->fetchAll();
+        if ($requireMarkers)
+        {
+            if ($omitSongs)
+                $songsAll = $this->database->query( 'SELECT * FROM song WHERE id IN (SELECT DISTINCT song_id FROM marker) AND id NOT IN (?)', $omitSongs )->fetchAll();
+            else
+                $songsAll = $this->database->query( 'SELECT * FROM song WHERE id IN (SELECT DISTINCT song_id FROM marker)' )->fetchAll();
+        } else {
+            if ($omitSongs)
+                $songsAll = $this->database->query( 'SELECT * FROM song WHERE id NOT IN (?)', $omitSongs )->fetchAll();
+            else
+                $songsAll = $this->database->query( 'SELECT * FROM song')->fetchAll();
+        }
+
         $key = array_rand($songsAll);
         if ($songsAll) return $songsAll[$key]; else return null;
     }

@@ -44,20 +44,24 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 
 	protected function getAssetsById($id)
 	{
-		$assets['song'] = $this->songStorage->getSongById($id);
-		$assets['markers'] = $this->songStorage->getCubeMarkersByCount($id, $this->cubeCount);
+		if ($song = $this->songStorage->getSongById($id, true))
+		{
+			$assets['song'] = $song;
+			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($id, $this->cubeCount);
+			return $assets;
+		} else {
+			return null;
+		}
 
-		return $assets;
 	}
 
 	protected function getAssetsRandom()
 	{
 		$omitSongs = ($this->gameSession['melodicCubesHistory']) ? explode('-',$this->gameSession['melodicCubesHistory']) : null;
-		if ($song = $this->songStorage->getSongRandom($omitSongs))
+		if ($song = $this->songStorage->getSongRandom($omitSongs, true))
 		{
 			$assets['song'] = $song;
-			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($song->getPrimary(), $this->cubeCount);
-
+			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($song->id, $this->cubeCount);
 			return $assets;
 		} else {
 			return null;
@@ -71,16 +75,22 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		}
 		$this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
 		if (!$this->gameAssets) {
-			$el = Nette\Utils\Html::el('span', $this->translator->translate('front.melodicCubes.flash.playedAll'));
-			$el->add( Nette\Utils\Html::el('a', $this->translator->translate('front.melodicCubes.flash.playAgain'))->href($this->link('default')) );
-			$this->flashMessage($el, 'success');
+			if (isset($id)) {
+				$msg = Nette\Utils\Html::el('span', $this->translator->translate('front.melodicCubes.flash.noMarkers'));
+				$status = 'error';
+			} else {
+				$msg = Nette\Utils\Html::el('span', $this->translator->translate('front.melodicCubes.flash.playedAll'));
+				$msg->add( Nette\Utils\Html::el('a', $this->translator->translate('front.melodicCubes.flash.playAgain'))->href($this->link('default')) );
+				$status = 'success';
+			}
+			$this->flashMessage($msg, $status);
 			$this->redirect(':Front:Default:');
 		}
 		if ($nextRound)
 			$this->gameSession['melodicCubesHistory'] = $this->gameSession['melodicCubesHistory'].'-'.$this->gameAssets['song']['id'];
 		else
 			$this->gameSession['melodicCubesHistory'] = $this->gameAssets['song']['id'];
-		Debugger::barDump($this->gameSession);
+//		Debugger::barDump($this->gameSession);
 	}
 
 	public function renderDefault()
