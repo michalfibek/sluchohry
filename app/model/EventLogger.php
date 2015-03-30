@@ -28,8 +28,6 @@ class EventLogger extends Nette\Object {
     private $database;
     private $user;
     private $httpRequest;
-    private $userAgent;
-
 
     public function __construct(Nette\Database\Context $database, Nette\Security\User $user, Nette\Http\Request $httpRequest)
     {
@@ -43,6 +41,7 @@ class EventLogger extends Nette\Object {
         $event = $this->database->table('event')->insert(array(
             'user_id' => $this->user->getId(),
             'user_agent' => $this->httpRequest->getHeader('User-Agent'),
+            'user_ip' => $this->httpRequest->getRemoteAddress(),
             'event_class_id' => $eventClassId
         ));
 
