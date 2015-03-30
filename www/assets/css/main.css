@@ -7071,10 +7071,8 @@ fieldset[disabled] #settings-list li a.active {
   color: #ffffff;
   background-color: #333333;
 }
-/*
-ADMIN: applies only to admin module
-*/
-.container.admin #file-uploader {
+/* ADMIN SECTION */
+#file-uploader {
   margin: 30px 0;
 }
 .song-editor canvas {

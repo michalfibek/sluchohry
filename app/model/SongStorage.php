@@ -250,9 +250,6 @@ class SongStorage extends Nette\Object
             // delete song file
             Nette\Utils\FileSystem::delete($this->saveDir . $song->filename . '.' . $this->songDefaultExtension);
 
-            // delete song markers
-            $this->deleteMarkers($songId);
-
             // finally, delete song itself from db
             $song->delete();
 

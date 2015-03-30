@@ -15,7 +15,7 @@ var Song = $class({
             if ( (e.which === 77 || e.which === 109) && tag != 'input' && tag != 'textarea')
                 scope.setTimeMarker();
         });
-        if (songMarkers.length > 0) scope.initTimeMarkers(songMarkers);
+        if (songMarkers) scope.initTimeMarkers(songMarkers);
     },
 
     show: function() {
@@ -32,7 +32,7 @@ var Song = $class({
         $('#songId').val(this.songId);
         $('#artist').val(this.artist);
         $('#title').val(this.title);
-        $('#duration').append(this.duration);
+        $('#duration').empty().append(this.duration);
     },
 
     downloadSongData: function() {
@@ -163,6 +163,12 @@ var Song = $class({
         $('#markers-updated').val('1');
     },
 
+    hideMarkerEditor: function() {
+        $('#ex1-mark').hide();
+        $('canvas').hide();
+        $('.marker-list').hide();
+    },
+
     delTimeMarker: function(timecode) {
         for (var i = 0; i < markerList.length; i++) {
             if (markerList[i] == timecode) {
@@ -218,9 +224,11 @@ if (typeof songId != 'undefined' && songId != null) {
             fail: 'alert alert-error'
         }
     }).on('complete', function (event, id, name, responseJSON) {
-        var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["filename"]);
+        var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["fileName"], null);
         s.downloadSongData();
+        s.hideMarkerEditor();
         s.populateForm();
+
         songEditors.push(this.s);
     });
 }
