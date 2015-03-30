@@ -13,6 +13,7 @@ class SongStorage extends Nette\Object
     const
         TABLE_NAME_SONG = 'song',
         TABLE_NAME_MARKER = 'marker',
+        TABLE_NAME_GAME = 'game',
         TABLE_NAME_GENRE = 'genre';
 
     /** @var Nette\Database\Context */
@@ -51,8 +52,16 @@ class SongStorage extends Nette\Object
     /** @return Nette\Database\Table\Selection */
     public function getSongAll()
     {
+        // TODO fetchovat i zaznamy pouzitych her, zobrazovat v templatu
         return $this->database->table(self::TABLE_NAME_SONG)
             ->order('create_time ASC');
+    }
+
+    /** @return Nette\Database\Table\Selection */
+    public function getGameAll()
+    {
+        return $this->database->table(self::TABLE_NAME_GAME)
+            ->order('name ASC');
     }
 
     public function getSongById($songId, $requireMarkers = false)
@@ -62,7 +71,11 @@ class SongStorage extends Nette\Object
             if (!$hasMarkers) return false;
         }
         return $this->database->table(self::TABLE_NAME_SONG)->get($songId);
+    }
 
+    public function getGameAssoc($songId)
+    {
+        return $this->database->query('SELECT game_id FROM game_has_song WHERE song_id=?', $songId)->fetchPairs();
     }
 
     public function getSongRandom($omitSongs = null, $requireMarkers = false)
@@ -121,7 +134,7 @@ class SongStorage extends Nette\Object
         return $markers;
     }
 
-    public function getGenres($songId)
+    public function getGenres()
     {
         return $this->database->table(self::TABLE_NAME_GENRE);
     }
@@ -141,20 +154,48 @@ class SongStorage extends Nette\Object
         } catch (\Exception $e) {
             Debugger::log($e->getMessage());
         }
-
     }
 
-    public function updateMarkers($songId, $markers)
+    public function updateMarkers($songId, $markers = null)
     {
         // delete old markers
         $this->deleteMarkers($songId);
 
-        // insert new markers
-        foreach ($markers as $singleMarker) {
-            $this->database->table(self::TABLE_NAME_MARKER)->insert( array(
-                'song_id' => $songId,
-                'timecode' => $singleMarker
-            ));
+        if ($markers) {
+            // insert new markers
+            foreach ($markers as $singleMarker) {
+                $this->database->table(self::TABLE_NAME_MARKER)->insert( array(
+                    'song_id' => $songId,
+                    'timecode' => $singleMarker
+                ));
+            }
+        }
+    }
+
+    public function updateGameAssoc($songId, $gameIdArray)
+    {
+        $currentAssoc = $this->getGameAssoc($songId);
+
+        if ($currentAssoc == $gameIdArray) {
+            return false;
+        }
+        Debugger::barDump($currentAssoc);
+        Debugger::barDump($gameIdArray);
+
+        // updating, so delete old records
+        $this->database->table('game_has_song')->where('song_id=?',$songId)->delete();
+
+        // do we insert?
+        if ($gameIdArray)
+        {
+            foreach ($gameIdArray as $gameId)
+            {
+                $insertArray = array(
+                    'game_id' => $gameId,
+                    'song_id' => $songId
+                );
+                $this->database->query('INSERT INTO game_has_song', $insertArray);
+            }
         }
     }
 

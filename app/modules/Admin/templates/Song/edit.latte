@@ -85,6 +85,15 @@
                     </select>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Game:</label>
+                <div class="col-sm-8" n:inner-foreach="$form[game]->items as $key => $label">
+                    <div class="checkbox">
+                        <label n:name="game:$key"><input n:name="game:$key"> {$label}</label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="duration" class="col-sm-4 control-label">Duration:</label>
                 <div class="col-sm-8">

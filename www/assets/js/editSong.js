@@ -160,7 +160,7 @@ var Song = $class({
             return val + curTime; // in milliseconds
         });
         $('#time-markers').append('<a href="#" id="mark-' + curTime + '" title="delete marker" class="marker">' + curTime/1000 + '</a>');
-        $('#markers-updated').val('true');
+        $('#markers-updated').val('1');
     },
 
     delTimeMarker: function(timecode) {
@@ -178,7 +178,7 @@ var Song = $class({
         $('#mark-' + timecode).remove();
         scope.drawWaveform();
         scope.updateLineMarker();
-        $('#markers-updated').val('true');
+        $('#markers-updated').val('1');
 
     },
 

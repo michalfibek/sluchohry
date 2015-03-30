@@ -14,11 +14,17 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	private $userRecord;
 
+	/**
+	 * @param Model\User $userRecord
+	 */
 	public function __construct(Model\User $userRecord)
 	{
 		$this->userRecord = $userRecord;
 	}
 
+	/**
+	 * @return Form
+	 */
 	protected function createComponentEditUserForm()
 	{
 		$form = new Form;
@@ -42,16 +48,31 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		return $form;
 	}
 
+	/**
+	 * @param $form
+	 * @param $values
+	 */
 	public function editUserFormSucceed($form, $values)
 	{
 		$this->actionAdd($values['username'], $values['password'], $values['email'], $values['realname'], $values['role_id']);
 	}
 
+	/**
+	 *
+	 */
 	public function actionDefault()
 	{
 
 	}
 
+	/**
+	 * @param $username
+	 * @param $password
+	 * @param $email
+	 * @param $realname
+	 * @param $roleId
+	 * @throws Model\DuplicateNameException
+	 */
 	public function actionAdd($username, $password, $email, $realname, $roleId)
 	{
 		$this->userRecord->add($username, $password, $email, $realname, $roleId);
@@ -59,11 +80,17 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->redirect('default');
 	}
 
+	/**
+	 * @param $id
+	 */
 	public function actionDelete($id)
 	{
 
 	}
 
+	/**
+	 * @param null $id
+	 */
 	public function	renderEdit($id = NULL)
 	{
 		if ($id)
@@ -80,11 +107,18 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		}
 	}
 
+	/**
+	 *
+	 */
 	public function	renderDefault()
 	{
 		$this->template->users = $this->userRecord->getAll();
 	}
 
+	/**
+	 * @param $userId
+	 * @param $roleName
+	 */
 	public function actionSetRole($userId, $roleName)
 	{
 		$this->addRole('guest');

@@ -5,6 +5,7 @@ namespace App\Module\Admin\Presenters;
 use Nette,
 	App\Model,
 	Nette\Application\UI\Form;
+use Tracy\Debugger;
 
 
 /**
@@ -15,40 +16,22 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	private $songList;
 	private $song;
 	private $songMarkers;
+	private $gameAssoc;
 	private $genreList;
+	private $gameList;
 
 	/** @var Model\SongStorage */
 	private $songStorage;
 
 	public function __construct(Model\SongStorage $songStorage)
 	{
+		parent::__construct();
 		$this->songStorage = $songStorage;
 	}
 
-	protected function startup()
-	{
-		parent::startup();
-
-		// TODO autorizovat korektne uzivatele podle urovne opravneni! + ukladat request pro aktualni stranku a vracet zpet pri prihlaseni
-		/* user authorization */
-		if ($this->user->isLoggedIn()) {
-//			if (!$this->user->isAllowed($this->name, $this->action)) { // check if user is allowed
-//				$this->flashMessage("You are not allowed for this module.", "error");
-//				$this->redirect("Homepage");
-//			}
-		} else {
-//		} else if ($this->action != "login") {
-//			if ($this->action != "default") {
-//				if ($this->user->getLogoutReason() === User::INACTIVITY) {
-//					$this->flashMessage("You have been logged out due to inactivity.");
-//				} else {
-//					$this->flashMessage("You are not logged.", "error");
-//				}
-//			}
-			$this->redirect(":Front:Default:");
-		}
-	}
-
+	/**
+	 * @return Form
+	 */
 	protected function createComponentSongEditForm()
 	{
 		$form = new Form;
@@ -57,6 +40,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->setRequired();
 		$form->addSelect('genre_id')
 			->setItems($this->genreList->fetchPairs('id', 'name'));
+		$form->addCheckboxList('game', 'Games:', $this->gameList->fetchPairs('id', 'name'));
 		$form->addHidden('songId');
 		$form->addHidden('markersUpdated')
 			->setValue('false');
@@ -68,23 +52,38 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$form->addSubmit('delete')
 			->onClick[] = \callback($this, 'songDeleteClicked');
 
-		$form->onSuccess[] = array($this, 'songEditFormSucceed'); // a přidat událost po odeslání
+		$form->onSuccess[] = array($this, 'songEditFormSucceed');
 
 		return $form;
 	}
 
+	/**
+	 * @param $form
+	 * @param $values
+	 */
 	public function songEditFormSucceed($form, $values)
 	{
 		// sets song id by form hidden or by url parameter
 		$songId = (strlen($values->songId) > 0) ? $values->songId : $songId = $this->getParameter('id');
 		unset($values->songId);
 
-		$updateMarkers = ($values->markers != 0 && $values->markersUpdated == 'true') ? explode(',',$values->markers) : null;
-		unset($values->markers);
-		unset($values->markersUpdated);
+		if ($values->markersUpdated == '1') {
+			if ($values->markers !== "")
+				$updateMarkers = explode(',',$values->markers); // markers were updated
+			else
+				$updateMarkers = null; // all markers were deleted
+		} else {
+			$updateMarkers = false; // there was no marker change
+		}
+		$gameIdArray = (!empty($values->game)) ? $values->game : null;
+
+		unset($values->markers, $values->markersUpdated, $values->game);
 
 		$this->songStorage->updateSong($songId, $values);
-		if ($updateMarkers != null) $this->songStorage->updateMarkers($songId, $updateMarkers); // if markers were set by the form, delete old and insert new
+		if ($updateMarkers)// if markers were set by the form, delete old and insert new
+			$this->songStorage->updateMarkers($songId, $updateMarkers);
+
+		$this->songStorage->updateGameAssoc($songId, $gameIdArray);
 
 		$this->flashMessage("Song description been successfully updated.", 'success');
 		$this->redirect('default');
@@ -95,6 +94,15 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->actionDelete($this->getParameter('id'));
 	}
 
+	public function actionDefault()
+	{
+		$this->songList = $this->songStorage->getSongAll();
+	}
+
+	/**
+	 * @param $id
+	 * @throws \Exception
+	 */
 	public function actionDelete($id)
 	{
 		if (!$this->songStorage->deleteSong($id)) {
@@ -103,11 +111,6 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$this->flashMessage("Song has been deleted.", 'success');
 		}
 		$this->redirect('default');
-	}
-
-	public function actionDefault()
-	{
-		$this->songList = $this->songStorage->getSongAll();
 	}
 
 	public function	renderDefault()
@@ -119,6 +122,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	{
 		if (isset($id)) {
 			$this->song = $this->songStorage->getSongById($id);
+			$this->gameAssoc = $this->songStorage->getGameAssoc($id);
 //			$this->genreList = $this->song->related('genre');
 			if (!$this->song) {
 				$this->flashMessage('Sorry, this song was not found.', 'error');
@@ -126,7 +130,8 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			}
 			$this->songMarkers = $this->songStorage->getMarkersAll($id);
 		}
-		$this->genreList = $this->songStorage->getGenres($id); // fetch genre list for form
+		$this->gameList = $this->songStorage->getGameAll();
+		$this->genreList = $this->songStorage->getGenres(); // fetch genre list for form
 	}
 
 	public function	renderEdit()
@@ -135,12 +140,13 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$this->template->song = $this->song;
 			$this->template->songMarkers = implode(',',$this->songMarkers->fetchPairs('id', 'timecode'));
 			$this['songEditForm']->setDefaults($this->template->song->toArray());
+			$this['songEditForm']['game']->setDefaultValue($this->gameAssoc);
 		}
 	}
 
 	/**
 	 * uses Fine Uploader to handle uploaded music file
-     */
+	 */
 	public function handleUploadFile() {
 		try {
 			$uploadResult = $this->songStorage->handleUpload();
