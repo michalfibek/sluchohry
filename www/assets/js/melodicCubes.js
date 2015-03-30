@@ -3,11 +3,10 @@
  */
 var Song = $class({
 
-    constructor: function(songUrl, markers, spriteDef) {
+    constructor: function(songUrl, spriteDef) {
         scope = this;
 
         this.songUrl = songUrl;
-        this.markers = markers;
         this.spriteDef = spriteDef;
 
         this.songCtrl; // reference on howler instance
@@ -51,16 +50,26 @@ var Song = $class({
  */
 var Game = $class({
 
-    constructor: function(song, shuffledOrder, colors, chainDef) {
+    constructor: function(song, songId, difficulty, timer, logger, shuffledOrder, colors, chainDef) {
         scope = this;
-        this.colors = colors;
         this.song = song;
+        this.songId = songId;
+        this.difficulty = difficulty;
+        this.timer = timer;
+        this.logger = logger;
+        this.colors = colors;
         this.chainDef = chainDef;
         this.songChain = [];
         this.cubeMoveCount = 0;
+        this.gameName = 'melodicCubes';
+        this.gameEndHandler = '?do=gameEnd';
+        this.gameForceEndHandler = '?do=gameForceEnd';
+        this.gameSolved = false;
 
         scope.initButtons();
         scope.initChain();
+        scope.initTimer();
+        scope.initOnWindowClose();
 
     },
 
@@ -174,6 +183,11 @@ var Game = $class({
                 scope.switchStopBtn();
             }
         });
+
+        $('.btn-return-game').on('click', function() {
+            $('.modal-wrong').modal('hide');
+            scope.timer.start(); // re-run timeout on return to game
+        })
     },
 
     initChain: function () {
@@ -183,9 +197,24 @@ var Game = $class({
         }
     },
 
+    initTimer: function() {
+        scope.timer.start()
+    },
+
+    initOnWindowClose: function() {
+        if (!scope.gameSolved)
+        {
+            var that = this;
+            $(window).on("beforeunload", function() {
+                that.logger.sendResult(that.gameForceEndHandler, that.getResult());
+            })
+        }
+    },
+
     chainFunctionGenerator: function(markerIndex, markerValue, songCtrl, cubeBankFn) {
         return function(fn) {
             var cubeBank = cubeBankFn();
+            if (markerIndex !== 0) scope.clearHighlights();
             scope.addHighlight(cubeBank[markerIndex]);
 
             scope.song.playPart(cubeBank[markerIndex]);
@@ -207,9 +236,21 @@ var Game = $class({
         };
     },
 
+    getResult: function () {
+        var result = {
+            gameName: this.gameName,
+            steps: scope.cubeMoveCount,
+            time: scope.timer.getTime(),
+            difficulty: scope.difficulty,
+            songId: scope.songId
+        };
+        return result;
+    },
+
     evalGame: function() {
         scope.song.stop();
         scope.switchStopBtn();
+        scope.timer.stop();
         var okay = true;
         var cubeBank = scope.getCubeBank();
         var bankLength = cubeBank.length;
@@ -220,12 +261,18 @@ var Game = $class({
                 break;
             }
         }
-        //$('#modal-correct').modal('show');
         if (okay == true) {
+            scope.gameSolved = true;
             $('.modal-correct').modal('show');
             $('.attempt-count').find('span').empty().append(scope.cubeMoveCount);
+            //$('#modal-correct').modal('show');
+            this.logger.sendResult(this.gameEndHandler, this.getResult());
         } else {
             $('.modal-wrong').modal('show');
+
+            // DEBUG ONLY, possible attempt record
+            //var result = {gameName: this.gameName, steps: scope.cubeMoveCount, time: scope.timer.getTime()};
+            //this.logger.sendResult(this.gameEndHandler, result);
         }
     }
 

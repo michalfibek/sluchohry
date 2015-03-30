@@ -21,7 +21,6 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	protected $cubeCount;
 
 
-
 	public function __construct(Model\SongStorage $songStorage)
 	{
 		parent::__construct();
@@ -98,6 +97,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		parent::renderDefault();
 		$this->template->song = $this->gameAssets['song'];
 		$this->template->markers = $this->gameAssets['markers'];
+		$this->template->difficulty = $this->difficulty;
 
 		$originalOrder = $shuffledOrder = range(0, count($this->gameAssets['markers'])-1);
 		while ($originalOrder == $shuffledOrder)
@@ -110,5 +110,4 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 //		\Tracy\Debugger::barDump($this->gameAssets['markers']);
 //		\Tracy\Debugger::barDump($this->template->shuffledOrder);
 	}
-
 }

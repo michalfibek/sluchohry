@@ -45,6 +45,7 @@ services:
 
 	- App\Model\SongStorage(%song.uploadDir%, %song.saveDir%)
 	- App\Model\User
+	- App\Model\EventLogger
 
 	- App\Services\UploadHandler
 	- App\Services\SongTagHandler

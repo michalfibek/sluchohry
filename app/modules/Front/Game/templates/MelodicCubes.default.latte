@@ -47,7 +47,9 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">{_front.melodicCubes.resultCorrectTitle} <span class="attempt-count"><span></span> {_front.melodicCubes.moveCount}</span></h4>
+                <h4 class="modal-title">{_front.melodicCubes.resultCorrectTitle}
+                    <span class="attempt-count"><span></span> {_front.melodicCubes.moveCount}</span>
+                </h4>
             </div>
             <div class="modal-footer">
                 <a n:href=":Front:Default:" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.melodicCubes.closeGame}</a>
@@ -64,7 +66,7 @@
                 <h4 class="modal-title">{_front.melodicCubes.resultWrong}</h4>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-lg btn-close-game" data-dismiss="modal"><i class="fa fa-repeat"></i> {_front.melodicCubes.tryAgain}</button>
+                <button type="button" class="btn btn-default btn-lg btn-return-game"><i class="fa fa-repeat"></i> {_front.melodicCubes.tryAgain}</button>
             </div>
         </div>
     </div>
@@ -75,40 +77,47 @@
 
 {block scripts}
 {include parent}
-        <script src="{$basePath}/assets/vendor/Sortable/jquery.fn.sortable.js"></script>
-        <script src="{$basePath}/assets/js/melodicCubes.js"></script>
-        <script type="text/javascript">
+    <script src="{$basePath}/assets/vendor/Sortable/jquery.fn.sortable.js"></script>
+    <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
+    <script src="{$basePath}/assets/js/ajaxLogger.js"></script>
+    <script src="{$basePath}/assets/js/gameTimer.js"></script>
+    <script src="{$basePath}/assets/js/melodicCubes.js"></script>
+    <script type="text/javascript">
 
-            var cubeBank,
-                songUrl = '/assets/sounds/songs/{$song->filename|noescape}.mp3';
-                markers = {$markers},
-                shuffledOrder = {$shuffledOrder},
-                cubeCount = {count($markers)},
-                colors = ['#C8FF00', '#FF8800', '#7AE03E', '#30BDB8', '#6520DB', '#DB20CA', '#0047FF', '#00FF77', '#5BA5F9'];
+        var cubeBank,
+            songUrl = '/assets/sounds/songs/{$song->filename|noescape}.mp3';
+            songId = {$song->id},
+            markers = {$markers},
+            shuffledOrder = {$shuffledOrder},
+            difficulty = {$difficulty},
+            cubeCount = {count($markers)},
+            colors = ['#C8FF00', '#FF8800', '#7AE03E', '#30BDB8', '#6520DB', '#DB20CA', '#0047FF', '#00FF77', '#5BA5F9'];
 
-            /**
-             * playable sprites definition
-             */
-            var spriteDef = {
-                {foreach $markers as $m}
-                    part{$iterator->counter-1}: [{$m[0]}, {$m[1]}],
-                {/foreach}
-                    complete: [0, {$song->duration}]
-                };
-
-            /**
-             * song play chain definition
-             */
-            var chainDef = [
+        /**
+         * playable sprites definition
+         */
+        var spriteDef = {
             {foreach $markers as $m}
-                { 0: {$m[0]}, 1: {$m[1]} }{sep}, {/sep}
+                part{$iterator->counter-1}: [{$m[0]}, {$m[1]}],
             {/foreach}
-            ];
+                complete: [0, {$song->duration}]
+            };
 
-            s = new Song(songUrl, markers, spriteDef);
-            g = new Game(s, shuffledOrder, colors, chainDef, cubeBank);
+        /**
+         * song play chain definition
+         */
+        var chainDef = [
+        {foreach $markers as $m}
+            { 0: {$m[0]}, 1: {$m[1]} }{sep}, {/sep}
+        {/foreach}
+        ];
 
-//
+        l = new AjaxLogger();
+        t = new GameTimer();
+        s = new Song(songUrl, spriteDef);
+        g = new Game(s, songId, difficulty, t, l, shuffledOrder, colors, chainDef, cubeBank);
 
-        </script>
+    //
+
+    </script>
 {/block}

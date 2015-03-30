@@ -3,6 +3,8 @@
 namespace App\Module\Base\Presenters;
 
 
+use Tracy\Debugger;
+
 abstract class BaseGamePresenter extends BasePresenter
 {
     /** @var \Nette\Http\SessionSection */
@@ -10,9 +12,9 @@ abstract class BaseGamePresenter extends BasePresenter
 
     protected $difficulty;
     protected $gameAssets;
-    public $onStart = array();
-    public $onEnd = array();
-    public $onForceEnd = array();
+    public $onGameStart = array();
+    public $onGameEnd = array();
+    public $onGameForceEnd = array();
 
     abstract protected function getAssetsById($id);
     abstract protected function getAssetsRandom();
@@ -23,14 +25,19 @@ abstract class BaseGamePresenter extends BasePresenter
         $this->gameSession = $this->getSession('game');
     }
 
-    protected function handleForceEnd()
+    public function handleGameEnd(array $result)
     {
-        $this->onForceEnd($this);
+        $this->onGameEnd($result);
+    }
+
+    public function handleGameForceEnd(array $result)
+    {
+        $this->onGameForceEnd($result);
     }
 
     public function renderDefault()
     {
-        $this->onStart($this);
+//        $this->onGameStart($this);
     }
 
     public function actionEvaluate()
