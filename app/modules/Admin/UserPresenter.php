@@ -8,6 +8,7 @@ use Nette,
 	Mesour\DataGrid\Grid,
 	Mesour\DataGrid\NetteDbDataSource,
 	Mesour\DataGrid\Components\Link;
+use Tracy\Debugger;
 
 
 /**
@@ -33,12 +34,8 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$form = new Form;
 		$form->addText('username')
 			->setRequired();
-		$form->addPassword('password')
-			->setRequired()
-			->addRule(Form::MIN_LENGTH, 'The password has to be at least %d characters long', 6);
-		$form->addPassword('passwordVerify')
-			->setRequired('Please enter your password second time for verification.')
-			->addRule(Form::EQUAL, 'Passwords do not match', $form['password']);
+		$form->addPassword('password');
+		$form->addPassword('passwordVerify');
 		$form->addText('email')
 			->addRule(Form::EMAIL, 'E-mail format is incorrect.');
 		$form->addText('realname');
@@ -46,7 +43,8 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->setItems($this->userRecord->getRoleArray())
 			->setDefaultValue(4);
 		$form->addSubmit('save');
-		$form->onSuccess[] = array($this, 'editUserFormSucceed');
+		$form->addHidden('userId');
+		$form->onSuccess[] = array($this, 'addEditUserFormSucceed');
 
 		return $form;
 	}
@@ -89,15 +87,27 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	}
 
 	/**
+	 * Edit or add user - called by form
+	 *
 	 * @param $form
 	 * @param $values
 	 */
-	public function editUserFormSucceed($form, $values)
+	public function addEditUserFormSucceed($form, $values)
 	{
-		$this->actionAdd($values['username'], $values['password'], $values['email'], $values['realname'], $values['role_id']);
+		if (strlen($values['userId'])>0)
+		{
+			$this->userRecord->update($values['userId'], $values['username'], $values['password'], $values['email'], $values['realname'], $values['role_id']);
+			$this->flashMessage('The user preferences has been changed.', 'success');
+			$this->redirect('default');
+		} else {
+			$this->userRecord->add($values['username'], $values['password'], $values['email'], $values['realname'], $values['role_id']);
+			$this->flashMessage('The user has been successfully added.', 'success');
+			$this->redirect('default');
+		}
 	}
 
 	/**
+	 * List all users
 	 *
 	 */
 	public function actionDefault()
@@ -106,21 +116,8 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	}
 
 	/**
-	 * @param $username
-	 * @param $password
-	 * @param $email
-	 * @param $realname
-	 * @param $roleId
-	 * @throws Model\DuplicateNameException
-	 */
-	public function actionAdd($username, $password, $email, $realname, $roleId)
-	{
-		$this->userRecord->add($username, $password, $email, $realname, $roleId);
-		$this->flashMessage('The user has been successfully added.', 'success');
-		$this->redirect('default');
-	}
-
-	/**
+	 * Delete user by id.
+	 *
 	 * @param $id
 	 */
 	public function handleDelete($id)
@@ -128,22 +125,31 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->userRecord->delete($id);
 	}
 
+	public function renderAdd()
+	{
+		// require when adding new user
+		$this['editUserForm']['password']->setRequired()
+			->addRule(Form::MIN_LENGTH, 'The password has to be at least %d characters long', 6);
+		$this['editUserForm']['passwordVerify']->setRequired('Please enter your password second time for verification.')
+			->addRule(Form::EQUAL, 'Passwords do not match', $this['editUserForm']['password']);
+	}
+
 	/**
+	 * Edit user by id.
+	 *
 	 * @param null $id
 	 */
 	public function	renderEdit($id = NULL)
 	{
-		if ($id)
+		if ($userRow = $this->userRecord->getById($id))
 		{
-			$userRow = $this->userRecord->getById($id);
-
-			if (!$userRow) {
-				$this->flashMessage('Sorry, this user was not found.', 'error');
-				$this->redirect('default');
-			}
-
-			$this['editUserForm']->setDefaults($userRow);
+			$form = $this['editUserForm'];
+			$form->setDefaults($userRow);
+			$form['userId']->setValue($id);
 			$this->template->userRow = $userRow;
+		} else {
+			$this->flashMessage('Sorry, this user was not found.', 'error');
+			$this->redirect('default');
 		}
 	}
 

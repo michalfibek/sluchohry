@@ -78,6 +78,21 @@ class User extends Nette\Object
         }
     }
 
+    public function update($id, $username, $password, $email, $realname, $roleId)
+    {
+        $user = $this->database->table(self::TABLE_NAME)->wherePrimary($id);
+        $user->update(array(
+            self::COLUMN_NAME => $username,
+            self::COLUMN_EMAIL => $email,
+            self::COLUMN_REALNAME => $realname,
+            self::COLUMN_ROLE => $roleId
+        ));
+        if ($password)
+            $user->update(array(
+                self::COLUMN_PASSWORD_HASH => Passwords::hash($password)
+            ));
+    }
+
     public function delete($id)
     {
         $this->database->table(self::TABLE_NAME)->where('id=?',$id)->delete(); // delete user
