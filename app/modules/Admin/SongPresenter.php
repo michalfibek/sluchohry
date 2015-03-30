@@ -4,7 +4,11 @@ namespace App\Module\Admin\Presenters;
 
 use Nette,
 	App\Model,
-	Nette\Application\UI\Form;
+	Nette\Application\UI\Form,
+	Mesour\DataGrid\Grid,
+	Mesour\DataGrid\NetteDbDataSource,
+	Mesour\DataGrid\Components\Link;
+
 use Tracy\Debugger;
 
 
@@ -58,6 +62,44 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	}
 
 	/**
+	 * @param $name
+	 * @return Grid
+	 */
+	protected function createComponentSongDataGrid($name) {
+		$source = new NetteDbDataSource($this->songStorage->getSongAll());
+		$grid = new Grid($this, $name);
+		$table_id = 'id';
+		$grid->setPrimaryKey($table_id); // primary key is now used always
+		$grid->setDataSource($source);
+
+		$grid->addNumber('id');
+		$grid->addText('artist', 'Artist');
+		$grid->addText('title', 'Title');
+		$grid->addText('duration', 'duration');
+		$grid->addDate('create_time', 'Created')
+			->setFormat('j.n.Y H:i:s');
+		$grid->addDate('update_time', 'Updated')
+			->setFormat('j.n.Y H:i:s');
+
+		$actions = $grid->addActions('Actions');
+		$actions->addButton()
+			->setType('btn-primary')
+			->setIcon('fa fa-pencil')
+			->setTitle('edit')
+			->setAttribute('href', new Link('edit', array(
+				'id' => '{'.$table_id.'}'
+			)));
+		$actions->addButton()
+			->setType('btn-danger')
+			->setIcon('fa fa-remove')
+			->setConfirm('Do you really want to delete this song?')
+			->setTitle('delete')
+			->setAttribute('href', new Link('delete!', array(
+				'id' => '{'.$table_id.'}'
+			)));
+		return $grid;
+	}
+	/**
 	 * @param $form
 	 * @param $values
 	 */
@@ -91,19 +133,19 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function songDeleteClicked()
 	{
-		$this->actionDelete($this->getParameter('id'));
+		$this->handleDelete($this->getParameter('id'));
 	}
 
 	public function actionDefault()
 	{
-		$this->songList = $this->songStorage->getSongAll();
+//		$this->songList = $this->songStorage->getSongAll();
 	}
 
 	/**
 	 * @param $id
 	 * @throws \Exception
 	 */
-	public function actionDelete($id)
+	public function handleDelete($id)
 	{
 		if (!$this->songStorage->deleteSong($id)) {
 			$this->flashMessage("Song not found.", 'error');

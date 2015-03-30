@@ -53,8 +53,7 @@ class SongStorage extends Nette\Object
     public function getSongAll()
     {
         // TODO fetchovat i zaznamy pouzitych her, zobrazovat v templatu
-        return $this->database->table(self::TABLE_NAME_SONG)
-            ->order('create_time ASC');
+        return $this->database->table(self::TABLE_NAME_SONG);
     }
 
     /** @return Nette\Database\Table\Selection */

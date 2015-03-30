@@ -78,7 +78,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$actions->addButton()
 			->setType('btn-danger')
 			->setIcon('fa fa-remove')
-			->setConfirm('Realy want to delete user? All user logs will be deleted too!')
+			->setConfirm('Do you really want to delete user? All user logs will be deleted too!')
 			->setTitle('delete')
 			->setAttribute('href', new Link('delete!', array(
 				'id' => '{'.$table_id.'}'
