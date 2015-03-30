@@ -24,7 +24,7 @@
 <h1 n:block="title">Song editor <small>{ifset $song}{$song->title}{else}Upload new song{/ifset}</small></h1>
 </header>
 
-{if isset($song)}
+{if !isset($song)}
 <!-- Fine Uploader DOM Element
 ====================================================================== -->
 <div id="file-uploader" class="col-xs-5"></div>
