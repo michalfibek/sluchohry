@@ -7,14 +7,18 @@
 
 <a n:href="edit" class="btn btn-primary upload-new"><span class="fa fa-user-plus"></span> Add new user</a>
 
-<ul id="user-list" class="item-list">
-{foreach $users as $user}
-    <li>
-        <a n:href="edit $user->id">{$user->username}{if strlen($user->realname)>0} ({$user->realname}){/if}</a>
-        <a n:href="delete $user->id" class="delete-item"><span class="fa fa-remove"></span> delete</a>
-    </li>
-{/foreach}
-</ul>
+<div id="user-list">
+{control userDataGrid}
+</div>
+
+{*<ul id="user-list" class="item-list">*}
+{*{foreach $users as $user}*}
+    {*<li>*}
+        {*<a n:href="edit $user->id">{$user->username}{if strlen($user->realname)>0} ({$user->realname}){/if}</a>*}
+        {*<a n:href="delete $user->id" class="delete-item"><span class="fa fa-remove"></span> delete</a>*}
+    {*</li>*}
+{*{/foreach}*}
+{*</ul>*}
 
 </div>
 {/block}

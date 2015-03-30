@@ -7121,6 +7121,9 @@ ADMIN: applies only to admin module
   text-decoration: none;
   border-bottom: 1px solid;
 }
+#user-list {
+  margin: 30px 0;
+}
 /*
 CSS3 animations
 */

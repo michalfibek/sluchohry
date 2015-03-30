@@ -27,12 +27,11 @@ class User extends Nette\Object
     }
 
     /**
-     * Gets all users.
-     * @return array|Nette\Database\Table\IRow[]
+     * @return Nette\Database\Table\Selection
      */
     public function getAll()
     {
-        return $this->database->table(self::TABLE_NAME)->fetchAll();
+        return $this->database->table(self::TABLE_NAME);
     }
 
     /**
@@ -77,6 +76,11 @@ class User extends Nette\Object
         } catch (Nette\Database\UniqueConstraintViolationException $e) {
             throw new DuplicateNameException;
         }
+    }
+
+    public function delete($id)
+    {
+        $this->database->table(self::TABLE_NAME)->where('id=?',$id)->delete(); // delete user
     }
 
 }

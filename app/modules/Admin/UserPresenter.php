@@ -4,7 +4,10 @@ namespace App\Module\Admin\Presenters;
 
 use Nette,
 	App\Model,
-	Nette\Application\UI\Form;
+	Nette\Application\UI\Form,
+	Mesour\DataGrid\Grid,
+	Mesour\DataGrid\NetteDbDataSource,
+	Mesour\DataGrid\Components\Link;
 
 
 /**
@@ -49,6 +52,43 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	}
 
 	/**
+	 * @param $name
+	 * @return Grid
+     */
+	protected function createComponentUserDataGrid($name) {
+		$source = new NetteDbDataSource($this->userRecord->getAll());
+		$grid = new Grid($this, $name);
+		$table_id = 'id';
+		$grid->setPrimaryKey($table_id); // primary key is now used always
+		$grid->setDataSource($source);
+
+		$grid->addNumber('id');
+		$grid->addText('username', 'Username');
+		$grid->addText('realname', 'Full name');
+		$grid->addText('email', 'E-Mail');
+		$grid->addDate('create_time', 'Create time')
+			->setFormat('j.n.Y H:i:s');
+
+		$actions = $grid->addActions('Actions');
+		$actions->addButton()
+			->setType('btn-primary')
+			->setIcon('fa fa-pencil')
+			->setTitle('edit')
+			->setAttribute('href', new Link('edit', array(
+				'id' => '{'.$table_id.'}'
+			)));
+		$actions->addButton()
+			->setType('btn-danger')
+			->setIcon('fa fa-remove')
+			->setConfirm('Realy want to delete user? All user logs will be deleted too!')
+			->setTitle('delete')
+			->setAttribute('href', new Link('delete!', array(
+				'id' => '{'.$table_id.'}'
+			)));
+		return $grid;
+	}
+
+	/**
 	 * @param $form
 	 * @param $values
 	 */
@@ -83,9 +123,9 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	/**
 	 * @param $id
 	 */
-	public function actionDelete($id)
+	public function handleDelete($id)
 	{
-
+		$this->userRecord->delete($id);
 	}
 
 	/**
@@ -112,7 +152,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function	renderDefault()
 	{
-		$this->template->users = $this->userRecord->getAll();
+//		$this->template->users = $this->userRecord->getAll();
 	}
 
 	/**
