@@ -75,7 +75,10 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid->addNumber('id');
 		$grid->addText('artist', 'Artist');
 		$grid->addText('title', 'Title');
-		$grid->addText('duration', 'duration');
+		$grid->addText('duration', 'duration')
+			->setCallback(function($data) {
+				return $this->getSongTimeFormat($data['duration']);
+		});
 		$grid->addDate('create_time', 'Created')
 			->setFormat('j.n.Y H:i:s');
 		$grid->addDate('update_time', 'Updated')
