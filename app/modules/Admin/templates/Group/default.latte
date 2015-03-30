@@ -1,0 +1,16 @@
+{block content}
+<div class="admin-item-editor">
+
+<header>
+<h1 n:block="title">Group manager</h1>
+</header>
+
+<a n:href="add" class="btn item-new btn-primary"><span class="fa fa-users"></span> Add new group</a>
+
+<div class="item-list" id="group-list">
+{control groupDataGrid}
+</div>
+
+</div>
+{/block}
+

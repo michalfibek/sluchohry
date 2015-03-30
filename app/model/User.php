@@ -9,8 +9,6 @@ use Nette,
 class User extends Nette\Object
 {
     const
-        TABLE_NAME = 'user',
-        TABLE_NAME_ROLE = 'role',
         COLUMN_ID = 'id',
         COLUMN_NAME = 'username',
         COLUMN_REALNAME = 'realname',
@@ -31,7 +29,15 @@ class User extends Nette\Object
      */
     public function getAll()
     {
-        return $this->database->table(self::TABLE_NAME);
+        return $this->database->table('user');
+    }
+
+    /**
+     * @return Nette\Database\Table\Selection
+     */
+    public function getGroupAll()
+    {
+        return $this->database->table('group');
     }
 
     /**
@@ -41,7 +47,12 @@ class User extends Nette\Object
      */
     public function getById($id)
     {
-        return $this->database->table(self::TABLE_NAME)->get($id);
+        return $this->database->table('user')->get($id);
+    }
+
+    public function getGroupById($id)
+    {
+        return $this->database->table('group')->get($id);
     }
 
     /**
@@ -50,7 +61,7 @@ class User extends Nette\Object
      */
     public function getRoleArray()
     {
-        return $this->database->table(self::TABLE_NAME_ROLE)->fetchPairs('id', 'name');
+        return $this->database->table('role')->fetchPairs('id', 'name');
     }
 
     /**
@@ -65,7 +76,7 @@ class User extends Nette\Object
     public function add($username, $password, $email, $realname, $roleId)
     {
         try {
-            $this->database->table(self::TABLE_NAME)->insert(array(
+            $this->database->table('user')->insert(array(
                     self::COLUMN_NAME => $username,
                     self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
                     self::COLUMN_EMAIL => $email,
@@ -78,9 +89,21 @@ class User extends Nette\Object
         }
     }
 
+    public function addGroup($name)
+    {
+        try {
+            $this->database->table('group')->insert(array(
+                    'name' => $name
+                )
+            );
+        } catch (Nette\Database\UniqueConstraintViolationException $e) {
+            throw new DuplicateNameException;
+        }
+    }
+
     public function update($id, $username, $password, $email, $realname, $roleId)
     {
-        $user = $this->database->table(self::TABLE_NAME)->wherePrimary($id);
+        $user = $this->database->table('user')->wherePrimary($id);
         $user->update(array(
             self::COLUMN_NAME => $username,
             self::COLUMN_EMAIL => $email,
@@ -93,9 +116,22 @@ class User extends Nette\Object
             ));
     }
 
+    public function updateGroup($id, $name)
+    {
+        $this->database->table('group')->wherePrimary($id)->update(array(
+            'name' => $name,
+        ));
+    }
+
     public function delete($id)
     {
-        $this->database->table(self::TABLE_NAME)->where('id=?',$id)->delete(); // delete user
+        $this->database->table('user')->wherePrimary($id)->delete();
     }
+
+    public function deleteGroup($id)
+    {
+        $this->database->table('group')->wherePrimary($id)->delete();
+    }
+
 
 }

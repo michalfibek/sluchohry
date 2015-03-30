@@ -7104,7 +7104,7 @@ fieldset[disabled] #settings-list li a.active {
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
 }
-.admin-item-editor .upload-new {
+.admin-item-editor .item-new {
   font-size: 1.6em;
 }
 .admin-item-editor .item-list {

@@ -26,6 +26,7 @@ class AuthorizatorFactory
 		$permission->addResource('Admin:Default');
 		$permission->addResource('Admin:Song');
 		$permission->addResource('Admin:User');
+		$permission->addResource('Admin:Group');
 
 		$permission->allow('student', array(
 			'Front:Default',
@@ -36,7 +37,8 @@ class AuthorizatorFactory
 		$permission->allow('editor', array(
 			'Admin:Default',
 			'Admin:Song',
-			'Admin:User'
+			'Admin:User',
+			'Admin:Group'
 		));
 
 		$permission->allow('admin', Permission::ALL, Permission::ALL);

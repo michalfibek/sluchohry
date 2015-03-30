@@ -1,4 +1,4 @@
-var pwHtml = $('');
+    var pwHtml = $('');
 var pwSet = null;
 var pwFields = $('#password, #password-verify');
 
