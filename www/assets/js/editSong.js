@@ -28,11 +28,11 @@ var Song = $class({
         });
     },
 
-    populateForm: function() {
+    populateForm: function(durationReadable) {
         $('#songId').val(this.songId);
         $('#artist').val(this.artist);
         $('#title').val(this.title);
-        $('#duration').empty().append(this.duration);
+        $('#duration').empty().append(durationReadable);
     },
 
     downloadSongData: function() {
@@ -163,12 +163,6 @@ var Song = $class({
         $('#markers-updated').val('1');
     },
 
-    hideMarkerEditor: function() {
-        $('#ex1-mark').hide();
-        $('canvas').hide();
-        $('.marker-list').hide();
-    },
-
     delTimeMarker: function(timecode) {
         for (var i = 0; i < markerList.length; i++) {
             if (markerList[i] == timecode) {
@@ -202,9 +196,13 @@ var Song = $class({
 
 });
 
+var songEditor; // init new editor
+
 if (typeof songId != 'undefined' && songId != null) {
     var s = new Song(songId, songArtist, songTitle, songDuration, songFilename, songMarkers);
     s.downloadSongData();
+    markerOffset = canvas_width / songDuration
+    songEditor = s;
 } else {
     $(".spinner").hide();
     $("#file-uploader").fineUploader({
@@ -224,11 +222,14 @@ if (typeof songId != 'undefined' && songId != null) {
             fail: 'alert alert-error'
         }
     }).on('complete', function (event, id, name, responseJSON) {
+        if (songEditor) delete songEditor;
         var s = new Song(responseJSON["songId"], responseJSON["artist"], responseJSON["title"], responseJSON["duration"], responseJSON["fileName"], null);
         s.downloadSongData();
-        s.hideMarkerEditor();
-        s.populateForm();
-
-        songEditors.push(this.s);
+        markerOffset = canvas_width / responseJSON["duration"]
+        s.populateForm(responseJSON["durationReadable"]);
+        songEditor = s;
+    });
+    $('.song-editor').find(':input').on('change', function() {
+        $('#file-uploader').hide();
     });
 }

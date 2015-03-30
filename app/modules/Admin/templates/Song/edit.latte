@@ -24,7 +24,7 @@
 <h1 n:block="title">Song editor <small>{ifset $song}{$song->title}{else}Upload new song{/ifset}</small></h1>
 </header>
 
-{ifset $song}{else}
+{if isset($song)}
 <!-- Fine Uploader DOM Element
 ====================================================================== -->
 <div id="file-uploader" class="col-xs-5"></div>
@@ -57,7 +57,7 @@
         </ul>
     </div>
 </script>
-{/ifset}
+{/if}
 
 <div class="clearfix"></div>
 
@@ -156,8 +156,7 @@
         <script src="{$basePath}/assets/vendor/jquery.fine-uploader/jquery.fine-uploader.min.js"></script>
         <script src="{$basePath}/assets/vendor/soundcloud-waveform-generator/soundcloud-waveform.js"></script>
         <script type="text/javascript">
-            var songEditors = [],
-                defaultUri = '/assets/sounds/songs/',
+            var defaultUri = '/assets/sounds/songs/',
                 canvas = $('#waveform').get(0),
                 ctx = canvas.getContext('2d'),
                 canvas_width = 600,
@@ -179,8 +178,7 @@
                 songFilename,
                 songMarkers,
                 {/ifset}
-                waveformImage,
-                markerOffset = canvas_width / songDuration;
+                waveformImage;
 
         </script>
         <script src="{$basePath}/assets/js/editSong.js"></script>

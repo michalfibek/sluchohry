@@ -3,7 +3,7 @@
 {var $debug = false}
 
 <header>
-<h1 n:block="title">{_front.game.melodicCubes} <small>{$song->artist} - {$song->title}</small></h1>
+<h1 n:block="title">{_front.game.melodicCubes} <small>{if !isset($song->artist)}{$song->artist} - {/if}{$song->title}</small></h1>
 </header>
 
 <div class="game-main hidden">

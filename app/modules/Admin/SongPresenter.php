@@ -151,7 +151,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		try {
 			$uploadResult = $this->songStorage->handleUpload();
 			$saveResult = $this->songStorage->save($uploadResult);
-			$saveResult['duration'] = $this->getSongTimeFormat($saveResult['duration']); // format duration
+			$saveResult['durationReadable'] = $this->getSongTimeFormat($saveResult['duration']); // format duration
 		} catch (\Exception $e) {
 			$this->sendResponse(new Nette\Application\Responses\JsonResponse(array(
 				'error' => $e->getMessage(),
