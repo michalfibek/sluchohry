@@ -1,0 +1,7 @@
+4xx:
+    title: "Ups..."
+    message: "Tvůj prohlížeč udělal něco, s čím náš ajťák nepočítal. Zkus to prosím za chvíli znovu!"
+
+404:
+    title: "Stránka nenalezena"
+    message: "Promiň, tahle stránka asi neexistuje nebo byla zrušena. Zkontroluj, jestli jsi nezadal špatně adresu nebo přejdi znovu na hlavní stránku."

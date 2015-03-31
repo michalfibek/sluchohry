@@ -31,7 +31,7 @@ class AuthorizatorFactory
 		$permission->allow('student', array(
 			'Front:Default',
 			'Front:Game:MelodicCubes',
-			'Front:Game:MelodicCubes'
+			'Front:Game:Pexeso'
 		));
 
 		$permission->allow('editor', array(
