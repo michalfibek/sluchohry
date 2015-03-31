@@ -77,22 +77,32 @@ class SongStorage extends Nette\Object
         return $this->database->query('SELECT game_id FROM game_has_song WHERE song_id=?', $songId)->fetchPairs();
     }
 
-    public function getSongRandom($omitSongs = null, $requireMarkers = false)
+    /**
+     * @param array $omitSongs Array of songs to skip in select
+     * @param bool $requireMarkers
+     * @param int $gameLimit Game id
+     * @return array song info
+     */
+    public function getSongRandom($omitSongs = null, $requireMarkers = false, $gameLimit = null)
     {
-        if ($requireMarkers)
-        {
-            if ($omitSongs)
-                $songsAll = $this->database->query( 'SELECT * FROM song WHERE id IN (SELECT DISTINCT song_id FROM marker) AND id NOT IN (?)', $omitSongs )->fetchAll();
-            else
-                $songsAll = $this->database->query( 'SELECT * FROM song WHERE id IN (SELECT DISTINCT song_id FROM marker)' )->fetchAll();
-        } else {
-            if ($omitSongs)
-                $songsAll = $this->database->query( 'SELECT * FROM song WHERE id NOT IN (?)', $omitSongs )->fetchAll();
-            else
-                $songsAll = $this->database->query( 'SELECT * FROM song')->fetchAll();
-        }
+        $songsAll = $this->database->table('song');
+        $markedSongs = $this->database->table('marker')->select('DISTINCT song_id')->fetchPairs(null, 'song_id');
 
-        $key = array_rand($songsAll);
+        // fetch only songs with set markers
+        if ($requireMarkers)
+            $songsAll = $songsAll->where('id IN', $markedSongs);
+
+        // skip songs with $omitSongs id's
+        if ($omitSongs)
+            $songsAll = $songsAll->where('id NOT IN', $omitSongs);
+
+        // fetch only songs for certain game
+        if ($gameLimit)
+            $songsForGame = $this->database->table('game_has_song')->where('game_id', $gameLimit)->fetchPairs(null, 'song_id');
+            $songsAll = $songsAll->where('id IN', $songsForGame);
+
+        $key = array_rand($songsAll->fetchAll());
+
         if ($songsAll) return $songsAll[$key]; else return null;
     }
 

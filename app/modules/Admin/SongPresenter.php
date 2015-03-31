@@ -150,6 +150,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
+
 		if (!$this->songStorage->deleteSong($id)) {
 			$this->flashMessage("Song not found.", 'error');
 		} else {
