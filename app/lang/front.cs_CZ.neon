@@ -38,8 +38,14 @@ melodicCubes:
     closeGame: "Ukončit"
     tryAgain: "Zkusit znovu"
     moveCount: "pohybů kostek"
+    hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu."
 
     flash:
         noMarkers: "Tahle písnička ještě není připravená :("
         playedAll: "Všechny písničky dohrány! "
         playAgain: "Hrát znovu"
+
+pexeso:
+    hint: "Najdi kompletní písničku schovanou pod dvěma kostkami."
+    flash:
+        noSongFound: "Budeš se divit, ale zatím nemáme dost písniček pro pexeso! Zkus to prosím později znovu."

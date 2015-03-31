@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Nette,
     App\Services;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Tracy\Debugger;
 
 /**
@@ -81,9 +82,10 @@ class SongStorage extends Nette\Object
      * @param array $omitSongs Array of songs to skip in select
      * @param bool $requireMarkers
      * @param int $gameLimit Game id
+     * @param int $songCount Count of songs
      * @return array song info
      */
-    public function getSongRandom($omitSongs = null, $requireMarkers = false, $gameLimit = null)
+    public function getSongRandom($omitSongs = null, $requireMarkers = false, $gameLimit = null, $songCount = 1)
     {
         $songsAll = $this->database->table('song');
         $markedSongs = $this->database->table('marker')->select('DISTINCT song_id')->fetchPairs(null, 'song_id');
@@ -101,9 +103,26 @@ class SongStorage extends Nette\Object
             $songsForGame = $this->database->table('game_has_song')->where('game_id', $gameLimit)->fetchPairs(null, 'song_id');
             $songsAll = $songsAll->where('id IN', $songsForGame);
 
-        $key = array_rand($songsAll->fetchAll());
+        if ($songCount == 1) { // fetching only one song
 
-        if ($songsAll) return $songsAll[$key]; else return null;
+            $key = array_rand($songsAll->fetchAll());
+            if ($songsAll) return $songsAll[$key]; else return null;
+
+        } elseif ($songCount > 1 && count($songsAll) >= $songCount) { // fetching more than one song
+
+            $keys = array_rand($songsAll->fetchAll(), $songCount);
+
+            foreach ($keys as $key) {
+                $returnSongs[] = $songsAll[$key];
+            }
+
+            return $returnSongs;
+
+
+        } else { // no song found
+            return null;
+        }
+
     }
 
     public function getMarkersAll($songId)

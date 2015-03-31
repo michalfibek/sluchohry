@@ -95,7 +95,6 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 
 	public function renderDefault()
 	{
-		parent::renderDefault();
 		$this->template->song = $this->gameAssets['song'];
 		$this->template->markers = $this->gameAssets['markers'];
 		$this->template->difficulty = $this->difficulty;

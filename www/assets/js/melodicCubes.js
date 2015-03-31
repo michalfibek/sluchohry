@@ -254,7 +254,6 @@ var Game = $class({
         var okay = true;
         var cubeBank = scope.getCubeBank();
         var bankLength = cubeBank.length;
-        btnEval = $('#btn-eval');
         for(var i = 0; i < bankLength; i++) {
             if (cubeBank[i] !== 'part'+ i) {
                 okay = false;

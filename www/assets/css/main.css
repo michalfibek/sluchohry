@@ -6780,7 +6780,15 @@ GAME: melodic cubes
 }
 .single-cube {
   padding: 0;
-  margin: 5px;
+  margin: 0;
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+  -webkit-transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease-in-out;
+  box-shadow: none;
+  background-color: gray;
+  background-image: -webkit-repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.5) 35px, rgba(255, 255, 255, 0.5) 70px);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.5) 35px, rgba(255, 255, 255, 0.5) 70px);
 }
 .single-cube .btn {
   min-width: 100%;
@@ -6797,6 +6805,13 @@ GAME: melodic cubes
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
   opacity: 1;
+}
+.cube-highlight {
+  opacity: 1;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  z-index: 10;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
 }
 .cube-highlight .btn {
   -webkit-transition: all 0.5s ease-in-out;
@@ -6817,6 +6832,9 @@ GAME: melodic cubes
   left: 35%;
   top: 35%;
   font-size: 30px;
+}
+.game-main.pexeso .single-cube .btn {
+  background: #ff3d31;
 }
 /*
 FRONT: applies only to front module
