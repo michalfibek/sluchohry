@@ -54,9 +54,11 @@ var Game = $class({
         this.gameEndHandler = '?do=gameEnd';
         this.gameForceEndHandler = '?do=gameForceEnd';
         this.gameSolved = false;
+        this.lastCubeId = null;
 
         scope.initButtons();
         scope.initTimer();
+        scope.shuffleCards();
         //scope.initOnWindowClose(); // add on logger enabled
 
     },
@@ -95,6 +97,14 @@ var Game = $class({
         });
     },
 
+    isPair: function(cubeIdFirst, cubeIdSecond) {
+        if (cubeIdFirst == null || cubeIdSecond == null)
+            return false;
+        var first = cubeIdFirst.slice(0, -1);
+        var second = cubeIdSecond.slice(0, -1);
+        if (first == second) return true; else return false;
+    },
+
     initButtons: function() {
         scope.clearHighlights();
 
@@ -108,12 +118,18 @@ var Game = $class({
                 scope.song.stop(songId);
                 scope.clearHighlights();
             } else {
+                if (scope.isPair(cubeId, scope.lastCubeId))
+                {
+                    $('#'+cubeId).parent().addClass('cube-found');
+                    $('#'+scope.lastCubeId).parent().addClass('cube-found');
+                }
                 scope.song.stopAll();
                 scope.clearHighlights();
                 scope.song.playPart(function() {
                     scope.clearHighlights(); // callback - clear after songs stops
                 }, songId, partId);
                 scope.addHighlight(cubeId);
+                scope.lastCubeId = cubeId;
             }
 
         });
@@ -140,6 +156,10 @@ var Game = $class({
                 that.logger.sendResult(that.gameForceEndHandler, that.getResult());
             })
         }
+    },
+
+    shuffleCards: function() {
+        $('.single-cube').shuffle();
     },
 
     getResult: function () {

@@ -6836,6 +6836,12 @@ GAME: melodic cubes
 .game-main.pexeso .single-cube .btn {
   background: #ff3d31;
 }
+.game-main.pexeso .cube-found {
+  opacity: 0.4;
+}
+.game-main.pexeso .cube-found .btn {
+  opacity: 0.1;
+}
 /*
 FRONT: applies only to front module
 */
