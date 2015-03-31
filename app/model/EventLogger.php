@@ -23,6 +23,7 @@ class EventLogger extends Nette\Object {
         DATA_PLAY_STEPS = 'play_steps',
         DATA_DIFFICULTY = 'difficulty',
         DATA_SONG_ID = 'song_id',
+        DATA_SONG_LIST = 'song_list',
         DATA_SOLVED = 'solved';
 
     /** @var Nette\Database\Context */
@@ -63,6 +64,13 @@ class EventLogger extends Nette\Object {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SONG_ID => $result['songId'],
+                self::DATA_DIFFICULTY => $result['difficulty']
+            );
+        } elseif ($result['gameName'] == 'pexeso')
+        {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SONG_LIST => $result['songList'],
                 self::DATA_DIFFICULTY => $result['difficulty']
             );
         }

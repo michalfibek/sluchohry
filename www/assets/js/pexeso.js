@@ -45,12 +45,15 @@ var Song = $class({
  */
 var Game = $class({
 
-    constructor: function(song, timer, difficulty) {
+    constructor: function(song, timer, logger, songList, difficulty) {
         scope = this;
         this.song = song;
         this.timer = timer;
+        this.songList = songList;
         this.difficulty = difficulty;
+        this.logger = logger;
         this.gameName = 'pexeso';
+        this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
         this.gameForceEndHandler = '?do=gameForceEnd';
         this.gameSolved = false;
@@ -60,6 +63,7 @@ var Game = $class({
         scope.initTimer();
         scope.shuffleCards();
         //scope.initOnWindowClose(); // add on logger enabled
+        scope.sendOnLoadRecord();
 
     },
 
@@ -157,6 +161,16 @@ var Game = $class({
             })
         }
     },
+
+    sendOnLoadRecord: function() {
+        var record = {
+            gameName: this.gameName,
+            difficulty: scope.difficulty,
+            songList: scope.songList
+        }
+        this.logger.sendResult(this.gameStartHandler, record);
+    },
+
 
     shuffleCards: function() {
         $('.single-cube').shuffle();

@@ -108,11 +108,12 @@
         }
         {/foreach}
 
+        songList = '{foreach $songs as $s}{$s->id}{sep},{/sep}{/foreach}';
 
-        {*l = new AjaxLogger();*}
+        l = new AjaxLogger();
         t = new GameTimer();
         s = new Song(songPair);
-        g = new Game(s, t, difficulty);
+        g = new Game(s, t, l, songList, difficulty);
 
     </script>
 {/block}
