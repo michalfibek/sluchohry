@@ -47,6 +47,8 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
      */
 	protected function createComponentGroupDataGrid($name) {
 		$source = new NetteDbDataSource($this->userRecord->getGroupAll());
+//		$groupCount = $this->userRecord->getGroupCount();
+//		Debugger::barDump($groupCount);
 		$grid = new Grid($this, $name);
 		$table_id = 'id';
 		$grid->setPrimaryKey($table_id); // primary key is now used always
@@ -54,6 +56,11 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 		$grid->addNumber('id');
 		$grid->addText('name', 'Group name');
+		$grid->addText('userCount', 'User count')
+			->setCallback(function($data) {
+				Debugger::barDump($data);
+				return $data['id'];
+		});
 
 		$actions = $grid->addActions('Actions');
 		$actions->addButton()

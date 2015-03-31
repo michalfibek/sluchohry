@@ -38,6 +38,17 @@ class User extends Nette\Object
     public function getGroupAll()
     {
         return $this->database->table('group');
+//            ->group('group_id')
+//            ->having('COUNT(user_id) > 0');
+    }
+
+    public function getGroupCount()
+    {
+        // TODO properly finish this method
+        return $this->database->table('user_has_group')
+            ->group('group_id')
+            ->select('group_id, COUNT(user_id) as cnt')
+            ->fetchPairs('group_id', 'cnt');
     }
 
     /**
