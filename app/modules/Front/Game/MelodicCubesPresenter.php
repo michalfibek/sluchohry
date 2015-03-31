@@ -11,7 +11,8 @@ use Tracy\Debugger;
 class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 {
 	// define cube splits count by difficulty
-	const DIFFICULTY_1_SPLITS = 2,
+	const
+		DIFFICULTY_1_SPLITS = 2,
 		DIFFICULTY_2_SPLITS = 4,
 		DIFFICULTY_3_SPLITS = 8;
 
@@ -57,7 +58,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	protected function getAssetsRandom()
 	{
 		$omitSongs = ($this->gameSession['melodicCubesHistory']) ? explode('-',$this->gameSession['melodicCubesHistory']) : null;
-		if ($song = $this->songStorage->getSongRandom($omitSongs, true))
+		if ($song = $this->songStorage->getSongRandom($omitSongs, true, self::GAME_MELODIC_CUBES))
 		{
 			$assets['song'] = $song;
 			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($song->id, $this->cubeCount);

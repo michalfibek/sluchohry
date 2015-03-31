@@ -7,6 +7,10 @@ use Tracy\Debugger;
 
 abstract class BaseGamePresenter extends BasePresenter
 {
+    const
+        GAME_MELODIC_CUBES = 1,
+        GAME_PEXESO = 2;
+
     /** @var \Nette\Http\SessionSection */
     protected $gameSession;
 
