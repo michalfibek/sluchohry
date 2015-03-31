@@ -33,8 +33,9 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
         );
     }
 
-    public function onGameStart($gameName, $result)
+    public function onGameStart($result)
     {
+        $this->logger->saveGameStart($result);
 //        Debugger::barDump('Game start: '. $gameName, $result);
     }
 

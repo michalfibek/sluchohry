@@ -62,6 +62,7 @@ var Game = $class({
         this.songChain = [];
         this.cubeMoveCount = 0;
         this.gameName = 'melodicCubes';
+        this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
         this.gameForceEndHandler = '?do=gameForceEnd';
         this.gameSolved = false;
@@ -70,6 +71,7 @@ var Game = $class({
         scope.initChain();
         scope.initTimer();
         scope.initOnWindowClose();
+        scope.sendOnLoadRecord();
 
     },
 
@@ -209,6 +211,15 @@ var Game = $class({
                 that.logger.sendResult(that.gameForceEndHandler, that.getResult());
             })
         }
+    },
+
+    sendOnLoadRecord: function() {
+        var record = {
+            gameName: this.gameName,
+            difficulty: scope.difficulty,
+            songId: scope.songId
+        }
+        this.logger.sendResult(this.gameStartHandler, record);
     },
 
     chainFunctionGenerator: function(markerIndex, markerValue, songCtrl, cubeBankFn) {

@@ -23,10 +23,15 @@ abstract class BaseGamePresenter extends BasePresenter
     abstract protected function getAssetsById($id);
     abstract protected function getAssetsRandom();
 
-    public function startup() {
-
+    public function startup()
+    {
         parent::startup();
         $this->gameSession = $this->getSession('game');
+    }
+
+    public function handleGameStart(array $result)
+    {
+        $this->onGameStart($result);
     }
 
     public function handleGameEnd(array $result)

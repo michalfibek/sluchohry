@@ -8,11 +8,12 @@ use Nette;
 class EventLogger extends Nette\Object {
 
     const
-        CLASS_GAME = 1,
-        CLASS_AUTH = 2,
-        CLASS_PROFILE = 3,
+        CLASS_GAME_END = 1,
+        CLASS_GAME_START = 2,
+        CLASS_AUTH = 3,
         CLASS_ERROR = 4,
-        CLASS_ADMIN = 5;
+        CLASS_ADMIN = 5,
+        CLASS_PROFILE = 6;
 
     const
         DATA_GAME_NAME = 'game_name',
@@ -55,6 +56,19 @@ class EventLogger extends Nette\Object {
             }
     }
 
+    public function saveGameStart(array $result)
+    {
+        if ($result['gameName'] == 'melodicCubes')
+        {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SONG_ID => $result['songId'],
+                self::DATA_DIFFICULTY => $result['difficulty']
+            );
+        }
+        $this->insertRecord(self::CLASS_GAME_START, $data);
+    }
+
     public function saveGameEndResult(array $result, $solved)
     {
         if ($result['gameName'] == 'melodicCubes')
@@ -68,7 +82,7 @@ class EventLogger extends Nette\Object {
                 self::DATA_SOLVED => $solved,
             );
         }
-        $this->insertRecord(self::CLASS_GAME, $data);
+        $this->insertRecord(self::CLASS_GAME_END, $data);
     }
 
     public function saveUserLoggedIn()
