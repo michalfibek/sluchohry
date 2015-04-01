@@ -19,3 +19,5 @@ app/config/config.local.neon
 !@prace/out/thesis.pdf
 *.mp3
 *.bak
+
+@misc/*
