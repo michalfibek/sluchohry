@@ -37,7 +37,7 @@ class RouterFactory extends Nette\Object
 			'presenter' => 'Default',
 			'action' => 'default',
 			'id' => NULL,
-		));
+		), $flags);
 
 		$router[] = $frontRouter = new RouteList('Front');
 
@@ -46,13 +46,13 @@ class RouterFactory extends Nette\Object
 			'presenter' => 'Default',
 			'action' => 'default',
 			'id' => NULL,
-		));
+		), $flags);
 
 		$frontRouter[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]', array(
 			'presenter' => 'Default',
 			'action' => 'default',
 			'id' => NULL,
-		));
+		), $flags);
 
 		return $router;
 	}
