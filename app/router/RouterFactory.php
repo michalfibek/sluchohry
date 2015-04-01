@@ -11,17 +11,25 @@ use Nette,
 /**
  * Router factory.
  */
-class RouterFactory
+class RouterFactory extends Nette\Object
 {
+	/** @var bool */
+	private $useHttps;
+	public function __construct($useHttps)
+	{
+		$this->useHttps = $useHttps;
+	}
 
 	/**
 	 * @return \Nette\Application\IRouter
 	 */
-	public static function createRouter()
+	public function create()
 	{
+		$flags = $this->useHttps ? Route::SECURED : 0;
+
 		$router = new RouteList();
 
-		$router[] = new Route('index.php', 'Front:Default:default', Route::ONE_WAY);
+		$router[] = new Route('index.php', 'Front:Default:default', $flags | Route::ONE_WAY);
 
 		$router[] = $adminRouter = new RouteList('Admin');
 

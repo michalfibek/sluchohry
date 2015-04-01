@@ -3,6 +3,8 @@
 # http://nette.org/security-warning
 #
 parameters:
+	router:
+			useHttps: %productionMode%
 	song:
 		saveDir: %wwwDir%/assets/sounds/songs/
 		uploadDir: %appDir%/../uploads/
@@ -33,7 +35,8 @@ translation:
 
 
 services:
-	router: App\RouterFactory::createRouter
+	routerFactory: App\RouterFactory(%router.useHttps%)
+	router: @routerFactory::create
 	authenticator: App\Model\UserAuthenticator
 
 	app.authorizatorFactory: App\Model\AuthorizatorFactory
