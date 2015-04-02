@@ -5,6 +5,7 @@ var Song = $class({
 
     constructor: function(songDefs) {
         scope = this;
+
         this.songCtrl = this.initPlayer(songDefs); // array of song controls
     },
 
@@ -16,6 +17,16 @@ var Song = $class({
         }
 
         return songCtrl;
+    },
+
+    waitForLoad: function(onSingleLoadCallback) {
+        var songCount = this.songCtrl.length;
+
+        for(var i = 0; i < songCount; i++) {
+            this.songCtrl[i].on('load', function () {
+                onSingleLoadCallback();
+            });
+        }
     },
 
     playPart: function(onStopCallback, songId, partId) {
@@ -45,13 +56,16 @@ var Song = $class({
  */
 var Game = $class({
 
-    constructor: function(song, timer, logger, songList, difficulty) {
+    constructor: function(song, timer, logger, pairCount, songList, difficulty) {
         scope = this;
         this.song = song;
         this.timer = timer;
         this.songList = songList;
         this.difficulty = difficulty;
         this.logger = logger;
+        this.pairCount = pairCount;
+        this.cubeClickCount = 0;
+        this.songsLoaded = 0;
         this.gameName = 'pexeso';
         this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
@@ -62,8 +76,9 @@ var Game = $class({
         scope.initButtons();
         scope.initTimer();
         scope.shuffleCards();
-        //scope.initOnWindowClose(); // add on logger enabled
-        scope.sendOnLoadRecord();
+
+        scope.waitForLoad();
+        scope.initOnWindowClose();
 
     },
 
@@ -102,11 +117,21 @@ var Game = $class({
     },
 
     isPair: function(cubeIdFirst, cubeIdSecond) {
-        if (cubeIdFirst == null || cubeIdSecond == null)
+        if (cubeIdFirst == null || cubeIdSecond == null || cubeIdFirst == cubeIdSecond)
             return false;
         var first = cubeIdFirst.slice(0, -1);
         var second = cubeIdSecond.slice(0, -1);
-        if (first == second) return true; else return false;
+        if (first == second && cubeIdFirst.slice(-1) == 'B' && cubeIdSecond.slice(-1) == 'A') return true; else return false;
+    },
+
+    waitForLoad: function() {
+        scope.song.waitForLoad(function() {
+            scope.songsLoaded++;
+            if (scope.songsLoaded == scope.pairCount) {
+                scope.showGame();
+                scope.sendOnLoadRecord();
+            }
+        })
     },
 
     initButtons: function() {
@@ -115,25 +140,33 @@ var Game = $class({
         var cubeBtns = $('.cube-play');
         cubeBtns.on('click', function() {
             var cubeId = $(this).attr('id');
-            var partId = $(this).data('part');
-            var songId = $(this).data('song');
-            if (scope.isHighlight(cubeId)) // if user clicks on currently playing cube
+            if (!$('#'+cubeId).parent().hasClass('cube-found'))
             {
-                scope.song.stop(songId);
-                scope.clearHighlights();
-            } else {
-                if (scope.isPair(cubeId, scope.lastCubeId))
+                var partId = $(this).data('part');
+                var songId = $(this).data('song');
+                if (scope.isHighlight(cubeId)) // if user clicks on currently playing cube
                 {
-                    $('#'+cubeId).parent().addClass('cube-found');
-                    $('#'+scope.lastCubeId).parent().addClass('cube-found');
+                    scope.song.stop(songId);
+                    scope.clearHighlights();
+                } else {
+
+                    scope.song.stopAll();
+                    scope.clearHighlights();
+
+                    if (scope.isPair(cubeId, scope.lastCubeId))
+                    {
+                        $('#'+cubeId).parent().addClass('cube-found');
+                        $('#'+scope.lastCubeId).parent().addClass('cube-found');
+                        scope.evalGame();
+                    } else {
+                        scope.cubeClickCount++;
+                        scope.song.playPart(function() {
+                            scope.clearHighlights(); // callback - clear after songs stops
+                        }, songId, partId);
+                        scope.addHighlight(cubeId);
+                    }
+                    scope.lastCubeId = cubeId;
                 }
-                scope.song.stopAll();
-                scope.clearHighlights();
-                scope.song.playPart(function() {
-                    scope.clearHighlights(); // callback - clear after songs stops
-                }, songId, partId);
-                scope.addHighlight(cubeId);
-                scope.lastCubeId = cubeId;
             }
 
         });
@@ -179,8 +212,9 @@ var Game = $class({
     getResult: function () {
         var result = {
             gameName: this.gameName,
-            steps: scope.cubeMoveCount,
+            steps: scope.cubeClickCount,
             time: scope.timer.getTime(),
+            songList: scope.songList,
             difficulty: scope.difficulty,
             songId: scope.songId
         };
@@ -188,17 +222,22 @@ var Game = $class({
     },
 
     evalGame: function() {
-        scope.song.stop();
-        scope.timer.stop();
-        //var okay = true;
+        var okay = true;
+
+        $('.single-cube').each( function() {
+            if (!$(this).hasClass('cube-found'))
+                okay = false;
+        });
+
         if (okay == true) {
+            scope.timer.stop();
             scope.gameSolved = true;
             $('.modal-correct').modal('show');
-            $('.attempt-count').find('span').empty().append(scope.cubeMoveCount);
+            $('.attempt-count').find('span').empty().append(scope.cubeClickCount);
             //$('#modal-correct').modal('show');
             this.logger.sendResult(this.gameEndHandler, this.getResult());
         } else {
-            $('.modal-wrong').modal('show');
+            console.log('not solved');
 
             // DEBUG ONLY, possible attempt record
             //var result = {gameName: this.gameName, steps: scope.cubeMoveCount, time: scope.timer.getTime()};

@@ -90,6 +90,17 @@ class EventLogger extends Nette\Object {
                 self::DATA_SOLVED => $solved,
             );
         }
+        if ($result['gameName'] == 'pexeso')
+        {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SONG_LIST => $result['songList'],
+                self::DATA_DIFFICULTY => $result['difficulty'],
+                self::DATA_PLAY_TIME => $result['time'],
+                self::DATA_PLAY_STEPS => $result['steps'],
+                self::DATA_SOLVED => $solved,
+            );
+        }
         $this->insertRecord(self::CLASS_GAME_END, $data);
     }
 
