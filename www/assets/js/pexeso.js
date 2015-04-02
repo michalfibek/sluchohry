@@ -77,7 +77,7 @@ var Game = $class({
         scope.initTimer();
         scope.shuffleCards();
 
-        scope.waitForLoad();
+        scope.showOnLoad();
         scope.initOnWindowClose();
 
     },
@@ -124,7 +124,7 @@ var Game = $class({
         if (first == second && cubeIdFirst.slice(-1) == 'B' && cubeIdSecond.slice(-1) == 'A') return true; else return false;
     },
 
-    waitForLoad: function() {
+    showOnLoad: function() {
         scope.song.waitForLoad(function() {
             scope.songsLoaded++;
             if (scope.songsLoaded == scope.pairCount) {
