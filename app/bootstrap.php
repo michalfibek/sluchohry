@@ -4,8 +4,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $configurator = new Nette\Configurator;
 
-$configurator->defaultExtensions['decorator'] = Nette\DI\Extensions\DecoratorExtension::class;
-$configurator->defaultExtensions['inject'] = Nette\DI\Extensions\InjectExtension::class;
+// PresentersLocator extension:
+//$configurator->defaultExtensions['decorator'] = Nette\DI\Extensions\DecoratorExtension::class;
+//$configurator->defaultExtensions['inject'] = Nette\DI\Extensions\InjectExtension::class;
 
 $configurator->setDebugMode(['secretCookie147@192.168.1.10', 'secretCookie147@188.75.144.92']);
 $configurator->enableDebugger(__DIR__ . '/../log');
