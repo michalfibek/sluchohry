@@ -16,17 +16,15 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		DIFFICULTY_2_SPLITS = 4,
 		DIFFICULTY_3_SPLITS = 8;
 
-	private $songStorage;
-	protected $gameAssets;
-	protected $difficulty;
+	/** @inject @var Model\SongStorage */
+	public $songStorage;
 	protected $cubeCount;
 
 
-	public function __construct(Model\SongStorage $songStorage)
+	public function startup()
 	{
-		parent::__construct();
+		parent::startup();
 
-		$this->songStorage = $songStorage;
 		$this->difficulty = 2; // TODO this is hardcoded, remove after difficulty implementation
 		switch ($this->difficulty)
 		{

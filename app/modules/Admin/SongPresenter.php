@@ -24,14 +24,8 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	private $genreList;
 	private $gameList;
 
-	/** @var Model\SongStorage */
-	private $songStorage;
-
-	public function __construct(Model\SongStorage $songStorage)
-	{
-		parent::__construct();
-		$this->songStorage = $songStorage;
-	}
+	/** @inject @var Model\SongStorage */
+	public $songStorage;
 
 	/**
 	 * @return Form

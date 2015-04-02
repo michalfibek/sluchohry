@@ -16,15 +16,8 @@ use Tracy\Debugger;
  */
 class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
-	private $userRecord;
-
-	/**
-	 * @param Model\User $userRecord
-	 */
-	public function __construct(Model\User $userRecord)
-	{
-		$this->userRecord = $userRecord;
-	}
+	/** @inject @var Model\User */
+	public $userRecord;
 
 	/**
 	 * @return Form

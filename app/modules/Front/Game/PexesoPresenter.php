@@ -15,16 +15,14 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 		DIFFICULTY_2_PAIRS = 6,
 		DIFFICULTY_3_PAIRS = 8;
 
-	private $songStorage;
+	/** @inject @var Model\SongStorage */
+	public $songStorage;
 	private $songPairCount;
-	protected $gameAssets;
-	protected $difficulty;
 
-	public function __construct(Model\SongStorage $songStorage)
+
+	public function startup()
 	{
-		parent::__construct();
-
-		$this->songStorage = $songStorage;
+		parent::startup();
 
 		$this->difficulty = 1; // TODO this is hardcoded, remove after difficulty implementation
 		switch ($this->difficulty)
@@ -39,7 +37,6 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 				$this->songPairCount = self::DIFFICULTY_3_PAIRS;
 				break;
 		}
-
 	}
 
 	protected function getAssetsById($id)
