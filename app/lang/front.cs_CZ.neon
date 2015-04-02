@@ -27,17 +27,20 @@ game:
     melodicCubes: "Melodické kostky"
     pexeso: "Pexeso"
 
+    common:
+        play: "Hrej"
+        stop: "Stop"
+        evaluate: "Vyhodnoť!"
+        resultWrong: "Špatně!"
+        resultCorrectTitle: "Správně!"
+        nextGame: "Další kolo"
+        closeGame: "Ukončit"
+        tryAgain: "Zkusit znovu"
+
+
 
 melodicCubes:
-    play: "Hrej"
-    stop: "Stop"
-    evaluate: "Vyhodnoť!"
-    resultWrong: "Špatně!"
-    resultCorrectTitle: "Správně!"
-    nextGame: "Další kolo"
-    closeGame: "Ukončit"
-    tryAgain: "Zkusit znovu"
-    moveCount: "pohybů kostek"
+    stepCount: "pohybů kostek"
     hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu."
 
     flash:
@@ -46,6 +49,7 @@ melodicCubes:
         playAgain: "Hrát znovu"
 
 pexeso:
-    hint: "Najdi kompletní písničku schovanou pod dvěma kostkami."
+    stepCount: "kliknutí"
+    hint: "Najdi kompletní písničku schovanou pod dvěma kostkami a označ je ve správném pořadí."
     flash:
         noSongFound: "Budeš se divit, ale zatím nemáme dost písniček pro pexeso! Zkus to prosím později znovu."

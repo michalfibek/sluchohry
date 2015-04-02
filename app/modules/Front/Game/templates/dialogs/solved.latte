@@ -1,0 +1,17 @@
+{default $stepsToSolveMessage = 'steps'}
+
+<div class="modal fade modal-simple modal-correct" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{_front.game.common.resultCorrectTitle}
+                    <span class="attempt-count"><span></span> {$stepsToSolveMessage}</span>
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a n:href=":Front:Default:" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.game.common.closeGame}</a>
+                <a n:href="this nextRound=>true"  class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.game.common.nextGame}</a>
+            </div>
+        </div>
+    </div>
+</div>
