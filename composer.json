@@ -20,7 +20,8 @@
 		"james-heinrich/getid3": "~1.9",
 		"kdyby/events": "~2.3",
 		"kdyby/translation": "~2.0",
-		"mesour/datagrid": "~2.0"
+		"mesour/datagrid": "~2.0",
+		"kdyby/presenters-locator": "@dev"
 	},
 	"require-dev": {
 		"nette/tester": "~1.3"

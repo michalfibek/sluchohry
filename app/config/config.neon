@@ -22,6 +22,7 @@ session:
 	expiration: 1 day
 
 extensions:
+    presenters: Kdyby\PresentersLocator\DI\PresentersLocatorExtension
     events: Kdyby\Events\DI\EventsExtension
     translation: Kdyby\Translation\DI\TranslationExtension
 
