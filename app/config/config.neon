@@ -22,7 +22,7 @@ session:
 	expiration: 1 day
 
 extensions:
-    presenters: Kdyby\PresentersLocator\DI\PresentersLocatorExtension
+#    presenters: Kdyby\PresentersLocator\DI\PresentersLocatorExtension # not fully working with kdyby\events -> test on ajax requests from game
     events: Kdyby\Events\DI\EventsExtension
     translation: Kdyby\Translation\DI\TranslationExtension
 
