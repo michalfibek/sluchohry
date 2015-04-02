@@ -20,6 +20,15 @@ class RouterFactory extends Nette\Object
 		$this->useHttps = $useHttps;
 	}
 
+	private static function presenter2path($s)
+	{
+	    $s = strtr($s, ':', '.');
+	    $s = preg_replace('#([^.])(?=[A-Z])#', '$1-', $s);
+	    $s = strtolower($s);
+	    $s = rawurlencode($s);
+	    return $s;
+	}
+
 	/**
 	 * @return \Nette\Application\IRouter
 	 */
@@ -41,18 +50,24 @@ class RouterFactory extends Nette\Object
 
 		$router[] = $frontRouter = new RouteList('Front');
 
-		$frontRouter[] = new Route('[<locale=cs cs|en>/]/game/<presenter>/<action>[/<id>]', array(
-			'module' => 'Game',
-			'presenter' => 'Default',
+		$frontRouter[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]', array(
+			'presenter' => array(
+				Route::VALUE => 'Default',
+				Route::PATTERN => '[^(s|game)][a-z][a-z0-9.-]*',
+			),
 			'action' => 'default',
 			'id' => NULL,
 		), $flags);
 
-		$frontRouter[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]', array(
-			'presenter' => 'Default',
+		$frontRouter[] = new Route('[<locale=cs cs|en>/]game/<presenter>/<action>[/<id>]', array(
+			'module' => 'Game',
+			'presenter' => array(
+				Route::VALUE => 'Default',
+			),
 			'action' => 'default',
 			'id' => NULL,
 		), $flags);
+
 
 		return $router;
 	}
