@@ -29,6 +29,7 @@ class Authenticator extends Nette\Object implements Nette\Security\IAuthenticato
 
 	/**
 	 * Performs an authentication.
+	 * @param array $credentials
 	 * @return Nette\Security\Identity
 	 * @throws Nette\Security\AuthenticationException
 	 */

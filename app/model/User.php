@@ -26,11 +26,13 @@ class User extends Base
 
     public function updateById($id, $data)
     {
-
-        if ($data['password'])
-            $data['password'] = Passwords::hash($data['password']);
-        else
-            unset($data['password']);
+        if (isset($data['password']))
+        {
+            if (strlen($data['password']) > 0 ) // correct password length verification is already in form
+                $data['password'] = Passwords::hash($data['password']);
+            else
+                unset($data['password']);
+        }
 
         return parent::updateById($id, $data);
     }
