@@ -6,6 +6,7 @@ use Nette,
 	Nette\Application\Routers\RouteList,
 	Nette\Application\Routers\Route,
 	Nette\Application\Routers\SimpleRouter;
+use Tracy\Debugger;
 
 
 /**
@@ -15,18 +16,13 @@ class RouterFactory extends Nette\Object
 {
 	/** @var bool */
 	private $useHttps;
-	public function __construct($useHttps)
-	{
-		$this->useHttps = $useHttps;
-	}
 
-	private static function presenter2path($s)
+	public function __construct(Nette\Http\Request $httpRequest)
 	{
-	    $s = strtr($s, ':', '.');
-	    $s = preg_replace('#([^.])(?=[A-Z])#', '$1-', $s);
-	    $s = strtolower($s);
-	    $s = rawurlencode($s);
-	    return $s;
+		if ($httpRequest->getUrl()->getHost() === 'sluchohry.cz')
+			$this->useHttps = false;
+		else
+			$this->useHttps = false;
 	}
 
 	/**

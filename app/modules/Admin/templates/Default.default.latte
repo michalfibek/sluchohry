@@ -6,9 +6,9 @@
 
 
 <ul id="settings-list">
-    <li><a n:href="User:"><i class="fa fa-user"></i> User manager</a></li>
-    <li><a n:href="Group:"><i class="fa fa-users"></i> Group manager</a></li>
-    <li><a n:href="Song:"><i class="fa fa-music"></i> Song editor</a></li>
+    {if $user->isAllowed('Admin:User', 'default')}<li><a n:href="User:"><i class="fa fa-user"></i> User manager</a></li>{/if}
+    {if $user->isAllowed('Admin:Group', 'default')}<li><a n:href="Group:"><i class="fa fa-users"></i> Group manager</a></li>{/if}
+    {if $user->isAllowed('Admin:Song', 'default')}<li><a n:href="Song:"><i class="fa fa-music"></i> Song editor</a></li>{/if}
 </ul>
 
 {/block}

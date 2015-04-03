@@ -147,7 +147,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
-
+		Debugger::barDump($this->getAction());
 		if (!$this->song->deleteById($id)) {
 			$this->flashMessage("Song not found.", 'error');
 		} else {
@@ -161,31 +161,38 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->template->songList = $this->songList;
 	}
 
-	public function actionEdit($id = null)
+	public function actionAdd()
 	{
-		if (isset($id)) {
-			$this->songRecord = $this->song->getById($id);
-			Debugger::barDump($this->game->getBySong($id));
-			$this->gameAssoc = $this->game->getBySong($id)->fetchPairs();
-//			$this->genreList = $this->song->related('genre');
-			if (!$this->songRecord) {
-				$this->flashMessage('Sorry, this song was not found.', 'error');
-				$this->redirect('default');
-			}
-			$this->songMarkers = $this->song->getMarkersAll($id);
-		}
 		$this->gameList = $this->game->getAll()->order('name ASC');
 		$this->genreList = $this->song->getGenres(); // fetch genre list for form
 	}
 
+	public function actionEdit($id)
+	{
+		if ($this->songRecord = $this->song->getById($id)) {
+			$this->gameAssoc = $this->game->getBySong($id)->fetchPairs();
+//			$this->genreList = $this->song->related('genre');
+			$this->songMarkers = $this->song->getMarkersAll($id);
+
+			$this->gameList = $this->game->getAll()->order('name ASC');
+			$this->genreList = $this->song->getGenres(); // fetch genre list for form
+		} else {
+			$this->flashMessage('Sorry, this song was not found.', 'error');
+			$this->redirect('default');
+		}
+	}
+
+	public function renderAdd()
+	{
+
+	}
+
 	public function	renderEdit()
 	{
-		if (isset($this->songRecord)) {
-			$this->template->song = $this->songRecord;
-			$this->template->songMarkers = implode(',',$this->songMarkers->fetchPairs('id', 'timecode'));
-			$this['songEditForm']->setDefaults($this->template->song->toArray());
-			$this['songEditForm']['game']->setDefaultValue($this->gameAssoc);
-		}
+		$this->template->song = $this->songRecord;
+		$this->template->songMarkers = implode(',',$this->songMarkers->fetchPairs('id', 'timecode'));
+		$this['songEditForm']->setDefaults($this->template->song->toArray());
+		$this['songEditForm']['game']->setDefaultValue($this->gameAssoc);
 	}
 
 	/**

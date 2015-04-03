@@ -49,6 +49,20 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid->setPrimaryKey($table_id); // primary key is now used always
 		$grid->setDataSource($source);
 
+		Link::$checkPermissionCallback = function($link) {
+			switch ($link) {
+				case 'edit':
+					if (!$this->user->isAllowed($this->name, 'edit'))
+						return false;
+					break;
+				case 'delete!':
+					if (!$this->user->isAllowed($this->name, 'delete'))
+						return false;
+					break;
+			}
+			return $link;
+		};
+
 		$grid->addNumber('id');
 		$grid->addText('name', 'Group name');
 		$grid->addText('userCount', 'User count')
@@ -121,6 +135,7 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function	renderEdit($id = NULL)
 	{
+		Debugger::barDump($this->getSignal());
 		if ($groupRow = $this->group->getById($id))
 		{
 			$form = $this['editGroupForm'];

@@ -18,6 +18,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @inject @var Model\User */
 	public $userModel;
+	private $userRow;
 
 	/**
 	 * @return Form
@@ -53,12 +54,28 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid->setPrimaryKey($table_id); // primary key is now used always
 		$grid->setDataSource($source);
 
+		Link::$checkPermissionCallback = function($link) {
+			switch ($link) {
+				case 'edit':
+					if (!$this->user->isAllowed($this->name, 'edit'))
+						return false;
+					break;
+				case 'delete!':
+					if (!$this->user->isAllowed($this->name, 'delete'))
+						return false;
+					break;
+			}
+			return $link;
+		};
+
 		$grid->addNumber('id');
 		$grid->addText('role_id', 'Role');
 		$grid->addText('username', 'Username');
 		$grid->addText('realname', 'Full name');
 		$grid->addText('email', 'E-Mail');
 		$grid->addDate('create_time', 'Create time')
+			->setFormat('j.n.Y H:i:s');
+		$grid->addDate('last_login_time', 'Last login')
 			->setFormat('j.n.Y H:i:s');
 
 		$actions = $grid->addActions('Actions');
@@ -77,6 +94,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->setAttribute('href', new Link('delete!', array(
 				'id' => '{'.$table_id.'}'
 			)));
+
 		return $grid;
 	}
 
@@ -123,6 +141,29 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	}
 
+	public function actionEdit($id)
+	{
+		if ($userRow = $this->userModel->getById($id))
+		{
+			Debugger::barDump($this->user->roles[0]);
+			Debugger::barDump($userRow->ref('role')['name']);
+//			Debugger::barDump($this->getRoleAncestors('admin'));
+
+			if ($this->acl->roleInheritsFrom($this->user->roles[0], $userRow->ref('role')['name']))
+			{
+				$this->flashMessage('Sorry, not enough permissions to edit this user.', 'error');
+				$this->redirect('default');
+			}
+			$form = $this['editUserForm'];
+			$form->setDefaults($userRow);
+			$form['userId']->setValue($id);
+			$this->userRow = $userRow;
+		} else {
+			$this->flashMessage('Sorry, this user was not found.', 'error');
+			$this->redirect('default');
+		}
+	}
+
 	/**
 	 * Delete user by id.
 	 *
@@ -131,6 +172,11 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	public function handleDelete($id)
 	{
 		$this->userModel->deleteById($id);
+	}
+
+	public function	renderDefault()
+	{
+
 	}
 
 	public function renderAdd()
@@ -142,40 +188,9 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->addRule(Form::EQUAL, 'Passwords do not match', $this['editUserForm']['password']);
 	}
 
-	/**
-	 * Edit user by id.
-	 *
-	 * @param null $id
-	 */
-	public function	renderEdit($id = NULL)
+	public function	renderEdit()
 	{
-		if ($userRow = $this->userModel->getById($id))
-		{
-			$form = $this['editUserForm'];
-			$form->setDefaults($userRow);
-			$form['userId']->setValue($id);
-			$this->template->userRow = $userRow;
-		} else {
-			$this->flashMessage('Sorry, this user was not found.', 'error');
-			$this->redirect('default');
-		}
-	}
-
-	public function	renderDefault()
-	{
-
-	}
-
-	/**
-	 * @param $userId
-	 * @param $roleName
-	 */
-	public function actionSetRole($userId, $roleName)
-	{
-		$this->addRole('guest');
-		$this->getUser()->logout();
-		$this->flashMessage('The role has been successfully set.', 'success');
-		$this->redirect('default');
+		$this->template->userRow = $this->userRow;
 	}
 
 }

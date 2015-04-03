@@ -5,7 +5,7 @@
 <h1 n:block="title">Song editor</h1>
 </header>
 
-<a n:href="edit" class="btn btn-primary item-new"><span class="fa fa-upload"></span> Upload new song</a>
+{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-upload"></span> Upload new song</a>{/if}
 
 <div class="item-list" id="song-list">
 {control songDataGrid}

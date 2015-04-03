@@ -15,6 +15,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	/**  @inject @var \Kdyby\Translation\Translator */
 	public $translator;
+
+	/** @inject @var \Nette\Security\IAuthorizator */
+	public $acl;
+
 	public $onStartup = array();
 
 	protected function startup()
@@ -32,7 +36,21 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 				));
 
 			} else {
-				if (!$this->user->isAllowed($this->name, $this->action)) {
+				$resource = $this->name;
+				if ($this->getAction() == 'default'){
+					if (!$this->getSignal())
+						$privilege = $this->getAction(); // privilege is action only
+					else
+						$this->getSignal()[1];
+				} else {
+					$privilege = $this->getAction();
+				}
+
+//				Debugger::barDump($this->getAction(), 'action');
+//				Debugger::barDump($this->getSignal(), 'signal');
+//				Debugger::barDump($privilege, 'privilege');
+
+				if (!$this->user->isAllowed($resource, $privilege)) {
 					$this->flashMessage('front.auth.flash.accessDenied', 'error');
 					$this->redirect(':Front:default:');
 				}
@@ -42,13 +60,13 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	}
 
-	protected function beforeRender() {
-
+	protected function beforeRender()
+	{
 		// debug intention only
-		if ($this->getHttpRequest()->getUrl()->getHost() == 'diplomka.dev')
-			$this->template->devServer = true;
-		else
+		if ($this->getHttpRequest()->getUrl()->getHost() === 'sluchohry.cz')
 			$this->template->devServer = false;
+		else
+			$this->template->devServer = true;
 	}
 
 	/**
@@ -67,9 +85,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	}
 
 	/**
-	 * @param $inputTime int input time in whole milliseconds
-	 * @param $precision string seconds or milliseconds
-	 * @return string properly formatted time
+	 * @param $inputTime int - input time in whole milliseconds
+	 * @param $precision string - seconds or milliseconds
+	 * @return string - properly formatted time
 	 */
 	protected function getSongTimeFormat($inputTime, $precision = 'seconds')
 	{

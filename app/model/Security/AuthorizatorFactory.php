@@ -35,6 +35,21 @@ class AuthorizatorFactory extends Nette\Object
 			'Front:Game:Pexeso'
 		));
 
+		/**
+		 * Teacher - access only to basic listing of users, etc. Defined by privilege (action)
+		 * fine grained permission control.
+		 */
+		$permission->allow('teacher', array(
+			'Admin:Default',
+			'Admin:User',
+			'Admin:Group'
+		), array(
+			'default'
+		));
+
+		/**
+		 * Editor - access to everything defined here, no exceptions in privileges/actions.
+		 */
 		$permission->allow('editor', array(
 			'Admin:Default',
 			'Admin:Song',
@@ -46,5 +61,4 @@ class AuthorizatorFactory extends Nette\Object
 
 		return $permission;
 	}
-
 }
