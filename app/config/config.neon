@@ -38,10 +38,9 @@ translation:
 services:
 	routerFactory: App\RouterFactory
 	router: @routerFactory::create
-	authenticator: App\Model\Security\Authenticator
 
-	app.authorizatorFactory: App\Model\Security\AuthorizatorFactory
-	app.authorizator: @app.authorizatorFactory::create
+	authenticator: App\Model\Security\Authenticator
+	authorizator: App\Model\Security\Acl
 
 	logger:
 		class: App\Model\EventListeners\UserListener

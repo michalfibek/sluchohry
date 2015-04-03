@@ -147,9 +147,9 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		{
 			Debugger::barDump($this->user->roles[0]);
 			Debugger::barDump($userRow->ref('role')['name']);
-//			Debugger::barDump($this->getRoleAncestors('admin'));
+			Debugger::barDump($this->acl->isChildRole($userRow->ref('role')['name'], $this->user->roles[0]), 'isChild');
 
-			if ($this->acl->roleInheritsFrom($this->user->roles[0], $userRow->ref('role')['name']))
+			if (!$this->acl->isChildRole($userRow->ref('role')['name'], $this->user->roles[0]))
 			{
 				$this->flashMessage('Sorry, not enough permissions to edit this user.', 'error');
 				$this->redirect('default');
