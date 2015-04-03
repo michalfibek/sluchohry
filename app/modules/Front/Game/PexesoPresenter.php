@@ -15,8 +15,8 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 		DIFFICULTY_2_PAIRS = 6,
 		DIFFICULTY_3_PAIRS = 8;
 
-	/** @inject @var Model\SongStorage */
-	public $songStorage;
+	/** @inject @var Model\Song */
+	public $song;
 	private $songPairCount;
 
 
@@ -47,7 +47,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 	{
 //		$omitSongs = ($this->gameSession['pexesoHistory']) ? explode('-',$this->gameSession['melodicCubesHistory']) : null;
 
-		if ($assets = $this->songStorage->getSongRandom(null, false, self::GAME_PEXESO, $this->songPairCount)) {
+		if ($assets = $this->song->getRandom(null, false, self::GAME_PEXESO, $this->songPairCount)) {
 			return $assets;
 		} else {
 			return null;

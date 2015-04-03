@@ -17,7 +17,7 @@ use Tracy\Debugger;
 class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @inject @var Model\User */
-	public $userRecord;
+	public $userModel;
 
 	/**
 	 * @return Form
@@ -33,7 +33,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->addRule(Form::EMAIL, 'E-mail format is incorrect.');
 		$form->addText('realname');
 		$form->addSelect('role_id')
-			->setItems($this->userRecord->getRoleArray())
+			->setItems($this->userModel->getRolePairs())
 			->setDefaultValue(4);
 		$form->addSubmit('save');
 		$form->addHidden('userId');
@@ -47,7 +47,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 * @return Grid
      */
 	protected function createComponentUserDataGrid($name) {
-		$source = new NetteDbDataSource($this->userRecord->getAll());
+		$source = new NetteDbDataSource($this->userModel->getAll());
 		$grid = new Grid($this, $name);
 		$table_id = 'id';
 		$grid->setPrimaryKey($table_id); // primary key is now used always
@@ -90,11 +90,25 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	{
 		if (strlen($values['userId'])>0)
 		{
-			$this->userRecord->update($values['userId'], $values['username'], $values['password'], $values['email'], $values['realname'], $values['role_id']);
+			$insertData = array(
+				'username' => $values['username'],
+				'password' => $values['password'],
+				'email' => $values['email'],
+				'realname' => $values['realname'],
+				'role_id' => $values['role_id']
+			);
+			$this->userModel->updateById($values['userId'],$insertData);
 			$this->flashMessage('The user preferences has been changed.', 'success');
 			$this->redirect('default');
 		} else {
-			$this->userRecord->add($values['username'], $values['password'], $values['email'], $values['realname'], $values['role_id']);
+			$insertData = array(
+				'username' => $values['username'],
+                'password' => $values['password'],
+                'email' => $values['email'],
+                'realname' => $values['realname'],
+                'role_id' => $values['role_id']
+			);
+			$this->userModel->insert($insertData);
 			$this->flashMessage('The user has been successfully added.', 'success');
 			$this->redirect('default');
 		}
@@ -116,7 +130,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
-		$this->userRecord->delete($id);
+		$this->userModel->deleteById($id);
 	}
 
 	public function renderAdd()
@@ -135,7 +149,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function	renderEdit($id = NULL)
 	{
-		if ($userRow = $this->userRecord->getById($id))
+		if ($userRow = $this->userModel->getById($id))
 		{
 			$form = $this['editUserForm'];
 			$form->setDefaults($userRow);
@@ -147,12 +161,9 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		}
 	}
 
-	/**
-	 *
-	 */
 	public function	renderDefault()
 	{
-//		$this->template->users = $this->userRecord->getAll();
+
 	}
 
 	/**

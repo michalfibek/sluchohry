@@ -16,8 +16,8 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		DIFFICULTY_2_SPLITS = 4,
 		DIFFICULTY_3_SPLITS = 8;
 
-	/** @inject @var Model\SongStorage */
-	public $songStorage;
+	/** @inject @var Model\Song */
+	public $song;
 	protected $cubeCount;
 
 
@@ -42,10 +42,10 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 
 	protected function getAssetsById($id)
 	{
-		if ($song = $this->songStorage->getSongById($id, true))
+		if ($song = $this->song->getById($id, true))
 		{
 			$assets['song'] = $song;
-			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($id, $this->cubeCount);
+			$assets['markers'] = $this->song->getCubeMarkersByCount($id, $this->cubeCount);
 			return $assets;
 		} else {
 			return null;
@@ -56,10 +56,10 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	protected function getAssetsRandom()
 	{
 		$omitSongs = ($this->gameSession['melodicCubesHistory']) ? explode('-',$this->gameSession['melodicCubesHistory']) : null;
-		if ($song = $this->songStorage->getSongRandom($omitSongs, true, self::GAME_MELODIC_CUBES))
+		if ($song = $this->song->getRandom($omitSongs, true, self::GAME_MELODIC_CUBES))
 		{
 			$assets['song'] = $song;
-			$assets['markers'] = $this->songStorage->getCubeMarkersByCount($song->id, $this->cubeCount);
+			$assets['markers'] = $this->song->getCubeMarkersByCount($song->id, $this->cubeCount);
 			return $assets;
 		} else {
 			return null;

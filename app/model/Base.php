@@ -54,8 +54,8 @@ abstract class Base extends Nette\Object
     /**
      * Inserts data into table
      *
-     * @param array $data - assarray
-     * @return boolean|ActiveRow - false pri neuspechu, nebo vlozeny radek
+     * @param array $data - associative array
+     * @return boolean|ActiveRow - returned row or FALSE when fail
      */
     public function insert($data)
     {
@@ -63,11 +63,11 @@ abstract class Base extends Nette\Object
     }
 
     /**
-     * Uprava radku v DB dle id primarniho klice
+     * Updates row in db by id
      *
-     * @param int $id - id primarniho klice radku s daty
-     * @param array $data - pole s daty ve formatu column => value
-     * @return int|FALSE pocet ovlivnenych radku nebo FALSE pri chybe
+     * @param int $id
+     * @param array $data - array in format column => value
+     * @return int|FALSE number of affeceted rows or FALSE when error
      */
     public function updateById($id, $data)
     {

@@ -1,9 +1,10 @@
 <?php
-namespace App\Model;
+namespace App\Model\Security;
 
-use Nette\Security\Permission;
+use Nette,
+	Nette\Security\Permission;
 
-class AuthorizatorFactory
+class AuthorizatorFactory extends Nette\Object
 {
 
 	/**

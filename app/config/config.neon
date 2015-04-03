@@ -9,6 +9,9 @@ parameters:
 		saveDir: %wwwDir%/assets/sounds/songs/
 		uploadDir: %appDir%/../uploads/
 
+	avatar:
+		saveDir: %wwwDir%/assets/images/avatar/
+
 php:
 	date.timezone: Europe/Prague
 
@@ -34,22 +37,24 @@ translation:
     fallback: [cs_CZ, cs]
     whitelist: ['cs', 'en']
 
-
 services:
 	routerFactory: App\RouterFactory(%router.useHttps%)
 	router: @routerFactory::create
-	authenticator: App\Model\UserAuthenticator
+	authenticator: App\Model\Security\Authenticator
 
-	app.authorizatorFactory: App\Model\AuthorizatorFactory
+	app.authorizatorFactory: App\Model\Security\AuthorizatorFactory
 	app.authorizator: @app.authorizatorFactory::create
 
 	logger:
-		class: App\Model\UserListener
+		class: App\Model\EventListeners\UserListener
 		tags: [kdyby.subscriber]
 
-	- App\Model\SongStorage(%song.uploadDir%, %song.saveDir%)
+	- App\Model\Avatar(%avatar.saveDir%)
+	- App\Model\Event
+	- App\Model\Game
+	- App\Model\Group
+	- App\Model\Song(%song.uploadDir%, %song.saveDir%)
 	- App\Model\User
-	- App\Model\EventLogger
 
 	- App\Services\UploadHandler
 	- App\Services\SongTagHandler

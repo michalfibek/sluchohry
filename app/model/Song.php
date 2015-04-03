@@ -3,13 +3,11 @@ namespace App\Model;
 
 use Nette,
     App\Services;
-use Symfony\Component\Config\Definition\Exception\Exception;
-use Tracy\Debugger;
 
 /**
  * Manipulate with song files.
  */
-class SongStorage extends Nette\Object
+class Song extends Base
 {
     const
         TABLE_NAME_SONG = 'song',
@@ -17,8 +15,6 @@ class SongStorage extends Nette\Object
         TABLE_NAME_GAME = 'game',
         TABLE_NAME_GENRE = 'genre';
 
-    /** @var Nette\Database\Context */
-    private $database;
     /** @var Services\UploadHandler */
     private $uploadHandler;
     /** @var Services\SongTagHandler */
@@ -33,17 +29,17 @@ class SongStorage extends Nette\Object
     private $allowedExtensions;
 
     /**
+     * @param Nette\Database\Context $db
      * @param $uploadDir
      * @param $saveDir
-     * @param Nette\Database\Context $database
      * @param Services\UploadHandler $uploadHandler
      * @param Services\SongTagHandler $tagHandler
      */
-    public function __construct($uploadDir, $saveDir, Nette\Database\Context $database, Services\UploadHandler $uploadHandler, Services\SongTagHandler $tagHandler)
+    public function __construct($uploadDir, $saveDir, Nette\Database\Context $db, Services\UploadHandler $uploadHandler, Services\SongTagHandler $tagHandler)
     {
+        parent::__construct($db);
         $this->uploadDir = $uploadDir;
         $this->saveDir = $saveDir;
-        $this->database = $database;
         $this->uploadHandler = $uploadHandler;
         $this->tagHandler = $tagHandler;
         $this->songDefaultExtension = 'mp3';
@@ -51,31 +47,19 @@ class SongStorage extends Nette\Object
     }
 
     /** @return Nette\Database\Table\Selection */
-    public function getSongAll()
-    {
-        // TODO fetchovat i zaznamy pouzitych her, zobrazovat v templatu
-        return $this->database->table(self::TABLE_NAME_SONG);
-    }
-
-    /** @return Nette\Database\Table\Selection */
     public function getGameAll()
     {
-        return $this->database->table(self::TABLE_NAME_GAME)
+        return $this->db->table(self::TABLE_NAME_GAME)
             ->order('name ASC');
     }
 
-    public function getSongById($songId, $requireMarkers = false)
+    public function getById($songId, $requireMarkers = false)
     {
         if ($requireMarkers) {
-            $hasMarkers = $this->database->query('SELECT * FROM marker WHERE song_id=?', $songId)->fetchAll();
+            $hasMarkers = $this->db->table('marker')->where('song_id', $songId)->fetchAll();
             if (!$hasMarkers) return false;
         }
-        return $this->database->table(self::TABLE_NAME_SONG)->get($songId);
-    }
-
-    public function getGameAssoc($songId)
-    {
-        return $this->database->query('SELECT game_id FROM game_has_song WHERE song_id=?', $songId)->fetchPairs();
+        return parent::getById($songId);
     }
 
     /**
@@ -85,10 +69,10 @@ class SongStorage extends Nette\Object
      * @param int $songCount Count of songs
      * @return array song info
      */
-    public function getSongRandom($omitSongs = null, $requireMarkers = false, $gameLimit = null, $songCount = 1)
+    public function getRandom($omitSongs = null, $requireMarkers = false, $gameLimit = null, $songCount = 1)
     {
-        $songsAll = $this->database->table('song');
-        $markedSongs = $this->database->table('marker')->select('DISTINCT song_id')->fetchPairs(null, 'song_id');
+        $songsAll = $this->getAll();
+        $markedSongs = $this->db->table('marker')->select('DISTINCT song_id')->fetchPairs(null, 'song_id');
 
         // fetch only songs with set markers
         if ($requireMarkers)
@@ -100,7 +84,7 @@ class SongStorage extends Nette\Object
 
         // fetch only songs for certain game
         if ($gameLimit)
-            $songsForGame = $this->database->table('game_has_song')->where('game_id', $gameLimit)->fetchPairs(null, 'song_id');
+            $songsForGame = $this->db->table('game_has_song')->where('game_id', $gameLimit)->fetchPairs(null, 'song_id');
             $songsAll = $songsAll->where('id IN', $songsForGame);
 
         if ($songCount == 1) { // fetching only one song
@@ -127,7 +111,7 @@ class SongStorage extends Nette\Object
 
     public function getMarkersAll($songId)
     {
-        return $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC');
+        return $this->db->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC');
     }
 
     /**
@@ -139,7 +123,7 @@ class SongStorage extends Nette\Object
     {
         $cubeSplits = ($cubeCount > 2) ? $cubeCount-1 : $cubeCount;
 
-        $markersAll = $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC')->fetchAll();
+        $markersAll = $this->db->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC')->fetchAll();
 
         if (count($markersAll) < $cubeSplits) $cubeSplits = count($markersAll);
 
@@ -157,14 +141,14 @@ class SongStorage extends Nette\Object
             }
         }
 
-        $markers[] = array($markersAll[$randKeys[$cubeSplits-1]]->timecode, $this->getSongById($songId)->duration - $markersAll[$randKeys[$cubeSplits-1]]->timecode);
+        $markers[] = array($markersAll[$randKeys[$cubeSplits-1]]->timecode, $this->getById($songId)->duration - $markersAll[$randKeys[$cubeSplits-1]]->timecode);
 
         return $markers;
     }
 
     public function getGenres()
     {
-        return $this->database->table(self::TABLE_NAME_GENRE);
+        return $this->db->table(self::TABLE_NAME_GENRE);
     }
 
     public function handleUpload()
@@ -173,15 +157,10 @@ class SongStorage extends Nette\Object
         return $this->uploadHandler->handleUpload($this->uploadDir);
     }
 
-    public function updateSong($songId, $values)
+    public function updateById($id, $data)
     {
-        try {
-            $values['update_time'] = new Nette\Utils\DateTime;
-            $song = $this->database->table(self::TABLE_NAME_SONG)->get($songId);
-            $song->update($values);
-        } catch (\Exception $e) {
-            Debugger::log($e->getMessage());
-        }
+        $data['update_time'] = new Nette\Utils\DateTime;
+        return parent::updateById($id, $data);
     }
 
     public function updateMarkers($songId, $markers = null)
@@ -192,7 +171,7 @@ class SongStorage extends Nette\Object
         if ($markers) {
             // insert new markers
             foreach ($markers as $singleMarker) {
-                $this->database->table(self::TABLE_NAME_MARKER)->insert( array(
+                $this->db->table(self::TABLE_NAME_MARKER)->insert( array(
                     'song_id' => $songId,
                     'timecode' => $singleMarker
                 ));
@@ -200,32 +179,6 @@ class SongStorage extends Nette\Object
         }
     }
 
-    public function updateGameAssoc($songId, $gameIdArray)
-    {
-        $currentAssoc = $this->getGameAssoc($songId);
-
-        if ($currentAssoc == $gameIdArray) {
-            return false;
-        }
-        Debugger::barDump($currentAssoc);
-        Debugger::barDump($gameIdArray);
-
-        // updating, so delete old records
-        $this->database->table('game_has_song')->where('song_id=?',$songId)->delete();
-
-        // do we insert?
-        if ($gameIdArray)
-        {
-            foreach ($gameIdArray as $gameId)
-            {
-                $insertArray = array(
-                    'game_id' => $gameId,
-                    'song_id' => $songId
-                );
-                $this->database->query('INSERT INTO game_has_song', $insertArray);
-            }
-        }
-    }
 
     public function save($uploadResult)
     {
@@ -255,7 +208,7 @@ class SongStorage extends Nette\Object
         $row['filename'] = $uploadUUIDName;
 
         try {
-            $songInsert = $this->insertSong($row);
+            $songInsert = $this->insert($row);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -270,9 +223,9 @@ class SongStorage extends Nette\Object
         return $uploadResult;
     }
 
-    public function deleteSong($songId)
+    public function deleteById($id)
     {
-        $song = $this->database->table(self::TABLE_NAME_SONG)->get($songId);
+        $song = $this->getById($id);
         if (!$song) return false;
         try {
             // delete song file
@@ -290,16 +243,10 @@ class SongStorage extends Nette\Object
 
     public function deleteMarkers($songId)
     {
-        $markers = $this->database->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER);
+        $markers = $this->db->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER);
         foreach ($markers as $singleMarker) {
             $singleMarker->delete();
         }
     }
-
-    private function insertSong($row)
-    {
-        return $this->database->table(self::TABLE_NAME_SONG)->insert($row);
-    }
-
 
 }

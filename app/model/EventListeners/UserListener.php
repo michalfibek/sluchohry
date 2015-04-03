@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\EventListeners;
 
 use Nette,
+    App,
     Tracy\Debugger;
 
 class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
 {
-    private $logger;
+    private $event;
 
-    function __construct(EventLogger $logger)
+    function __construct(App\Model\Event $event)
     {
-        $this->logger = $logger;
+        $this->event = $event;
     }
 
     public function getSubscribedEvents()
@@ -29,17 +30,17 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
 
     public function onGameStart($result)
     {
-        $this->logger->saveGameStart($result);
+        $this->event->saveGameStart($result);
     }
 
     public function onGameEnd($result)
     {
-        $this->logger->saveGameEndResult($result, true);
+        $this->event->saveGameEndResult($result, true);
     }
 
     public function onGameForceEnd($result)
     {
-        $this->logger->saveGameEndResult($result, false);
+        $this->event->saveGameEndResult($result, false);
     }
 
     public function onStartup(\App\Module\Base\Presenters\BasePresenter $presenter)
@@ -53,11 +54,11 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
     }
     public function onLoggedIn()
     {
-        $this->logger->saveUserLoggedIn();
+        $this->event->saveUserLoggedIn();
     }
     public function onLoggedOut()
     {
-        $this->logger->saveUserLoggedOut();
+        $this->event->saveUserLoggedOut();
     }
 
 }

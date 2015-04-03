@@ -5,7 +5,7 @@ namespace App\Model;
 
 use Nette;
 
-class EventLogger extends Nette\Object {
+class Event extends Base {
 
     const
         CLASS_GAME_END = 1,
@@ -26,21 +26,19 @@ class EventLogger extends Nette\Object {
         DATA_SONG_LIST = 'song_list',
         DATA_SOLVED = 'solved';
 
-    /** @var Nette\Database\Context */
-    private $database;
     private $user;
     private $httpRequest;
 
-    public function __construct(Nette\Database\Context $database, Nette\Security\User $user, Nette\Http\Request $httpRequest)
+    public function __construct(Nette\Database\Context $db, Nette\Security\User $user, Nette\Http\Request $httpRequest)
     {
-        $this->database = $database;
+        parent::__construct($db);
         $this->user = $user;
         $this->httpRequest = $httpRequest;
     }
 
     private function insertRecord($eventClassId, $eventData = null)
     {
-        $event = $this->database->table('event')->insert(array(
+        $event = $this->db->table('event')->insert(array(
             'user_id' => $this->user->getId(),
             'user_agent' => $this->httpRequest->getHeader('User-Agent'),
             'user_ip' => $this->httpRequest->getRemoteAddress(),
@@ -49,7 +47,7 @@ class EventLogger extends Nette\Object {
 
         if ($eventData)
             foreach ($eventData as $key => $value) {
-                $this->database->table('event_data')->insert(array(
+                $this->db->table('event_data')->insert(array(
                     'event_id' => $event->getPrimary(),
                     'name' => $key,
                     'value' => $value

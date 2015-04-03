@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Model\Security;
 
 use Nette,
 	Nette\Utils\Strings,
@@ -8,10 +8,8 @@ use Nette,
 use Tracy\Debugger;
 
 
-/**
- * Users management.
- */
-class UserAuthenticator extends Nette\Object implements Nette\Security\IAuthenticator
+
+class Authenticator extends Nette\Object implements Nette\Security\IAuthenticator
 {
 	const
 		TABLE_NAME = 'user',
