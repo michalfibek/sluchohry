@@ -46,6 +46,9 @@ services:
 		class: App\Model\EventListeners\UserListener
 		tags: [kdyby.subscriber]
 
+	userEditFormFactory:
+		implement: App\Components\IUserEditFormFactory
+
 	- App\Model\Avatar(%avatar.saveDir%)
 	- App\Model\Event
 	- App\Model\Game

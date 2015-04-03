@@ -21,6 +21,7 @@ auth:
         login: "Ahoj %name%!"
         sessionTimeout: "Vypršel čas přihlášení, přihlaš se prosím znovu."
         accessDenied: "Tady ne! Přístup zamítnut."
+        actionForbidden: "Na toto nemáte oprávnění"
 
 game:
     games: "Hry"

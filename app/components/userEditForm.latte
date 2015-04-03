@@ -1,0 +1,62 @@
+<div class="container user-editor">
+
+    <div class="col-sm-6">
+        <form n:name="form" class="form-horizontal">
+            <input n:name="userId" id="userId" type="hidden">
+            <div class="form-group">
+                <label n:name="username" for="username" class="col-sm-4 control-label">Username:</label>
+                <div class="col-sm-8">
+                    <input n:name="username" type="text" class="form-control" id="username">
+                </div>
+            </div>
+            <div class="form-group">
+                <label n:name="email" for="email" class="col-sm-4 control-label">E-mail:</label>
+                <div class="col-sm-8">
+                    <input n:name="email" type="text" class="form-control" id="email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label n:name="realname" for="realname" class="col-sm-4 control-label">Personal name:</label>
+                <div class="col-sm-8">
+                    <input n:name="realname" type="text" class="form-control" id="realname">
+                </div>
+            </div>
+            <div class="form-group">
+                <label n:name="role_id" for="role_id" class="col-sm-4 control-label">Role:</label>
+                <div class="col-sm-8">
+                    <select n:name="role_id" id="role_id" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div id="password-area">
+                <div class="form-group">
+                    <label n:name="password" for="password" class="col-sm-4 control-label">Password:</label>
+                    <div class="col-sm-8">
+                        <input n:name="password" type="password" class="form-control" id="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label n:name="passwordVerify" for="password-verify" class="col-sm-4 control-label">Password (verification):</label>
+                    <div class="col-sm-8">
+                        <input n:name="passwordVerify" type="password" class="form-control" id="password-verify">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-12 text-center">
+                        <button type="button" class="btn btn-default" id="user-password-generate"><span class="fa fa-key"></span> Generate password</button>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <p class="form-control-static" id="generated-pw">&nbsp;</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group main-buttons">
+                <div class="col-sm-12 text-right">
+                    {*<button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> Delete</button>*}
+                    <button n:name="save" id="button-save" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>

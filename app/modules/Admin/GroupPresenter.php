@@ -120,6 +120,9 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
+		if (!$this->user->isAllowed($this->name, 'delete')) {
+			$this->flashMessage($this->translator->translate('front.auth.flash.actionForbidden'), 'error');
+		}
 		$this->group->deleteById($id);
 	}
 

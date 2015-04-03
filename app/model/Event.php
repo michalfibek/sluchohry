@@ -33,6 +33,11 @@ class Event extends Base {
         $this->httpRequest = $httpRequest;
     }
 
+    public function getAllView()
+    {
+        return $this->db->table('view_eventlog');
+    }
+
     /**
      * @param $userId int
      * @param $eventClassId

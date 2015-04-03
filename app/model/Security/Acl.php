@@ -24,6 +24,8 @@ class Acl extends Permission
 		$this->addResource('Admin:Song');
 		$this->addResource('Admin:User');
 		$this->addResource('Admin:Group');
+		$this->addResource('Admin:Event');
+
 
 		/**
 		 * Student - access only to games.
@@ -47,7 +49,7 @@ class Acl extends Permission
 		));
 
 		/**
-		 * Editor - access to everything defined here, no exceptions in privileges/actions.
+		 * Editor - access to everything defined here, no special exceptions in privileges/actions.
 		 */
 		$this->allow('editor', array(
 			'Admin:Default',

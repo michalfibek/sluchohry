@@ -147,7 +147,10 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
-		Debugger::barDump($this->getAction());
+		if (!$this->user->isAllowed($this->name, 'delete')) {
+			$this->flashMessage($this->translator->translate('front.auth.flash.actionForbidden'), 'error');
+		}
+
 		if (!$this->song->deleteById($id)) {
 			$this->flashMessage("Song not found.", 'error');
 		} else {

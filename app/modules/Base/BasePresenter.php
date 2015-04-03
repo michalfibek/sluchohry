@@ -37,14 +37,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 			} else {
 				$resource = $this->name;
-				if ($this->getAction() == 'default'){
-					if (!$this->getSignal())
-						$privilege = $this->getAction(); // privilege is action only
-					else
-						$this->getSignal()[1];
-				} else {
-					$privilege = $this->getAction();
-				}
+				$privilege = $this->getAction();
 
 //				Debugger::barDump($this->getAction(), 'action');
 //				Debugger::barDump($this->getSignal(), 'signal');
