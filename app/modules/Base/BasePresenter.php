@@ -13,7 +13,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @persistent */
 	public $locale;
 
-	/** @var \Kdyby\Translation\Translator @inject */
+	/**  @inject @var \Kdyby\Translation\Translator */
 	public $translator;
 	public $onStartup = array();
 
@@ -40,6 +40,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		}
 		$this->onStartup($this);
 
+	}
+
+	protected function beforeRender() {
+
+		// debug intention only
+		if ($this->getHttpRequest()->getUrl()->getHost() == 'diplomka.dev')
+			$this->template->devServer = true;
+		else
+			$this->template->devServer = false;
 	}
 
 	/**
