@@ -44,9 +44,4 @@ abstract class BaseGamePresenter extends BasePresenter
         $this->onGameForceEnd($result);
     }
 
-    public function actionEvaluate()
-    {
-        $this->onEnd($this);
-    }
-
 }
