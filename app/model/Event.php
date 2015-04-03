@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Model;
 
 use Nette;
@@ -26,20 +25,23 @@ class Event extends Base {
         DATA_SONG_LIST = 'song_list',
         DATA_SOLVED = 'solved';
 
-    private $user;
     private $httpRequest;
 
-    public function __construct(Nette\Database\Context $db, Nette\Security\User $user, Nette\Http\Request $httpRequest)
+    public function __construct(Nette\Database\Context $db, Nette\Http\Request $httpRequest)
     {
         parent::__construct($db);
-        $this->user = $user;
         $this->httpRequest = $httpRequest;
     }
 
-    private function insertRecord($eventClassId, $eventData = null)
+    /**
+     * @param $userId int
+     * @param $eventClassId
+     * @param null $eventData
+     */
+    private function insertRecord($userId, $eventClassId, $eventData = null)
     {
         $event = $this->db->table('event')->insert(array(
-            'user_id' => $this->user->getId(),
+            'user_id' => $userId,
             'user_agent' => $this->httpRequest->getHeader('User-Agent'),
             'user_ip' => $this->httpRequest->getRemoteAddress(),
             'event_class_id' => $eventClassId
@@ -55,7 +57,11 @@ class Event extends Base {
             }
     }
 
-    public function saveGameStart(array $result)
+    /**
+     * @param Nette\Security\User $user
+     * @param array $result
+     */
+    public function saveGameStart(Nette\Security\User $user, array $result)
     {
         if ($result['gameName'] == 'melodicCubes')
         {
@@ -72,10 +78,15 @@ class Event extends Base {
                 self::DATA_DIFFICULTY => $result['difficulty']
             );
         }
-        $this->insertRecord(self::CLASS_GAME_START, $data);
+        $this->insertRecord($user->getId(), self::CLASS_GAME_START, $data);
     }
 
-    public function saveGameEndResult(array $result, $solved)
+    /**
+     * @param Nette\Security\User $user
+     * @param array $result
+     * @param $solved
+     */
+    public function saveGameEndResult(Nette\Security\User $user, array $result, $solved)
     {
         if ($result['gameName'] == 'melodicCubes')
         {
@@ -99,25 +110,31 @@ class Event extends Base {
                 self::DATA_SOLVED => $solved,
             );
         }
-        $this->insertRecord(self::CLASS_GAME_END, $data);
+        $this->insertRecord($user->getId(), self::CLASS_GAME_END, $data);
     }
 
-    public function saveUserLoggedIn()
+    /**
+     * @param Nette\Security\User $user
+     */
+    public function saveUserLoggedIn(Nette\Security\User $user)
     {
         $data = array(
             self::DATA_LOGIN => true,
         );
 
-        $this->insertRecord(self::CLASS_AUTH, $data);
+        $this->insertRecord($user->getId(), self::CLASS_AUTH, $data);
     }
 
-    public function saveUserLoggedOut()
+    /**
+     * @param Nette\Security\User $user
+     */
+    public function saveUserLoggedOut(Nette\Security\User $user)
     {
         $data = array(
             self::DATA_LOGOUT => true
         );
 
-        $this->insertRecord(self::CLASS_AUTH, $data);
+        $this->insertRecord($user->getId(), self::CLASS_AUTH, $data);
     }
 
 }

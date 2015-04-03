@@ -9,38 +9,48 @@ use Nette,
 class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
 {
     private $event;
+    /**
+     * @var User
+     */
+    private $userModel;
+    /**
+     * @var Nette\Security\User
+     */
+    private $user;
 
-    function __construct(App\Model\Event $event)
+    function __construct(Nette\Security\User $user, App\Model\Event $event, App\Model\User $userModel)
     {
         $this->event = $event;
+        $this->userModel = $userModel;
+        $this->user = $user;
     }
 
     public function getSubscribedEvents()
     {
         return array(
-            'App\Module\Base\Presenters\BaseGamePresenter::onGameStart' => 'onGameStart',
-            'App\Module\Base\Presenters\BaseGamePresenter::onGameEnd' => 'onGameEnd',
-            'App\Module\Base\Presenters\BaseGamePresenter::onGameForceEnd' => 'onGameForceEnd',
-            'Nette\Application\Application::onError' => 'onError',
+            'App\Module\Base\Presenters\BaseGamePresenter::onGameStart',
+            'App\Module\Base\Presenters\BaseGamePresenter::onGameEnd',
+            'App\Module\Base\Presenters\BaseGamePresenter::onGameForceEnd',
+//            'Nette\Application\Application::onError' => 'onError',
 //            'App\Module\Base\Presenters\BasePresenter::onStartup' => 'onStartup',
-            'Nette\Security\User::onLoggedIn' => 'onLoggedIn',
-            'Nette\Security\User::onLoggedOut' => 'onLoggedOut'
+            'Nette\Security\User::onLoggedIn',
+            'Nette\Security\User::onLoggedOut'
         );
     }
 
     public function onGameStart($result)
     {
-        $this->event->saveGameStart($result);
+        $this->event->saveGameStart($this->user, $result);
     }
 
     public function onGameEnd($result)
     {
-        $this->event->saveGameEndResult($result, true);
+        $this->event->saveGameEndResult($this->user, $result, true);
     }
 
     public function onGameForceEnd($result)
     {
-        $this->event->saveGameEndResult($result, false);
+        $this->event->saveGameEndResult($this->user, $result, false);
     }
 
     public function onStartup(\App\Module\Base\Presenters\BasePresenter $presenter)
@@ -54,11 +64,12 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
     }
     public function onLoggedIn()
     {
-        $this->event->saveUserLoggedIn();
+        $this->userModel->updateById($this->user->getId(), array('last_login_time' => new Nette\Utils\DateTime));
+        $this->event->saveUserLoggedIn($this->user);
     }
     public function onLoggedOut()
     {
-        $this->event->saveUserLoggedOut();
+        $this->event->saveUserLoggedOut($this->user);
     }
 
 }
