@@ -1,0 +1,92 @@
+/*
+GAME: melodic cubes
+*/
+
+#btn-play, #btn-stop {
+  width: 150px;
+  height: 71px;
+  font-size: 1.6em;
+  background-color: @color-ter-1;
+  border-color: #000;
+  color: #fff;
+}
+
+.game-eval-block {
+  text-align: right;
+  margin: 50px 0;
+}
+
+#btn-eval {
+  padding: 26px;
+  font-size: 1.6em;
+  color: #fff;
+  background-color: @color-sec-1;
+  border-color: @color-sec-1-border;
+}
+
+.single-cube {
+  //  background-color: #0000f6;
+  padding: 0;
+  margin: 0;
+
+  transform: scale(0.90);
+  transition: all 0.3s ease-in-out;
+  box-shadow: none;
+
+  background-color: gray;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+
+  .btn {
+    min-width: 100%;
+    height: auto;
+    display: block;
+    padding: 50% 0;
+    background-color: #bbb;
+    transition: all 0.8s ease-in-out;
+    opacity: 0.5;
+    border: 1px solid #3D3D3D;
+
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      opacity: 1;
+    }
+  }
+}
+.cube-highlight {
+
+  opacity: 1;
+  transform: scale(1);
+  z-index: 10;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+
+  .btn {
+    transition: all 0.5s ease-in-out;
+    background-color: #ff0000 !important;
+    opacity: 1;
+  }
+
+}
+
+
+.game-main.pexeso {
+
+  .single-cube {
+
+    //    background: none;
+
+    .btn {
+      background: #ff3d31;
+    }
+
+  }
+
+  .cube-found {
+    opacity: 0.4;
+
+    .btn {
+      opacity: 0.1;
+    }
+  }
+}
+
+

@@ -55,15 +55,19 @@ class UserEditForm extends UI\Control
     /** @var array */
     public $onNotFound;
 
+    /** @var App\Model\Avatar */
+    private $avatar;
+
     // TODO FIX form saving -> currently not working callback
 
-    public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user)
+    public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar)
     {
         parent::__construct();
         $this->userModel = $userModel;
         $this->acl = $acl;
         $this->user = $user;
         $this->userId = null;
+        $this->avatar = $avatar;
     }
 
     public function createComponentForm()
@@ -74,6 +78,14 @@ class UserEditForm extends UI\Control
 
         $form->addPassword('password');
         $form->addPassword('passwordVerify');
+
+        if ($this->requirePassword)
+        {
+            $form['password']->setRequired()
+                ->addRule(Form::MIN_LENGTH, 'The password has to be at least %d characters long', 6);
+            $form['passwordVerify']->setRequired('Please enter your password second time for verification.')
+                ->addRule(Form::EQUAL, 'Passwords do not match', $form['password']);
+        }
 
         $form->addText('email')
             ->addRule(Form::EMAIL, 'E-mail format is incorrect.')
@@ -86,22 +98,16 @@ class UserEditForm extends UI\Control
                 ->setItems($this->userModel->getRolePairs())
                 ->setDefaultValue(4);
 
-        $form->addSubmit('save');
-
         if ($this->userId)
             $form->addHidden('userId')
                 ->setValue($this->userId);
 
+        $form->addRadioList('avatar_id', 'Avatar', $this->avatar->getAsArray('filename'));
+
         if ($this->userRow)
             $form->setDefaults($this->userRow);
 
-        if ($this->requirePassword)
-        {
-            $form['password']->setRequired()
-                ->addRule(Form::MIN_LENGTH, 'The password has to be at least %d characters long', 6);
-            $form['passwordVerify']->setRequired('Please enter your password second time for verification.')
-                ->addRule(Form::EQUAL, 'Passwords do not match', $form['password']);
-        }
+        $form->addSubmit('save');
 
         $form->onSuccess[] = $this->processForm;
 
@@ -131,7 +137,8 @@ class UserEditForm extends UI\Control
                 'username' => $values['username'],
                 'password' => $values['password'],
                 'email' => $values['email'],
-                'realname' => $values['realname']
+                'realname' => $values['realname'],
+                'avatar_id' => $values['avatar_id'],
             );
             unset($values['password'],$values['passwordVerify']);
 
@@ -150,9 +157,13 @@ class UserEditForm extends UI\Control
                 'password' => $values['password'],
                 'email' => $values['email'],
                 'realname' => $values['realname'],
-                'role_id' => $values['role_id']
+                'avatar_id' => $values['avatar_id'],
             );
             unset($values['password'],$values['passwordVerify']);
+
+            if ($this->roleChanger)
+                $insertData['role_id'] = $values['role_id'];
+
 
             $result = $this->userModel->insert($insertData);
 

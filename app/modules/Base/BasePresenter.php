@@ -39,9 +39,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 				$resource = $this->name;
 				$privilege = $this->getAction();
 
-//				Debugger::barDump($this->getAction(), 'action');
-//				Debugger::barDump($this->getSignal(), 'signal');
-//				Debugger::barDump($privilege, 'privilege');
+				Debugger::barDump($this->getAction(), 'action');
+				Debugger::barDump($resource, 'resource');
+				Debugger::barDump($privilege, 'privilege');
 
 				if (!$this->user->isAllowed($resource, $privilege)) {
 					$this->flashMessage('front.auth.flash.accessDenied', 'error');

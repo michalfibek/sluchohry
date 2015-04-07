@@ -1,0 +1,13 @@
+{block content}
+
+<header>
+<h1 n:block="title">User editor <small>{ifset $userRow}{$userRow->username}{else}Add new user{/ifset}</small></h1>
+</header>
+
+{control userEditForm}
+
+
+{block scripts}
+{include parent}
+<script src="{$basePath}/assets/js/editUser.js"></script>
+{/block}

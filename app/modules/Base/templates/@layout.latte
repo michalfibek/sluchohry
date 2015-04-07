@@ -11,7 +11,7 @@
 	<title>{if devServer}@ {/if}{ifset title}{include title|striptags} | {/ifset}{_front.homepage.sluchohry}</title>
 	{block styles}
 	{*<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">*}
-	<link rel="stylesheet" href="{$basePath}/assets/css/main.css">
+	<link rel="stylesheet" href="{$basePath}/style.css">
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
 	{/block}
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico?v=1.0">
@@ -44,7 +44,7 @@
 					<i class="fa fa-sign-out"></i> {_front.auth.logout}
 				</a>
 
-				<a href="#" id="user-profile-edit">
+				<a n:href=":Front:Profile:" id="user-profile-edit">
 					<i class="fa fa-user"></i> {$user->identity->username} {if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
 				</a>
 

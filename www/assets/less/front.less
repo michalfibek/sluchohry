@@ -1,0 +1,81 @@
+/*
+FRONT: applies only to front module
+*/
+.container.front {
+
+}
+
+
+.homepage {
+  .text-center();
+  .center-block();
+  float: none;
+
+  h1 {
+    margin: 50px 0;
+    text-transform: uppercase;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: @color-prim-2;
+
+    @media (min-width: @screen-sm-min) {
+      font-size: 4.5em;
+    }
+
+  }
+
+  #login-form {
+    //  .center-block();
+    .text-left();
+
+    #login-button {
+      padding: 20px;
+      width: 100%;
+      margin: 20px 0 0 0;
+      font-size: 26px;
+      background-color: @color-sec-1;
+      border-color: @color-sec-1-border;
+
+      &:hover {
+        background-color: @color-sec-1-border;
+      }
+
+    }
+
+    #remember-check {
+      margin: 20px 5px;
+      font-size: 20px;
+      line-height: 20px;
+      //      text-align: center;
+    }
+  }
+
+}
+
+#game-list {
+  list-style: none;
+  margin: 20px 0 20px 0;
+  padding: 0;
+
+  li {
+    display: inline-block;
+
+    i.fa {
+      display: block;
+      font-size: 4em;
+      line-height: 1.4em;
+    }
+
+    a {
+      .btn();
+      .btn-default();
+      font-size: 1.5em;
+      width: 300px;
+      height: 200px;
+      margin: 10px;
+      display: block;
+      //      line-height: 180px;
+
+    }
+  }
+}

@@ -17,6 +17,7 @@ class Acl extends Permission
 		$this->addRole('admin', 'editor');
 
 		$this->addResource('Front:Default');
+		$this->addResource('Front:Profile');
 		$this->addResource('Front:Game:MelodicCubes');
 		$this->addResource('Front:Game:Pexeso');
 
@@ -32,6 +33,7 @@ class Acl extends Permission
 		 */
 		$this->allow('student', array(
 			'Front:Default',
+			'Front:Profile',
 			'Front:Game:MelodicCubes',
 			'Front:Game:Pexeso'
 		));

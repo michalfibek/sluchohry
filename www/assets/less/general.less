@@ -1,0 +1,241 @@
+/*
+GENERAL
+*/
+
+body {
+  font-family: 'Francois One', sans-serif;
+  background-color: @color-light;
+}
+
+main {
+  margin: 20px 0 0 0;
+  header {
+    border: none;
+    margin: 22px 0;
+  }
+}
+
+// page
+@font-size-base: 16px;
+@font-size-h1: floor((@font-size-base * 2.3));
+@font-size-h2: floor((@font-size-base * 1.9));
+@font-size-h3: ceil((@font-size-base * 1.5)); //
+@font-size-h4: ceil((@font-size-base * 1.25));
+@font-size-h5: @font-size-base;
+@font-size-h6: ceil((@font-size-base * 0.85));
+h1, .h1 {
+
+}
+h2, .h2 {
+
+}
+h3, .h3 {
+
+}
+header {
+  .page-header();
+}
+
+form {
+  #button-delete {
+    float: left;
+  }
+  #button-update, #button-save {
+    float: right;
+  }
+  .main-buttons {
+    margin-top: 50px;
+  }
+  .pw-generated {
+    background-color: #ffee88;
+  }
+  .pw-match {
+    background-color: #87ff87;
+  }
+  #password-area {
+    margin: 50px 0 0 0;
+  }
+}
+
+// display flash messages in bootstrap styles
+div.flash {
+  .alert();
+  .alert-info();
+  background-color: @color-ter-1;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  font-size: 1.5em;
+  margin: 20px;
+
+  &:before {
+    .fa-inherit();
+    content: "\f129";
+  }
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+}
+div.flash.success {
+  .alert();
+  .alert-success();
+  background-color: #3c763d;
+  border-color: #3c763d;
+  color: #EFF5EF;
+
+  &:before {
+    .fa-inherit();
+    content: "\f058";
+  }
+}
+div.flash.error {
+  .alert-danger();
+
+  &:before {
+    .fa-inherit();
+    content: "\f071";
+  }
+}
+div.flash.warning {
+  .alert-warning();
+
+  &:before {
+    .fa-inherit();
+    content: "\f071";
+  }
+}
+
+.modal-open .modal {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  overflow-y: scroll;
+}
+
+.modal-simple {
+
+  .modal-content {
+    background-color: @color-sec-1;
+    color: #fff;
+  }
+
+  .modal-title {
+    font-size: 40px;
+    text-align: center;
+  }
+  .modal-header {
+    border: none;
+    padding: 30px;
+  }
+  .modal-footer {
+    border: none;
+    text-align: center;
+    padding-bottom: 30px;
+  }
+  .btn-close-game {
+    background-color: #4A4A4A;
+    color: #fff;
+  }
+  .btn-next-game {
+    background-color: @color-ter-1;
+    color: #fff;
+  }
+
+}
+
+.modal-simple.modal-correct {
+
+  .modal-content {
+    background-color: @color-sec-1;
+    color: #fff;
+  }
+
+}
+.modal-simple.modal-wrong {
+
+  .modal-content {
+    background-color: @color-prim-1;
+    color: #fff;
+  }
+
+}
+
+
+header#user-bar {
+  background-color: @color-prim-2;
+  display: block;
+  color: #fff;
+  padding: 15px;
+  margin: 0;
+  .clearfix();
+
+  a {
+    color: #fff;
+    text-decoration: none;
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  #site-head-title {
+    float: left;
+
+    h1 {
+      margin: 5px 0;
+      text-transform: uppercase;
+      font-size: 3em;
+      font-weight: bold;
+      //      color: @color-prim-2;
+    }
+  }
+
+  #admin-bar {
+    text-align: right;
+    a {
+      text-decoration: none;
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+
+  #user-profile {
+    float: right;
+    font-size: 1.3em;
+    margin: 5px 0;
+
+    a#user-logout {
+      display: block;
+      font-size: 0.9em;
+      color: #e8d9cb;
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    a#user-profile-edit {
+      display: block;
+      margin: 10px 0 0 0;
+      color: #e8d9cb;
+      &:hover {
+        color: #fff;
+      }
+    }
+
+  }
+}
+
+#owl-onpage {
+  display: block;
+  text-indent: -9999px;
+  width: 480px;
+  height: 280px;
+  right: -60px;
+  bottom: 0;
+  position: absolute;
+  background: url('/assets/images/owl.svg') no-repeat; /* via http://www.flaticon.com/free-icon/owl-sage-symbol_42983 */
+  background-size: 480px 280px;
+}

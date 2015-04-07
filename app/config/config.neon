@@ -13,7 +13,6 @@ parameters:
 php:
 	date.timezone: Europe/Prague
 
-
 application:
 	errorPresenter: Base:Error
 	mapping:
@@ -28,6 +27,7 @@ extensions:
     translation: Kdyby\Translation\DI\TranslationExtension
 
 events:
+#    globalDispatchFirst: on
     debugger: on # off
 
 translation:

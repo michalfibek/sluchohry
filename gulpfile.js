@@ -10,28 +10,14 @@ var gulp = require("gulp"),
     autoprefix = new LessPluginAutoPrefix({ browsers: ['> 3%', 'last 2 versions', 'IE 8'] });
 
 var sourceLessUser = 'www/assets/less/';
-var targetCssDir = 'www/assets/css/';
+var targetCssDir = 'www/';
 
-gulp.task('compileLessBootstrap', function() {
-  return gulp.src('www/assets/vendor/bootstrap/less/bootstrap.less')
-    .pipe(less({
-    	plugins: [autoprefix, cleancss]
-    }))
-    .pipe(gulp.dest(targetCssDir))
-});
+
 gulp.task('compileLessUser', function() {
   return gulp.src(sourceLessUser+'main.less')
+  	.pipe(concat('style.less'))
     .pipe(less({
     	plugins: [autoprefix, cleancss]
-    }))
-    .on('error', swallowError)
-    .pipe(gulp.dest(targetCssDir))
-});
-gulp.task('compileLessUserAndBootstrap', function() {
-  return gulp.src(['www/assets/vendor/bootstrap/less/bootstrap.less', sourceLessUser+'main.less'])
-  	.pipe(concat('main.less'))
-    .pipe(less({
-    	plugins: [autoprefix] // add cleancss in final iteration
     }))
     .on('error', swallowError)
     .pipe(gulp.dest(targetCssDir))
@@ -46,7 +32,7 @@ gulp.task('cssLint', function() {
 
 gulp.task('watch', function() {
   // gulp.watch(sourceLessUser+'/*.less', ['compileLessUser']);
-  gulp.watch(sourceLessUser+'/*.less', ['compileLessUserAndBootstrap']);
+  gulp.watch(sourceLessUser+'**/*.less', ['compileLessUser']);
 
 });
 
