@@ -34,6 +34,23 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	}
 
+	public function actionAdd()
+	{
+		$this['userEditForm']
+			->setRequirePassword()
+			->setRoleChanger();
+
+		$this['userEditForm']->onSuccess[] = function($values) {
+			$this->flashMessage('The user '.$values['username'].' has been successfully added.', 'success');
+			$this->redirect('default');
+		};
+
+		$this['userEditForm']->onFail[] = function($values) {
+				$this->flashMessage('Error while adding user '.$values['username'].'.', 'error');
+				$this->redirect('default');
+		};
+	}
+
 	public function actionEdit($id)
 	{
 		if ($userRow = $this->userModel->getById($id))
@@ -43,10 +60,27 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 				$this->flashMessage('Sorry, not enough permissions to edit this user.', 'error');
 				$this->redirect('default');
 			}
-			$form = $this['userEditForm'];
-			Debugger::barDump($form);
-			$form->setDefaults($userRow);
-			$form->setUserId($id);
+
+			$this['userEditForm']
+				->setRoleChanger()
+				->setDefaults($userRow)
+				->setUserId($id);
+
+			$this['userEditForm']->onSuccess[] = function($values) {
+				$this->flashMessage('The user '.$values['username'].' changes has been saved.', 'success');
+				$this->redirect('default');
+			};
+
+			$this['userEditForm']->onNoChange[] = function($values) {
+				$this->flashMessage('There was no change to user '.$values['username'].'.', 'info');
+				$this->redirect('default');
+			};
+
+			$this['userEditForm']->onFail[] = function($values) {
+				$this->flashMessage('Error while editing user '.$values['username'].'.', 'error');
+				$this->redirect('default');
+			};
+
 			$this->userRow = $userRow;
 		} else {
 			$this->flashMessage('Sorry, this user was not found.', 'error');
@@ -61,7 +95,8 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
-		$this->userModel->deleteById($id);
+		if ($this->userModel->deleteById($id))
+			$this->flashMessage('User successfully deleted.', 'success');
 	}
 
 	public function	renderDefault()
@@ -71,11 +106,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderAdd()
 	{
-		// require when adding new user
-		$this['userEditForm']['password']->setRequired()
-			->addRule(Form::MIN_LENGTH, 'The password has to be at least %d characters long', 6);
-		$this['userEditForm']['passwordVerify']->setRequired('Please enter your password second time for verification.')
-			->addRule(Form::EQUAL, 'Passwords do not match', $this['userEditForm']['password']);
+
 	}
 
 	public function	renderEdit()
@@ -89,43 +120,18 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	protected function createComponentUserEditForm()
 	{
 		$form = $this->userEditForm->create();
-		$form->onUserSave[] = array($this, 'addUserEditFormSucceed');
+
+		$form->onDuplicateEmail[] = function($values) {
+			$this->flashMessage('Sorry, the e-mail '.$values['email'].' is already registered. Is it you?', 'error');
+			$this->redirect('default');
+		};
+
+		$form->onDuplicateUsername[] = function($values) {
+			$this->flashMessage('Sorry, the username '.$values['username'].' is already registered. Is it you?', 'error');
+			$this->redirect('default');
+		};
 
 		return $form;
-	}
-
-	/**
-	 * Edit or add user - called by form
-	 *
-	 * @param $form
-	 * @param $values
-	 */
-	public function addUserEditFormSucceed($form, $values)
-	{
-		if (strlen($values['userId'])>0)
-		{
-			$insertData = array(
-				'username' => $values['username'],
-				'password' => $values['password'],
-				'email' => $values['email'],
-				'realname' => $values['realname'],
-				'role_id' => $values['role_id']
-			);
-			$this->userModel->updateById($values['userId'],$insertData);
-			$this->flashMessage('The user preferences has been changed.', 'success');
-			$this->redirect('default');
-		} else {
-			$insertData = array(
-				'username' => $values['username'],
-				'password' => $values['password'],
-				'email' => $values['email'],
-				'realname' => $values['realname'],
-				'role_id' => $values['role_id']
-			);
-			$this->userModel->insert($insertData);
-			$this->flashMessage('The user has been successfully added.', 'success');
-			$this->redirect('default');
-		}
 	}
 
 	/**

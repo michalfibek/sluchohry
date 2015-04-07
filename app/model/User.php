@@ -5,6 +5,7 @@ namespace App\Model;
 use Nette,
     Nette\Utils\Strings,
     Nette\Security\Passwords;
+use Tracy\Debugger;
 
 class User extends Base
 {

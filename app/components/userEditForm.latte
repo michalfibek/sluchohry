@@ -2,7 +2,9 @@
 
     <div class="col-sm-6">
         <form n:name="form" class="form-horizontal">
+            {if $userId}
             <input n:name="userId" id="userId" type="hidden">
+            {/if}
             <div class="form-group">
                 <label n:name="username" for="username" class="col-sm-4 control-label">Username:</label>
                 <div class="col-sm-8">
@@ -21,6 +23,7 @@
                     <input n:name="realname" type="text" class="form-control" id="realname">
                 </div>
             </div>
+            {if $roleChanger}
             <div class="form-group">
                 <label n:name="role_id" for="role_id" class="col-sm-4 control-label">Role:</label>
                 <div class="col-sm-8">
@@ -28,6 +31,7 @@
                     </select>
                 </div>
             </div>
+            {/if}
             <div id="password-area">
                 <div class="form-group">
                     <label n:name="password" for="password" class="col-sm-4 control-label">Password:</label>

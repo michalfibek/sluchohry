@@ -2,6 +2,7 @@
 namespace App\Model;
 
 use Nette;
+use Tracy\Debugger;
 
 abstract class Base extends Nette\Object
 {
@@ -60,6 +61,31 @@ abstract class Base extends Nette\Object
     public function insert($data)
     {
         return $this->db->table($this->tableName)->insert($data);
+    }
+
+    /**
+     * Checks for unique parameters, eg. user email.
+     *
+     * @param $columnName - Column name
+     * @param $value - Column value
+     * @param $id - User id
+     * @return Nette\Database\Table\Selection
+     */
+    public function isUniqueColumn($columnName, $value, $id = null)
+    {
+        $record = $this->db->table($this->tableName)->where($columnName, $value);
+
+        if ($id) {
+            $primary = $this->db->table($this->tableName)->getPrimary();
+            $record = $record->where($primary.' <>',$id);
+        }
+
+        $row = $record->fetch();
+
+        if ($row == false) // is unique -> okay
+            return true;
+        else // is not unique -> bad
+            return false;
     }
 
     /**
