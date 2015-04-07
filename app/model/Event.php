@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use Nette;
+use Tracy\Debugger;
 
 class Event extends Base {
 
@@ -18,6 +19,8 @@ class Event extends Base {
         DATA_GAME_NAME = 'game_name',
         DATA_LOGIN = 'login',
         DATA_LOGOUT = 'logout',
+        DATA_PROFILE_SAVED = 'profile_saved',
+        DATA_PROFILE_CREATED = 'profile_created',
         DATA_PLAY_TIME = 'play_time',
         DATA_PLAY_STEPS = 'play_steps',
         DATA_DIFFICULTY = 'difficulty',
@@ -140,6 +143,28 @@ class Event extends Base {
         );
 
         $this->insertRecord($user->getId(), self::CLASS_AUTH, $data);
+    }
+
+    /**
+     * @param Nette\Security\User $user
+     * @param array $result
+     */
+    public function saveUserProfileEdited(Nette\Security\User $user, $result)
+    {
+        $result[self::DATA_PROFILE_SAVED] = true;
+
+        $this->insertRecord($user->getId(), self::CLASS_PROFILE, $result);
+    }
+
+    /**
+     * @param Nette\Security\User $user
+     * @param array $result
+     */
+    public function saveUserProfileCreated(Nette\Security\User $user, $result)
+    {
+        $result[self::DATA_PROFILE_CREATED] = true;
+
+        $this->insertRecord($user->getId(), self::CLASS_PROFILE, $result);
     }
 
 }

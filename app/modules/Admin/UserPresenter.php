@@ -5,7 +5,6 @@ namespace App\Module\Admin\Presenters;
 use Nette,
 	App\Model,
 	App\Components,
-	Nette\Application\UI\Form,
 	Mesour\DataGrid\Grid,
 	Mesour\DataGrid\NetteDbDataSource,
 	Mesour\DataGrid\Components\Link;
@@ -13,7 +12,7 @@ use Tracy\Debugger;
 
 
 /**
- * Sign in/out presenters.
+ * User editing presenter.
  */
 class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
@@ -23,7 +22,6 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	/** @inject @var Components\IUserEditFormFactory */
 	public $userEditForm;
 
-	private $userRow;
 
 	/**
 	 * List all users
@@ -39,53 +37,13 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this['userEditForm']
 			->setRequirePassword()
 			->setRoleChanger();
-
-		$this['userEditForm']->onSuccess[] = function($values) {
-			$this->flashMessage('The user '.$values['username'].' has been successfully added.', 'success');
-			$this->redirect('default');
-		};
-
-		$this['userEditForm']->onFail[] = function($values) {
-				$this->flashMessage('Error while adding user '.$values['username'].'.', 'error');
-				$this->redirect('default');
-		};
 	}
 
 	public function actionEdit($id)
 	{
-		if ($userRow = $this->userModel->getById($id))
-		{
-			if (!$this->acl->isChildRole($userRow->ref('role')['name'], $this->user->roles[0]))
-			{
-				$this->flashMessage('Sorry, not enough permissions to edit this user.', 'error');
-				$this->redirect('default');
-			}
-
-			$this['userEditForm']
-				->setRoleChanger()
-				->setDefaults($userRow)
-				->setUserId($id);
-
-			$this['userEditForm']->onSuccess[] = function($values) {
-				$this->flashMessage('The user '.$values['username'].' changes has been saved.', 'success');
-				$this->redirect('default');
-			};
-
-			$this['userEditForm']->onNoChange[] = function($values) {
-				$this->flashMessage('There was no change to user '.$values['username'].'.', 'info');
-				$this->redirect('default');
-			};
-
-			$this['userEditForm']->onFail[] = function($values) {
-				$this->flashMessage('Error while editing user '.$values['username'].'.', 'error');
-				$this->redirect('default');
-			};
-
-			$this->userRow = $userRow;
-		} else {
-			$this->flashMessage('Sorry, this user was not found.', 'error');
-			$this->redirect('default');
-		}
+		$this['userEditForm']
+			->setRoleChanger() // beware! user can change his role
+			->edit($id);
 	}
 
 	/**
@@ -111,7 +69,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function	renderEdit()
 	{
-		$this->template->userRow = $this->userRow;
+		$this->template->userRow = $this['userEditForm']->getUser();
 	}
 
 	/**
@@ -130,6 +88,37 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$this->flashMessage('Sorry, the username '.$values['username'].' is already registered. Is it you?', 'error');
 			$this->redirect('default');
 		};
+
+		$form->onAccessDenied[] = function($values) {
+			$this->flashMessage('Sorry, not enough permissions to edit this user '.$values['username'].'.', 'error');
+			$this->redirect('default');
+		};
+
+		$form->onNotFound[] = function() {
+			$this->flashMessage('Sorry, this user was not found.', 'error');
+			$this->redirect('default');
+		};
+
+		$form->onSuccessAdd[] = function($values) {
+			$this->flashMessage('The user '.$values['username'].' has been successfully added.', 'success');
+			$this->redirect('default');
+		};
+
+		$form->onFail[] = function($values) {
+			$this->flashMessage('Error while adding or editing user '.$values['username'].'.', 'error');
+			$this->redirect('default');
+		};
+
+		$form->onSuccessEdit[] = function($values) {
+			$this->flashMessage('The user '.$values['username'].' changes has been saved.', 'success');
+			$this->redirect('default');
+		};
+
+		$form->onNoChange[] = function($values) {
+			$this->flashMessage('There was no change to user '.$values['username'].'.', 'info');
+			$this->redirect('default');
+		};
+
 
 		return $form;
 	}

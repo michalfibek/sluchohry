@@ -13,8 +13,14 @@ class UserEditForm extends UI\Control
     /** @var App\Model\User */
     private $userModel;
 
+    /** @var Nette\Security\IAuthorizator */
+    private $acl;
+
+    /** @var Nette\Security\User */
+    private $user;
+
     /** @var array of default form settings */
-    private $defaults;
+    private $userRow;
 
     /** @var int user id */
     private $userId;
@@ -26,7 +32,10 @@ class UserEditForm extends UI\Control
     private $roleChanger;
 
     /** @var array */
-    public $onSuccess;
+    public $onSuccessAdd;
+
+    /** @var array */
+    public $onSuccessEdit;
 
     /** @var array */
     public $onFail;
@@ -40,17 +49,21 @@ class UserEditForm extends UI\Control
     /** @var array */
     public $onDuplicateUsername;
 
+    /** @var array */
+    public $onAccessDenied;
 
-
+    /** @var array */
+    public $onNotFound;
 
     // TODO FIX form saving -> currently not working callback
 
-    public function __construct(App\Model\User $userModel)
+    public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user)
     {
         parent::__construct();
         $this->userModel = $userModel;
+        $this->acl = $acl;
+        $this->user = $user;
         $this->userId = null;
-
     }
 
     public function createComponentForm()
@@ -79,8 +92,8 @@ class UserEditForm extends UI\Control
             $form->addHidden('userId')
                 ->setValue($this->userId);
 
-        if ($this->defaults)
-            $form->setDefaults($this->defaults);
+        if ($this->userRow)
+            $form->setDefaults($this->userRow);
 
         if ($this->requirePassword)
         {
@@ -120,11 +133,15 @@ class UserEditForm extends UI\Control
                 'email' => $values['email'],
                 'realname' => $values['realname']
             );
+            unset($values['password'],$values['passwordVerify']);
 
             if ($this->roleChanger)
                 $insertData['role_id'] = $values['role_id'];
 
             $result = $this->userModel->updateById($values['userId'],$insertData);
+
+            if ($result == true)
+                $this->onSuccessEdit($values);
 
         } else { // user id not set - insert user
 
@@ -135,32 +152,43 @@ class UserEditForm extends UI\Control
                 'realname' => $values['realname'],
                 'role_id' => $values['role_id']
             );
+            unset($values['password'],$values['passwordVerify']);
 
             $result = $this->userModel->insert($insertData);
+
+            if ($result == true)
+                $this->onSuccessAdd($values);
         }
 
-        if ($result == true)
-            $this->onSuccess($values);
-        else if ($result == 0)
+        if ($result == 0)
             $this->onNoChange($values);
         else
-            $this->onFail();
+            $this->onFail($values);
 
         return $this;
 
-
     }
 
-    public function setDefaults($values)
+    public function getUser()
     {
-        $this->defaults = $values;
-
-        return $this;
+        return $this->userRow;
     }
 
-    public function setUserId($id)
-    {
-        $this->userId = $id;
+    public function edit($userId) {
+
+        $this->userId = $userId;
+
+        if ($userRow = $this->userModel->getById($this->userId)) {
+
+            if (!$this->acl->isChildRole($userRow->ref('role')['name'], $this->user->roles[0])) {
+                $this->onAccessDenied($userRow);
+            }
+
+            $this->userRow = $userRow;
+
+        } else {
+            $this->onUserNotFound();
+        }
 
         return $this;
     }
