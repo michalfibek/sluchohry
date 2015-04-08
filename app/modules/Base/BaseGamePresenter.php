@@ -45,17 +45,27 @@ abstract class BaseGamePresenter extends BasePresenter
         $this->onGameForceEnd($result);
     }
 
-    protected function getDifficultyText()
+    protected function beforeRender()
     {
-        $difficultyText = $this->translator->translate('front.game.difficulty.difficultyTitle').' ';
-        if ($this->difficulty == 1)
-            $difficultyText .= strtolower($this->translator->translate('front.game.difficulty.easy'));
-        if ($this->difficulty == 2)
-            $difficultyText .= strtolower($this->translator->translate('front.game.difficulty.medium'));
-        if ($this->difficulty == 3)
-            $difficultyText .= strtolower($this->translator->translate('front.game.difficulty.hard'));
+        parent::beforeRender();
 
-        return $difficultyText;
+        if ($this->difficulty == 1)
+        {
+            $this->template->difficultyName = 'easy';
+            $this->template->difficultySymbol = 'fa fa-bicycle';
+
+        }
+        if ($this->difficulty == 2) {
+            $this->template->difficultyName = 'medium';
+            $this->template->difficultySymbol = 'fa fa-car';
+        }
+        if ($this->difficulty == 3) {
+            $this->template->difficultyName = 'hard';
+            $this->template->difficultySymbol = 'fa fa-rocket';
+        }
+        $this->template->difficultySymbol = ''; // override - no symbol
+
+
     }
 
 }
