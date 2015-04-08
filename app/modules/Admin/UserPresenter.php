@@ -19,8 +19,8 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	/** @inject @var Model\User */
 	public $userModel;
 
-	/** @inject @var Components\IUserEditFormFactory */
-	public $userEditForm;
+	/** @inject @var Components\IUserProfileFactory */
+	public $userProfile;
 
 
 	/**
@@ -34,15 +34,13 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function actionAdd()
 	{
-		$this['userEditForm']
-			->setRequirePassword()
-			->setRoleChanger();
+		$this['userProfile']
+			->setRequirePassword();
 	}
 
 	public function actionEdit($id)
 	{
-		$this['userEditForm']
-			->setRoleChanger() // beware! user can change his role
+		$this['userProfile']
 			->edit($id);
 	}
 
@@ -69,15 +67,15 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function	renderEdit()
 	{
-		$this->template->userRow = $this['userEditForm']->getUser();
+
 	}
 
 	/**
 	 * @return Form
 	 */
-	protected function createComponentUserEditForm()
+	protected function createComponentUserProfile()
 	{
-		$form = $this->userEditForm->create();
+		$form = $this->userProfile->create();
 
 		$form->onDuplicateEmail[] = function($values) {
 			$this->flashMessage('Sorry, the e-mail '.$values['email'].' is already registered. Is it you?', 'error');

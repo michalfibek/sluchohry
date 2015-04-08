@@ -53,6 +53,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$this->redirect(':Front:Default:default');
 
 		} catch (Nette\Security\AuthenticationException $e) {
+			$this->flashMessage($e->getMessage(), 'error');
 			$form->addError($e->getMessage());
 		}
 	}

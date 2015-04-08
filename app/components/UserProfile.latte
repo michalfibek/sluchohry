@@ -1,3 +1,7 @@
+<header>
+<h1 n:block="title">{if $adminMode}{_front.user.profile}{else}{_front.user.profilePersonal}{/if} <small>{ifset $userRow}{$userRow->username}{else}Add new user{/ifset}</small></h1>
+</header>
+
 <div class="container user-editor">
 
     <div class="container">
@@ -6,26 +10,26 @@
             <input n:name="userId" id="userId" type="hidden">
             {/if}
             <div class="form-group">
-                <label n:name="username" for="username" class="col-sm-2 control-label">Username:</label>
+                <label n:name="username" for="username" class="col-sm-2 control-label">{_front.user.username}:</label>
                 <div class="col-sm-4">
                     <input n:name="username" type="text" class="form-control" id="username">
                 </div>
             </div>
-            <div class="form-group">
-                <label n:name="email" for="email" class="col-sm-2 control-label">E-mail:</label>
+            <div class="form-group" n:ifset="$form['email']">
+                <label n:name="email" for="email" class="col-sm-2 control-label">{_front.user.email}:</label>
                 <div class="col-sm-4">
                     <input n:name="email" type="text" class="form-control" id="email">
                 </div>
             </div>
-            <div class="form-group">
-                <label n:name="realname" for="realname" class="col-sm-2 control-label">Personal name:</label>
+            <div class="form-group" n:ifset="$form['realname']">
+                <label n:name="realname" for="realname" class="col-sm-2 control-label">{_front.user.realname}:</label>
                 <div class="col-sm-4">
                     <input n:name="realname" type="text" class="form-control" id="realname">
                 </div>
             </div>
-            {if $roleChanger}
+            {if $adminMode}
             <div class="form-group">
-                <label n:name="role_id" for="role_id" class="col-sm-2 control-label">Role:</label>
+                <label n:name="role_id" for="role_id" class="col-sm-2 control-label">{_front.user.role}:</label>
                 <div class="col-sm-4">
                     <select n:name="role_id" id="role_id" class="form-control">
                     </select>
@@ -34,41 +38,39 @@
             {/if}
             <div id="password-area">
                 <div class="form-group">
-                    <label n:name="password" for="password" class="col-sm-2 control-label">Password:</label>
+                    <label n:name="password" for="password" class="col-sm-2 control-label">{_front.user.password}:</label>
                     <div class="col-sm-4">
                         <input n:name="password" type="password" class="form-control" id="password">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label n:name="passwordVerify" for="password-verify" class="col-sm-2 control-label">Password (verification):</label>
+                    <label n:name="passwordVerify" for="password-verify" class="col-sm-2 control-label">{_front.user.passwordVerify}:</label>
                     <div class="col-sm-4">
                         <input n:name="passwordVerify" type="password" class="form-control" id="password-verify">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-2 text-center">
-                        <button type="button" class="btn btn-default" id="user-password-generate"><span class="fa fa-key"></span> Generate password</button>
+                        <button type="button" class="btn btn-default" id="user-password-generate"><span class="fa fa-key"></span>{_front.user.generatePassword}</button>
                     </div>
                     <div class="col-sm-2 text-center">
                         <p class="form-control-static" id="generated-pw">&nbsp;</p>
                     </div>
                 </div>
             </div>
-            <div class="form-group edit-avatars">
-                <div class="col-sm-12" n:inner-foreach="$form[avatar_id]->items as $key => $label">
-                    <div class="col-sm-2">
-                        <div class="radio avatar-select">
-                            <label n:name="avatar_id:$key">
-                                <input n:name="avatar_id:$key"> <img class="avatar-image" src="/assets/images/avatar/{$label}.svg">
-                            </label>
-                        </div>
-                    </div>
+            <div class="form-group main-buttons">
+                <div class="col-sm-6 text-right">
+                    {*<button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> Delete</button>*}
+                    <button n:name="save" id="button-save" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> {_front.user.save}</button>
                 </div>
             </div>
-            <div class="form-group main-buttons">
-                <div class="col-sm-12 text-right">
-                    {*<button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> Delete</button>*}
-                    <button n:name="save" id="button-save" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> Save</button>
+            <div class="form-group edit-avatars" n:inner-foreach="$form[avatar_id]->items as $key => $label">
+                <div class="col-xs-5 col-md-2">
+                    <div class="radio avatar-select">
+                        <label n:name="avatar_id:$key">
+                            <input n:name="avatar_id:$key"> <img class="avatar-image" src="/assets/images/avatar/{$label}.svg">
+                        </label>
+                    </div>
                 </div>
             </div>
         </form>

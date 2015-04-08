@@ -13,8 +13,9 @@ use Tracy\Debugger;
  */
 class ProfilePresenter extends \App\Module\Base\Presenters\BasePresenter
 {
-    /** @inject @var Components\IUserEditFormFactory */
-    public $userEditForm;
+
+    /** @inject @var Components\IUserProfileFactory */
+    public $userProfile;
 
     /**
      * List all users
@@ -22,21 +23,21 @@ class ProfilePresenter extends \App\Module\Base\Presenters\BasePresenter
      */
     public function actionDefault()
     {
-        $this['userEditForm']
+        $this['userProfile']
             ->edit($this->user->getId());
     }
 
     public function	renderDefault()
     {
-        $this->template->userRow = $this['userEditForm']->getUser();
+
     }
 
     /**
      * @return Form
      */
-    protected function createComponentUserEditForm()
+    protected function createComponentUserProfile()
     {
-        $form = $this->userEditForm->create();
+        $form = $this->userProfile->create();
 
         $form->onDuplicateEmail[] = function($values) {
             $this->flashMessage('Sorry, the e-mail '.$values['email'].' is already registered. Is it you?', 'error');

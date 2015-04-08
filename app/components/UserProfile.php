@@ -8,7 +8,7 @@ use App,
 use Tracy\Debugger;
 
 
-class UserEditForm extends UI\Control
+class UserProfile extends UI\Control
 {
     /** @var App\Model\User */
     private $userModel;
@@ -29,7 +29,7 @@ class UserEditForm extends UI\Control
     private $requirePassword;
 
     /** @var bool */
-    private $roleChanger;
+    private $adminMode;
 
     /** @var array */
     public $onSuccessAdd;
@@ -58,7 +58,7 @@ class UserEditForm extends UI\Control
     /** @var App\Model\Avatar */
     private $avatar;
 
-    // TODO FIX form saving -> currently not working callback
+    // TODO FIX event listener hooks
 
     public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar)
     {
@@ -68,13 +68,17 @@ class UserEditForm extends UI\Control
         $this->user = $user;
         $this->userId = null;
         $this->avatar = $avatar;
+
+        if ($this->user->isAllowed('Admin:User', 'edit')) {
+            $this->adminMode = true;
+        }
     }
 
     public function createComponentForm()
     {
         $form = new Form;
-        $form->addText('username')
-            ->setRequired();
+
+        $form->addText('username');
 
         $form->addPassword('password');
         $form->addPassword('passwordVerify');
@@ -93,10 +97,20 @@ class UserEditForm extends UI\Control
 
         $form->addText('realname');
 
-        if ($this->roleChanger)
+        if ($this->adminMode) { // admin access to particular changes
+
             $form->addSelect('role_id')
                 ->setItems($this->userModel->getRolePairs())
                 ->setDefaultValue(4);
+            $form['username']
+                ->setRequired();
+
+        } else { // user access only
+
+            $form['username']
+                ->setDisabled();
+
+        }
 
         if ($this->userId)
             $form->addHidden('userId')
@@ -116,25 +130,29 @@ class UserEditForm extends UI\Control
 
     public function render()
     {
-        $this->template->roleChanger = $this->roleChanger;
+        $this->template->adminMode = $this->adminMode;
         $this->template->userId = $this->userId;
-        $this->template->setFile(__DIR__ . '/UserEditForm.latte');
+        $this->template->userRow = $this->userRow;
+        $this->template->setFile(__DIR__ . '/UserProfile.latte');
         $this->template->render();
     }
 
     public function processForm(Form $form)
     {
         $values = $form->getValues();
+        Debugger::barDump('aaa');
 
-        if (!$this->userModel->isUniqueColumn('email', $values['email'], $this->userId))
-            $this->onDuplicateEmail($values);
-        if (!$this->userModel->isUniqueColumn('username', $values['username'], $this->userId))
-            $this->onDuplicateUsername($values);
+        if (isset($values['email']))
+            if (!$this->userModel->isUniqueColumn('email', $values['email'], $this->userId))
+                $this->onDuplicateEmail($values);
+
+        if (isset($values['username']))
+            if (!$this->userModel->isUniqueColumn('username', $values['username'], $this->userId))
+                $this->onDuplicateUsername($values);
 
         if ($this->userId) // is user id set? update user
         {
             $insertData = array(
-                'username' => $values['username'],
                 'password' => $values['password'],
                 'email' => $values['email'],
                 'realname' => $values['realname'],
@@ -142,8 +160,11 @@ class UserEditForm extends UI\Control
             );
             unset($values['password'],$values['passwordVerify']);
 
-            if ($this->roleChanger)
+            if ($this->adminMode)
+            {
+                $insertData['username'] = $values['username'];
                 $insertData['role_id'] = $values['role_id'];
+            }
 
             $result = $this->userModel->updateById($values['userId'],$insertData);
 
@@ -153,7 +174,6 @@ class UserEditForm extends UI\Control
         } else { // user id not set - insert user
 
             $insertData = array(
-                'username' => $values['username'],
                 'password' => $values['password'],
                 'email' => $values['email'],
                 'realname' => $values['realname'],
@@ -161,9 +181,11 @@ class UserEditForm extends UI\Control
             );
             unset($values['password'],$values['passwordVerify']);
 
-            if ($this->roleChanger)
+            if ($this->adminMode)
+            {
+                $insertData['username'] = $values['username'];
                 $insertData['role_id'] = $values['role_id'];
-
+            }
 
             $result = $this->userModel->insert($insertData);
 
@@ -178,11 +200,6 @@ class UserEditForm extends UI\Control
 
         return $this;
 
-    }
-
-    public function getUser()
-    {
-        return $this->userRow;
     }
 
     public function edit($userId) {
@@ -211,25 +228,10 @@ class UserEditForm extends UI\Control
         return $this;
     }
 
-    public function setRoleChanger()
-    {
-        $this->roleChanger = true;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isRoleChanger()
-    {
-        return $this->roleChanger;
-    }
-
 }
 
-interface IUserEditFormFactory
+interface IUserProfileFactory
 {
-    /** @return UserEditForm */
+    /** @return UserProfile */
     function create();
 }
