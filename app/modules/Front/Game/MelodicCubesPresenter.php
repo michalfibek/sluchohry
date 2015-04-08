@@ -12,7 +12,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 {
 	// define cube splits count by difficulty
 	const
-		DIFFICULTY_1_SPLITS = 2,
+		DIFFICULTY_1_SPLITS = 3,
 		DIFFICULTY_2_SPLITS = 4,
 		DIFFICULTY_3_SPLITS = 8;
 
@@ -62,6 +62,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		{
 			$assets['song'] = $song;
 			$assets['markers'] = $this->song->getCubeMarkersByCount($song->id, $this->cubeCount);
+			Debugger::barDump($assets);
 			return $assets;
 		} else {
 			return null;

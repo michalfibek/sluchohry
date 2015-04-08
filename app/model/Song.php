@@ -121,7 +121,7 @@ class Song extends Base
      */
     public function getCubeMarkersByCount($songId, $cubeCount)
     {
-        $cubeSplits = ($cubeCount > 2) ? $cubeCount-1 : $cubeCount;
+        $cubeSplits = ($cubeCount > 1) ? $cubeCount-1 : $cubeCount;
 
         $markersAll = $this->db->table(self::TABLE_NAME_SONG)->get($songId)->related(self::TABLE_NAME_MARKER)->order('timecode ASC')->fetchAll();
 
@@ -131,7 +131,7 @@ class Song extends Base
 
         $markers[] = array(0, $markersAll[$randKeys[0]]->timecode);
 
-        if ($cubeSplits > 2)
+        if ($cubeSplits > 1)
         {
             for ($i = 0; $i < $cubeSplits-1; $i++)
             {
