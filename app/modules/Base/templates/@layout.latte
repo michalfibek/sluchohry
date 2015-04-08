@@ -26,30 +26,35 @@
 	<header id="user-bar">
 
 		<div class="container">
+			<div class="row row-no-padding">
 
-			<div id="site-head-title">
-				<a n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
+				<div id="site-head-title" class="col-md-9">
 
-				{if $user->isAllowed('Admin:Default', 'default')}
-				<div id="admin-bar">
-					<a n:href=":Admin:Default:"><i class="fa fa-tasks"></i> {_front.homepage.admin}</a>
+					<div class="col-md-4">
+						<a n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
+
+						{if $user->isAllowed('Admin:Default', 'default')}
+						<div id="admin-bar">
+							<a n:href=":Admin:Default:"><i class="fa fa-tasks"></i> {_front.homepage.admin}</a>
+						</div>
+						{/if}
+
+					</div>
 				</div>
-				{/if}
-				
+
+				<div id="user-profile" class="col-md-3">
+
+					<a n:href=":Front:Default:logout" id="user-logout">
+						<i class="fa fa-sign-out"></i> {_front.auth.logout}
+					</a>
+
+					<a n:href=":Front:Profile:" id="user-profile-edit">
+						<i class="fa fa-user"></i> {$user->identity->username} {if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
+					</a>
+
+				</div>
+
 			</div>
-
-			<div id="user-profile">
-
-				<a n:href=":Front:Default:logout" id="user-logout">
-					<i class="fa fa-sign-out"></i> {_front.auth.logout}
-				</a>
-
-				<a n:href=":Front:Profile:" id="user-profile-edit">
-					<i class="fa fa-user"></i> {$user->identity->username} {if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
-				</a>
-
-			</div>
-
 		</div>
 
 	</header>
