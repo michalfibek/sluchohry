@@ -19,6 +19,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @inject @var \Nette\Security\IAuthorizator */
 	public $acl;
 
+	/** @inject @var \App\Model\Avatar */
+	public $avatar;
+
+
 	public $onStartup = array();
 
 	protected function startup()
@@ -60,6 +64,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 			$this->template->devServer = false;
 		else
 			$this->template->devServer = true;
+
+
+		$this->template->avatarDir = $this->avatar->getDir();
+
+		if ($this->user->isLoggedIn()) {
+			$this->template->userAvatar = $this->avatar->getById($this->user->identity->avatar_id)->filename;
+		} else {
+			$this->template->userAvatar = $this->avatar->getDefault()->filename;
+		}
 	}
 
 	/**
@@ -100,6 +113,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		if ($precision == 'milliseconds') $returnTime .= ':'.$milliseconds;
 
 		return (string)$returnTime;
+	}
+
+	public function getModulePrefix()
+	{
+		$pos = strrpos($this->name, ':');
+		if (is_int($pos)) {
+			return explode(':', $this->getPresenter()->getName())[0];
+		}
+
+		return '';
 	}
 
 }

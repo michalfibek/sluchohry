@@ -29,14 +29,14 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
             'App\Module\Base\Presenters\BaseGamePresenter::onGameStart',
             'App\Module\Base\Presenters\BaseGamePresenter::onGameEnd',
             'App\Module\Base\Presenters\BaseGamePresenter::onGameForceEnd',
-            'App\Components\UserEditForm::onSuccessAdd' => 'onEditFormSuccessAdd',
-            'App\Components\UserEditForm::onSuccessEdit' => array('onEditFormSuccessEdit', 30),
-            'App\Components\UserEditForm::onFail' => 'onEditFormFail',
-            'App\Components\UserEditForm::onNoChange' => 'onEditFormNoChange',
-            'App\Components\UserEditForm::onDuplicateEmail' => 'onEditFormDuplicateEmail',
-            'App\Components\UserEditForm::onDuplicateUsername' => 'onEditFormDuplicateUsername',
-            'App\Components\UserEditForm::onAccessDenied' => 'onEditFormAccessDenied',
-            'App\Components\UserEditForm::onNotFound' => 'onEditFormNotFound',
+            'App\Components\UserProfile::onSuccessAdd' => 'onUserProfileSuccessAdd',
+            'App\Components\UserProfile::onSuccessEdit' => array('onUserProfileSuccessEdit', 30),
+            'App\Components\UserProfile::onFail' => 'onUserProfileFail',
+            'App\Components\UserProfile::onNoChange' => 'onUserProfileNoChange',
+            'App\Components\UserProfile::onDuplicateEmail' => 'onUserProfileDuplicateEmail',
+            'App\Components\UserProfile::onDuplicateUsername' => 'onUserProfileDuplicateUsername',
+            'App\Components\UserProfile::onAccessDenied' => 'onUserProfileAccessDenied',
+            'App\Components\UserProfile::onNotFound' => 'onUserProfileNotFound',
 //            'Nette\Application\Application::onError' => 'onError',
 //            'App\Module\Base\Presenters\BasePresenter::onStartup' => 'onStartup',
             'Nette\Security\User::onLoggedIn',
@@ -78,42 +78,42 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
         $this->event->saveUserLoggedOut($this->user);
     }
 
-    public function onEditFormSuccessAdd($values)
+    public function onUserProfileSuccessAdd($values)
     {
         $this->event->saveUserProfileCreated($this->user, $values);
     }
 
-    public function onEditFormSuccessEdit($values)
+    public function onUserProfileSuccessEdit($values)
     {
         $this->event->saveUserProfileEdited($this->user, $values);
     }
 
-    public function onEditFormFail($values)
+    public function onUserProfileFail($values)
     {
 
     }
 
-    public function onEditFormNoChange($values)
+    public function onUserProfileNoChange($values)
     {
 
     }
 
-    public function onEditFormDuplicateEmail($values)
+    public function onUserProfileDuplicateEmail($values)
     {
 
     }
 
-    public function onEditFormDuplicateUsername($values)
+    public function onUserProfileDuplicateUsername($values)
     {
 
     }
 
-    public function onEditFormAccessDenied($values)
+    public function onUserProfileAccessDenied($values)
     {
 
     }
 
-    public function onEditFormNotFound()
+    public function onUserProfileNotFound()
     {
 
     }

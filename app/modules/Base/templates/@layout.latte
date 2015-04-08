@@ -54,11 +54,8 @@
 
 	</header>
 	{/if}
-
 	<div class="container">
-		<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
-			{_$flash->message}
-		</div>
+	{include 'flashMessage.latte'}
 	</div>
 
 	<main class="container">

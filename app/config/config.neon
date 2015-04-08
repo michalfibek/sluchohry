@@ -19,7 +19,7 @@ application:
 		*: App\Module\*\Presenters\*Presenter
 
 session:
-	expiration: 1 day
+	expiration: 14 days
 
 extensions:
 #    presenters: Kdyby\PresentersLocator\DI\PresentersLocatorExtension # not fully working with kdyby\events -> test on ajax requests from game

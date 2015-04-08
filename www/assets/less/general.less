@@ -65,56 +65,6 @@ form {
   }
 }
 
-// display flash messages in bootstrap styles
-div.flash {
-  .alert();
-  .alert-info();
-  background-color: @color-ter-1;
-  color: #FFFFFF;
-  border-color: #FFFFFF;
-  font-size: 1.5em;
-  margin: 20px;
-
-  &:before {
-    .fa-inherit();
-    content: "\f129";
-  }
-
-  a {
-    color: #fff;
-    text-decoration: underline;
-  }
-
-}
-div.flash.success {
-  .alert();
-  .alert-success();
-  background-color: #3c763d;
-  border-color: #3c763d;
-  color: #EFF5EF;
-
-  &:before {
-    .fa-inherit();
-    content: "\f058";
-  }
-}
-div.flash.error {
-  .alert-danger();
-
-  &:before {
-    .fa-inherit();
-    content: "\f071";
-  }
-}
-div.flash.warning {
-  .alert-warning();
-
-  &:before {
-    .fa-inherit();
-    content: "\f071";
-  }
-}
-
 .modal-open .modal {
   padding-left: 0px !important;
   padding-right: 0px !important;
@@ -159,12 +109,28 @@ div.flash.warning {
     color: #fff;
   }
 
+  .modal-avatar {
+    position: absolute;
+    width: 200px;
+    top: -25px;
+    left: -90px;
+    z-index: 2;
+  }
+
 }
 .modal-simple.modal-wrong {
 
   .modal-content {
     background-color: @color-prim-1;
     color: #fff;
+  }
+
+  .modal-avatar {
+    position: absolute;
+    width: 200px;
+    top: -65px;
+    left: -27px;
+    transform: rotate(-30deg);
   }
 
 }
@@ -247,3 +213,129 @@ header#user-bar {
   background: url('/assets/images/owl.svg') no-repeat; /* via http://www.flaticon.com/free-icon/owl-sage-symbol_42983 */
   background-size: 480px 280px;
 }
+
+// display flash messages in bootstrap styles
+div.flash {
+  .alert();
+  .alert-info();
+  background-color: @color-ter-1;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  font-size: 1.5em;
+  margin: 20px;
+
+  &:before {
+    .fa-inherit();
+    content: "\f129";
+  }
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+}
+div.flash.success {
+  .alert();
+  .alert-success();
+  background-color: #3c763d;
+  border-color: #3c763d;
+  color: #EFF5EF;
+
+  &:before {
+    .fa-inherit();
+    content: "\f058";
+  }
+}
+div.flash.error {
+  .alert-danger();
+
+  &:before {
+    .fa-inherit();
+    content: "\f071";
+  }
+}
+div.flash.warning {
+  .alert-warning();
+
+  &:before {
+    .fa-inherit();
+    content: "\f071";
+  }
+}
+
+.flash-bubble {
+  margin: 20px 0 5px 0;
+
+  .flash {
+    margin: 0;
+    border-radius: 15px;
+  }
+
+  .flash.success, .flash.warning, .flash.error {
+    margin: 0;
+    border-radius: 15px;
+  }
+
+  .speech-bubble {
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    text-align: center;
+    padding: 0;
+  }
+
+  .speech-bubble .arrow {
+    border-style: solid;
+    position: absolute;
+    right: -17px;
+  }
+
+  .bottom {
+    width: 0px;
+    height: 0px;
+    border-color: transparent transparent transparent #fff;
+    border-width: 14px 0 14px 34.6px;
+    top: 20px;
+  }
+
+  .bottom:after {
+    border-color: transparent transparent transparent @color-ter-1;
+    border-style: solid;
+    border-width: 14px 0 14px 34.6px;
+    bottom: -15px;
+    content: "";
+    position: absolute;
+    left: -34px;
+  }
+
+  .flash.success + .bottom:after {
+    border-color: transparent transparent transparent #3c763d;
+  }
+
+  .flash.warning + .bottom:after {
+    border-color: transparent transparent transparent @alert-warning-bg;
+  }
+
+  .flash.error + .bottom:after {
+    border-color: transparent transparent transparent @alert-danger-bg;
+  }
+
+}
+
+// more flash bubbles
+.flash-bubble + .flash-bubble {
+  margin-top: 0;
+}
+
+.flash-avatar {
+  margin: 25px 0 0 0;
+
+  img {
+    width: 110px;
+  }
+//    position: relative;
+//    right: 10px;
+//    bottom: -160px;
+}
+

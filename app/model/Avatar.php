@@ -21,4 +21,14 @@ class Avatar extends Base
         $this->saveDir = $saveDir;
     }
 
+    public function getDir()
+    {
+        return '/assets/images/avatar';
+    }
+
+    public function getDefault() // get default avatar
+    {
+        return parent::getById(1);
+    }
+
 }

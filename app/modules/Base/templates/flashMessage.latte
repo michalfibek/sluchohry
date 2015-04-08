@@ -1,0 +1,19 @@
+{if $presenter->getModulePrefix() == 'Front'}
+	{if $flashes}
+      <div class="col-xs-8 col-sm-10 flash-bubble" n:foreach="$flashes as $flash">
+    		<div class="speech-bubble">
+				<div n:class="flash, $flash->type">
+					{_$flash->message}
+				</div>
+    			<div class="arrow bottom right"></div>
+    		</div>
+		</div>
+		<div class="col-xs-2 flash-avatar">
+			<img src="{$avatarDir}/{$userAvatar}.svg">
+		</div>
+	{/if}
+{else}
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
+		{_$flash->message}
+	</div>
+{/if}

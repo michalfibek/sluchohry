@@ -133,6 +133,7 @@ class UserProfile extends UI\Control
         $this->template->adminMode = $this->adminMode;
         $this->template->userId = $this->userId;
         $this->template->userRow = $this->userRow;
+        $this->template->avatarDir = $this->avatar->getDir();
         $this->template->setFile(__DIR__ . '/UserProfile.latte');
         $this->template->render();
     }
@@ -140,7 +141,8 @@ class UserProfile extends UI\Control
     public function processForm(Form $form)
     {
         $values = $form->getValues();
-        Debugger::barDump('aaa');
+        if (isset($values['email']))
+            $values['username'] = $this->userRow->username;
 
         if (isset($values['email']))
             if (!$this->userModel->isUniqueColumn('email', $values['email'], $this->userId))
@@ -169,7 +171,12 @@ class UserProfile extends UI\Control
             $result = $this->userModel->updateById($values['userId'],$insertData);
 
             if ($result == true)
+            {
+                if ($this->userId == $this->user->getId()) // update records in current user identity
+                    $this->updateCurrentIdentity($values);
+
                 $this->onSuccessEdit($values);
+            }
 
         } else { // user id not set - insert user
 
@@ -202,6 +209,51 @@ class UserProfile extends UI\Control
 
     }
 
+    public function setDefaultSignals()
+    {
+        $this->onDuplicateEmail[] = function($values) {
+            $this->getPresenter()->flashMessage('Sorry, the e-mail '.$values['email'].' is already registered. Is it you?', 'error');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onDuplicateUsername[] = function($values) {
+            $this->getPresenter()->flashMessage('Sorry, the username '.$values['username'].' is already registered. Is it you?', 'error');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onAccessDenied[] = function($values) {
+            $this->getPresenter()->flashMessage('Sorry, not enough permissions to edit this user '.$values['username'].'.', 'error');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onNotFound[] = function() {
+            $this->getPresenter()->flashMessage('Sorry, this user was not found.', 'error');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onSuccessAdd[] = function($values) {
+            $this->getPresenter()->flashMessage('The user '.$values['username'].' has been successfully added.', 'success');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onFail[] = function($values) {
+            $this->getPresenter()->flashMessage('Error while adding or editing user '.$values['username'].'.', 'error');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onSuccessEdit[] = function($values) {
+            $this->getPresenter()->flashMessage('The user '.$values['username'].' changes has been saved.', 'success');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onNoChange[] = function($values) {
+            $this->getPresenter()->flashMessage('There was no change to user '.$values['username'].'.', 'info');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        return $this;
+    }
+
     public function edit($userId) {
 
         $this->userId = $userId;
@@ -226,6 +278,12 @@ class UserProfile extends UI\Control
         $this->requirePassword = true;
 
         return $this;
+    }
+
+    private function updateCurrentIdentity($values)
+    {
+        foreach($values as $key => $value)
+            $this->user->identity->$key = $value;
     }
 
 }
