@@ -8,10 +8,21 @@ body {
 }
 
 main {
-  margin: 20px 0 0 0;
+
+  margin: 5px 0 0 0;
+
+  @media (min-width: @screen-sm-min) {
+    margin: 20px 0 0 0;
+  }
+
   header {
     border: none;
-    margin: 22px 0;
+    margin: 0;
+
+    @media (min-width: @screen-sm-min) {
+      margin: 22px 0;
+    }
+
   }
 }
 
@@ -34,6 +45,26 @@ h3, .h3 {
 }
 header {
   .page-header();
+}
+
+#header-collapsed {
+  h1 {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    font-weight: bold;
+  }
+}
+
+.navbar-toggle {
+  margin: 0;
+  padding: 0;
+  font-size: 26px;
+}
+
+.navbar-collapse {
+  border-top: none;
+  box-shadow: none;
 }
 
 form {
@@ -84,7 +115,13 @@ form {
   }
   .modal-header {
     border: none;
-    padding: 30px;
+    padding: 15px;
+
+    @media (min-width: @screen-sm-min) {
+      padding: 30px;
+
+    }
+
   }
   .modal-footer {
     border: none;
@@ -111,10 +148,19 @@ form {
 
   .modal-avatar {
     position: absolute;
-    width: 200px;
-    top: -25px;
-    left: -90px;
     z-index: 2;
+    width: 130px;
+    top: auto;
+    bottom: -15px;
+    left: -11px;
+
+    @media (min-width: @screen-sm-min) {
+      width: 200px;
+      top: -25px;
+      bottom: auto;
+      left: -90px;
+    }
+
   }
 
 }
@@ -165,6 +211,8 @@ form {
   }
 
   .btn-difficulty {
+    color: #fff;
+    border-color: #204d74;
     font-size: 26px;
     margin: 5px 0;
     width: 90%;
@@ -223,6 +271,13 @@ header#user-bar {
 
   #admin-bar {
     text-align: right;
+    margin: 20px 0;
+    display: block;
+
+    @media (min-width: @screen-sm-min) {
+      margin: auto;
+    }
+
     a {
       text-decoration: none;
 
