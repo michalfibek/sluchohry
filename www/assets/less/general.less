@@ -118,6 +118,7 @@ form {
   }
 
 }
+
 .modal-simple.modal-wrong {
 
   .modal-content {
@@ -133,6 +134,61 @@ form {
     transform: rotate(-30deg);
   }
 
+}
+
+.modal-simple.modal-difficulty {
+
+  .modal-content {
+    background-color: @color-ter-1;
+    color: #fff;
+  }
+
+  .modal-avatar {
+    .hidden-xs();
+    position: absolute;
+    width: 200px;
+    top: -25px;
+    left: -120px;
+    z-index: 2;
+  }
+
+  #difficulty-easy {
+    background-color: darken(@color-sec-1, 10%);
+  }
+
+  #difficulty-medium {
+    background-color: @color-prim-2;
+  }
+
+  #difficulty-hard {
+    background-color: @color-prim-1;
+  }
+
+  .btn-difficulty {
+    font-size: 26px;
+    margin: 5px 0;
+    width: 100%;
+    transition: all 0.1s ease;
+    position: relative;
+
+    &:hover {
+      transform: scale(1.1);
+      z-index: 1;
+    }
+
+    @media (min-width: @screen-sm-min) {
+      font-size: 20px;
+      margin: 0;
+      width: auto;
+
+      &:hover {
+        transform: scale(1.2);
+        z-index: 1;
+      }
+
+    }
+
+  }
 }
 
 

@@ -1,0 +1,16 @@
+<div class="modal fade modal-simple modal-difficulty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <img class="modal-avatar" src="{$avatarDir}/{$userAvatar}.svg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{_front.game.difficulty.title}
+                </h4>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary btn-lg btn-difficulty" id="difficulty-easy" data-difficulty="1"><i class="fa fa-bicycle"></i> {_front.game.difficulty.easy}</a>
+                <a href="#" class="btn btn-primary btn-lg btn-difficulty" id="difficulty-medium" data-difficulty="2"><i class="fa fa-car"></i> {_front.game.difficulty.medium}</a>
+                <a href="#" class="btn btn-primary btn-lg btn-difficulty" id="difficulty-hard" data-difficulty="3"><i class="fa fa-rocket"></i> {_front.game.difficulty.hard}</a>
+            </div>
+        </div>
+    </div>
+</div>

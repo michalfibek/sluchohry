@@ -40,6 +40,12 @@ game:
         closeGame: "Ukončit"
         tryAgain: "Zkusit znovu"
 
+    difficulty:
+        title: "Vyber obtížnost"
+        easy: "Pohodář"
+        medium: "Klasik"
+        hard: "Drsňák"
+
 user:
     profile: "Profil"
     profilePersonal: "Tvůj profil"
@@ -78,4 +84,4 @@ pexeso:
     stepCount: "kliknutí"
     hint: "Najdi kompletní písničku schovanou pod dvěma kostkami a označ je ve správném pořadí."
     flash:
-        noSongFound: "Budeš se divit, ale zatím nemáme dost písniček pro pexeso! Zkus to prosím později znovu."
+        noSongFound: "Budeš se divit, ale zatím nemáme dost písniček pro takovou obtížnost! Zkus to prosím později znovu."

@@ -24,8 +24,10 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	public function startup()
 	{
 		parent::startup();
+	}
 
-		$this->difficulty = 2; // TODO this is hardcoded, remove after difficulty implementation
+	protected function setAssetsByDifficulty()
+	{
 		switch ($this->difficulty)
 		{
 			case 1:
@@ -66,8 +68,13 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		}
 	}
 
-	public function actionDefault($id = null, $nextRound = null)
+	public function actionDefault($id = null, $difficulty = 2, $nextRound = null)
 	{
+		if ($difficulty)
+			$this->difficulty = (int)$difficulty;
+
+		$this->setAssetsByDifficulty();
+
 		if (!$nextRound) {
 			unset($this->gameSession['melodicCubesHistory']);
 		}

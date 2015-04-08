@@ -13,7 +13,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 	const
 		DIFFICULTY_1_PAIRS = 4,
 		DIFFICULTY_2_PAIRS = 6,
-		DIFFICULTY_3_PAIRS = 8;
+		DIFFICULTY_3_PAIRS = 10;
 
 	/** @inject @var Model\Song */
 	public $song;
@@ -23,8 +23,10 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 	public function startup()
 	{
 		parent::startup();
+	}
 
-		$this->difficulty = 1; // TODO this is hardcoded, remove after difficulty implementation
+	protected function setAssetsByDifficulty()
+	{
 		switch ($this->difficulty)
 		{
 			case 1:
@@ -54,8 +56,13 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 		}
 	}
 
-	public function actionDefault($nextRound = null)
+	public function actionDefault($difficulty = 2, $nextRound = null)
 	{
+		if ($difficulty)
+			$this->difficulty = (int)$difficulty;
+
+		$this->setAssetsByDifficulty();
+
 		$this->gameAssets = $this->getAssetsRandom();
 		if (!$this->gameAssets) {
 			$this->flashMessage($this->translator->translate('front.pexeso.flash.noSongFound'), 'errror');

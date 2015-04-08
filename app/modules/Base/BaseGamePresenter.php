@@ -22,6 +22,7 @@ abstract class BaseGamePresenter extends BasePresenter
 
     abstract protected function getAssetsById($id);
     abstract protected function getAssetsRandom();
+    abstract protected function setAssetsByDifficulty();
 
     public function startup()
     {
