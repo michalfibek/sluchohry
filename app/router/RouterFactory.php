@@ -20,7 +20,7 @@ class RouterFactory extends Nette\Object
 	public function __construct(Nette\Http\Request $httpRequest)
 	{
 		if ($httpRequest->getUrl()->getHost() === 'sluchohry.cz')
-			$this->useHttps = false;
+			$this->useHttps = true;
 		else
 			$this->useHttps = false;
 	}
