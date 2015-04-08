@@ -51,7 +51,7 @@ class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
             ->setFormat('j.n.Y H:i:s');
         $grid->addText('user_ip', 'User IP address');
 
-        $grid->setDefaultOrder('event_time', 'ASC');
+        $grid->setDefaultOrder('event_time', 'DESC');
 
         return $grid;
     }
