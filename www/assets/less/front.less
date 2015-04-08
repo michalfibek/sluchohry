@@ -70,11 +70,16 @@ FRONT: applies only to front module
       .btn();
       .btn-default();
       font-size: 1.5em;
-      width: 300px;
-      height: 200px;
       margin: 10px;
       display: block;
-      //      line-height: 180px;
+      width: 230px;
+      height: 200px;
+
+      @media (min-width: @screen-sm-min) {
+        width: 300px;
+        height: 200px;
+
+      }
 
     }
   }
