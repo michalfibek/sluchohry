@@ -13,7 +13,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 	const
 		DIFFICULTY_1_PAIRS = 4,
 		DIFFICULTY_2_PAIRS = 6,
-		DIFFICULTY_3_PAIRS = 10;
+		DIFFICULTY_3_PAIRS = 11;
 
 	/** @inject @var Model\Song */
 	public $song;
@@ -72,6 +72,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
 	public function renderDefault()
 	{
+		$this->template->difficultyText = $this->getDifficultyText();
 		$this->template->songs = $this->gameAssets;
 		$this->template->difficulty = $this->difficulty;
 

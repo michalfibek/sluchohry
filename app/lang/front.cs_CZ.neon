@@ -41,6 +41,7 @@ game:
         tryAgain: "Zkusit znovu"
 
     difficulty:
+        difficultyTitle: "Obtížnost"
         title: "Vyber obtížnost"
         easy: "Pohodář"
         medium: "Klasik"

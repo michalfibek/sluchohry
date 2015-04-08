@@ -45,4 +45,17 @@ abstract class BaseGamePresenter extends BasePresenter
         $this->onGameForceEnd($result);
     }
 
+    protected function getDifficultyText()
+    {
+        $difficultyText = $this->translator->translate('front.game.difficulty.difficultyTitle').' ';
+        if ($this->difficulty == 1)
+            $difficultyText .= strtolower($this->translator->translate('front.game.difficulty.easy'));
+        if ($this->difficulty == 2)
+            $difficultyText .= strtolower($this->translator->translate('front.game.difficulty.medium'));
+        if ($this->difficulty == 3)
+            $difficultyText .= strtolower($this->translator->translate('front.game.difficulty.hard'));
+
+        return $difficultyText;
+    }
+
 }
