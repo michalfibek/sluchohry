@@ -15,7 +15,10 @@
 {/if}
 
 <header>
-    <h1 n:block="title">Hudební pexeso <small>{$difficultyText}</small></h1>
+    <h1 n:block="title">
+        <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
+        {_front.game.pexeso}
+    </h1>
     <div id="game-hint">{_front.pexeso.hint}</div>
 </header>
 

@@ -28,7 +28,7 @@ auth:
 game:
     games: "Hry"
     melodicCubes: "Melodické kostky"
-    pexeso: "Pexeso"
+    pexeso: "Hudební pexeso"
 
     common:
         play: "Hrej"

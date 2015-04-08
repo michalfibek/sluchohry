@@ -72,7 +72,6 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
 	public function renderDefault()
 	{
-		$this->template->difficultyText = $this->getDifficultyText();
 		$this->template->songs = $this->gameAssets;
 		$this->template->difficulty = $this->difficulty;
 
