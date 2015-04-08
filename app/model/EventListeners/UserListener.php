@@ -31,7 +31,7 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
             'App\Module\Base\Presenters\BaseGamePresenter::onGameForceEnd',
             'App\Components\UserProfile::onSuccessAdd' => 'onUserProfileSuccessAdd',
             'App\Components\UserProfile::onSuccessEdit' => array('onUserProfileSuccessEdit', 30),
-            'App\Components\UserProfile::onFail' => 'onUserProfileFail',
+            'App\Components\UserProfile::onEditFail' => 'onUserProfileEditFail',
             'App\Components\UserProfile::onNoChange' => 'onUserProfileNoChange',
             'App\Components\UserProfile::onDuplicateEmail' => 'onUserProfileDuplicateEmail',
             'App\Components\UserProfile::onDuplicateUsername' => 'onUserProfileDuplicateUsername',
@@ -88,7 +88,7 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
         $this->event->saveUserProfileEdited($this->user, $values);
     }
 
-    public function onUserProfileFail($values)
+    public function onUserProfileEditFail($values)
     {
 
     }

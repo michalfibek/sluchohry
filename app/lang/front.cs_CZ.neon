@@ -52,6 +52,19 @@ user:
     generatePassword: "Generovat heslo"
     save: "Uložit"
 
+    flash:
+        duplicateEmail: "Promiň, e-mail %email% už je registrován někým jiným. Nejsi to ty?"
+        duplicateUsername: "Promiň, uživatelské jméno %username% je registrováno někým jiným."
+        accessDenied: "Promiň, nemáš oprávnění upravovat uživatele %username%."
+        notFound: "Tento uživatel nebyl nalezen."
+        successAdd: "%username% byl úspěšně přidán!"
+        successEdit: "Nastavení %username% bylo úspěšně uloženo."
+        successEditPersonal: "Tvoje nastavení bylo úspěšně uloženo."
+        editFail: "Chyba: ukládání %username% neproběhlo správně."
+        noChange: "Nastavení %username% uloženo beze změn."
+        noChangePersonal: "Tvoje nastavení bylo uloženo beze změn."
+
+
 melodicCubes:
     stepCount: "pohybů kostek"
     hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu."

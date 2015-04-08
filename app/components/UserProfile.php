@@ -3,6 +3,7 @@ namespace App\Components;
 
 use App,
     Nette,
+    Kdyby,
     Nette\Application\UI,
     Nette\Application\UI\Form;
 use Tracy\Debugger;
@@ -38,7 +39,7 @@ class UserProfile extends UI\Control
     public $onSuccessEdit;
 
     /** @var array */
-    public $onFail;
+    public $onEditFail;
 
     /** @var array */
     public $onNoChange;
@@ -58,9 +59,12 @@ class UserProfile extends UI\Control
     /** @var App\Model\Avatar */
     private $avatar;
 
+    /** @var Kdyby\Translation\Translator */
+    private $translator;
+
     // TODO FIX event listener hooks
 
-    public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar)
+    public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar, Kdyby\Translation\Translator $translator)
     {
         parent::__construct();
         $this->userModel = $userModel;
@@ -68,6 +72,7 @@ class UserProfile extends UI\Control
         $this->user = $user;
         $this->userId = null;
         $this->avatar = $avatar;
+        $this->translator = $translator;
 
         if ($this->user->isAllowed('Admin:User', 'edit')) {
             $this->adminMode = true;
@@ -172,9 +177,6 @@ class UserProfile extends UI\Control
 
             if ($result == true)
             {
-                if ($this->userId == $this->user->getId()) // update records in current user identity
-                    $this->updateCurrentIdentity($values);
-
                 $this->onSuccessEdit($values);
             }
 
@@ -203,7 +205,7 @@ class UserProfile extends UI\Control
         if ($result == 0)
             $this->onNoChange($values);
         else
-            $this->onFail($values);
+            $this->onEditFail($values);
 
         return $this;
 
@@ -212,42 +214,64 @@ class UserProfile extends UI\Control
     public function setDefaultSignals()
     {
         $this->onDuplicateEmail[] = function($values) {
-            $this->getPresenter()->flashMessage('Sorry, the e-mail '.$values['email'].' is already registered. Is it you?', 'error');
+            $msg = $this->translator->translate('front.user.flash.duplicateEmail', NULL, array('email' => $values['email']));
+            $this->getPresenter()->flashMessage($msg, 'error');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onDuplicateUsername[] = function($values) {
-            $this->getPresenter()->flashMessage('Sorry, the username '.$values['username'].' is already registered. Is it you?', 'error');
+            $msg = $this->translator->translate('front.user.flash.duplicateUsername', NULL, array('username' => $values['username']));
+            $this->getPresenter()->flashMessage($msg, 'error');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onAccessDenied[] = function($values) {
-            $this->getPresenter()->flashMessage('Sorry, not enough permissions to edit this user '.$values['username'].'.', 'error');
+            $msg = $this->translator->translate('front.user.flash.accessDenied', NULL, array('username' => $values['username']));
+            $this->getPresenter()->flashMessage($msg, 'error');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onNotFound[] = function() {
-            $this->getPresenter()->flashMessage('Sorry, this user was not found.', 'error');
+            $msg = $this->translator->translate('front.user.flash.notFound');
+            $this->getPresenter()->flashMessage($msg, 'error');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onSuccessAdd[] = function($values) {
-            $this->getPresenter()->flashMessage('The user '.$values['username'].' has been successfully added.', 'success');
-            $this->getPresenter()->redirect(':Front:Default:');
-        };
-
-        $this->onFail[] = function($values) {
-            $this->getPresenter()->flashMessage('Error while adding or editing user '.$values['username'].'.', 'error');
+            $msg = $this->translator->translate('front.user.flash.successAdd', NULL, array('username' => $values['username']));
+            $this->getPresenter()->flashMessage($msg, 'success');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onSuccessEdit[] = function($values) {
-            $this->getPresenter()->flashMessage('The user '.$values['username'].' changes has been saved.', 'success');
+
+            if ($this->userId == $this->user->getId()) {
+                $this->updateCurrentIdentity($values); // update records in current user identity
+                $msg = $this->translator->translate('front.user.flash.successEditPersonal');
+            } else {
+                $msg = $this->translator->translate('front.user.flash.successEdit', NULL, array('username' => $values['username']));
+            }
+
+            $this->getPresenter()->flashMessage($msg, 'success');
+            $this->getPresenter()->redirect(':Front:Default:');
+        };
+
+        $this->onEditFail[] = function($values) {
+            $msg = $this->translator->translate('front.user.flash.editFail', NULL, array('username' => $values['username']));
+            $this->getPresenter()->flashMessage($msg, 'error');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onNoChange[] = function($values) {
-            $this->getPresenter()->flashMessage('There was no change to user '.$values['username'].'.', 'info');
+
+            if ($this->userId == $this->user->getId()) {
+                $this->updateCurrentIdentity($values); // update records in current user identity
+                $msg = $this->translator->translate('front.user.flash.noChangePersonal');
+            } else {
+                $msg = $this->translator->translate('front.user.flash.noChange', NULL, array('username' => $values['username']));
+            }
+
+            $this->getPresenter()->flashMessage($msg, 'info');
             $this->getPresenter()->redirect(':Front:Default:');
         };
 
