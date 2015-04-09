@@ -90,17 +90,25 @@ GAME: melodic cubes
 }
 
 .game-main.note-steps {
-  font-size: 2em;
+  font-size: 1.8em;
+  margin-top: 10px;
+
+  @media (min-width: @screen-sm-min) {
+    font-size: 3em;
+    margin: 60px 0 0 0;
+  }
 
   .first-letter {
     display: inline-block;
     border: 1px solid #000;
-    background-color: #00ba00;
+    background-color: #008600;
+    color: #fff;
 //    color: #fff;
     margin: 0 8px;
     padding: 10px;
     min-width: 60px;
     text-align: center;
+    cursor: default;
   }
 
   .step-input {
@@ -109,17 +117,35 @@ GAME: melodic cubes
     text-align: center;
     margin: 10px 6px;
     border: 1px solid #777;
+    cursor: pointer;
+
+    /* blinking cursor - caret - workaround */
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+
+    &:focus {
+      outline: @color-ter-1 auto 10px;
+      background-color: @color-ter-1;
+      text-shadow: 0 0 0 #fff;
+
+      .placeholder-color(#fff);
+    }
 
     &.correct {
-      background-color: #00ba00;
+      background-color: #008600;
+      text-shadow: 0 0 0 #fff;
+//      color: #fff;
     }
 
     &.wrong {
       background-color: @color-prim-1;
+      text-shadow: 0 0 0 #fff;
+//      color: #fff;
     }
   }
 
   .symbol {
+    cursor: default;
   }
 
   .symbol-up {
