@@ -56,13 +56,17 @@ class UserProfile extends UI\Control
     /** @var array */
     public $onNotFound;
 
+    /** @var array */
+    public $onReturnAction; // \Kdyby\Events workaround to fix event priority problem https://github.com/Kdyby/Events/pull/66
+
+    /** @var array */
+    public $onFailAction; // \Kdyby\Events workaround to fix event priority problem
+
     /** @var App\Model\Avatar */
     private $avatar;
 
     /** @var Kdyby\Translation\Translator */
     private $translator;
-
-    // TODO FIX event listener hooks
 
     public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar, Kdyby\Translation\Translator $translator)
     {
@@ -151,11 +155,17 @@ class UserProfile extends UI\Control
 
         if (isset($values['email']))
             if (!$this->userModel->isUniqueColumn('email', $values['email'], $this->userId))
+            {
                 $this->onDuplicateEmail($values);
+                $this->onFailAction();
+            }
 
         if (isset($values['username']))
             if (!$this->userModel->isUniqueColumn('username', $values['username'], $this->userId))
+            {
                 $this->onDuplicateUsername($values);
+                $this->onFailAction();
+            }
 
         if ($this->userId) // is user id set? update user
         {
@@ -178,6 +188,7 @@ class UserProfile extends UI\Control
             if ($result == true)
             {
                 $this->onSuccessEdit($values);
+                $this->onReturnAction();
             }
 
         } else { // user id not set - insert user
@@ -199,13 +210,22 @@ class UserProfile extends UI\Control
             $result = $this->userModel->insert($insertData);
 
             if ($result == true)
+            {
                 $this->onSuccessAdd($values);
+                $this->onReturnAction();
+            }
         }
 
         if ($result == 0)
+        {
             $this->onNoChange($values);
+            $this->onReturnAction();
+        }
         else
+        {
             $this->onEditFail($values);
+            $this->onFailAction();
+        }
 
         return $this;
 
@@ -216,31 +236,26 @@ class UserProfile extends UI\Control
         $this->onDuplicateEmail[] = function($values) {
             $msg = $this->translator->translate('front.user.flash.duplicateEmail', NULL, array('email' => $values['email']));
             $this->getPresenter()->flashMessage($msg, 'error');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onDuplicateUsername[] = function($values) {
             $msg = $this->translator->translate('front.user.flash.duplicateUsername', NULL, array('username' => $values['username']));
             $this->getPresenter()->flashMessage($msg, 'error');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onAccessDenied[] = function($values) {
             $msg = $this->translator->translate('front.user.flash.accessDenied', NULL, array('username' => $values['username']));
             $this->getPresenter()->flashMessage($msg, 'error');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onNotFound[] = function() {
             $msg = $this->translator->translate('front.user.flash.notFound');
             $this->getPresenter()->flashMessage($msg, 'error');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onSuccessAdd[] = function($values) {
             $msg = $this->translator->translate('front.user.flash.successAdd', NULL, array('username' => $values['username']));
             $this->getPresenter()->flashMessage($msg, 'success');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onSuccessEdit[] = function($values) {
@@ -253,13 +268,11 @@ class UserProfile extends UI\Control
             }
 
             $this->getPresenter()->flashMessage($msg, 'success');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onEditFail[] = function($values) {
             $msg = $this->translator->translate('front.user.flash.editFail', NULL, array('username' => $values['username']));
             $this->getPresenter()->flashMessage($msg, 'error');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         $this->onNoChange[] = function($values) {
@@ -272,7 +285,6 @@ class UserProfile extends UI\Control
             }
 
             $this->getPresenter()->flashMessage($msg, 'info');
-            $this->getPresenter()->redirect(':Front:Default:');
         };
 
         return $this;
@@ -286,12 +298,14 @@ class UserProfile extends UI\Control
 
             if (!$this->acl->isChildRole($userRow->ref('role')['name'], $this->user->roles[0])) {
                 $this->onAccessDenied($userRow);
+                $this->onReturnAction();
             }
 
             $this->userRow = $userRow;
 
         } else {
             $this->onUserNotFound();
+            $this->onReturnAction();
         }
 
         return $this;

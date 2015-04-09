@@ -73,7 +73,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 		if ($this->user->loggedIn)
 		{
 			$flashId = $this->getParameterId('flash');
-			
+
 			// if there is not a single flash message, annoy user with owl's quotes
 			if (!$this->getPresenter()->getFlashSession()->$flashId)
 			{

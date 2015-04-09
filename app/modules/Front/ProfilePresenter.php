@@ -39,6 +39,12 @@ class ProfilePresenter extends \App\Module\Base\Presenters\BasePresenter
     {
         $form = $this->userProfile->create();
         $form->setDefaultSignals();
+        $form->onReturnAction = function() {
+            $this->redirect(':Front:Default:');
+        };
+        $form->onFailAction = function() {
+            $this->redirect('this');
+        };
 
         return $form;
     }

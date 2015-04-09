@@ -77,6 +77,14 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	{
 		$form = $this->userProfile->create();
 		$form->setDefaultSignals();
+		$form->onReturnAction = function() {
+			Debugger::barDump('return');
+			$this->redirect(':Admin:User:');
+		};
+		$form->onFailAction = function() {
+			$this->redirect('this');
+		};
+
 
 		return $form;
 	}
