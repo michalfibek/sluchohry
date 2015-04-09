@@ -24,9 +24,11 @@ class Event extends Base {
         DATA_PLAY_TIME = 'play_time',
         DATA_DIFFICULTY = 'difficulty',
         DATA_SOLVED = 'solved',
-        DATA_PLAY_STEPS = 'play_steps',
-        DATA_SONG_ID = 'song_id', // musicCubes
+        DATA_PLAY_STEPS = 'play_steps', // melodicCubes, pexeso
+        DATA_SONG_ID = 'song_id', // melodicCubes
         DATA_SONG_LIST = 'song_list', // pexeso
+        DATA_BAD_ATTEMPTS = 'bad_attempts', // noteSteps
+        DATA_NOTE_COUNT = 'note_count', // noteSteps
         DATA_SHIFT_SIGNS = 'shift_signs', // noteSteps
         DATA_FIRST_LETTER = 'first_note'; // noteSteps
 
@@ -89,6 +91,7 @@ class Event extends Base {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_FIRST_LETTER => $result['firstLetter'],
+                self::DATA_NOTE_COUNT => $result['noteCount'],
                 self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
             );
@@ -106,29 +109,31 @@ class Event extends Base {
         if ($result['gameName'] == 'melodicCubes') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SOLVED => $solved,
                 self::DATA_SONG_ID => $result['songId'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
-                self::DATA_PLAY_TIME => $result['time'],
                 self::DATA_PLAY_STEPS => $result['steps'],
-                self::DATA_SOLVED => $solved,
+                self::DATA_PLAY_TIME => $result['time'],
             );
         } else if ($result['gameName'] == 'pexeso') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SOLVED => $solved,
                 self::DATA_SONG_LIST => $result['songList'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
-                self::DATA_PLAY_TIME => $result['time'],
                 self::DATA_PLAY_STEPS => $result['steps'],
-                self::DATA_SOLVED => $solved,
+                self::DATA_PLAY_TIME => $result['time'],
             );
         } else if ($result['gameName'] == 'noteSteps') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SOLVED => $solved,
                 self::DATA_FIRST_LETTER => $result['firstLetter'],
+                self::DATA_NOTE_COUNT => $result['noteCount'],
                 self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
+                self::DATA_BAD_ATTEMPTS => $result['steps'],
                 self::DATA_PLAY_TIME => $result['time'],
-                self::DATA_SOLVED => $solved,
             );
         }
         $this->insertRecord($user->getId(), self::CLASS_GAME_END, $data);

@@ -3,11 +3,11 @@
  */
 var Game = $class({
 
-    constructor: function(timer, logger, firstLetter, shiftSigns, difficulty) {
+    constructor: function(timer, logger, firstLetter, shiftSigns, difficulty, noteBtoH) {
         scope = this;
         this.timer = timer;
         this.shiftSigns = shiftSigns;
-        this.shiftSignsCount = shiftSigns.length;
+        this.noteCount = shiftSigns.length;
         this.firstLetter = firstLetter;
         this.difficulty = difficulty;
         this.logger = logger;
@@ -18,7 +18,7 @@ var Game = $class({
         this.gameEndHandler = '?do=gameEnd';
         this.gameForceEndHandler = '?do=gameForceEnd';
         this.gameSolved = false;
-        this.noteBtoH = true;
+        this.noteBtoH = noteBtoH;
 
         /** char wanna-be-constants */
         this.FIRST_NOTE_ORD = 97; // a
@@ -51,7 +51,7 @@ var Game = $class({
     },
 
     initCorrectNotes: function() {
-        for(var i = 0; i < scope.shiftSignsCount; i++) {
+        for(var i = 0; i < scope.noteCount; i++) {
 
             if (i == 0)
                 var baseNote = scope.firstLetter.toLowerCase();
@@ -59,7 +59,7 @@ var Game = $class({
                 var baseNote = scope.correctNotes[i-1].toLowerCase();
 
             if (baseNote == 'h')
-                baseNote = 'b';
+                baseNote = 'b'; // save internally as 'b'
 
             if (scope.shiftSigns[i][0] == '+')
                 var shiftedNote = baseNote.charCodeAt(0) + parseInt(scope.shiftSigns[i].slice(1));
@@ -91,7 +91,7 @@ var Game = $class({
                 $(this).removeClass('wrong');
                 $(this).addClass('correct');
                 scope.evalGame();
-                if (position != scope.shiftSignsCount) {  // if not last input
+                if (position != scope.noteCount) {  // if not last input
                     var nextId = parseInt(position)+1;
                     $('#step-'+nextId).focus();
                 } else {
@@ -131,6 +131,7 @@ var Game = $class({
         var record = {
             gameName: this.gameName,
             firstLetter: scope.firstLetter,
+            noteCount: scope.noteCount,
             shiftSigns: scope.shiftSigns.join(),
             difficulty: scope.difficulty
         }
@@ -144,6 +145,7 @@ var Game = $class({
             steps: scope.badAttemptCount,
             time: scope.timer.getTime(),
             firstLetter: scope.firstLetter,
+            noteCount: scope.noteCount,
             shiftSigns: scope.shiftSigns.join(),
             difficulty: scope.difficulty
         };

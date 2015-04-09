@@ -12,16 +12,22 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 {
     // define cube splits count by difficulty
     const
-        DIFFICULTY_1_RATIO = 3,
-        DIFFICULTY_2_RATIO = 4,
-        DIFFICULTY_3_RATIO = 8;
+        DIFFICULTY_1_RATIO = 1,
+        DIFFICULTY_2_RATIO = 2,
+        DIFFICULTY_3_RATIO = 3,
+        MAX_RAND_MULTIPLY = 2, // multiply difficulty ratio with rand max to this
+        FIRST_NOTE_ORD = 97, // a
+        LAST_NOTE_ORD = 103; // g
 
-    protected $stepRatio;
-
+    private $stepRatio;
+    private $noteBtoH;
+    private $noteCount;
 
     public function startup()
     {
         parent::startup();
+        $this->noteBtoH = true;
+        $this->noteCount = 7;
     }
 
     protected function setAssetsByDifficulty()
@@ -47,6 +53,20 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
     protected function getAssetsRandom()
     {
+        $firstLetter = chr(rand(self::FIRST_NOTE_ORD, self::LAST_NOTE_ORD));
+        if ($this->noteBtoH && $firstLetter == 'b')
+            $firstLetter = 'h';
+
+        $signList = '+-';
+        for ($i = 0; $i <= $this->noteCount; $i++) {
+            $sign = $signList[rand(0,1)];
+            $shiftSigns[] = $sign . rand(1,self::MAX_RAND_MULTIPLY)*$this->stepRatio;
+        }
+
+        return array(
+            'firstLetter' => $firstLetter,
+            'shiftSigns' => $shiftSigns
+        );
 
     }
 
@@ -56,14 +76,17 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
         $this->setAssetsByDifficulty();
 
-        $this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
+        $this->gameAssets = $this->getAssetsRandom();
     }
 
     public function renderDefault()
     {
         $this->template->difficulty = $this->difficulty;
-        $this->template->firstLetter = 'h';
-        $this->template->shiftSigns = ['+1','-1','+2'];
+        $this->template->firstLetter = $this->gameAssets['firstLetter'];
+        $this->template->shiftSigns = $this->gameAssets['shiftSigns'];
+        $this->template->noteBtoH = $this->noteBtoH;
+//        $this->template->firstLetter = 'h';
+//        $this->template->shiftSigns = ['+1','-1','+2'];
     }
 
     protected function createTemplate($class = NULL)
