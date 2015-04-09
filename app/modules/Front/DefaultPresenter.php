@@ -10,6 +10,9 @@ use Tracy\Debugger;
  */
 class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
+	const
+		HOMEPAGE_QUOTE_COUNT = 6;
+
 	/** @persistent */
 	public $backlink;
 
@@ -70,7 +73,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$flashId = $this->getParameterId('flash');
 		if (!$this->getPresenter()->getFlashSession()->$flashId)
 		{
-			$randMsg = (string)rand(1,5);
+			$randMsg = (string)rand(1,self::HOMEPAGE_QUOTE_COUNT);
 			$this->flashMessage('front.game.homepageQuote.msg'.$randMsg);
 		}
 
