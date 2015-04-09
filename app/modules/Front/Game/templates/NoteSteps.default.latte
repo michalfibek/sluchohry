@@ -16,7 +16,7 @@
 
             <span class="first-letter">{$firstLetter}</span>
             {foreach $shiftSigns as $sign}
-            {$sign|shiftArrows|noescape} <input type="text" class="step-input" placeholder="?" data-pos="{$iterator->counter}">
+            {$sign|shiftArrows|noescape} <input id="step-{$iterator->counter}" type="text" class="step-input" placeholder="?" data-pos="{$iterator->counter}">
             {/foreach}
 
         </div>
@@ -37,11 +37,12 @@
     <script type="text/javascript">
 
         var shiftSigns = {$shiftSigns};
+        var firstLetter = {$firstLetter};
         var difficulty = {$difficulty};
 
         l = new AjaxLogger();
         t = new GameTimer();
-        g = new Game(t, l, shiftSigns, difficulty);
+        g = new Game(t, l, firstLetter, shiftSigns, difficulty);
 
     </script>
 {/block}
