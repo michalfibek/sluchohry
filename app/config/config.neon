@@ -20,6 +20,7 @@ application:
 
 session:
 	expiration: 14 days
+	savePath: %appDir%/../sessions # custom session path to fix php maxlifetime feature in debian-based systems
 
 extensions:
 #    presenters: Kdyby\PresentersLocator\DI\PresentersLocatorExtension # not fully working with kdyby\events -> test on ajax requests from game
