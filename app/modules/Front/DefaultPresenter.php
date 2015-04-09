@@ -70,11 +70,16 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderDefault()
 	{
-		$flashId = $this->getParameterId('flash');
-		if (!$this->getPresenter()->getFlashSession()->$flashId)
+		if ($this->user->loggedIn)
 		{
-			$randMsg = (string)rand(1,self::HOMEPAGE_QUOTE_COUNT);
-			$this->flashMessage('front.game.homepageQuote.msg'.$randMsg);
+			$flashId = $this->getParameterId('flash');
+			
+			// if there is not a single flash message, annoy user with owl's quotes
+			if (!$this->getPresenter()->getFlashSession()->$flashId)
+			{
+				$randMsg = (string)rand(1,self::HOMEPAGE_QUOTE_COUNT);
+				$this->flashMessage('front.game.homepageQuote.msg'.$randMsg);
+			}
 		}
 
 	}
