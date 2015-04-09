@@ -34,6 +34,22 @@ var Game = $class({
 
     },
 
+    isValidNote: function(noteInput) {
+
+        if (scope.noteBtoH) {
+            if (noteInput == 'h') return true;
+            if (noteInput == 'b') return false;
+        } else {
+            if (noteInput == 'h') return false;
+            if (noteInput == 'b') return true;
+        }
+
+        if ((scope.FIRST_NOTE_ORD <= noteInput.charCodeAt(0)) && (noteInput.charCodeAt(0) <= scope.LAST_NOTE_ORD))
+            return true;
+        else
+            return false;
+    },
+
     isCorrectNote: function(noteInput, inputPos) {
 
         if (scope.noteBtoH)
@@ -79,13 +95,25 @@ var Game = $class({
     initButtons: function() {
 
         $('.step-input').on('input',function() {
-            var input = $(this).val();
-            var position = $(this).data('pos');
 
-            if (input.length > 1) { // only one character per input
+            var input = $(this).val().toLowerCase();
+
+            if (input.length > 1) { // only one character per input - slice the others
                 $(this).val(input.slice(-1));
                 input = $(this).val();
             }
+
+            if (!scope.isValidNote(input))
+            {
+                $(this).val('');
+                $(this).removeClass('wrong');
+                $(this).removeClass('correct');
+                return false;
+            }
+
+            $(this).val(input); // input back - upper-to-lowercase fix
+
+            var position = $(this).data('pos');
 
             if (scope.isCorrectNote(input, position)) {
                 $(this).removeClass('wrong');
