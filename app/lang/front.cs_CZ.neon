@@ -98,4 +98,4 @@ pexeso:
 
 noteSteps:
     stepCount: "špatných pokusů"
-    hint: "Krokuj noty podle jejich pořadí na notové osnově."
+    hint: "Krokuj noty mačkáním na písmena na klávesnici podle jejich pořadí v notové osnově."
