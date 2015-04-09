@@ -1,5 +1,6 @@
 log/*
 temp/*
+sessions/*
 node_modules/*
 # nette packages unignored
 # vendor/*
