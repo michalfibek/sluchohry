@@ -45,7 +45,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 		if ($values->remember) {
 			$this->getUser()->setExpiration('14 days', FALSE);
 		} else {
-			$this->getUser()->setExpiration('60 minutes', TRUE);
+			$this->getUser()->setExpiration('90 minutes', TRUE);
 		}
 
 		try {
