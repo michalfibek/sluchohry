@@ -30,6 +30,13 @@ game:
     melodicCubes: "Melodické kostky"
     pexeso: "Hudební pexeso"
 
+    homepageQuote:
+        msg1: "Copak si dnes zahrajem?"
+        msg2: "Nudím se... jakou sluchohru si zahrajem dnes?"
+        msg3: "Víš, že mě můžeš převléknout? Klikni na mě!"
+        msg4: "Víš, že sovy mají dobře vyvinutý sluch? Nic nám neunikne!"
+        msg5: "Nevím, jak ty, ale já mám teď náladu na pexeso na drsňáka!"
+
     common:
         play: "Hrej"
         stop: "Stop"

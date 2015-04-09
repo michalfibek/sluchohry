@@ -67,6 +67,12 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderDefault()
 	{
+		$flashId = $this->getParameterId('flash');
+		if (!$this->getPresenter()->getFlashSession()->$flashId)
+		{
+			$randMsg = (string)rand(1,5);
+			$this->flashMessage('front.game.homepageQuote.msg'.$randMsg);
+		}
 
 	}
 

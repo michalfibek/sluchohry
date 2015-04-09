@@ -8,9 +8,11 @@
     			<div class="arrow bottom right"></div>
     		</div>
 		</div>
-		<div class="col-xs-2 flash-avatar">
+		{if $user->loggedIn}<a n:href=":Front:Profile:#edit-avatars" class="col-xs-2 flash-avatar">
+		{else}<a href="#" class="col-xs-2 flash-avatar">
+		{/if}
 			<img src="{$avatarDir}/{$userAvatar}.svg">
-		</div>
+		</a>
 	{/if}
 {else}
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">

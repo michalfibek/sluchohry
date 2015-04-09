@@ -64,7 +64,7 @@
                     <button n:name="save" id="button-save" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> {_front.user.save}</button>
                 </div>
             </div>
-            <div class="form-group edit-avatars" n:inner-foreach="$form[avatar_id]->items as $key => $label">
+            <div id="edit-avatars" class="form-group edit-avatars" n:inner-foreach="$form[avatar_id]->items as $key => $label">
                 <div class="col-xs-5 col-md-2">
                     <div class="radio avatar-select">
                         <label n:name="avatar_id:$key">

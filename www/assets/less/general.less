@@ -386,11 +386,20 @@ div.flash.warning {
   .flash {
     margin: 0;
     border-radius: 15px;
+
+    &:before {
+      display: none; // remove fa icon
+    }
   }
 
   .flash.success, .flash.warning, .flash.error {
     margin: 0;
     border-radius: 15px;
+
+    &:before {
+      display: none; // remove fa icon
+    }
+
   }
 
   .speech-bubble {

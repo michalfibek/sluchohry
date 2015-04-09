@@ -93,7 +93,6 @@ FRONT: applies only to front module
       @media (min-width: @screen-sm-min) {
         width: 300px;
         height: 200px;
-
       }
 
       &#game-melodic-cubes {
@@ -102,10 +101,30 @@ FRONT: applies only to front module
                   rgba(8, 142, 255, 0.72),
                   rgba(8, 142, 255, 0.72)
           ),
-          url('/assets/images/game-preview/melodic_cubes.jpg')
-          -42px -161px;
+          url('/assets/images/game-preview/melodic_cubes.jpg');
+        background-position: -31px -96px;
         background-size: 140%;
         color: #fff;
+
+        @media (min-width: @screen-sm-min) {
+          background-position: -42px -161px;
+        }
+      }
+
+      &#game-pexeso {
+        background:
+          linear-gradient(
+                  rgba(255, 102, 8, 0.72),
+                  rgba(255, 102, 8, 0.72)
+          ),
+          url('/assets/images/game-preview/pexeso.jpg');
+        background-position: -38px -85px;
+        background-size: 140%;
+        color: #fff;
+
+        @media (min-width: @screen-sm-min) {
+          background-position: -42px -161px;
+        }
       }
 
       &:hover {
