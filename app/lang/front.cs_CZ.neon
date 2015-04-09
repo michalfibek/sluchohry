@@ -28,6 +28,7 @@ auth:
 game:
     games: "Hry"
     melodicCubes: "Melodické kostky"
+    noteSteps: "Krokování not"
     pexeso: "Hudební pexeso"
 
     homepageQuote:
@@ -94,3 +95,7 @@ pexeso:
     hint: "Najdi kompletní písničku schovanou pod dvěma kostkami a označ je ve správném pořadí."
     flash:
         noSongFound: "Budeš se divit, ale zatím nemáme dost písniček pro takovou obtížnost! Zkus to prosím později znovu."
+
+noteSteps:
+    stepCount: "špatných pokusů"
+    hint: "Krokuj noty podle jejich pořadí na notové osnově."

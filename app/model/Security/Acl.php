@@ -20,6 +20,7 @@ class Acl extends Permission
 		$this->addResource('Front:Profile');
 		$this->addResource('Front:Game:MelodicCubes');
 		$this->addResource('Front:Game:Pexeso');
+		$this->addResource('Front:Game:NoteSteps');
 
 		$this->addResource('Admin:Default');
 		$this->addResource('Admin:Song');
@@ -35,7 +36,8 @@ class Acl extends Permission
 			'Front:Default',
 			'Front:Profile',
 			'Front:Game:MelodicCubes',
-			'Front:Game:Pexeso'
+			'Front:Game:Pexeso',
+			'Front:Game:NoteSteps'
 		));
 
 		/**

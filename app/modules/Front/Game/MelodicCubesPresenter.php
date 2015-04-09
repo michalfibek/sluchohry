@@ -71,8 +71,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 
 	public function actionDefault($id = null, $difficulty = 2, $nextRound = null)
 	{
-		if ($difficulty)
-			$this->difficulty = (int)$difficulty;
+		$this->difficulty = (int)$difficulty;
 
 		$this->setAssetsByDifficulty();
 

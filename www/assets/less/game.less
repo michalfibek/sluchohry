@@ -89,6 +89,52 @@ GAME: melodic cubes
   }
 }
 
+.game-main.note-steps {
+  font-size: 2em;
+
+  .first-letter {
+    display: inline-block;
+    border: 1px solid #000;
+    background-color: @color-prim-1;
+    color: #fff;
+    margin: 0 8px;
+    padding: 10px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .step-input {
+    width: 40px;
+    text-align: center;
+    margin: 0 8px;
+    border: 1px solid #777;
+
+    &.correct {
+      background-color: #00ba00;
+    }
+  }
+
+  .symbol {
+  }
+
+  .symbol-up {
+
+    &:before {
+      .fa-inherit();
+      content: "\f062";
+    }
+
+  }
+  .symbol-down {
+
+    &:before {
+      .fa-inherit();
+      content: "\f063";
+    }
+
+  }
+}
+
 .difficulty-sign {
 
   color: #fff;

@@ -38,7 +38,9 @@ class RouterFactory extends Nette\Object
 
 		$router[] = $adminRouter = new RouteList('Admin');
 
-		$adminRouter[] = new Route('[<locale=cs cs|en>/]admin/<presenter>/<action>[/<id>]', array(
+		$localeDef = '[<locale=cs cs|en>/]';
+
+		$adminRouter[] = new Route($localeDef.'admin/<presenter>/<action>[/<id>]', array(
 			'presenter' => 'Default',
 			'action' => 'default',
 			'id' => NULL,
@@ -46,7 +48,7 @@ class RouterFactory extends Nette\Object
 
 		$router[] = $frontRouter = new RouteList('Front');
 
-		$frontRouter[] = new Route('[<locale=cs cs|en>/]<presenter>/<action>[/<id>]', array(
+		$frontRouter[] = new Route($localeDef.'<presenter>/<action>[/<id>]', array(
 			'presenter' => array(
 				Route::VALUE => 'Default',
 				Route::PATTERN => '[^(s|game)][a-z][a-z0-9.-]*',
@@ -55,7 +57,7 @@ class RouterFactory extends Nette\Object
 			'id' => NULL,
 		), $flags);
 
-		$frontRouter[] = new Route('[<locale=cs cs|en>/]game/<presenter>/<action>[/<id>]', array(
+		$frontRouter[] = new Route($localeDef.'game/<presenter>/<action>[/<id>]', array(
 			'module' => 'Game',
 			'presenter' => array(
 				Route::VALUE => 'Default',

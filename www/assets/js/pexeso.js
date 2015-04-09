@@ -237,7 +237,7 @@ var Game = $class({
             //$('#modal-correct').modal('show');
             this.logger.sendResult(this.gameEndHandler, this.getResult());
         } else {
-            console.log('not solved');
+            //console.log('not solved');
 
             // DEBUG ONLY, possible attempt record
             //var result = {gameName: this.gameName, steps: scope.cubeMoveCount, time: scope.timer.getTime()};

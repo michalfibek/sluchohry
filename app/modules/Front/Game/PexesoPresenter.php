@@ -58,8 +58,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
 	public function actionDefault($difficulty = 2, $nextRound = null)
 	{
-		if ($difficulty)
-			$this->difficulty = (int)$difficulty;
+		$this->difficulty = (int)$difficulty;
 
 		$this->setAssetsByDifficulty();
 

@@ -33,7 +33,7 @@ events:
 translation:
     default: cs
     fallback: [cs_CZ, cs]
-    whitelist: ['cs', 'en']
+    whitelist: [cs, en]
 
 services:
 	routerFactory: App\RouterFactory

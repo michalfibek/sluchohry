@@ -1,0 +1,47 @@
+{block content}
+
+
+<header>
+    <h1 n:block="title">
+        <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
+        {_front.game.noteSteps}
+    </h1>
+    <div id="game-hint">{_front.noteSteps.hint}</div>
+</header>
+
+<div class="game-main note-steps">
+
+    <div class="container-fluid">
+        <div class="row" id="step-fields">
+
+            <span class="first-letter">{$firstLetter}</span>
+            {foreach $shiftSigns as $sign}
+            {$sign|shiftArrows|noescape} <input type="text" class="step-input" placeholder="?" data-pos="{$iterator->counter}">
+            {/foreach}
+
+        </div>
+    </div>
+
+</div>
+
+{include 'dialogs/solved.latte', stepsToSolveMessage => $template->translate('front.noteSteps.stepCount') }
+
+{/block}
+
+{block scripts}
+{include parent}
+    <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
+    <script src="{$basePath}/assets/js/ajaxLogger.js"></script>
+    <script src="{$basePath}/assets/js/gameTimer.js"></script>
+    <script src="{$basePath}/assets/js/noteSteps.js"></script>
+    <script type="text/javascript">
+
+        var shiftSigns = {$shiftSigns};
+        var difficulty = {$difficulty};
+
+        l = new AjaxLogger();
+        t = new GameTimer();
+        g = new Game(t, l, shiftSigns, difficulty);
+
+    </script>
+{/block}
