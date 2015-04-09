@@ -150,8 +150,9 @@ class UserProfile extends UI\Control
     public function processForm(Form $form)
     {
         $values = $form->getValues();
-        if (isset($values['email']))
-            $values['username'] = $this->userRow->username;
+
+//        if (isset($values['username']) && $this->userRow->username) // what? don't know what the hell this meant
+//            $values['username'] = $this->userRow->username;
 
         if (isset($values['email']))
             if (!$this->userModel->isUniqueColumn('email', $values['email'], $this->userId))

@@ -20,6 +20,9 @@ class User extends Base
 
     public function insert($data)
     {
+        if (!$data['avatar_id'])
+            $data['avatar_id'] = 1; // set default avatar
+
         $data['password'] = Passwords::hash($data['password']);
 
         return parent::insert($data);
