@@ -12,8 +12,7 @@ var Game = $class({
         this.difficulty = difficulty;
         this.logger = logger;
         this.correctNotes = [];
-        this.cubeClickCount = 0;
-        this.songsLoaded = 0;
+        this.badAttemptCount = 0;
         this.gameName = 'noteSteps';
         this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
@@ -30,8 +29,8 @@ var Game = $class({
         scope.initTimer();
         //scope.shuffleCards();
 
-        //scope.sendOnLoadRecord();
-        //scope.initOnWindowClose();
+        scope.sendOnLoadRecord();
+        scope.initOnWindowClose();
 
     },
 
@@ -89,23 +88,26 @@ var Game = $class({
             }
 
             if (scope.isCorrectNote(input, position)) {
+                $(this).removeClass('wrong');
                 $(this).addClass('correct');
+                scope.evalGame();
                 if (position != scope.shiftSignsCount) {  // if not last input
-                    console.log('focus');
                     var nextId = parseInt(position)+1;
                     $('#step-'+nextId).focus();
                 } else {
                     $(this).blur();
                 }
-
-            }
-            else if (input.length > 0) {
-                $(this).removeClass('correct');
-                $(this).addClass('wrong');
             }
             else {
-                $(this).removeClass('correct');
-                $(this).removeClass('wrong');
+                if (input.length > 0) {
+                    scope.badAttemptCount++;
+                    $(this).removeClass('correct');
+                    $(this).addClass('wrong');
+                }
+                else {
+                    $(this).removeClass('correct');
+                    $(this).removeClass('wrong');
+                }
             }
         });
 
@@ -117,21 +119,20 @@ var Game = $class({
     },
 
     initOnWindowClose: function() {
-        if (!scope.gameSolved)
-        {
-            var that = this;
-            $(window).on("beforeunload", function() {
+        var that = this;
+        $(window).on("beforeunload", function() {
+            if (!scope.gameSolved)
                 that.logger.sendResult(that.gameForceEndHandler, that.getResult());
-            })
-        }
+        });
     },
 
     sendOnLoadRecord: function() {
 
         var record = {
             gameName: this.gameName,
-            difficulty: scope.difficulty,
-            shiftSigns: scope.shiftSigns.join()
+            firstLetter: scope.firstLetter,
+            shiftSigns: scope.shiftSigns.join(),
+            difficulty: scope.difficulty
         }
         this.logger.sendResult(this.gameStartHandler, record);
     },
@@ -140,8 +141,9 @@ var Game = $class({
     getResult: function () {
         var result = {
             gameName: this.gameName,
-            steps: scope.cubeClickCount,
+            steps: scope.badAttemptCount,
             time: scope.timer.getTime(),
+            firstLetter: scope.firstLetter,
             shiftSigns: scope.shiftSigns.join(),
             difficulty: scope.difficulty
         };
@@ -150,20 +152,21 @@ var Game = $class({
 
     evalGame: function() {
         var okay = true;
-
+        $('.step-input').each(function() {
+            var input = $(this).val();
+            var position = $(this).data('pos');
+            if (!scope.isCorrectNote(input, position))
+            {
+                okay = false;
+                return false;
+            }
+        })
         if (okay == true) {
             scope.timer.stop();
             scope.gameSolved = true;
             $('.modal-correct').modal('show');
-            $('.attempt-count').find('span').empty().append(scope.cubeClickCount);
-            //$('#modal-correct').modal('show');
+            $('.attempt-count').find('span').empty().append(scope.badAttemptCount);
             this.logger.sendResult(this.gameEndHandler, this.getResult());
-        } else {
-            //console.log('not solved');
-
-            // DEBUG ONLY, possible attempt record
-            //var result = {gameName: this.gameName, steps: scope.cubeMoveCount, time: scope.timer.getTime()};
-            //this.logger.sendResult(this.gameEndHandler, result);
         }
     }
 

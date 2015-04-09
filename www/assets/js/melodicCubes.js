@@ -204,13 +204,11 @@ var Game = $class({
     },
 
     initOnWindowClose: function() {
-        if (!scope.gameSolved)
-        {
-            var that = this;
-            $(window).on("beforeunload", function() {
+        var that = this;
+        $(window).on("beforeunload", function() {
+            if (!scope.gameSolved)
                 that.logger.sendResult(that.gameForceEndHandler, that.getResult());
-            })
-        }
+        });
     },
 
     sendOnLoadRecord: function() {

@@ -22,11 +22,13 @@ class Event extends Base {
         DATA_PROFILE_SAVED = 'profile_saved',
         DATA_PROFILE_CREATED = 'profile_created',
         DATA_PLAY_TIME = 'play_time',
-        DATA_PLAY_STEPS = 'play_steps',
         DATA_DIFFICULTY = 'difficulty',
-        DATA_SONG_ID = 'song_id',
-        DATA_SONG_LIST = 'song_list',
-        DATA_SOLVED = 'solved';
+        DATA_SOLVED = 'solved',
+        DATA_PLAY_STEPS = 'play_steps',
+        DATA_SONG_ID = 'song_id', // musicCubes
+        DATA_SONG_LIST = 'song_list', // pexeso
+        DATA_SHIFT_SIGNS = 'shift_signs', // noteSteps
+        DATA_FIRST_LETTER = 'first_note'; // noteSteps
 
     private $httpRequest;
 
@@ -71,19 +73,24 @@ class Event extends Base {
      */
     public function saveGameStart(Nette\Security\User $user, array $result)
     {
-        if ($result['gameName'] == 'melodicCubes')
-        {
+        if ($result['gameName'] == 'melodicCubes') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SONG_ID => $result['songId'],
-                self::DATA_DIFFICULTY => $result['difficulty']
+                self::DATA_DIFFICULTY => $result['difficulty'],
             );
-        } elseif ($result['gameName'] == 'pexeso')
-        {
+        } elseif ($result['gameName'] == 'pexeso') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SONG_LIST => $result['songList'],
-                self::DATA_DIFFICULTY => $result['difficulty']
+                self::DATA_DIFFICULTY => $result['difficulty'],
+            );
+        } elseif ($result['gameName'] == 'noteSteps') {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_FIRST_LETTER => $result['firstLetter'],
+                self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
+                self::DATA_DIFFICULTY => $result['difficulty'],
             );
         }
         $this->insertRecord($user->getId(), self::CLASS_GAME_START, $data);
@@ -96,8 +103,7 @@ class Event extends Base {
      */
     public function saveGameEndResult(Nette\Security\User $user, array $result, $solved)
     {
-        if ($result['gameName'] == 'melodicCubes')
-        {
+        if ($result['gameName'] == 'melodicCubes') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SONG_ID => $result['songId'],
@@ -106,15 +112,22 @@ class Event extends Base {
                 self::DATA_PLAY_STEPS => $result['steps'],
                 self::DATA_SOLVED => $solved,
             );
-        }
-        if ($result['gameName'] == 'pexeso')
-        {
+        } else if ($result['gameName'] == 'pexeso') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SONG_LIST => $result['songList'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
                 self::DATA_PLAY_TIME => $result['time'],
                 self::DATA_PLAY_STEPS => $result['steps'],
+                self::DATA_SOLVED => $solved,
+            );
+        } else if ($result['gameName'] == 'noteSteps') {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_FIRST_LETTER => $result['firstLetter'],
+                self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
+                self::DATA_DIFFICULTY => $result['difficulty'],
+                self::DATA_PLAY_TIME => $result['time'],
                 self::DATA_SOLVED => $solved,
             );
         }
