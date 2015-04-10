@@ -14,6 +14,9 @@ class UserProfile extends UI\Control
     /** @var App\Model\User */
     private $userModel;
 
+    /** @var App\Model\Group */
+    private $groupModel;
+
     /** @var Nette\Security\IAuthorizator */
     private $acl;
 
@@ -68,10 +71,11 @@ class UserProfile extends UI\Control
     /** @var Kdyby\Translation\Translator */
     private $translator;
 
-    public function __construct(App\Model\User $userModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar, Kdyby\Translation\Translator $translator)
+    public function __construct(App\Model\User $userModel, App\Model\Group $groupModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar, Kdyby\Translation\Translator $translator)
     {
         parent::__construct();
         $this->userModel = $userModel;
+        $this->groupModel = $groupModel;
         $this->acl = $acl;
         $this->user = $user;
         $this->userId = null;
@@ -108,9 +112,9 @@ class UserProfile extends UI\Control
 
         if ($this->adminMode) { // admin access to particular changes
 
-            $form->addSelect('role_id')
-                ->setItems($this->userModel->getRolePairs())
-                ->setDefaultValue(4);
+            $form->addSelect('group_id')
+                ->setItems($this->groupModel->getGroupAsArrayWithId('name'));
+//                ->setDefaultValue(4);
             $form['username']
                 ->setRequired();
 
@@ -184,7 +188,7 @@ class UserProfile extends UI\Control
             if ($this->adminMode)
             {
                 $insertData['username'] = $values['username'];
-                $insertData['role_id'] = $values['role_id'];
+                $insertData['group_id'] = $values['group_id'];
             }
 
             $result = $this->userModel->updateById($values['userId'],$insertData);
@@ -208,7 +212,7 @@ class UserProfile extends UI\Control
             if ($this->adminMode)
             {
                 $insertData['username'] = $values['username'];
-                $insertData['role_id'] = $values['role_id'];
+                $insertData['group_id'] = $values['group_id'];
             }
 
             $result = $this->userModel->insert($insertData);
@@ -300,7 +304,7 @@ class UserProfile extends UI\Control
 
         if ($userRow = $this->userModel->getById($this->userId)) {
 
-            if (!$this->acl->isChildRole($userRow->ref('role')['name'], $this->user->roles[0])) {
+            if (!$this->acl->isChildRole($this->userModel->getUserRoles($this->userId), $this->user->roles, true)) {
                 $this->onAccessDenied($userRow);
                 $this->onReturnAction();
             }

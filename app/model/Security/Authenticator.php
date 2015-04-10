@@ -52,14 +52,11 @@ class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
 		}
 
 		$userArr = $userRow->toArray();
-		$group = $userRow->related('group')->fetchPairs(NULL, 'group_id');
 
-		$roles = $this->groupModel->getGroupRoles($group);
+		$roles = $this->userModel->getUserRoles($userRow->id);
 
 		if (!$roles)
 			$roles = self::DEFAULT_ROLE;
-
-		Debugger::barDump($roles);
 
 		unset($userArr['role_id']);
 		unset($userArr['password']);

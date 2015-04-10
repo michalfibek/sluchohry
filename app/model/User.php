@@ -16,6 +16,27 @@ class User extends Base
         return parent::insert($data);
     }
 
+    /**
+     * Returns associative array of group id's belonged to user
+     *
+     * @param int $id
+     * @return array|null
+     */
+    public function getUserGroupIds($id)
+    {
+        return $this->getById($id)->related('group')->fetchPairs(NULL, 'group_id');
+    }
+
+    /**
+     * @param int $id User id
+     * @return array Array of role names
+     */
+    public function getUserRoles($id)
+    {
+        $groups = $this->getUserGroupIds($id);
+        return $this->db->table('group')->where('group.id', $groups)->select('role.name')->fetchPairs(NULL, 'name');
+    }
+
     public function updateById($id, $data)
     {
         if (isset($data['group_id']))
