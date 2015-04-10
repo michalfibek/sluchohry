@@ -83,8 +83,8 @@ class Acl extends Permission
 	}
 
 	/**
-	 * Returns true if role is equal to parent or just one of his children. - TODO rewrite this to recursive sugar
-	 *
+	 * Returns true if role is equal to parent or just one of his children.
+	 * 
 	 * @param string|array $children
 	 * @param string|array $parents
 	 * @param bool $acceptEmptyChildren Accept empty children role as correct and return true
@@ -100,31 +100,17 @@ class Acl extends Permission
 
 		if (is_array($children)) {
 			foreach ($children as $singleChild) {
+				if ($this->isChildRole($singleChild, $parents)) return true; // recursive check
+			}
+		}
 
-				if (is_array($parents)) {
-					foreach ($parents as $singleParent) {
-						if (in_array($singleChild, $this->getRoleAncestors($singleParent))) return true;
-					}
-				} // is_array($parents)
-				else {
-					if (in_array($singleChild, $this->getRoleAncestors($parents))) return true;
-				} // NOT is_array($parents)
+		if (is_array($parents)) {
+			foreach ($parents as $singleParent) {
+				if ($this->isChildRole($children, $singleParent)) return true; // recursive check
+			}
+		}
 
-			} // foreach ($children as $singleChild)
-
-		} // is_array($children)
-		else {
-
-			if (is_array($parents)) {
-				foreach ($parents as $singleParent) {
-					if (in_array($children, $this->getRoleAncestors($singleParent))) return true;
-				}
-			} // is_array($parents)
-			else {
-				if (in_array($children, $this->getRoleAncestors($parents))) return true;
-			} // NOT is_array($parents)
-
-		} // NOT is_array($child)
+		if (in_array($children, $this->getRoleAncestors($parents))) return true; // main final check of element
 
 		return false;
 	}
