@@ -83,15 +83,19 @@ class Acl extends Permission
 	}
 
 	/**
-	 * Returns true if role is equal to parent or just one of his children.
+	 * Returns true if role is equal to parent or just one of his children. - TODO rewrite this to recursive sugar
 	 *
 	 * @param string|array $children
 	 * @param string|array $parents
+	 * @param bool $acceptEmptyChildren Accept empty children role as correct and return true
 	 * @return bool
 	 */
-	public function isChildRole($children, $parents)
+	public function isChildRole($children, $parents, $acceptEmptyChildren = false)
 	{
 		if ($children == $parents)
+			return true;
+
+		if ($acceptEmptyChildren && !$children)
 			return true;
 
 		if (is_array($children)) {
