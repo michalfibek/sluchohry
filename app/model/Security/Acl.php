@@ -69,7 +69,7 @@ class Acl extends Permission
 	/**
 	 * Returns array of current role's ancestors
 	 *
-	 * @param $role string - role identifier
+	 * @param string $role Role identifier
 	 * @return array
 	 */
 	private	 function getRoleAncestors($role)
@@ -85,15 +85,43 @@ class Acl extends Permission
 	/**
 	 * Returns true if role is equal to parent or just one of his children.
 	 *
-	 * @param $child string
-	 * @param $parent string
+	 * @param string|array $children
+	 * @param string|array $parents
 	 * @return bool
 	 */
-	public function isChildRole($child, $parent)
+	public function isChildRole($children, $parents)
 	{
-		if ($child == $parent)
+		if ($children == $parents)
 			return true;
 		else
-			return in_array($child, $this->getRoleAncestors($parent));
+			if (is_array($children)) {
+				foreach ($children as $singleChild) {
+
+					if (is_array($parents)) {
+						foreach ($parents as $singleParent) {
+							if (in_array($singleChild, $this->getRoleAncestors($singleParent))) return true;
+						}
+					} // is_array($parents)
+					else {
+						if (in_array($singleChild, $this->getRoleAncestors($parents))) return true;
+					} // NOT is_array($parents)
+
+				} // foreach ($children as $singleChild)
+
+			} // is_array($children)
+			else {
+
+				if (is_array($parents)) {
+					foreach ($parents as $singleParent) {
+						if (in_array($children, $this->getRoleAncestors($singleParent))) return true;
+					}
+				} // is_array($parents)
+				else {
+					if (in_array($children, $this->getRoleAncestors($parents))) return true;
+				} // NOT is_array($parents)
+
+			} // NOT is_array($child)
+
+		return false;
 	}
 }
