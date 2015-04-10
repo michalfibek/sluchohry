@@ -93,34 +93,34 @@ class Acl extends Permission
 	{
 		if ($children == $parents)
 			return true;
-		else
-			if (is_array($children)) {
-				foreach ($children as $singleChild) {
 
-					if (is_array($parents)) {
-						foreach ($parents as $singleParent) {
-							if (in_array($singleChild, $this->getRoleAncestors($singleParent))) return true;
-						}
-					} // is_array($parents)
-					else {
-						if (in_array($singleChild, $this->getRoleAncestors($parents))) return true;
-					} // NOT is_array($parents)
-
-				} // foreach ($children as $singleChild)
-
-			} // is_array($children)
-			else {
+		if (is_array($children)) {
+			foreach ($children as $singleChild) {
 
 				if (is_array($parents)) {
 					foreach ($parents as $singleParent) {
-						if (in_array($children, $this->getRoleAncestors($singleParent))) return true;
+						if (in_array($singleChild, $this->getRoleAncestors($singleParent))) return true;
 					}
 				} // is_array($parents)
 				else {
-					if (in_array($children, $this->getRoleAncestors($parents))) return true;
+					if (in_array($singleChild, $this->getRoleAncestors($parents))) return true;
 				} // NOT is_array($parents)
 
-			} // NOT is_array($child)
+			} // foreach ($children as $singleChild)
+
+		} // is_array($children)
+		else {
+
+			if (is_array($parents)) {
+				foreach ($parents as $singleParent) {
+					if (in_array($children, $this->getRoleAncestors($singleParent))) return true;
+				}
+			} // is_array($parents)
+			else {
+				if (in_array($children, $this->getRoleAncestors($parents))) return true;
+			} // NOT is_array($parents)
+
+		} // NOT is_array($child)
 
 		return false;
 	}
