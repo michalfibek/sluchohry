@@ -154,6 +154,9 @@ class UserProfile extends UI\Control
 //        if (isset($values['username']) && $this->userRow->username) // what? don't know what the hell this meant
 //            $values['username'] = $this->userRow->username;
 
+        if (!$values['avatar_id'])
+            $values['avatar_id'] = 1; // set default avatar
+
         if (isset($values['email']))
             if (!$this->userModel->isUniqueColumn('email', $values['email'], $this->userId))
             {

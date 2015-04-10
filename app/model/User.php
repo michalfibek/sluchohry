@@ -30,9 +30,6 @@ class User extends Base
 
     public function updateById($id, $data)
     {
-        if (!$data['avatar_id'])
-            $data['avatar_id'] = 1; // set default avatar
-
         if (isset($data['password']))
         {
             if (strlen($data['password']) > 0 ) // correct password length verification is already in form
