@@ -23,7 +23,7 @@ abstract class Base extends Nette\Object
 
     /**
      * Gets table name by class
-     * @param string
+     * @param string $className
      * @return string
      * @result: Pages => pages, ArticleTag => article_tag
      */
@@ -44,8 +44,8 @@ abstract class Base extends Nette\Object
     /**
      * Returns table row by primary id
      *
-     * @param int id - primary id
-     * @return bool|row - false or row itself
+     * @param int $id Primary id
+     * @return bool|row False or row itself
      */
     public function getById($id)
     {
@@ -53,10 +53,22 @@ abstract class Base extends Nette\Object
     }
 
     /**
+     * Returns table row by primary id
+     *
+     * @param string $colName column name
+     * @param string $value column value
+     * @return Nette\Database\Table\IRow|boolean
+     */
+    public function getByColumn($colName, $value)
+    {
+        return $this->db->table($this->tableName)->where($colName, $value)->fetch();
+    }
+
+    /**
      * Inserts data into table
      *
-     * @param array $data - associative array
-     * @return boolean|ActiveRow - returned row or FALSE when fail
+     * @param array $data Associative array
+     * @return boolean|ActiveRow Returned row or FALSE when fail
      */
     public function insert($data)
     {
@@ -66,9 +78,9 @@ abstract class Base extends Nette\Object
     /**
      * Checks for unique parameters, eg. user email.
      *
-     * @param $columnName - Column name
-     * @param $value - Column value
-     * @param $id - User id
+     * @param $columnName Column name
+     * @param $value Column value
+     * @param $id User id
      * @return Nette\Database\Table\Selection
      */
     public function isUniqueColumn($columnName, $value, $id = null)
@@ -106,6 +118,7 @@ abstract class Base extends Nette\Object
 
     /**
      * Deletes row by primary ID
+     *
      * @param $id
      * @return int
      */
@@ -117,6 +130,7 @@ abstract class Base extends Nette\Object
 
     /**
      * Deletes everything from table
+     *
      * @return int
      */
     public function deleteAll()
@@ -162,9 +176,9 @@ abstract class Base extends Nette\Object
     }
 
     /**
-     * Vypis dat z tabulky do pola podla id
+     * Fetch data from the table by id
      *
-     * @param $column
+     * @param string $column
      * @return array
      */
     public function getGroupAsArrayWithId($column = "name")
@@ -179,7 +193,7 @@ abstract class Base extends Nette\Object
     /**
      * Fetches everything as array
      *
-     * @param $column
+     * @param string $column
      * @return array
      */
     public function getAsArray($column = "name")
@@ -192,8 +206,8 @@ abstract class Base extends Nette\Object
     }
 
     /**
-     * @param $firstColumn
-     * @param $secondColumn
+     * @param string $firstColumn
+     * @param string $secondColumn
      * @return array
      */
     public function getAllPairs($firstColumn, $secondColumn)

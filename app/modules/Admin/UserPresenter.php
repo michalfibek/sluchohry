@@ -115,7 +115,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		};
 
 		$grid->addNumber('id');
-		$grid->addText('role_id', 'Role');
+//		$grid->addText('group', 'Group');
 		$grid->addText('username', 'Username');
 		$grid->addText('realname', 'Full name');
 		$grid->addText('email', 'E-Mail');

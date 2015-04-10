@@ -3,28 +3,28 @@
 namespace App\Model\Security;
 
 use Nette,
+	App\Model,
 	Nette\Utils\Strings,
 	Nette\Security\Passwords;
 use Tracy\Debugger;
 
 
 
-class Authenticator extends Nette\Object implements Nette\Security\IAuthenticator
+class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
 {
 	const
-		TABLE_NAME = 'user',
-		COLUMN_ID = 'id',
-		COLUMN_NAME = 'username',
-		COLUMN_PASSWORD_HASH = 'password',
-		COLUMN_ROLE = 'role_id';
+		DEFAULT_ROLE = 'guest';
 
+	/** @var User */
+	private $userModel;
 
-	/** @var Nette\Database\Context */
-	private $database;
+	/** @var Group */
+	private $groupModel;
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(Model\User $userModel, Model\Group $groupModel)
 	{
-		$this->database = $database;
+		$this->userModel = $userModel;
+		$this->groupModel = $groupModel;
 	}
 
 	/**
@@ -37,26 +37,34 @@ class Authenticator extends Nette\Object implements Nette\Security\IAuthenticato
 	{
 		list($username, $password) = $credentials;
 
-		$row = $this->database->table(self::TABLE_NAME)->where(self::COLUMN_NAME, $username)->fetch();
+		$userRow = $this->userModel->getByColumn('username', $username);
 
-		if (!$row) {
+		if (!$userRow) {
 			throw new Nette\Security\AuthenticationException('front.auth.loginForm.usernameIncorrect', self::IDENTITY_NOT_FOUND);
 
-		} elseif (!Passwords::verify($password, $row[self::COLUMN_PASSWORD_HASH])) {
+		} elseif (!Passwords::verify($password, $userRow['password'])) {
 			throw new Nette\Security\AuthenticationException('front.auth.loginForm.passwordIncorrect', self::INVALID_CREDENTIAL);
 
-		} elseif (Passwords::needsRehash($row[self::COLUMN_PASSWORD_HASH])) {
-			$row->update(array(
-				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
+		} elseif (Passwords::needsRehash($userRow['password'])) {
+			$userRow->update(array(
+				'password' => Passwords::hash($password),
 			));
 		}
 
-		$arr = $row->toArray();
-		$role = $this->database->table('role')->get($arr[self::COLUMN_ROLE])->name;
-		Debugger::barDump($role);
-		unset($arr[self::COLUMN_ROLE]);
-		unset($arr[self::COLUMN_PASSWORD_HASH]);
-		return new Nette\Security\Identity($row[self::COLUMN_ID], $role, $arr);
+		$userArr = $userRow->toArray();
+		$group = $userRow->related('group')->fetchPairs(NULL, 'group_id');
+
+		$roles = $this->groupModel->getGroupRoles($group);
+
+		if (!$roles)
+			$roles = self::DEFAULT_ROLE;
+
+		Debugger::barDump($roles);
+
+		unset($userArr['role_id']);
+		unset($userArr['password']);
+
+		return new Nette\Security\Identity($userRow['id'], $roles, $userArr);
 	}
 
 }
