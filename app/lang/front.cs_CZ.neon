@@ -37,7 +37,7 @@ game:
         msg3: "Víš, že mě můžeš převléknout? Klikni na mě!"
         msg4: "Víš, že sovy mají dobře vyvinutý sluch? Nic nám neunikne!"
         msg5: "Nevím, jak ty, ale já bych si zahrál pexeso na drsňáka!"
-        msg6: "Netopíři prý slyší ještě líp, než já... jeden bydlí v jeskyni kousek ode mne, je to starej hluchota!"
+        msg6: "Netopýři prý slyší ještě líp, než já... jeden bydlí v jeskyni kousek ode mne, je to starej hluchota!"
 
     common:
         play: "Hrej"
