@@ -30,15 +30,27 @@ class Acl extends Permission
 
 
 		/**
-		 * Student - access only to games.
+		 * Guest - access only to games.
 		 */
-		$this->allow('student', array(
+		$this->allow('guest', array(
 			'Front:Default',
 			'Front:Profile',
 			'Front:Game:MelodicCubes',
 			'Front:Game:Pexeso',
 			'Front:Game:NoteSteps'
 		));
+
+
+		/**
+		 * Student - inherits everything from guest
+		 */
+//		$this->allow('student', array(
+//			'Front:Default',
+//			'Front:Profile',
+//			'Front:Game:MelodicCubes',
+//			'Front:Game:Pexeso',
+//			'Front:Game:NoteSteps'
+//		));
 
 		/**
 		 * Teacher - access only to basic listing of users, etc. Defined by privilege (action)

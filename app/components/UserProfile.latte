@@ -27,7 +27,7 @@
                     <input n:name="realname" type="text" class="form-control" id="realname">
                 </div>
             </div>
-            {if $adminMode}
+            {if null}{*{if $adminMode}*} {* TODO COMMENTED OUT UNTIL FINISHED *}
             <div class="form-group">
                 <label n:name="group_id" for="group_id" class="col-sm-2 control-label">{_front.user.group}:</label>
                 <div class="col-sm-4">
