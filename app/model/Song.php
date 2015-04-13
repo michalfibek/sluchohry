@@ -151,6 +151,11 @@ class Song extends Base
         return $this->db->table(self::TABLE_NAME_GENRE);
     }
 
+    public function getGenreById($id)
+    {
+        return $this->db->table(self::TABLE_NAME_GENRE)->get($id);
+    }
+
     public function handleUpload()
     {
         $this->uploadHandler->allowedExtensions = $this->allowedExtensions;

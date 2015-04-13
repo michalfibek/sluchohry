@@ -198,6 +198,18 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			})
 			->setFilterText();
 
+		$grid->addColumnText('genre_id', 'Genre')
+			->setSortable()
+			->setCustomRender(function($item) {
+				return $this->song->getGenreById($item->genre_id)->name;
+			});
+
+		$genres[''] = '';
+		foreach ($this->song->getGenres() as $genre)
+			$genres[$genre->id] = $genre->name;
+
+		$grid->addFilterSelect('genre_id', 'Genre', $genres);
+
 		$grid->addColumnText('games', 'Games')
 			->setSortable()
 			->setCustomRender(function($item) {
