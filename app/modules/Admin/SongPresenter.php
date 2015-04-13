@@ -205,7 +205,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 				$render = '';
 				foreach ($games as $g) {
 					$gameName = $this->game->getById($g)->name;
-					$render .= '<span class=\'song-game-cell\'>'.$gameName.'</span>';
+					$render .= '<span class=\'grid-cell-subitem\'>'.$gameName.'</span>';
 
 					if ($gameName == 'melodicCubes')
 						$render = '<a href=\''.$this->link(':Front:Game:MelodicCubes:', $item->id).'\'>'.$gameName.'</a>';

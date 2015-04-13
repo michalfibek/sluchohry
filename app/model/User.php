@@ -28,9 +28,9 @@ class User extends Base
      * @param int $id
      * @return array|null
      */
-    public function getUserGroupIds($id)
+    public function getUserGroups($id)
     {
-        return $this->getById($id)->related('group')->fetchPairs(NULL, 'group_id');
+        return $this->getById($id)->related('group');
     }
 
     /**
@@ -39,7 +39,7 @@ class User extends Base
      */
     public function getUserRoles($id)
     {
-        $groups = $this->getUserGroupIds($id);
+        $groups = $this->getUserGroups($id)->fetchPairs(NULL, 'group_id');
         return $this->db->table('group')->where('group.id', $groups)->select('role.name')->fetchPairs(NULL, 'name');
     }
 

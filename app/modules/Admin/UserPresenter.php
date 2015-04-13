@@ -124,6 +124,18 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->setSortable()
 			->setFilterText();
 
+		$grid->addColumnText('groups', 'Groups')
+			->setSortable()
+			->setCustomRender(function($item) {
+				$groups = $this->userModel->getUserGroups($item->id);
+				$render = '';
+				foreach ($groups as $g) {
+					$render .= '<a href=\''.$this->link('Group:Edit', $g->group_id).'\' class=\'grid-cell-subitem\'>'.$g->ref('group')->name.'</a>';
+				}
+				return $render;
+			})
+			->setFilterText();
+
 		$grid->addColumnDate('create_time', 'Created')
 			->setDateFormat('d.m.Y H:i:s')
 			->setSortable()
