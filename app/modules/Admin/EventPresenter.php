@@ -52,9 +52,14 @@ class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
             ->setSortable()
             ->setFilterText();
 
-        $grid->addColumnText('event_name', 'Event name')
-            ->setSortable()
-            ->setFilterText();
+        $grid->addColumnText('event_name', 'Event class')
+            ->setSortable();
+
+        $eventClassNames[''] = '';
+        foreach ($this->event->getAllEventClass() as $evtClass)
+            $eventClassNames[$evtClass->name] = $evtClass->name;
+
+        $grid->addFilterSelect('event_name', 'Event class', $eventClassNames);
 
         $grid->addColumnText('event_data', 'Event data')
             ->setSortable()

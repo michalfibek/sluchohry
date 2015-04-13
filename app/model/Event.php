@@ -45,6 +45,10 @@ class Event extends Base {
         return $this->db->table('view_eventlog');
     }
 
+    public function getAllEventClass() {
+        return $this->db->table('event_class');
+    }
+
     /**
      * @param $userId int
      * @param $eventClassId
