@@ -29,4 +29,9 @@ class Group extends Base
         return $this->db->table('role')->fetchPairs('id', 'name');
     }
 
+    public function getRoleById($id)
+    {
+        return $this->db->table('role')->get($id);
+    }
+
 }

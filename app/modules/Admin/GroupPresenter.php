@@ -16,7 +16,8 @@ use Nette,
 class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @inject @var Model\User */
-	public $userRecord;
+	public $userModel;
+
 	/** @inject @var Model\Group */
 	public $group;
 
@@ -28,6 +29,8 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$form = new Form;
 		$form->addText('name')
 			->setRequired();
+		$form->addSelect('role_id', 'Role')
+			->setItems($this->group->getRolePairs());
 		$form->addSubmit('save');
 		$form->addHidden('groupId');
 		$form->onSuccess[] = array($this, 'addEditGroupFormSucceed');
@@ -52,6 +55,13 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 		$grid->addColumnText('name', 'Group name')
 			->setSortable()
+			->setFilterText();
+
+		$grid->addColumnText('role_id', 'Role')
+			->setSortable()
+			->setCustomRender(function($item) {
+				return $this->group->getRoleById($item->role_id)->name;
+			})
 			->setFilterText();
 
 //		$grid->addColumnText('userCount', 'User count')
@@ -85,7 +95,11 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function addEditGroupFormSucceed($form, $values)
 	{
-		$data = array('name' => $values['name']);
+		$data = array(
+			'name' => $values['name'],
+			'role_id' => $values['role_id']
+		);
+
 		if (strlen($values['groupId'])>0) {
 			$this->group->updateById($values['groupId'], $data);
 			$this->flashMessage('The group name has been successfully changed.', 'success');
@@ -148,6 +162,6 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function	renderDefault()
 	{
-//		$this->template->users = $this->userRecord->getAll();
+//		$this->template->users = $this->userModel->getAll();
 	}
 }
