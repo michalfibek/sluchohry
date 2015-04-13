@@ -5,10 +5,8 @@ namespace App\Module\Admin\Presenters;
 use Nette,
     App\Model,
     Nette\Application\UI\Form,
-    Mesour\DataGrid\Grid,
-    Mesour\DataGrid\NetteDbDataSource,
-    Mesour\DataGrid\Components\Link;
-use Tracy\Debugger;
+    Tracy\Debugger,
+    Grido;
 
 
 /**
@@ -33,28 +31,39 @@ class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
      * @param $name
      * @return Grid
      */
-    protected function createComponentEventDataGrid($name)
+
+    protected function createComponentGrid($name)
     {
-        $source = new NetteDbDataSource($this->event->getAllView());
-        $grid = new Grid($this, $name);
-        $table_id = 'id';
-        $grid->setPrimaryKey($table_id);
-        $grid->setDataSource($source);
+        $grid = new Grido\Grid($this, $name);
+        $grid->setModel($this->event->getAllView());
 
-        $grid->enablePager(30);
-        $grid->enableFilter();
+//        $grid->addColumnNumber('id','id')
+//            ->setSortable();
 
-        $grid->addNumber('id');
-        $grid->addText('username', 'Username');
-        $grid->addText('event_name', 'Event name');
-        $grid->addText('event_data', 'Event data');
-        $grid->addDate('event_time', 'Create time')
-            ->setFormat('j.n.Y H:i:s');
-        $grid->addText('user_ip', 'User IP address');
+        $grid->addColumnDate('event_time', 'Event time')
+            ->setDateFormat('d.m.Y H:i:s')
+            ->setSortable()
+            ->setFilterDateRange();
 
-        $grid->setDefaultOrder('event_time', 'DESC');
+        $grid->addColumnText('username', 'Username')
+            ->setSortable()
+            ->setFilterText();
 
-        return $grid;
+        $grid->addColumnText('event_name', 'Event name')
+            ->setSortable()
+            ->setFilterText();
+
+        $grid->addColumnText('event_data', 'Event data')
+            ->setSortable()
+            ->setFilterText();
+
+        $grid->addColumnText('user_ip', 'User IP address')
+            ->setSortable()
+            ->setFilterText();
+
+        $grid->setDefaultSort(array(
+           'event_time' => 'DESC'
+        ));
     }
 
 }

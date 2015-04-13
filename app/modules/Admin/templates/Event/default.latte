@@ -1,7 +1,5 @@
 {block head}
-	<link rel="stylesheet" href="{$basePath}/assets/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css">
-	<script src="{$basePath}/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-    <script src="{$basePath}/assets/vendor/nette.ajax.legacy/nette.ajax.legacy.js"></script>
+	<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">
 {/block}
 
 {block content}
@@ -12,9 +10,20 @@
 </header>
 
 <div class="item-list" id="group-list">
-{control eventDataGrid}
+{control grid}
 </div>
 
 </div>
 {/block}
 
+{block scripts}
+{include parent}
+
+	<script src="{$basePath}/assets/vendor/grido/client-side/grido.js"></script>
+    <script type="text/javascript">
+    $(function () {
+        $.nette.init();
+    });
+    </script>
+
+{/block}
