@@ -21,7 +21,8 @@
 		"kdyby/events": "~2.3",
 		"kdyby/translation": "~2.0",
 		"mesour/datagrid": "~2.0",
-		"kdyby/presenters-locator": "@dev"
+		"kdyby/presenters-locator": "@dev",
+		"o5/grido": "~2.0"
 	},
 	"require-dev": {
 		"nette/tester": "~1.3"
