@@ -130,7 +130,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	public function actionEdit($id)
 	{
 		if ($this->songRecord = $this->song->getById($id)) {
-			$this->gameAssoc = $this->game->getBySong($id)->fetchPairs();
+			$this->gameAssoc = $this->game->getBySong($id)->fetchPairs(NULL, 'game_id');
 //			$this->genreList = $this->song->related('genre');
 			$this->songMarkers = $this->song->getMarkersAll($id);
 
@@ -195,6 +195,22 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			->setSortable()
 			->setCustomRender(function($item) {
 				return $this->getSongTimeFormat($item->duration);
+			})
+			->setFilterText();
+
+		$grid->addColumnText('games', 'Games')
+			->setSortable()
+			->setCustomRender(function($item) {
+				$games = $this->game->getBySong($item->id)->fetchPairs(NULL, 'game_id');
+				$render = '';
+				foreach ($games as $g) {
+					$gameName = $this->game->getById($g)->name;
+					$render .= '<span class=\'song-game-cell\'>'.$gameName.'</span>';
+
+					if ($gameName == 'melodicCubes')
+						$render = '<a href=\''.$this->link(':Front:Game:MelodicCubes:', $item->id).'\'>'.$gameName.'</a>';
+				}
+				return $render;
 			})
 			->setFilterText();
 

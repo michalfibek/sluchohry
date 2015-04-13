@@ -21,7 +21,8 @@ class Game extends Base
 
     public function getBySong($songId)
     {
-        return $this->db->query('SELECT game_id FROM game_has_song WHERE song_id=?', $songId);
+        return $this->db->table('game_has_song')->where('song_id', $songId);
+//        return $this->db->query('SELECT game_id FROM game_has_song WHERE song_id=?', $songId);
     }
 
     public function updateSongAssoc($songId, $gameIdArray)

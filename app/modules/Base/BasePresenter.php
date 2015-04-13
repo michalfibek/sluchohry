@@ -104,8 +104,16 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		$minutes = $inputTime % 60;
 		$inputTime = floor($inputTime / 60);
 
-		$minutes = ($minutes == 0) ? '00' : $minutes;
-		$seconds = ($seconds == 0) ? '00' : $seconds;
+		if ($minutes < 10 && $minutes != 0)
+			$minutes = '0'.$minutes;
+		elseif ($minutes == 0)
+			$minutes = '00';
+
+		if ($seconds < 10 && $seconds != 0)
+			$seconds = '0'.$seconds;
+		elseif ($seconds == 0)
+			$seconds = '00';
+
 		$milliseconds = ($milliseconds == 0) ? '00' : $milliseconds;
 
 		$returnTime = $minutes;
