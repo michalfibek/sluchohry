@@ -1,8 +1,5 @@
-{block head}
-	<link rel="stylesheet" href="{$basePath}/assets/vendor/jquery-ui/themes/smoothness/jquery-ui.min.css">
-	<script src="{$basePath}/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-    <script src="{$basePath}/assets/vendor/nette.ajax.legacy/nette.ajax.legacy.js"></script>
-{/block}
+{var $initGrid = true}
+{var $initNetteAjax = true}
 
 {block content}
 <div class="admin-item-editor">
@@ -14,7 +11,7 @@
 {if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn item-new btn-primary"><span class="fa fa-users"></span> Add new group</a>{/if}
 
 <div class="item-list" id="group-list">
-{control groupDataGrid}
+{control grid}
 </div>
 
 </div>

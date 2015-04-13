@@ -1,6 +1,5 @@
-{block head}
-	<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">
-{/block}
+{var $initGrid = true}
+{var $initNetteAjax = true}
 
 {block content}
 <div class="admin-item-editor">
@@ -9,21 +8,11 @@
 <h1 n:block="title">Event manager</h1>
 </header>
 
-<div class="item-list" id="group-list">
+<div class="item-list" id="event-list">
 {control grid}
 </div>
 
 </div>
-{/block}
-
-{block scripts}
-{include parent}
-
-	<script src="{$basePath}/assets/vendor/grido/client-side/grido.js"></script>
-    <script type="text/javascript">
-    $(function () {
-        $.nette.init();
-    });
-    </script>
 
 {/block}
+

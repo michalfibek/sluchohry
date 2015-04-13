@@ -5,11 +5,9 @@ namespace App\Module\Admin\Presenters;
 use Nette,
 	App\Model,
 	Nette\Application\UI\Form,
-	Mesour\DataGrid\Grid,
-	Mesour\DataGrid\NetteDbDataSource,
-	Mesour\DataGrid\Components\Link;
-
-use Tracy\Debugger;
+	Grido,
+	Grido\Grid,
+	Tracy\Debugger;
 
 
 /**
@@ -58,47 +56,6 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		return $form;
 	}
 
-	/**
-	 * @param $name
-	 * @return Grid
-	 */
-	protected function createComponentSongDataGrid($name) {
-		$source = new NetteDbDataSource($this->song->getAll());
-		$grid = new Grid($this, $name);
-		$table_id = 'id';
-		$grid->setPrimaryKey($table_id); // primary key is now used always
-		$grid->setDataSource($source);
-
-		$grid->addNumber('id');
-		$grid->addText('artist', 'Artist');
-		$grid->addText('title', 'Title');
-		$grid->addText('duration', 'duration')
-			->setCallback(function($data) {
-				return $this->getSongTimeFormat($data['duration']);
-		});
-		$grid->addDate('create_time', 'Created')
-			->setFormat('j.n.Y H:i:s');
-		$grid->addDate('update_time', 'Updated')
-			->setFormat('j.n.Y H:i:s');
-
-		$actions = $grid->addActions('Actions');
-		$actions->addButton()
-			->setType('btn-primary')
-			->setIcon('fa fa-pencil')
-			->setTitle('edit')
-			->setAttribute('href', new Link('edit', array(
-				'id' => '{'.$table_id.'}'
-			)));
-		$actions->addButton()
-			->setType('btn-danger')
-			->setIcon('fa fa-remove')
-			->setConfirm('Do you really want to delete this song?')
-			->setTitle('delete')
-			->setAttribute('href', new Link('delete!', array(
-				'id' => '{'.$table_id.'}'
-			)));
-		return $grid;
-	}
 	/**
 	 * @param $form
 	 * @param $values
@@ -213,5 +170,64 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		}
 		$this->sendResponse(new Nette\Application\Responses\JsonResponse($saveResult));
 	}
+
+
+	protected function createComponentGrid($name)
+	{
+		$grid = new Grid($this, $name);
+		$grid->setModel($this->song->getAll());
+
+//		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_OUTER);
+
+		$grid->addColumnNumber('id', 'id')
+			->setSortable();
+//			->setFilterText();
+
+		$grid->addColumnText('artist', 'Artist')
+			->setSortable()
+			->setFilterText();
+
+		$grid->addColumnText('title', 'Title')
+			->setSortable()
+			->setFilterText();
+
+		$grid->addColumnText('duration', 'Duration')
+			->setSortable()
+			->setCustomRender(function($item) {
+				return $this->getSongTimeFormat($item->duration);
+			})
+			->setFilterText();
+
+		$grid->addColumnDate('create_time', 'Created')
+			->setDateFormat('d.m.Y H:i:s')
+			->setSortable()
+			->setFilterDateRange();
+
+		$grid->addColumnDate('update_time', 'Updated')
+			->setDateFormat('d.m.Y H:i:s')
+			->setSortable()
+			->setFilterDateRange();
+
+		$grid->addActionHref('edit', 'Edit')
+			->setIcon('fa fa-pencil')
+			->setDisable(function ($item) {
+				return (!$this->user->isAllowed($this->name, 'edit'));
+			});
+
+		$grid->addActionHref('delete', 'Delete', 'delete!')
+			->setIcon('fa fa-remove')
+			->setConfirm('Do you really want to delete this group?')
+			->setDisable(function ($item) {
+				return (!$this->user->isAllowed($this->name, 'delete'));
+			});
+
+		$grid->setDefaultSort(array(
+			'artist' => 'ASC',
+			'title' => 'ASC'
+		));
+
+		return $grid;
+	}
+
 
 }

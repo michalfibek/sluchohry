@@ -5,10 +5,9 @@ namespace App\Module\Admin\Presenters;
 use Nette,
 	App\Model,
 	Nette\Application\UI\Form,
-	Mesour\DataGrid\Grid,
-	Mesour\DataGrid\NetteDbDataSource,
-	Mesour\DataGrid\Components\Link;
-use Tracy\Debugger;
+	Grido,
+	Grido\Grid,
+	Tracy\Debugger;
 
 
 /**
@@ -36,57 +35,51 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 		return $form;
 	}
 
-	/**
-	 * @param $name
-	 * @return Grid
-     */
-	protected function createComponentGroupDataGrid($name) {
-		$source = new NetteDbDataSource($this->group->getAll());
-//		$groupCount = $this->userRecord->getGroupCount();
-//		Debugger::barDump($groupCount);
+
+	protected function createComponentGrid($name)
+	{
 		$grid = new Grid($this, $name);
-		$table_id = 'id';
-		$grid->setPrimaryKey($table_id); // primary key is now used always
-		$grid->setDataSource($source);
+		$grid->setModel($this->group->getAll());
 
-		Link::$checkPermissionCallback = function($link) {
-			switch ($link) {
-				case 'edit':
-					if (!$this->user->isAllowed($this->name, 'edit'))
-						return false;
-					break;
-				case 'delete!':
-					if (!$this->user->isAllowed($this->name, 'delete'))
-						return false;
-					break;
-			}
-			return $link;
-		};
+		$grid->setEditableColumns();
+		$grid->setTemplateFile(__DIR__.'/templates/components/simpleGrid.latte');
 
-		$grid->addNumber('id');
-		$grid->addText('name', 'Group name');
-		$grid->addText('userCount', 'User count')
-			->setCallback(function($data) {
-				Debugger::barDump($data);
-				return $data['id'];
-		});
+//		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_OUTER);
 
-		$actions = $grid->addActions('Actions');
-		$actions->addButton()
-			->setType('btn-primary')
+		$grid->addColumnNumber('id', 'id')
+			->setSortable();
+//			->setFilterText();
+
+		$grid->addColumnText('name', 'Group name')
+			->setSortable()
+			->setFilterText();
+
+//		$grid->addColumnText('userCount', 'User count')
+//			->setSortable()
+//			->setFilterText();
+
+//		$grid->addColumnDate('create_time', 'Created')
+//			->setDateFormat('d.m.Y H:i:s')
+//			->setSortable()
+//			->setFilterDateRange();
+
+		$grid->addActionHref('edit', 'Edit')
 			->setIcon('fa fa-pencil')
-			->setTitle('edit')
-			->setAttribute('href', new Link('edit', array(
-				'id' => '{'.$table_id.'}'
-			)));
-		$actions->addButton()
-			->setType('btn-danger')
+			->setDisable(function ($item) {
+				return (!$this->user->isAllowed($this->name, 'edit'));
+			});
+
+		$grid->addActionHref('delete', 'Delete', 'delete!')
 			->setIcon('fa fa-remove')
-			->setConfirm('Do you really want to delete group?')
-			->setTitle('delete')
-			->setAttribute('href', new Link('delete!', array(
-				'id' => '{'.$table_id.'}'
-			)));
+			->setConfirm('Do you really want to delete this group?')
+			->setDisable(function ($item) {
+				return (!$this->user->isAllowed($this->name, 'delete'));
+			});
+
+		$grid->setDefaultSort(array(
+			'name' => 'ASC'
+		));
+
 		return $grid;
 	}
 

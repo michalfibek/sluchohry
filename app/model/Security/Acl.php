@@ -107,8 +107,13 @@ class Acl extends Permission
 		if ($children == $parents)
 			return true;
 
-		if ($acceptEmptyChildren && !$children)
-			return true;
+		if ($acceptEmptyChildren)
+		{
+			if (!$children) return true;
+		}
+		else {
+			if (!$children) return false;
+		}
 
 		if (is_array($children)) {
 			foreach ($children as $singleChild) {

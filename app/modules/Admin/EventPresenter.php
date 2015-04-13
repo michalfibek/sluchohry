@@ -6,7 +6,8 @@ use Nette,
     App\Model,
     Nette\Application\UI\Form,
     Tracy\Debugger,
-    Grido;
+    Grido,
+    Grido\Grid;
 
 
 /**
@@ -34,8 +35,10 @@ class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = new Grido\Grid($this, $name);
+        $grid = new Grid($this, $name);
         $grid->setModel($this->event->getAllView());
+
+//        $grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
 
 //        $grid->addColumnNumber('id','id')
 //            ->setSortable();
@@ -64,6 +67,8 @@ class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
         $grid->setDefaultSort(array(
            'event_time' => 'DESC'
         ));
+
+        return $grid;
     }
 
 }

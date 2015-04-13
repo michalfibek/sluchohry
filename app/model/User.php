@@ -87,5 +87,4 @@ class User extends Base
 
         }
     }
-
 }

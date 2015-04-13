@@ -11,6 +11,7 @@
 	<title>{if $devServer}@ {/if}{ifset title}{include title|striptags} | {/ifset}{_front.homepage.sluchohry}</title>
 	{block styles}
 	{*<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">*}
+	{ifset $initGrid}<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">{/ifset}
 	<link rel="stylesheet" href="{$basePath}/style.css">
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
 	{/block}
@@ -94,6 +95,15 @@
 	<script src="{$basePath}/assets/vendor/howler/howler.min.js"></script>
 	<script src="{$basePath}/assets/js/netteForms.js"></script>
 	<script src="{$basePath}/assets/js/main.js"></script>
+	{ifset $initGrid}<script src="{$basePath}/assets/vendor/grido/client-side/grido.js"></script>{/ifset}
+
+	{ifset $initNetteAjax}
+	<script type="text/javascript">
+    $(function () {
+        $.nette.init();
+    });
+    </script>
+	{/ifset}
 	{/block}
 </body>
 </html>

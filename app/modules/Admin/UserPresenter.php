@@ -5,10 +5,9 @@ namespace App\Module\Admin\Presenters;
 use Nette,
 	App\Model,
 	App\Components,
-	Mesour\DataGrid\Grid,
-	Mesour\DataGrid\NetteDbDataSource,
-	Mesour\DataGrid\Components\Link;
-use Tracy\Debugger;
+	Grido,
+	Grido\Grid,
+	Tracy\Debugger;
 
 
 /**
@@ -21,6 +20,18 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	/** @inject @var Components\IUserProfileFactory */
 	public $userProfile;
+
+	private $editNoGroupUsers;
+
+	protected function startup()
+	{
+		parent::startup();
+
+		if ($this->user->isInRole('editor'))
+			$this->editNoGroupUsers = true;
+		else
+			$this->editNoGroupUsers = false;
+	}
 
 
 	/**
@@ -89,59 +100,62 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		return $form;
 	}
 
-	/**
-	 * @param $name
-	 * @return Grid
-	 */
-	protected function createComponentUserDataGrid($name) {
-		$source = new NetteDbDataSource($this->userModel->getAll());
+
+	protected function createComponentGrid($name)
+	{
 		$grid = new Grid($this, $name);
-		$table_id = 'id';
-		$grid->setPrimaryKey($table_id); // primary key is now used always
-		$grid->setDataSource($source);
+		$grid->setModel($this->userModel->getAll(true));
 
-		Link::$checkPermissionCallback = function($link) {
-			switch ($link) {
-				case 'edit':
-					if (!$this->user->isAllowed($this->name, 'edit'))
-						return false;
-					break;
-				case 'delete!':
-					if (!$this->user->isAllowed($this->name, 'delete'))
-						return false;
-					break;
-			}
-			return $link;
-		};
+		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
 
-		$grid->addNumber('id');
-//		$grid->addText('group', 'Group');
-		$grid->addText('username', 'Username');
-		$grid->addText('realname', 'Full name');
-		$grid->addText('email', 'E-Mail');
-		$grid->addDate('create_time', 'Create time')
-			->setFormat('j.n.Y H:i:s');
-		$grid->addDate('last_login_time', 'Last login')
-			->setFormat('j.n.Y H:i:s');
+        $grid->addColumnNumber('id','id')
+            ->setSortable()
+			->setFilterText();
 
-		$actions = $grid->addActions('Actions');
-		$actions->addButton()
-			->setType('btn-primary')
+		$grid->addColumnText('username', 'Username')
+			->setSortable()
+			->setFilterText();
+
+		$grid->addColumnText('realname', 'Full name')
+			->setSortable()
+			->setFilterText();
+
+		$grid->addColumnText('email', 'E-mail')
+			->setSortable()
+			->setFilterText();
+
+		$grid->addColumnDate('create_time', 'Created')
+			->setDateFormat('d.m.Y H:i:s')
+			->setSortable()
+			->setFilterDateRange();
+
+		$grid->addColumnDate('last_login_time', 'Last login')
+			->setDateFormat('d.m.Y H:i:s')
+			->setSortable()
+			->setFilterDateRange();
+
+		$grid->addActionHref('edit', 'Edit')
 			->setIcon('fa fa-pencil')
-			->setTitle('edit')
-			->setAttribute('href', new Link('edit', array(
-				'id' => '{'.$table_id.'}'
-			)));
-		$actions->addButton()
-			->setType('btn-danger')
+			->setDisable(function ($item) {
+				$roles = $this->userModel->getUserRoles($item->id);
+				return !$this->acl->isChildRole($roles, $this->user->roles, $this->editNoGroupUsers);
+			});
+
+		$grid->addActionHref('delete', 'Delete', 'delete!')
 			->setIcon('fa fa-remove')
 			->setConfirm('Do you really want to delete user? All user logs will be deleted too!')
-			->setTitle('delete')
-			->setAttribute('href', new Link('delete!', array(
-				'id' => '{'.$table_id.'}'
-			)));
+			->setDisable(function ($item) {
+				$roles = $this->userModel->getUserRoles($item->id);
+				return !$this->acl->isChildRole($roles, $this->user->roles, $this->editNoGroupUsers);
+			});
+
+
+		$grid->setDefaultSort(array(
+			'username' => 'ASC'
+		));
 
 		return $grid;
 	}
+
 
 }
