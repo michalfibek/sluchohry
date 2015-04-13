@@ -17,6 +17,8 @@
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico?v=1.0">
 	<link rel="apple-touch-icon" href="{$basePath}/apple-touch-icon.png?v=1.0">
 	<link href='//fonts.googleapis.com/css?family=Francois+One&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+	<script src="{$basePath}/assets/vendor/jquery/dist/jquery.min.js"></script>
 	{block head}{/block}
 </head>
 
@@ -85,10 +87,10 @@
 	</main>
 
 	{block scripts}
-	<script src="{$basePath}/assets/vendor/jquery/dist/jquery.js"></script>
+    {*<script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>*}
 	<script src="{$basePath}/assets/vendor/jquery.transit/jquery.transit.js"></script>
 {*	 <script src="{$basePath}/assets/vendor/jquery-ui/jquery-ui.js"></script> *} {* TODO - include only necessary JQ UI components *}
-	<script src="{$basePath}/assets/vendor/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="{$basePath}/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="{$basePath}/assets/vendor/howler/howler.min.js"></script>
 	<script src="{$basePath}/assets/js/netteForms.js"></script>
 	<script src="{$basePath}/assets/js/main.js"></script>

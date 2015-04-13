@@ -112,7 +112,7 @@ class UserProfile extends UI\Control
 
         if ($this->adminMode) { // admin access to particular changes
 
-            $form->addSelect('group_id')
+            $form->addCheckboxList('group_id')
                 ->setItems($this->groupModel->getGroupAsArrayWithId('name'));
 //                ->setDefaultValue(4);
             $form['username']
@@ -131,8 +131,10 @@ class UserProfile extends UI\Control
 
         $form->addRadioList('avatar_id', 'Avatar', $this->avatar->getAsArray('filename'));
 
-        if ($this->userRow)
+        if ($this->userRow) {
             $form->setDefaults($this->userRow);
+            $form['group_id']->setDefaultValue($this->userModel->getUserGroupIds($this->userId));
+        }
 
         $form->addSubmit('save');
 

@@ -41,7 +41,8 @@ class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
         $grid->setPrimaryKey($table_id);
         $grid->setDataSource($source);
 
-//        $grid->enableFilter();
+        $grid->enablePager(30);
+        $grid->enableFilter();
 
         $grid->addNumber('id');
         $grid->addText('username', 'Username');

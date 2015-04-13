@@ -27,12 +27,13 @@
                     <input n:name="realname" type="text" class="form-control" id="realname">
                 </div>
             </div>
-            {if null}{*{if $adminMode}*} {* TODO COMMENTED OUT UNTIL FINISHED *}
+            {if $adminMode}
             <div class="form-group">
-                <label n:name="group_id" for="group_id" class="col-sm-2 control-label">{_front.user.group}:</label>
-                <div class="col-sm-4">
-                    <select n:name="group_id" id="group_id" class="form-control">
-                    </select>
+                <label class="col-sm-2 control-label" for="group_id">Group:</label>
+                <div class="col-sm-4" n:inner-foreach="$form[group_id]->items as $key => $label">
+                    <div class="checkbox">
+                        <label n:name="group_id:$key"><input n:name="group_id:$key"> {$label}</label>
+                    </div>
                 </div>
             </div>
             {/if}

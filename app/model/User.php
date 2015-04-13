@@ -14,6 +14,7 @@ class User extends Base
         if (isset($data['group_id']))
         {
             $this->addGroupsToUser($id, $data['group_id']);
+            unset($data['group_id']);
         }
 
         $data['password'] = Passwords::hash($data['password']);
@@ -46,7 +47,8 @@ class User extends Base
     {
         if (isset($data['group_id']))
         {
-            $this->addGroupsToUser($id, $data['group_id']);
+            $groupResult = $this->addGroupsToUser($id, $data['group_id']);
+            unset($data['group_id']);
         }
 
         if (isset($data['password']))
@@ -57,7 +59,9 @@ class User extends Base
                 unset($data['password']);
         }
 
-        return parent::updateById($id, $data);
+        $updateResult = parent::updateById($id, $data);
+
+        return ($updateResult) ? $updateResult : $groupResult;
     }
 
     private function addGroupsToUser($id, $groups)
@@ -72,9 +76,11 @@ class User extends Base
                     'group_id' => $group
                 ));
 
+            return true;
+
         } else { // single group
 
-            $this->db->table('user_has_group')->insert(array(
+           return $this->db->table('user_has_group')->insert(array(
                 'user_id' => $id,
                 'group_id' => $group
             ));
