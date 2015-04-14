@@ -48,6 +48,10 @@ game:
         nextGame: "Další kolo"
         closeGame: "Ukončit"
         tryAgain: "Zkusit znovu"
+        seconds: "sekund"
+        scorePoints: "bodů"
+        newPersonalRecord: "Tvůj nový rekord!"
+        newGameRecord: "Nový rekord pro tuto hru!"
 
     difficulty:
         difficultyTitle: "Obtížnost"

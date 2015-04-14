@@ -231,9 +231,21 @@ var Game = $class({
             scope.timer.stop();
             scope.gameSolved = true;
             $('.modal-correct').modal('show');
-            $('.attempt-count').find('span').empty().append(scope.cubeClickCount);
+            $('.result-steps').find('span').empty().append(scope.cubeClickCount);
+            $('.result-time').find('span').empty().append(scope.timer.getTime('sec'));
             //$('#modal-correct').modal('show');
-            this.logger.sendResult(this.gameEndHandler, this.getResult());
+            this.logger.sendResult(this.gameEndHandler, this.getResult(), function(payload) {
+                //alert(JSON.stringify(payload, null, 4));
+
+                if (payload['personalRecord'] == true && payload['gameRecord'] == false)
+                    $('.result-record').find('personal-record').removeClass('hidden');
+
+                if (payload['gameRecord'] == true && payload['personalRecord'] == false)
+                    $('.result-record').find('personal-record').removeClass('hidden');
+
+                if (payload['score'] == true)
+                    $('.result-score').find('span').empty().append(payload['score']);
+            });
         } else {
             //console.log('not solved');
 

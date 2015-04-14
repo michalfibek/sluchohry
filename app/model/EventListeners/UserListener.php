@@ -4,6 +4,7 @@ namespace App\Model\EventListeners;
 
 use Nette,
     App,
+    App\Model,
     Tracy\Debugger;
 
 class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
@@ -16,7 +17,10 @@ class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
     /** @var Nette\Security\User */
     private $user;
 
-    function __construct(Nette\Security\User $user, App\Model\Event $event, App\Model\User $userModel)
+    /** @var Model\Score */
+    private $score;
+
+    function __construct(Nette\Security\User $user, Model\Event $event, Model\User $userModel)
     {
         $this->event = $event;
         $this->userModel = $userModel;

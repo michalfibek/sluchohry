@@ -4,19 +4,18 @@
 var GameTimer = $class({
 
     constructor: function() {
-        this.seconds = 0;
+        this.timeCounter = 0; // value in msec*100
         this.t;
     },
 
     _timer: function() {
         var that = this;
-        that.t = setTimeout(function(){that._addTime()}, 1000);
+        that.t = setTimeout(function(){that._addTime()}, 100);
     },
 
     _addTime: function() {
-        this.seconds++;
+        this.timeCounter++;
         this._timer();
-        //console.log(this.seconds);
     },
 
     start: function() {
@@ -27,7 +26,12 @@ var GameTimer = $class({
         clearTimeout(this.t);
     },
 
-    getTime: function() {
-        return this.seconds;
+    getTime: function(precision) {
+        precision = precision || 'msec'; // default precision
+
+        if (precision == 'sec')
+            return Math.ceil(this.timeCounter / 10);
+        if (precision == 'msec')
+            return this.timeCounter * 10;
     }
 })

@@ -54,6 +54,7 @@ services:
 	- App\Model\Event
 	- App\Model\Game
 	- App\Model\Group
+	- App\Model\Score
 	- App\Model\Song(%song.uploadDir%, %song.saveDir%)
 	- App\Model\User
 

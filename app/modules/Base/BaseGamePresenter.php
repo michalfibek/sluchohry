@@ -3,7 +3,9 @@
 namespace App\Module\Base\Presenters;
 
 
-use Tracy\Debugger;
+use Nette,
+    App\Model,
+    Tracy\Debugger;
 
 abstract class BaseGamePresenter extends BasePresenter
 {
@@ -14,6 +16,9 @@ abstract class BaseGamePresenter extends BasePresenter
     /** @var \Nette\Http\SessionSection */
     protected $gameSession;
 
+    /** @var Model\Score */
+    protected $score;
+
     protected $difficulty;
     protected $gameAssets;
     public $onGameStart = array();
@@ -23,6 +28,12 @@ abstract class BaseGamePresenter extends BasePresenter
     abstract protected function getAssetsById($id);
     abstract protected function getAssetsRandom();
     abstract protected function setAssetsByDifficulty();
+
+    public function __construct(Model\Score $score)
+    {
+        parent::__construct();
+        $this->score = $score;
+    }
 
     public function startup()
     {
@@ -37,6 +48,9 @@ abstract class BaseGamePresenter extends BasePresenter
 
     public function handleGameEnd(array $result)
     {
+        $score = $this->score->processGameEndResult($this->user, $result); // return score to game
+        $this->sendResponse(new Nette\Application\Responses\JsonResponse($score));
+
         $this->onGameEnd($result);
     }
 
