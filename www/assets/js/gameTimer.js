@@ -32,6 +32,6 @@ var GameTimer = $class({
         if (precision == 'sec')
             return Math.ceil(this.timeCounter / 10);
         if (precision == 'msec')
-            return this.timeCounter * 10;
+            return this.timeCounter * 100;
     }
 })
