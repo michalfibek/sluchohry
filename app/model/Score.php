@@ -11,6 +11,7 @@ use Tracy\Debugger;
 class Score extends Base
 {
     const
+        DIFFICULTY_COUNT = 3,
         MAX_SCORE = 1000,
         MAX_STEPS_PENALTY = 500,
         MAX_TIME_PENALTY = 500,
@@ -30,6 +31,37 @@ class Score extends Base
     }
 
     /**
+     * @param int $userId
+     * @param int $gameId
+     * @param int $difficultyId
+     * @return array|bool|mixed|Nette\Database\Table\IRow
+     */
+    public function getByUser($userId, $gameId, $difficultyId)
+    {
+        return $this->db->table($this->tableName)->where('user_id', $userId)->where('game_id', $gameId)->where('difficulty_id', $difficultyId)->fetch()->value;
+    }
+
+    /**
+     * @param int $userId
+     * @param int $gameId
+     * @param bool $initEmpty
+     * @return array|bool|mixed|Nette\Database\Table\IRow
+     */
+    public function getAllByUser($userId, $gameId, $initEmpty = false)
+    {
+        $score = $this->db->table($this->tableName)->where('user_id', $userId)->where('game_id',$gameId)->fetchPairs('difficulty_id', 'value');
+
+        if ($initEmpty) {
+            for ($i = 1; $i <= self::DIFFICULTY_COUNT; $i++)
+                $return[$i] = isset($score[$i]) ? $score[$i] : 0;
+            return $return;
+        } else
+            return $score;
+
+        return $return;
+    }
+
+    /**
      * @param $userId
      * @param $gameId
      * @param $difficultyId
@@ -44,7 +76,7 @@ class Score extends Base
             'difficulty_id' => $difficultyId,
             'value' => $value
         );
-        $row = $this->db->table('score')
+        $row = $this->db->table($this->tableName)
             ->where('user_id', $userId)
             ->where('game_id', $gameId)
             ->where('difficulty_id', $difficultyId);
@@ -60,7 +92,7 @@ class Score extends Base
                 'value' => $value
             ));
         } else {
-            return $this->db->table('score')->insert($scoreData);
+            return $this->db->table($this->tableName)->insert($scoreData);
         }
     }
 
@@ -94,6 +126,11 @@ class Score extends Base
         return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
     }
 
+    /**
+     * @param $time
+     * @param $badSteps
+     * @return int
+     */
     public function calcScoreNoteSteps($time, $badSteps)
     {
         $timePenalty = $this->getTimePenalty($time);
@@ -138,7 +175,7 @@ class Score extends Base
 
         $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score);
 
-        $currentGameRecord = $this->db->table('score')->where('game_id', (string)$gameId)->max('value');
+        $currentGameRecord = $this->db->table($this->tableName)->where('game_id', (string)$gameId)->max('value');
 
         $gameRecord = (($currentGameRecord == $score) && $updated) ? true : false;
 

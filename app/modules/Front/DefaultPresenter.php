@@ -16,6 +16,44 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 	/** @persistent */
 	public $backlink;
 
+	/** @inject @var Model\Score */
+	public $score;
+
+	/** @inject @var Model\Game */
+	public $game;
+
+	public function actionLogout()
+	{
+		$this->getUser()->logout();
+		$this->flashMessage('front.auth.flash.logout');
+		$this->redirect('Default:');
+	}
+
+	public function renderDefault()
+	{
+		if ($this->user->loggedIn)
+		{
+			$flashId = $this->getParameterId('flash');
+
+			// if there is not a single flash message, annoy user with owl's quotes
+			if (!$this->getPresenter()->getFlashSession()->$flashId)
+			{
+				$randMsg = (string)rand(1,self::HOMEPAGE_QUOTE_COUNT);
+				$this->flashMessage('front.game.homepageQuote.msg'.$randMsg);
+			}
+
+			$scoreMelodicCubes = $this->score->getAllByUser($this->user->getId(), 1, true);
+			$this->template->scoreMelodicCubes = $scoreMelodicCubes;
+
+			$scorePexeso = $this->score->getAllByUser($this->user->getId(), 2, true);
+			$this->template->scorePexeso = $scorePexeso;
+
+			$scoreNoteSteps = $this->score->getAllByUser($this->user->getId(), 3, true);
+			$this->template->scoreNoteSteps = $scoreNoteSteps;
+		}
+
+	}
+
 	/**
 	 * Sign-in form factory.
 	 * @return Nette\Application\UI\Form
@@ -59,29 +97,6 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$this->flashMessage($e->getMessage(), 'error');
 			$form->addError($e->getMessage());
 		}
-	}
-
-	public function actionLogout()
-	{
-		$this->getUser()->logout();
-		$this->flashMessage('front.auth.flash.logout');
-		$this->redirect('Default:');
-	}
-
-	public function renderDefault()
-	{
-		if ($this->user->loggedIn)
-		{
-			$flashId = $this->getParameterId('flash');
-
-			// if there is not a single flash message, annoy user with owl's quotes
-			if (!$this->getPresenter()->getFlashSession()->$flashId)
-			{
-				$randMsg = (string)rand(1,self::HOMEPAGE_QUOTE_COUNT);
-				$this->flashMessage('front.game.homepageQuote.msg'.$randMsg);
-			}
-		}
-
 	}
 
 }

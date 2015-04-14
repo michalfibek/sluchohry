@@ -74,15 +74,11 @@ FRONT: applies only to front module
   li {
     display: inline-block;
 
-    i.fa {
-      display: block;
-      font-size: 4em;
-      line-height: 1.4em;
-    }
-
-    a {
+    a.game-select {
       .btn();
       .btn-default();
+      position: relative;
+      z-index: 3;
       font-size: 1.5em;
       margin: 10px;
       display: block;
@@ -93,6 +89,12 @@ FRONT: applies only to front module
       @media (min-width: @screen-sm-min) {
         width: 300px;
         height: 200px;
+      }
+
+      i.fa {
+        display: block;
+        font-size: 4em;
+        line-height: 1.4em;
       }
 
       &#game-melodic-cubes {
@@ -130,6 +132,62 @@ FRONT: applies only to front module
       &:hover {
         transform: scale(1.05);
       }
+
+    }
+  }
+
+  .score-tab {
+    margin: -11px 10px;
+    text-align: center;
+
+    .score-single {
+      padding: 10px 0;
+      display: inline-block;
+      color: #fff;
+      font-size: 1.2em;
+      border-bottom-right-radius: 20px;
+      border-bottom-left-radius: 20px;
+      cursor: default;
+
+      &.difficulty-1 {
+        background-color: @difficulty-easy-background;
+      }
+
+      &.difficulty-2 {
+        background-color: @difficulty-medium-background;
+      }
+
+      &.difficulty-3 {
+        background-color: @difficulty-hard-background;
+      }
+
+    }
+  }
+
+  .rankings-tab {
+    display: block;
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+    font-size: 1.3em;
+
+    &.difficulty-1 {
+      background-color: @difficulty-easy-background;
+    }
+
+    &.difficulty-2 {
+      background-color: @difficulty-medium-background;
+    }
+
+    &.difficulty-3 {
+      background-color: @difficulty-hard-background;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    i.fa {
 
     }
   }

@@ -60,6 +60,9 @@ game:
         medium: "Klasik"
         hard: "Drsňák"
 
+rankings:
+    linkTitle: "Nejlepší hráči"
+
 user:
     profile: "Profil"
     profilePersonal: "Tvůj profil"
