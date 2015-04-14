@@ -54,7 +54,7 @@ abstract class BaseGamePresenter extends BasePresenter
 
         $score = $this->score->processGameEndResult($this->user->getId(), $gameId, $result); // return score to game
 
-        $result['score'] = $score;
+        $result['score'] = $score['score'];
         $this->onGameEnd($result);
 
         $this->sendResponse(new Nette\Application\Responses\JsonResponse($score));
