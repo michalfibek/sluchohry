@@ -243,8 +243,15 @@ var Game = $class({
                 if (payload['gameRecord'] == true && payload['personalRecord'] == false)
                     $('.result-record').find('personal-record').removeClass('hidden');
 
-                if (payload['score'] == true)
-                    $('.result-score').find('span').empty().append(payload['score']);
+                if (payload['score'] != false) {
+                    //$('.result-score').find('span').empty().append(payload['score']);
+                    $('.result-score').find('span').animateNumber(
+                        {
+                            number: parseInt(payload['score'])
+                        },
+                        800
+                    )
+                }
             });
         } else {
             //console.log('not solved');

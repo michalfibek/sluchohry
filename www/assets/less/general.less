@@ -113,14 +113,21 @@ form {
     font-size: 40px;
     text-align: center;
   }
+
   .modal-header {
     border: none;
     padding: 15px;
 
     @media (min-width: @screen-sm-min) {
-      padding: 30px;
+      padding: 20px;
 
     }
+  }
+
+  .modal-body {
+    text-align: center;
+    font-size: 30px;
+//    padding-top: 0;
   }
 
   .modal-footer {
@@ -145,14 +152,38 @@ form {
 
   .result-score {
     display: block;
+    font-size: 1.7em;
   }
 
   .divider, .result-steps, .result-time {
-    font-size: 26px;
+    font-size: 0.8em;
+  }
+
+  .divider {
+    display: inline-block;
+    padding: 0 3px;
+  }
+
+  .result-time {
+    &:before {
+      .fa-inherit();
+      content: "\f017";
+      padding-right: 5px;
+    }
+  }
+
+  .result-steps {
+    &:before {
+      .fa-inherit();
+      content: "\f0a6";
+      padding-right: 5px;
+    }
   }
 
   .result-record {
     display: block;
+    font-size: 1em;
+    padding-bottom: 15px;
 
     .personal-record {
 

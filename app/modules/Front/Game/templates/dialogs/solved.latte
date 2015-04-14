@@ -4,19 +4,25 @@
     <div class="modal-dialog">
         <img class="modal-avatar" src="{$avatarDir}/{$userAvatar}.svg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{_front.game.common.resultCorrectTitle}
-                    <div class="game-results">
-                        <span class="result-score"><span>0</span> {_front.game.common.scorePoints}</span>
-                        <span class="result-steps"><span></span> {$stepsToSolveMessage}</span> <span class="divider">/</span>
-                        <span class="result-time"><span></span> {_front.game.common.seconds}</span>
-                        <span class="result-record">
-                            <span class="personal-record hidden">{_front.game.common.newPersonalRecord}</span>
-                            <span class="game-record hidden">{_front.game.common.newGameRecord}</span>
-                        </span>
-                    </div>
-                </h4>
+            {*<div class="modal-header">*}
+                {*<h4 class="modal-title">*}
+                    {*{_front.game.common.resultCorrectTitle}*}
+                {*</h4>*}
+            {*</div>*}
+
+            <div class="modal-body">
+                <div class="game-results">
+                    <span class="result-score"><span>0</span> {_front.game.common.scorePoints}</span>
+                    <span class="result-record">
+                        <span class="personal-record hidden">{_front.game.common.newPersonalRecord}</span>
+                        <span class="game-record hidden">{_front.game.common.newGameRecord}</span>
+                    </span>
+                    <span class="result-time"><span></span> {_front.game.common.seconds}</span>
+                    <span class="divider">&nbsp;</span>
+                    <span class="result-steps"><span></span> {$stepsToSolveMessage}</span>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <a n:href=":Front:Default:" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.game.common.closeGame}</a>
                 <a n:href="this nextRound=>true"  class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.game.common.nextGame}</a>
