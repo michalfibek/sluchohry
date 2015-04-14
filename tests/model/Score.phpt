@@ -18,6 +18,9 @@ class ScoreTest extends Tester\TestCase
 	/** @var Score */
 	private $scoreModel;
 
+	/** @var Game */
+	private $gameModel;
+
 
 	function __construct(Nette\DI\Container $container)
 	{
@@ -26,6 +29,7 @@ class ScoreTest extends Tester\TestCase
 //		$db = new Nette\Database\Context($dbConnection);
 //		$this->scoreModel = new Score($db);
 		$this->scoreModel = $this->container->getByType('App\Model\Score');
+		$this->gameModel = $this->container->getByType('App\Model\Game');
 	}
 
 	function setUp()
@@ -35,30 +39,66 @@ class ScoreTest extends Tester\TestCase
 
 	protected function tearDown()
 	{
-		echo '\r\n';
+		echo "\n";
 	}
 
 	public function getGameEndArgs()
 	{
 		return array(
+//			array(
+//				array(
+//					'gameName' => 'pexeso',
+//					'difficulty' => 1,
+//					'songList' => '1,5,20,3,8,5',
+//					'time' => 2000*1000,
+//					'steps' => 38,
+//				),
+//			),
+//			array(
+//				array(
+//					'gameName' => 'pexeso',
+//					'difficulty' => 1,
+//					'songList' => '1,5,20,3,18,51',
+//					'time' => 2*1000,
+//					'steps' => 12
+//				)
+//			),
+//			array(
+//				array(
+//					'gameName' => 'pexeso',
+//					'difficulty' => 1,
+//					'songList' => '11,5,20,3,8,5,20,30,1,8',
+//					'time' => 20*1000,
+//					'steps' => 150
+//				)
+//			),
 			array(
 				array(
-					'gameName' => 'pexeso',
+					'gameName' => 'melodicCubes',
 					'difficulty' => 1,
-					'songList' => '1,5,20,3,8,5',
-					'time' => 20*1000,
-					'steps' => 18,
-				),
+					'cubeCount' => '9',
+					'time' => 2*1000,
+					'steps' => 1
+				)
 			),
 			array(
 				array(
-					'gameName' => 'pexeso',
-					'difficulty' => 1,
-					'songList' => '1,5,20,3,8,5',
-					'time' => 30*1000,
-					'steps' => 28
+					'gameName' => 'melodicCubes',
+					'difficulty' => 2,
+					'cubeCount' => '6',
+					'time' => 2*1000,
+					'steps' => 12
 				)
-			)
+			),
+			array(
+				array(
+					'gameName' => 'melodicCubes',
+					'difficulty' => 3,
+					'cubeCount' => '9',
+					'time' => 21*1000,
+					'steps' => 150
+				)
+			),
 		);
 	}
 
@@ -67,9 +107,10 @@ class ScoreTest extends Tester\TestCase
 	 */
 	function testProcessGameEndResult($result)
 	{
-		$result = $this->scoreModel->processGameEndResult(1, $result);
+		$gameId = $this->gameModel->getByName($result['gameName'])->id;
+		$result = $this->scoreModel->processGameEndResult(1, $gameId, $result);
 
-		print_r($result);
+		echo $result['score'];
 
 //		Assert::type('array', $result);
 
