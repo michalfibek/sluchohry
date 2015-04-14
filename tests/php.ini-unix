@@ -1,0 +1,7 @@
+[PHP]
+
+extension=pdo.so
+extension=pdo_mysql.so
+extension=json.so
+
+memory_limit=512M
