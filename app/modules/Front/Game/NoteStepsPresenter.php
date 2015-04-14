@@ -12,9 +12,6 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 {
     // define cube splits count by difficulty
     const
-        DIFFICULTY_1_RATIO = 1,
-        DIFFICULTY_2_RATIO = 2,
-        DIFFICULTY_3_RATIO = 3,
         MAX_RAND_MULTIPLY = 2, // multiply difficulty ratio with rand max to this
         FIRST_NOTE_ORD = 97, // a
         LAST_NOTE_ORD = 103; // g
@@ -26,24 +23,9 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
     public function startup()
     {
         parent::startup();
+        $this->gameId = 3;
         $this->noteBtoH = true;
         $this->noteCount = 7; // default 7
-    }
-
-    protected function setAssetsByDifficulty()
-    {
-        switch ($this->difficulty)
-        {
-            case 1:
-                $this->stepRatio = self::DIFFICULTY_1_RATIO;
-                break;
-            case 2:
-                $this->stepRatio = self::DIFFICULTY_2_RATIO;
-                break;
-            case 3:
-                $this->stepRatio = self::DIFFICULTY_3_RATIO;
-                break;
-        }
     }
 
     protected function getAssetsById($id)
@@ -74,7 +56,7 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
     {
         $this->difficulty = (int)$difficulty;
 
-        $this->setAssetsByDifficulty();
+        $this->stepRatio = $this->getVariationByDifficulty($this->difficulty);
 
         $this->gameAssets = $this->getAssetsRandom();
     }

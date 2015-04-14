@@ -67,6 +67,20 @@ class Score extends Base
     /**
      * @param $time
      * @param $steps
+     * @param $cubeCount
+     * @return int
+     */
+    public function calcScoreMelodicCubes($time, $steps, $cubeCount)
+    {
+        $timePenalty = $this->getTimePenalty($time);
+        $stepsPenalty = round(self::MAX_STEPS_PENALTY - (self::MAX_STEPS_PENALTY / $steps));
+
+        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
+    }
+
+    /**
+     * @param $time
+     * @param $steps
      * @param $songCount
      * @return int
      */
@@ -75,7 +89,15 @@ class Score extends Base
         $timePenalty = $this->getTimePenalty($time);
 
         $minSteps = $songCount*2;
-        $stepsPenalty = self::MAX_STEPS_PENALTY - (self::MAX_STEPS_PENALTY / ($steps/$minSteps));
+        $stepsPenalty = round(self::MAX_STEPS_PENALTY - (self::MAX_STEPS_PENALTY / ($steps/$minSteps)));
+
+        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
+    }
+
+    public function calcScoreNoteSteps($time, $badSteps)
+    {
+        $timePenalty = $this->getTimePenalty($time);
+        $stepsPenalty = $badSteps * 30;
 
         return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
     }
@@ -88,29 +110,30 @@ class Score extends Base
     {
         if ($time >= self::MAX_TIME_MSEC) return self::MAX_TIME_PENALTY;
 
-        $timeConstant = self::MAX_TIME_MSEC/self::MAX_TIME_PENALTY;
+        $timeConstant = self::MAX_TIME_MSEC / self::MAX_TIME_PENALTY;
 
-        return round($time/$timeConstant);
+        return round($time / $timeConstant); // todo change penalty to more non-linear function
     }
 
-    /**
+     /**
      * @param int $userId
+     * @param int $gameId
      * @param array $result
      * @return array score result
      */
-    public function processGameEndResult($userId, array $result)
+    public function processGameEndResult($userId, $gameId, array $result)
     {
-        $score = 0; // default value - if score evaluation goes wrong
-        $gameId = $this->game->getByColumn('name', $result['gameName']);
+        $score = 0; // default value mn('name', $result['gameName']);
 
-        if ($result['gameName'] == 'melodicCubes') {
+        if ($gameId == 1) { // melodicCubes
+            $score = $this->calcScoreMelodicCubes($result['time'], $result['steps'], $result['cubeCount']);
 
-        } elseif ($result['gameName'] == 'pexeso') {
+        } elseif ($gameId == 2) { // pexeso
             $songCount = count(explode(',', $result['songList']));
             $score = $this->calcScorePexeso($result['time'], $result['steps'], $songCount);
 
-        } elseif ($result['gameName'] == 'noteSteps') {
-
+        } elseif ($gameId == 3) { // noteSteps
+            $score = $this->calcScoreNoteSteps($result['time'], $result['steps']);
         }
 
         $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score);

@@ -61,6 +61,7 @@ var Game = $class({
         this.chainDef = chainDef;
         this.songChain = [];
         this.cubeMoveCount = 0;
+        this.cubePlayCount = 0;
         this.gameName = 'melodicCubes';
         this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
@@ -152,6 +153,7 @@ var Game = $class({
                 scope.song.stop();
                 scope.song.playPartOnly(partId);
                 scope.addHighlight(partId);
+                scope.cubePlayCount++;
             }
 
         });
@@ -214,6 +216,7 @@ var Game = $class({
     sendOnLoadRecord: function() {
         var record = {
             gameName: this.gameName,
+            cubeCount: scope.chainDef.length,
             difficulty: scope.difficulty,
             songId: scope.songId
         }
@@ -240,6 +243,7 @@ var Game = $class({
     playChain: function(i) {
         return function () {
             if (scope.songChain[i]) {
+                scope.cubePlayCount++;
                 scope.songChain[i](scope.playChain(++i));
             };
         };
@@ -248,12 +252,17 @@ var Game = $class({
     getResult: function () {
         var result = {
             gameName: this.gameName,
-            steps: scope.cubeMoveCount,
-            time: scope.timer.getTime(),
             difficulty: scope.difficulty,
-            songId: scope.songId
+            cubeCount: scope.chainDef.length,
+            songId: scope.songId,
+            steps: scope.getSteps(),
+            time: scope.timer.getTime()
         };
         return result;
+    },
+
+    getSteps: function() {
+        return scope.cubeMoveCount+scope.cubePlayCount;
     },
 
     evalGame: function() {
@@ -271,7 +280,7 @@ var Game = $class({
         }
         if (okay == true) {
             scope.gameSolved = true;
-            $('.result-steps').find('span').empty().append(scope.cubeMoveCount);
+            $('.result-steps').find('span').empty().append(scope.getSteps());
             $('.result-time').find('span').empty().append(scope.timer.getTime('sec'));
             $('.modal-correct').modal('show');
             //$('#modal-correct').modal('show');
@@ -309,7 +318,7 @@ var Game = $class({
             $('.modal-wrong').modal('show');
 
             // DEBUG ONLY, possible attempt record
-            //var result = {gameName: this.gameName, steps: scope.cubeMoveCount, time: scope.timer.getTime()};
+            //var result = {gameName: this.gameName, steps: scope.getSteps(), time: scope.timer.getTime()};
             //this.logger.sendResult(this.gameEndHandler, result);
         }
     }

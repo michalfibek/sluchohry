@@ -10,36 +10,16 @@ use Tracy\Debugger;
  */
 class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 {
-	// define cube splits count by difficulty
-	const
-		DIFFICULTY_1_SPLITS = 3,
-		DIFFICULTY_2_SPLITS = 4,
-		DIFFICULTY_3_SPLITS = 8;
-
 	/** @inject @var Model\Song */
 	public $song;
+
 	protected $cubeCount;
 
 
 	public function startup()
 	{
 		parent::startup();
-	}
-
-	protected function setAssetsByDifficulty()
-	{
-		switch ($this->difficulty)
-		{
-			case 1:
-				$this->cubeCount = self::DIFFICULTY_1_SPLITS;
-				break;
-			case 2:
-				$this->cubeCount = self::DIFFICULTY_2_SPLITS;
-				break;
-			case 3:
-				$this->cubeCount = self::DIFFICULTY_3_SPLITS;
-				break;
-		}
+		$this->gameId = 1;
 	}
 
 	protected function getAssetsById($id)
@@ -52,7 +32,6 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		} else {
 			return null;
 		}
-
 	}
 
 	protected function getAssetsRandom()
@@ -62,7 +41,6 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		{
 			$assets['song'] = $song;
 			$assets['markers'] = $this->song->getCubeMarkersByCount($song->id, $this->cubeCount);
-			Debugger::barDump($assets);
 			return $assets;
 		} else {
 			return null;
@@ -73,7 +51,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	{
 		$this->difficulty = (int)$difficulty;
 
-		$this->setAssetsByDifficulty();
+		$this->cubeCount = $this->getVariationByDifficulty($this->difficulty);
 
 		if (!$nextRound) {
 			unset($this->gameSession['melodicCubesHistory']);

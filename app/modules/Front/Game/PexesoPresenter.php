@@ -9,40 +9,21 @@ use Nette,
  */
 class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 {
-	// define cube splits count by difficulty
-	const
-		DIFFICULTY_1_PAIRS = 4, // 4
-		DIFFICULTY_2_PAIRS = 6, // 6
-		DIFFICULTY_3_PAIRS = 11; // 11
-
 	/** @inject @var Model\Song */
 	public $song;
+
 	private $songPairCount;
 
 
 	public function startup()
 	{
 		parent::startup();
-	}
-
-	protected function setAssetsByDifficulty()
-	{
-		switch ($this->difficulty)
-		{
-			case 1:
-				$this->songPairCount = self::DIFFICULTY_1_PAIRS;
-				break;
-			case 2:
-				$this->songPairCount = self::DIFFICULTY_2_PAIRS;
-				break;
-			case 3:
-				$this->songPairCount = self::DIFFICULTY_3_PAIRS;
-				break;
-		}
+		$this->gameId = 2;
 	}
 
 	protected function getAssetsById($id)
 	{
+
 	}
 
 	protected function getAssetsRandom()
@@ -60,7 +41,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 	{
 		$this->difficulty = (int)$difficulty;
 
-		$this->setAssetsByDifficulty();
+		$this->songPairCount = $this->getVariationByDifficulty($this->difficulty);
 
 		$this->gameAssets = $this->getAssetsRandom();
 		if (!$this->gameAssets) {

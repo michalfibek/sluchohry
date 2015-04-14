@@ -16,9 +16,13 @@ abstract class BaseGamePresenter extends BasePresenter
     /** @var \Nette\Http\SessionSection */
     protected $gameSession;
 
-    /** @var Model\Score */
-    protected $score;
+    /** @inject @var Model\Game */
+    public $game;
 
+    /** @inject @var Model\Score */
+    public $score;
+
+    protected $gameId;
     protected $difficulty;
     protected $gameAssets;
     public $onGameStart = array();
@@ -27,18 +31,16 @@ abstract class BaseGamePresenter extends BasePresenter
 
     abstract protected function getAssetsById($id);
     abstract protected function getAssetsRandom();
-    abstract protected function setAssetsByDifficulty();
-
-    public function __construct(Model\Score $score)
-    {
-        parent::__construct();
-        $this->score = $score;
-    }
 
     public function startup()
     {
         parent::startup();
         $this->gameSession = $this->getSession('game');
+    }
+
+    protected function getVariationByDifficulty($difficulty)
+    {
+        return $this->game->getDifficultyVariation($this->gameId, $difficulty);
     }
 
     public function handleGameStart(array $result)
@@ -48,7 +50,8 @@ abstract class BaseGamePresenter extends BasePresenter
 
     public function handleGameEnd(array $result)
     {
-        $score = $this->score->processGameEndResult($this->user->getId(), $result); // return score to game
+        $gameId = $this->game->getByName($result['gameName'])->id;
+        $score = $this->score->processGameEndResult($this->user->getId(), $gameId, $result); // return score to game
         $this->sendResponse(new Nette\Application\Responses\JsonResponse($score));
 
         $this->onGameEnd($result);
@@ -67,7 +70,6 @@ abstract class BaseGamePresenter extends BasePresenter
         {
             $this->template->difficultyName = 'easy';
             $this->template->difficultySymbol = 'fa fa-bicycle';
-
         }
         if ($this->difficulty == 2) {
             $this->template->difficultyName = 'medium';

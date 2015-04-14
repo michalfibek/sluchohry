@@ -24,6 +24,7 @@ class Event extends Base {
         DATA_PLAY_TIME = 'play_time',
         DATA_DIFFICULTY = 'difficulty',
         DATA_SOLVED = 'solved',
+        DATA_CUBE_COUNT = 'cube_count', // melodicCubes
         DATA_PLAY_STEPS = 'play_steps', // melodicCubes, pexeso
         DATA_SONG_ID = 'song_id', // melodicCubes
         DATA_SONG_LIST = 'song_list', // pexeso
@@ -84,6 +85,7 @@ class Event extends Base {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SONG_ID => $result['songId'],
+                self::DATA_CUBE_COUNT => $result['cubeCount'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
             );
         } elseif ($result['gameName'] == 'pexeso') {
@@ -116,6 +118,7 @@ class Event extends Base {
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SOLVED => $solved,
                 self::DATA_SONG_ID => $result['songId'],
+                self::DATA_CUBE_COUNT => $result['cubeCount'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
                 self::DATA_PLAY_STEPS => $result['steps'],
                 self::DATA_PLAY_TIME => $result['time'],

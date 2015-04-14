@@ -18,6 +18,15 @@ class Game extends Base
         parent::__construct($db);
     }
 
+    public function getDifficultyVariation($gameId, $difficultyId)
+    {
+        return $this->db->table('difficulty_variation')->where('game_id', $gameId)->where('difficulty_id', $difficultyId)->fetch()->value;
+    }
+
+    public function getByName($name)
+    {
+        return $this->getByColumn('name', $name);
+    }
 
     public function getBySong($songId)
     {

@@ -87,7 +87,7 @@ user:
 
 melodicCubes:
     stepCount: "tahů"
-    hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu."
+    hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu. Zvažuj pečlivě každý tah, počítá se přehrávání i posun kostek!"
 
     flash:
         noMarkers: "Tahle písnička ještě není připravená :("
