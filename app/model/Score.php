@@ -88,7 +88,7 @@ class Score extends Base
     {
         $timePenalty = $this->getTimePenalty($time);
 
-        $minSteps = $songCount*2;
+        $minSteps = ($songCount*2)-1;
         $stepsPenalty = round(self::MAX_STEPS_PENALTY - (self::MAX_STEPS_PENALTY / ($steps/$minSteps)));
 
         return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
