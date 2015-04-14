@@ -291,7 +291,6 @@ var Game = $class({
                                 $('.result-record').find('.empty').hide();
                                 $('.personal-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
                                     this.show();
-                                    console.log('show');
                                 });
                             }
 

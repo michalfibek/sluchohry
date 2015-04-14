@@ -101,6 +101,7 @@ class Score extends Base
     public function processGameEndResult(Nette\Security\User $user, array $result)
     {
         $score = 0; // default value - if score evaluation goes wrong
+        $gameId = $this->game->getByColumn('name', $result['gameName']);
 
         if ($result['gameName'] == 'melodicCubes') {
 
@@ -112,18 +113,16 @@ class Score extends Base
 
         }
 
-        $updated = $this->updateScore(
-            $user->getId(),
-            $this->game->getByColumn('name', $result['gameName']),
-            $result['difficulty'],
-            $score);
+        $updated = $this->updateScore($user->getId(), $gameId, $result['difficulty'], $score);
 
-//        $gameRecord = $this->
+        $currentGameRecord = $this->db->table('score')->where('game_id', (string)$gameId)->max('value');
+
+        $gameRecord = (($currentGameRecord == $score) && $updated) ? true : false;
 
         return array(
             'score' => $score,
-            'personalRecord' => $updated,
-            'gameRecord' => false
+            'personalRecord' => (bool)$updated,
+            'gameRecord' => $gameRecord
         );
     }
 

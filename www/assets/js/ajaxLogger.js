@@ -17,8 +17,10 @@ var AjaxLogger = $class({
                 'result': result
             },
             success: function(payload) {
-                if (successCallback != false)
+                if (successCallback != false) {
+                    //console.log(payload);
                     successCallback(payload);
+                }
             }
         });
     }
