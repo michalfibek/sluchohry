@@ -51,14 +51,19 @@ abstract class BaseGamePresenter extends BasePresenter
     public function handleGameEnd(array $result)
     {
         $gameId = $this->game->getByName($result['gameName'])->id;
-        $score = $this->score->processGameEndResult($this->user->getId(), $gameId, $result); // return score to game
-        $this->sendResponse(new Nette\Application\Responses\JsonResponse($score));
 
+        $score = $this->score->processGameEndResult($this->user->getId(), $gameId, $result); // return score to game
+
+        $result['score'] = $score;
         $this->onGameEnd($result);
+
+        $this->sendResponse(new Nette\Application\Responses\JsonResponse($score));
     }
 
     public function handleGameForceEnd(array $result)
     {
+        $result['score'] = 0;
+
         $this->onGameForceEnd($result);
     }
 

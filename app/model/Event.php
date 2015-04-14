@@ -17,6 +17,7 @@ class Event extends Base {
 
     const
         DATA_GAME_NAME = 'game_name',
+        DATA_SCORE = 'score',
         DATA_LOGIN = 'login',
         DATA_LOGOUT = 'logout',
         DATA_PROFILE_SAVED = 'profile_saved',
@@ -117,6 +118,7 @@ class Event extends Base {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SOLVED => $solved,
+                self::DATA_SCORE => $result['score'],
                 self::DATA_SONG_ID => $result['songId'],
                 self::DATA_CUBE_COUNT => $result['cubeCount'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
@@ -127,6 +129,7 @@ class Event extends Base {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SOLVED => $solved,
+                self::DATA_SCORE => $result['score'],
                 self::DATA_SONG_LIST => $result['songList'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
                 self::DATA_PLAY_STEPS => $result['steps'],
@@ -136,6 +139,7 @@ class Event extends Base {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
                 self::DATA_SOLVED => $solved,
+                self::DATA_SCORE => $result['score'],
                 self::DATA_FIRST_LETTER => $result['firstLetter'],
                 self::DATA_NOTE_COUNT => $result['noteCount'],
                 self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
