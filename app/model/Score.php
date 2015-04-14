@@ -86,19 +86,19 @@ class Score extends Base
      */
     private function getTimePenalty($time)
     {
-        $timeConstant = self::MAX_TIME_MSEC/self::MAX_TIME_PENALTY;
-
         if ($time >= self::MAX_TIME_MSEC) return self::MAX_TIME_PENALTY;
 
-        return $time/$timeConstant;
+        $timeConstant = self::MAX_TIME_MSEC/self::MAX_TIME_PENALTY;
+
+        return round($time/$timeConstant);
     }
 
     /**
-     * @param Nette\Security\User $user
+     * @param int $userId
      * @param array $result
      * @return array score result
      */
-    public function processGameEndResult(Nette\Security\User $user, array $result)
+    public function processGameEndResult($userId, array $result)
     {
         $score = 0; // default value - if score evaluation goes wrong
         $gameId = $this->game->getByColumn('name', $result['gameName']);
@@ -113,7 +113,7 @@ class Score extends Base
 
         }
 
-        $updated = $this->updateScore($user->getId(), $gameId, $result['difficulty'], $score);
+        $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score);
 
         $currentGameRecord = $this->db->table('score')->where('game_id', (string)$gameId)->max('value');
 
