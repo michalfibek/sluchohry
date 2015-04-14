@@ -11,9 +11,9 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 {
 	// define cube splits count by difficulty
 	const
-		DIFFICULTY_1_PAIRS = 4,
-		DIFFICULTY_2_PAIRS = 6,
-		DIFFICULTY_3_PAIRS = 11;
+		DIFFICULTY_1_PAIRS = 4, // 4
+		DIFFICULTY_2_PAIRS = 6, // 6
+		DIFFICULTY_3_PAIRS = 11; // 11
 
 	/** @inject @var Model\Song */
 	public $song;

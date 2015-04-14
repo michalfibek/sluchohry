@@ -230,26 +230,39 @@ var Game = $class({
         if (okay == true) {
             scope.timer.stop();
             scope.gameSolved = true;
-            $('.modal-correct').modal('show');
+
             $('.result-steps').find('span').empty().append(scope.cubeClickCount);
             $('.result-time').find('span').empty().append(scope.timer.getTime('sec'));
+            $('.modal-correct').modal('show');
             //$('#modal-correct').modal('show');
             this.logger.sendResult(this.gameEndHandler, this.getResult(), function(payload) {
-                //alert(JSON.stringify(payload, null, 4));
 
-                if (payload['personalRecord'] == true && payload['gameRecord'] == false)
-                    $('.result-record').find('personal-record').removeClass('hidden');
+                if (payload['score'] > 0) {
 
-                if (payload['gameRecord'] == true && payload['personalRecord'] == false)
-                    $('.result-record').find('personal-record').removeClass('hidden');
-
-                if (payload['score'] != false) {
                     //$('.result-score').find('span').empty().append(payload['score']);
                     $('.result-score').find('span').animateNumber(
                         {
                             number: parseInt(payload['score'])
                         },
-                        800
+                        800,
+                        function() { // call after number animation ends
+
+                            if (payload['personalRecord'] == true && payload['gameRecord'] == false) {
+                                $('.result-record').find('.empty').hide();
+                                $('.personal-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
+                                    this.show();
+                                    console.log('show');
+                                });
+                            }
+
+                            if (payload['gameRecord'] == true) {
+                                $('.result-record').find('.empty').hide();
+                                $('.game-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
+                                    this.show();
+                                });
+                            }
+
+                        }
                     )
                 }
             });

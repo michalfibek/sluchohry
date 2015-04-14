@@ -104,6 +104,14 @@ form {
 
 .modal-simple {
 
+  .modal-dialog {
+
+    @media (min-width: @screen-sm-min) {
+      width: 620px;
+    }
+
+  }
+
   .modal-content {
     background-color: @color-sec-1;
     color: #fff;
@@ -155,16 +163,24 @@ form {
     font-size: 1.7em;
   }
 
-  .divider, .result-steps, .result-time {
+  .result-pointers {
     font-size: 0.8em;
-  }
 
-  .divider {
-    display: inline-block;
-    padding: 0 3px;
+    .result-steps, .result-time {
+      padding: 5px 5px;
+      display: block;
+
+      @media (min-width: @screen-sm-min) {
+        padding: 0 5px;
+        display: inline-block;
+      }
+    }
+
   }
 
   .result-time {
+
+
     &:before {
       .fa-inherit();
       content: "\f017";
@@ -173,6 +189,7 @@ form {
   }
 
   .result-steps {
+
     &:before {
       .fa-inherit();
       content: "\f0a6";
@@ -183,12 +200,14 @@ form {
   .result-record {
     display: block;
     font-size: 1em;
-    padding-bottom: 15px;
+    padding-bottom: 5px;
 
     .personal-record {
+      opacity: 0;
 
     }
     .game-record {
+      opacity: 0;
 
     }
   }

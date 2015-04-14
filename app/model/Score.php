@@ -122,7 +122,8 @@ class Score extends Base
 
         return array(
             'score' => $score,
-            'personalRecord' => $updated
+            'personalRecord' => $updated,
+            'gameRecord' => false
         );
     }
 

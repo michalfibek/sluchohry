@@ -27,7 +27,7 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
     {
         parent::startup();
         $this->noteBtoH = true;
-        $this->noteCount = 7;
+        $this->noteCount = 7; // default 7
     }
 
     protected function setAssetsByDifficulty()
@@ -58,7 +58,7 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
             $firstLetter = 'h';
 
         $signList = '+-';
-        for ($i = 0; $i <= $this->noteCount; $i++) {
+        for ($i = 0; $i < $this->noteCount; $i++) {
             $sign = $signList[rand(0,1)];
             $shiftSigns[] = $sign . rand(1,self::MAX_RAND_MULTIPLY)*$this->stepRatio;
         }

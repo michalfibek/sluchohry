@@ -86,7 +86,7 @@ user:
 
 
 melodicCubes:
-    stepCount: "pohybů kostek"
+    stepCount: "tahů"
     hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu."
 
     flash:

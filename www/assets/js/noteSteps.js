@@ -194,9 +194,42 @@ var Game = $class({
         if (okay == true) {
             scope.timer.stop();
             scope.gameSolved = true;
+
+            $('.result-steps').find('span').empty().append(scope.badAttemptCount);
+            $('.result-time').find('span').empty().append(scope.timer.getTime('sec'));
             $('.modal-correct').modal('show');
-            $('.attempt-count').find('span').empty().append(scope.badAttemptCount);
-            this.logger.sendResult(this.gameEndHandler, this.getResult());
+            //$('#modal-correct').modal('show');
+            this.logger.sendResult(this.gameEndHandler, this.getResult(), function(payload) {
+
+                if (payload['score'] > 0) {
+
+                    //$('.result-score').find('span').empty().append(payload['score']);
+                    $('.result-score').find('span').animateNumber(
+                        {
+                            number: parseInt(payload['score'])
+                        },
+                        800,
+                        function() { // call after number animation ends
+
+                            if (payload['personalRecord'] == true && payload['gameRecord'] == false) {
+                                $('.result-record').find('.empty').hide();
+                                $('.personal-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
+                                    this.show();
+                                    console.log('show');
+                                });
+                            }
+
+                            if (payload['gameRecord'] == true) {
+                                $('.result-record').find('.empty').hide();
+                                $('.game-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
+                                    this.show();
+                                });
+                            }
+
+                        }
+                    )
+                }
+            });
         }
     }
 
