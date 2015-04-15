@@ -4,8 +4,8 @@
         {$title}
     </a>
     <div class="score-tab row">
-        <a class="rankings-tab difficulty-{$maxDifficultyKey}" n:href=":Front:Rating: $gameId" title="{_front.rankings.linkTitle}">
-            <i class="fa fa-trophy"></i> {_front.rankings.linkTitle}
+        <a class="rankings-tab difficulty-{$maxDifficultyKey}" n:href=":Front:Rating: $gameId" title="{_front.ratings.linkTitle}">
+            <i class="fa fa-trophy"></i> {_front.ratings.linkTitle}
         </a>
     {foreach $scoreArray as $key => $singleScore}
         <span class="score-single difficulty-{$key} col-xs-4">{$singleScore}</span>

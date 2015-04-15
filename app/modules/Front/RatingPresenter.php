@@ -42,7 +42,7 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
     public function createComponentRatingCharts()
     {
         return new Multiplier(function() {
-            $ratingChart = new Components\Charts\RatingChart($this->user, $this->score, $this->game, $this->userModel);
+            $ratingChart = new Components\Charts\RatingChart($this->user, $this->score, $this->game, $this->userModel, $this->translator);
             $ratingChart->setGameId($this->gameId);
 
             return $ratingChart;

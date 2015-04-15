@@ -60,8 +60,10 @@ game:
         medium: "Klasik"
         hard: "Drsňák"
 
-rankings:
+ratings:
     linkTitle: "Nejlepší hráči"
+    name: "Jméno"
+    score: "Rekord"
 
 user:
     profile: "Profil"

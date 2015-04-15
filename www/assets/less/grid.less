@@ -1,0 +1,106 @@
+
+.grido {
+
+  font-family: @classic-font-family;
+  font-size: 0.9em;
+
+  table, .filter.outer {
+    box-shadow: none;
+  }
+
+  tbody tr td, tfoot tr td {
+    vertical-align: middle;
+  }
+
+  .filter.outer {
+
+    input.text {
+      padding: 13px 5px;
+    }
+
+    select {
+      padding: 3px 5px;
+    }
+  }
+
+  .grid-action-edit {
+    .btn-sm;
+    .btn-primary;
+  }
+
+  .grid-action-delete {
+    .btn-sm;
+    .btn-danger;
+  }
+
+  th.grid-header-id {
+    width: 1%;
+    text-align: right;
+  }
+
+  th.grid-header-duration {
+    width: 2%;
+  }
+
+  .grid-cell-id {
+    text-align: right;
+  }
+  
+  .highlight-row {
+    background-color: darken(@color-ter-1, 10%) !important;
+    color: #fff;
+  }
+}
+
+
+// simple grid - basic grido modification (WIP)
+.simple-grid {
+  font-family: @playful-font-family;
+  font-size: 1.0em;
+
+  thead {
+
+    th {
+      text-align: center;
+      font-size: 1.1em;
+      line-height: 1.8em !important;
+    }
+  }
+
+  table {
+
+  }
+
+  .grid-cell-score {
+    text-align: center;
+  }
+
+}
+
+// grido at half width
+.halfsize-grid {
+
+  .filter.outer {
+    width: 50%;
+
+    .items > span {
+      height: 0em;
+    }
+  }
+
+
+  table {
+    width: 50%;
+  }
+
+}
+
+//
+#group-list .grido {
+  .halfsize-grid;
+
+}
+
+.grid-cell-subitem {
+  display: block;
+}

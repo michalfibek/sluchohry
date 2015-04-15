@@ -2,6 +2,7 @@
 
 namespace App\Components\Charts;
 
+use Kdyby\Translation\Translator;
 use Nette,
     Nette\Application\UI,
     Nette\Security\IAuthorizator,
@@ -38,13 +39,18 @@ class RatingChart extends UI\Control
      * @var Model\User
      */
     private $userModel;
+    /**
+     * @var Translator
+     */
+    private $translator;
 
-    public function __construct(User $user, Model\Score $score, Model\Game $game, Model\User $userModel)
+    public function __construct(User $user, Model\Score $score, Model\Game $game, Model\User $userModel, Translator $translator)
     {
         $this->user = $user;
         $this->score = $score;
         $this->game = $game;
         $this->userModel = $userModel;
+        $this->translator = $translator;
     }
 
     /**
@@ -66,17 +72,17 @@ class RatingChart extends UI\Control
     protected function createComponentRatingChart($name)
     {
         $grid = new Grid($this, $name);
-        $grid->setModel($this->score->getListByGame($this->gameId, $this->difficultyId)->order('value DESC'));
+        $grid->setModel($this->score->getListByGame($this->gameId, $this->difficultyId));
 
 //        $grid->setFilterRenderType(Filter::RENDER_INNER);
         $grid->setTemplateFile(__DIR__.'/simpleGrid.latte');
 
-        $grid->addColumnText('user', 'Name')
-            ->setCustomRender(function($item) {
-                return $this->userModel->getById($item->id)->realname;
-            });
+        $grid->addColumnText('realname', 'front.ratings.name');
+        $grid->addColumnNumber('score', 'front.ratings.score');
 
-        $grid->addColumnNumber('value', 'Score');
+        $grid->setDefaultSort(array('score' => 'DESC'));
+
+        $grid->setTranslator($this->translator);
 
 //        $grid->addColumnDate('update_time', 'Last update')
 //            ->setDateFormat('d.m.Y H:i');
@@ -88,9 +94,13 @@ class RatingChart extends UI\Control
 //                return !$this->user->isAllowed($this->presenter->getName(), 'delete');
 //            });
 
-//        $grid->setRowCallback(function($row, Html $tr) {
-//
-//        }); // TODO color row for current user score
+        $grid->setRowCallback(function ($item, $tr) {
+            if ($item['user_id'] == $this->user->getId())
+                $tr->class[] = 'highlight-row';
+
+            return $tr;
+
+        }); // TODO color row for current user score
 
         return $grid;
     }

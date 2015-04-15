@@ -40,14 +40,7 @@
             </th>
             {foreach $columns as $column}
                 {$column->getHeaderPrototype()->startTag()|noescape}
-                    {if $column->isSortable()}
-                        <a n:if="!$column->getSort()" n:href="sort! [$column->getName() => \Grido\Components\Columns\Column::ORDER_ASC]" class="ajax">{$column->getLabel()|noescape}</a>
-                        <a n:if="$column->getSort() == \Grido\Components\Columns\Column::ORDER_ASC" n:href="sort! [$column->getName() => \Grido\Components\Columns\Column::ORDER_DESC]" class="sort ajax">{$column->getLabel()|noescape}</a>
-                        <a n:if="$column->getSort() == \Grido\Components\Columns\Column::ORDER_DESC" n:href="sort! [$column->getName() => \Grido\Components\Columns\Column::ORDER_ASC]" class="sort ajax">{$column->getLabel()|noescape}</a>
-                        <span></span>
-                    {else}
-                        {$column->getLabel()|noescape}
-                    {/if}
+                    {$column->getLabel()|noescape}
                 {$column->getHeaderPrototype()->endTag()|noescape}
             {/foreach}
         </tr>
