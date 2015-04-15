@@ -177,7 +177,9 @@ var Game = $class({
             scope.evalGame();
         });
 
-        $("#play-cubes").sortable({
+        $('#play-cubes').css('-ms-touch-action', 'none');
+
+        $('#play-cubes').sortable({
             animation: 150,
             onEnd: function(evt) {
                 evt.oldIndex;
@@ -185,6 +187,10 @@ var Game = $class({
                 scope.cubeMoveCount++;
                 scope.song.stop();
                 scope.switchStopBtn();
+                $('#play-cubes').removeClass('active-drag');
+            },
+            onStart: function (evt) {
+                $('#play-cubes').addClass('active-drag');
             }
         });
 
