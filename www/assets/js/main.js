@@ -36,7 +36,7 @@ function is_touch_device() {
 }
 
 if (is_touch_device()) {
-    document.getElementsByTagName("html")[0].className += " touch";
+    document.getElementsByTagName("body")[0].className += "touch";
 }
 
 /**
