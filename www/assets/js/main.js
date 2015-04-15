@@ -1,4 +1,33 @@
 /**
+ * Init outdated browser script
+ */
+//event listener: DOM ready
+function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+        window.onload = func;
+    } else {
+        window.onload = function() {
+            if (oldonload) {
+                oldonload();
+            }
+            func();
+        }
+    }
+}
+//call plugin function after DOM ready
+addLoadEvent(function(){
+    outdatedBrowser({
+        bgColor: '#f25648',
+        color: '#ffffff',
+        lowerThan: 'transform',
+        languagePath: '/assets/vendor/outdated-browser/outdatedbrowser/lang/cz.html'
+    })
+});
+
+
+
+/**
  * Base class definition.
  * @param definition
  * @returns {*}
@@ -59,16 +88,3 @@ $(window).on('resize', centerModals);
     };
 
 })(jQuery);
-
-
-/**
-* Init outdated browser script
-*/
-$( document ).ready(function() {
-    outdatedBrowser({
-        bgColor: '#f25648',
-        color: '#ffffff',
-        lowerThan: 'transform',
-        languagePath: '/assets/vendor/outdated-browser/outdatedbrowser/lang/cz.html'
-    })
-})
