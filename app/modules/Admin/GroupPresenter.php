@@ -45,7 +45,7 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid->setModel($this->group->getAll());
 
 		$grid->setEditableColumns();
-		$grid->setTemplateFile(__DIR__.'/templates/components/simpleGrid.latte');
+//		$grid->setTemplateFile(__DIR__.'/templates/components/simpleGrid.latte');
 
 //		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_OUTER);
 

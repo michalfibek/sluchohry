@@ -18,6 +18,8 @@ class Acl extends Permission
 
 		$this->addResource('Front:Default');
 		$this->addResource('Front:Profile');
+		$this->addResource('Front:Rating');
+
 		$this->addResource('Front:Game:MelodicCubes');
 		$this->addResource('Front:Game:Pexeso');
 		$this->addResource('Front:Game:NoteSteps');
@@ -38,6 +40,11 @@ class Acl extends Permission
 			'Front:Game:MelodicCubes',
 			'Front:Game:Pexeso',
 			'Front:Game:NoteSteps'
+		));
+		$this->allow('guest', array(
+			'Front:Rating'
+		), array(
+			'default'
 		));
 
 

@@ -50,6 +50,9 @@ services:
 	userProfileFactory:
 		implement: App\Components\IUserProfileFactory
 
+	ratingChartFactory:
+		implement: App\Components\Charts\IRatingChartFactory
+
 	- App\Model\Avatar(%avatar.saveDir%)
 	- App\Model\Event
 	- App\Model\Game

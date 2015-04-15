@@ -61,6 +61,11 @@ class Score extends Base
         return $return;
     }
 
+    public function getListByGame($gameId, $difficultyId)
+    {
+        return $this->db->table($this->tableName)->where('game_id', $gameId)->where('difficulty_id', $difficultyId);
+    }
+
     /**
      * @param $userId
      * @param $gameId
