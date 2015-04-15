@@ -20,7 +20,6 @@ abstract class Base extends Nette\Object
         $this->tableName = $this->tableNameByClass(get_class($this));
     }
 
-
     /**
      * Gets table name by class
      * @param string $className

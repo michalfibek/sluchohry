@@ -37,41 +37,40 @@
 		{*</header>*}
 
 		<ul id="game-list">
+
 			<li>
-				<a id="game-melodic-cubes" class="game-select" n:href=":Front:Game:MelodicCubes:"><i class="fa fa-th-large"></i>{_front.game.melodicCubes}</a>
-				<div class="score-tab row">
-					<a class="rankings-tab difficulty-1" href="#" title="{_front.rankings.linkTitle}">
-						<i class="fa fa-bar-chart"></i> {_front.rankings.linkTitle}
-					</a>
-				{foreach $scoreMelodicCubes as $key => $singleScore}
-					<span class="score-single difficulty-{$key} col-sm-4">{$singleScore}</span>
-				{/foreach}
-				</div>
+				{include 'components/gameSelectBox.latte',
+
+					url => ':Front:Game:MelodicCubes:',
+					title => $template->translate('front.game.melodicCubes'),
+					className => 'melodic-cubes',
+					maxDifficultyKey => $melodicCubesMaxdiffKey,
+					scoreArray => $scoreMelodicCubes
+				}
 			</li>
 
 			<li>
-				<a id="game-pexeso" class="game-select" n:href=":Front:Game:Pexeso:"><i class="fa fa-th-large"></i>{_front.game.pexeso}</a>
-				<div class="score-tab row">
-					<a class="rankings-tab difficulty-3" href="#" title="{_front.rankings.linkTitle}">
-						<i class="fa fa-bar-chart"></i> {_front.rankings.linkTitle}
-					</a>
-				{foreach $scorePexeso as $key => $singleScore}
-					<span class="score-single difficulty-{$key} col-sm-4">{$singleScore}</span>
-				{/foreach}
-				</div>
+				{include 'components/gameSelectBox.latte',
+
+					url => ':Front:Game:Pexeso:',
+					title => $template->translate('front.game.pexeso'),
+					className => 'pexeso',
+					maxDifficultyKey => $pexesoMaxdiffKey,
+					scoreArray => $scorePexeso
+				}
 			</li>
 
 			<li>
-				<a id="game-note-steps" class="game-select" n:href=":Front:Game:NoteSteps:"><i class="fa fa-th-large"></i>{_front.game.noteSteps}</a>
-				<div class="score-tab row">
-					<a class="rankings-tab difficulty-2" href="#" title="{_front.rankings.linkTitle}">
-						<i class="fa fa-bar-chart"></i> {_front.rankings.linkTitle}
-					</a>
-				{foreach $scoreNoteSteps as $key => $singleScore}
-					<span class="score-single difficulty-{$key} col-sm-4">{$singleScore}</span>
-				{/foreach}
-				</div>
+				{include 'components/gameSelectBox.latte',
+
+					url => ':Front:Game:NoteSteps:',
+					title => $template->translate('front.game.noteSteps'),
+					className => 'note-steps',
+					maxDifficultyKey => $noteStepsMaxdiffKey,
+					scoreArray => $scoreNoteSteps
+				}
 			</li>
+
 		</ul>
 
 		{include 'dialogs/difficulty.latte'}

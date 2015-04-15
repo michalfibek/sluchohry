@@ -2,7 +2,8 @@
 namespace App\Module\Front\Presenters;
 
 use Nette,
-	App\Model;
+	App\Model,
+	App\Utils\Utils;
 use Tracy\Debugger;
 
 /**
@@ -44,12 +45,15 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 			$scoreMelodicCubes = $this->score->getAllByUser($this->user->getId(), 1, true);
 			$this->template->scoreMelodicCubes = $scoreMelodicCubes;
+			$this->template->melodicCubesMaxdiffKey = Utils::arrayMaxWithIndex($scoreMelodicCubes)['i'];
 
 			$scorePexeso = $this->score->getAllByUser($this->user->getId(), 2, true);
 			$this->template->scorePexeso = $scorePexeso;
+			$this->template->pexesoMaxdiffKey = Utils::arrayMaxWithIndex($scorePexeso)['i'];
 
 			$scoreNoteSteps = $this->score->getAllByUser($this->user->getId(), 3, true);
 			$this->template->scoreNoteSteps = $scoreNoteSteps;
+			$this->template->noteStepsMaxdiffKey = Utils::arrayMaxWithIndex($scoreNoteSteps)['i'];
 		}
 
 	}

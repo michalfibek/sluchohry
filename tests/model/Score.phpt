@@ -74,11 +74,11 @@ class ScoreTest extends Tester\TestCase
 //			),
 			array(
 				array(
-					'gameName' => 'melodicCubes',
+					'gameName' => 'pexeso',
 					'difficulty' => 1,
-					'cubeCount' => '9',
-					'time' => 2*1000,
-					'steps' => 1
+					'songList' => '17,22,25,30',
+					'time' => 1520,
+					'steps' => 7
 				)
 			),
 			array(
@@ -86,7 +86,7 @@ class ScoreTest extends Tester\TestCase
 					'gameName' => 'melodicCubes',
 					'difficulty' => 2,
 					'cubeCount' => '6',
-					'time' => 2*1000,
+					'time' => 20*1000,
 					'steps' => 12
 				)
 			),
