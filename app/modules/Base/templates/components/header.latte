@@ -1,0 +1,52 @@
+<header id="main-header">
+
+		<div class="container">
+
+			<div id="header-collapsed" class="row">
+
+				<div class="col-xs-8">
+					<a class="navbar-toggle collapsed" n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
+				</div>
+
+				<div class="col-xs-4">
+					<a href="#" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-header"><i class="fa fa-bars"></i></a>
+				</div>
+
+			</div>
+
+			<div id="site-header" class="collapse navbar-collapse">
+
+				<div class="row row-no-padding">
+
+					<div id="site-head-title" class="col-md-9">
+
+						<div class="col-md-4">
+							<a class="hidden-xs" n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
+
+							{if $user->isAllowed('Admin:Default', 'default')}
+							<div id="admin-bar">
+								<a n:href=":Admin:Default:"><i class="fa fa-tasks"></i> {_front.homepage.admin}</a>
+							</div>
+							{/if}
+
+						</div>
+					</div>
+
+					<div id="user-profile" class="col-md-3">
+
+						<a n:href=":Front:Default:logout" id="user-logout">
+							<i class="fa fa-sign-out"></i> {_front.auth.logout}
+						</a>
+
+						<a n:href=":Front:Profile:" id="user-profile-edit">
+							<i class="fa fa-user"></i> {$user->identity->username} {if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
+						</a>
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</header>

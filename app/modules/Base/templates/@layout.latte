@@ -14,6 +14,7 @@
 	{ifset $initGrid}<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">{/ifset}
 	<link rel="stylesheet" href="{$basePath}/style.css">
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">
 	{/block}
 	<link rel="shortcut icon" href="{$basePath}/favicon.ico?v=1.0">
 	<link rel="apple-touch-icon" href="{$basePath}/apple-touch-icon.png?v=1.0">
@@ -26,59 +27,9 @@
 <body>
 
 	{if $user->loggedIn}
-	<header id="user-bar">
-
-		<div class="container">
-
-			<div id="header-collapsed" class="row">
-
-				<div class="col-xs-8">
-					<a class="navbar-toggle collapsed" n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
-				</div>
-
-				<div class="col-xs-4">
-					<a href="#" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-header"><i class="fa fa-bars"></i></a>
-				</div>
-
-			</div>
-
-			<div id="site-header" class="collapse navbar-collapse">
-
-				<div class="row row-no-padding">
-
-					<div id="site-head-title" class="col-md-9">
-
-						<div class="col-md-4">
-							<a class="hidden-xs" n:href=":Front:Default:"><h1>{_front.homepage.sluchohry}</h1></a>
-
-							{if $user->isAllowed('Admin:Default', 'default')}
-							<div id="admin-bar">
-								<a n:href=":Admin:Default:"><i class="fa fa-tasks"></i> {_front.homepage.admin}</a>
-							</div>
-							{/if}
-
-						</div>
-					</div>
-
-					<div id="user-profile" class="col-md-3">
-
-						<a n:href=":Front:Default:logout" id="user-logout">
-							<i class="fa fa-sign-out"></i> {_front.auth.logout}
-						</a>
-
-						<a n:href=":Front:Profile:" id="user-profile-edit">
-							<i class="fa fa-user"></i> {$user->identity->username} {if strlen($user->identity->realname)} ({$user->identity->realname}){/if}
-						</a>
-
-					</div>
-
-				</div>
-			</div>
-
-		</div>
-
-	</header>
+	{include 'components/header.latte'}
 	{/if}
+
 	<div class="container">
 	{include 'flashMessage.latte'}
 	</div>
@@ -87,7 +38,14 @@
 		{include content}
 	</main>
 
+	{if $user->loggedIn}
+	{include 'components/footer.latte'}
+	{/if}
+
+	<div id="outdated"></div>
+
 	{block scripts}
+	<script src="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
     <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
 	<script src="{$basePath}/assets/vendor/jquery.transit/jquery.transit.js"></script>
 {*	 <script src="{$basePath}/assets/vendor/jquery-ui/jquery-ui.js"></script> *} {* TODO - include only necessary JQ UI components *}

@@ -59,3 +59,16 @@ $(window).on('resize', centerModals);
     };
 
 })(jQuery);
+
+
+/**
+* Init outdated browser script
+*/
+$( document ).ready(function() {
+    outdatedBrowser({
+        bgColor: '#f25648',
+        color: '#ffffff',
+        lowerThan: 'transform',
+        languagePath: '/assets/vendor/outdated-browser/outdatedbrowser/lang/cz.html'
+    })
+})
