@@ -11,15 +11,19 @@ class User extends Base
 {
     public function insert($data)
     {
-        if (isset($data['group_id']))
-        {
-            $this->addGroupsToUser($id, $data['group_id']);
+        if (isset($data['group_id'])) {
+            $groupId = $data['group_id'];
             unset($data['group_id']);
         }
 
+
         $data['password'] = Passwords::hash($data['password']);
 
-        return parent::insert($data);
+        $insert = parent::insert($data);
+
+        if (isset($groupId))
+            $this->addGroupsToUser($insert->id, $groupId);
+        return $insert;
     }
 
     /**
