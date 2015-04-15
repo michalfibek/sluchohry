@@ -133,7 +133,8 @@ class UserProfile extends UI\Control
 
         if ($this->userRow) {
             $form->setDefaults($this->userRow);
-            $form['group_id']->setDefaultValue($this->userModel->getUserGroups($this->userId)->fetchPairs(NULL, 'group_id'));
+            if ($this->adminMode)
+                $form['group_id']->setDefaultValue($this->userModel->getUserGroups($this->userId)->fetchPairs(NULL, 'group_id'));
         }
 
         $form->addSubmit('save');
