@@ -75,7 +75,7 @@ class Score extends Base
     public function getTopThree($gameId)
     {
         $i = 1;
-        foreach ($this->db->table($this->tableName)->where('game_id', $gameId)->order('value DESC')->limit('3') as $s) {
+        foreach ($this->db->table($this->tableName)->where('game_id', $gameId)->group('user_id')->select('*, SUM(value) AS value')->order('value DESC')->limit('3') as $s) {
             $topPlayers[$i]['user_id'] = $s->ref('user')->id;
             $topPlayers[$i]['realname'] = $s->ref('user')->realname;
             $topPlayers[$i]['avatar_filename'] = $s->ref('user')->ref('avatar')->filename;

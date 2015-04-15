@@ -10,7 +10,7 @@
         <div class="col-xs-4 pos-2">
         {ifset $topThree[2]}
             <div class="top-user-info">
-                <div class="name">{$topThree[2]['realname']|truncate:14}</div>
+                <div class="name">{$topThree[2]['realname']|truncate:17}</div>
                 <div class="points">{$topThree[2]['score']} {_front.ratings.points}</div>
             </div>
             <img class="user-avatar" src="{$avatarDir}/{$topThree[2]['avatar_filename']}.svg">

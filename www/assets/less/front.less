@@ -220,25 +220,50 @@ FRONT: applies only to front module
 }
 
 .top-three-podium {
-  width: 500px;
+  width: 300px;
   margin: 0 auto 30px auto;
   text-align: center;
-  font-size: 1.3em;
+  font-size: 1.0em;
+
+  @media (min-width: @screen-sm-min) {
+    width: 500px;
+    font-size: 1.3em;
+  }
+
 
   .pos-1 {
-    top: 16px;
+    top: 9px;
+
+    @media (min-width: @screen-sm-min) {
+      top: 16px;
+    }
+
   }
 
   .pos-2 {
-    top: 64px;
+    top: 38px;
+
+    @media (min-width: @screen-sm-min) {
+      top: 64px;
+    }
+
   }
 
   .pos-3 {
-    top: 83px;
+    top: 50px;
+
+    @media (min-width: @screen-sm-min) {
+      top: 83px;
+    }
+
   }
 
   .top-user-info {
-    margin: 10px 0;
+    margin: 10px -15px;
+
+    @media (min-width: @screen-sm-min) {
+      margin: 10px -10px;
+    }
   }
 
   .user-avatar {
