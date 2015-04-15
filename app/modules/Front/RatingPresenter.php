@@ -25,9 +25,6 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
     /** @inject @var Model\User */
     public $userModel;
 
-    /** @inject @var Components\Charts\IRatingChartFactory */
-    public $ratingChart;
-
     private $gameId;
 
 
@@ -41,44 +38,16 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     }
 
-    protected function createComponentRatingChartEasy()
+    public function createComponentRatingCharts()
     {
-        $chart = $this->ratingChart->create();
-        $chart->setDifficultyId(1);
-        $chart->setGameId($this->gameId);
+        return new Multiplier(function() {
+            $ratingChart = new Components\Charts\RatingChart($this->user, $this->score, $this->game, $this->userModel);
+            $ratingChart->setGameId($this->gameId);
 
-        return $chart;
+            return $ratingChart;
+        });
+
     }
-
-    protected function createComponentRatingChartMedium()
-    {
-        $chart = $this->ratingChart->create();
-        $chart->setDifficultyId(2);
-        $chart->setGameId($this->gameId);
-
-        return $chart;
-    }
-
-    protected function createComponentRatingChartHard()
-    {
-        $chart = $this->ratingChart->create();
-        $chart->setDifficultyId(3);
-        $chart->setGameId($this->gameId);
-
-        return $chart;
-    }
-
-
-//    protected function createComponentChartContainer()
-//    {
-//        $service = $this->ratingChart;
-//        return new Multiplier(function ($id) use ($service) {
-//            $control = new RatingChart();
-//            $chart->setDifficultyId(1);
-//            $chart->setGameId($this->gameId);
-//            return $control;
-//        });
-//    }
 
     public function handleDelete($id)
     {
