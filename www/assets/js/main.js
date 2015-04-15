@@ -26,6 +26,18 @@ addLoadEvent(function(){
 });
 
 
+/**
+ * Detect touch device
+ */
+function is_touch_device() {
+    return (('ontouchstart' in window)
+    || (navigator.MaxTouchPoints > 0)
+    || (navigator.msMaxTouchPoints > 0));
+}
+
+if (is_touch_device()) {
+    document.getElementsByTagName("html")[0].className += " touch";
+}
 
 /**
  * Base class definition.
