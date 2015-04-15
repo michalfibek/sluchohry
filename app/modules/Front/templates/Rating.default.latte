@@ -2,6 +2,19 @@
 
 {block content}
 
-{control ratingCharts-easy 1}
-{control ratingCharts-medium 2}
-{control ratingCharts-hard 3}
+<div id="page-rating-charts" class="container">
+    <h1>Nejlepší hráči - {$template->translate('front.game.'.$gameName)}</h1>
+
+    <div class="col-sm-4">
+        <h2>{_front.game.difficulty.easy}</h2>
+        {control ratingCharts-easy 1}
+    </div>
+    <div class="col-sm-4">
+        <h2>{_front.game.difficulty.medium}</h2>
+        {control ratingCharts-medium 2}
+    </div>
+    <div class="col-sm-4">
+        <h2>{_front.game.difficulty.hard}</h2>
+        {control ratingCharts-hard 3}
+    </div>
+</div>

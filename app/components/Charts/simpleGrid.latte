@@ -24,22 +24,6 @@
     $form['count']->controlPrototype->class[] = 'form-control';
     $operation ? $form['operations']['operations']->controlPrototype->class[] = 'form-control' : NULL}
 
-    {foreach $filters as $filter}
-        {?$filter->controlPrototype->class[] = 'form-control'}
-    {/foreach}
-
-    {foreach $actions as $action}
-        {?
-            $element = $action->getElementPrototype();
-            $element->class[] = 'btn btn-default btn-xs btn-mini';
-        }
-        {if $icon = $action->getOption('icon')}
-        {?
-            $element->setText(' ' . $action->getLabel());
-            $element->insert(0, \Nette\Utils\Html::el('i')->setClass(array("glyphicon glyphicon-$icon fa fa-$icon icon-$icon")));
-        }
-        {/if}
-    {/foreach}
 {if $form->getErrors()}
 <ul n:foreach="$form->getErrors() as $error">
     <li>{$error}</li>
@@ -66,63 +50,8 @@
                     {/if}
                 {$column->getHeaderPrototype()->endTag()|noescape}
             {/foreach}
-            <th n:if="$showActionsColumn" class="actions center">
-                {_'Grido.Actions'}
-            </th>
-        </tr>
-        <tr n:if="$filterRenderType == \Grido\Components\Filters\Filter::RENDER_INNER && $filters" class="filter inner">
-            {foreach $columns as $column}
-                {if $column->hasFilter()}
-                    {$control->getFilter($column->getName())->getWrapperPrototype()->startTag()|noescape}
-                    {formContainer filters}
-                        {input $column->getName()}
-                    {/formContainer}
-                    {$control->getFilter($column->getName())->getWrapperPrototype()->endTag()|noescape}
-                {elseif $column->headerPrototype->rowspan != 2}
-                    <th>&nbsp;</th>
-                {/if}
-            {/foreach}
-
-            <th n:if="$filters" class="buttons" n:block="action">
-                {formContainer buttons}
-                    {input search}
-                {/formContainer}
-            </th>
         </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <td colspan="{=$showActionsColumn ? $columnCount + 1 : $columnCount}">
-                <span n:if="$operation" n:block="operations" class="operations"  title="{_'Grido.SelectSomeRow'}">
-                    {$form[\Grido\Components\Operation::ID][\Grido\Components\Operation::ID]->control}
-                    {?$form[\Grido\Grid::BUTTONS][\Grido\Components\Operation::ID]->controlPrototype->class[] = 'hide'}
-                    {$form[\Grido\Grid::BUTTONS][\Grido\Components\Operation::ID]->control}
-                </span>
-                <span n:if="$paginator->steps && $paginator->pageCount > 1" n:block="paginator" class="paginator">
-                    {if $control->page == 1}
-                        <span class="btn btn-default btn-xs btn-mini disabled" n:href="page! page => $paginator->getPage() - 1"><i class="glyphicon glyphicon-arrow-left fa fa-arrow-left icon-arrow-left"></i> {_'Grido.Previous'}</span>
-                    {else}
-                        <a class="btn btn-default btn-xs btn-mini ajax" n:href="page! page => $paginator->getPage() - 1"><i class="glyphicon glyphicon-arrow-left fa fa-arrow-left icon-arrow-left"></i> {_'Grido.Previous'}</a>
-                    {/if}
-                    {var $steps = $paginator->getSteps()}
-                    {foreach $steps as $step}
-                        {if $step == $control->page}
-                            <span class="btn btn-default btn-xs btn-mini disabled">{$step}</span>
-                        {else}
-                            <a class="btn btn-default btn-xs btn-mini ajax" n:href="page! page => $step">{$step}</a>
-                        {/if}
-                        <a n:if="$iterator->nextValue > $step + 1" class="prompt" data-grido-prompt="{_'Grido.EnterPage'}" data-grido-link="{link page! page => 0}">...</a>
-                        {var $prevStep = $step}
-                    {/foreach}
-                    {if $control->page == $paginator->getPageCount()}
-                        <span class="btn btn-default btn-xs btn-mini disabled" n:href="page! page => $paginator->getPage() + 1">{_'Grido.Next'} <i class="glyphicon glyphicon-arrow-right fa fa-arrow-right icon-arrow-right"></i></span>
-                    {else}
-                        <a class="btn btn-default btn-xs btn-mini ajax" n:href="page! page => $paginator->getPage() + 1">{_'Grido.Next'} <i class="glyphicon glyphicon-arrow-right fa fa-arrow-right icon-arrow-right"></i></a>
-                    {/if}
-                </span>
-            </td>
-        </tr>
-    </tfoot>
     <tbody>
         {var $propertyAccessor = $control->getPropertyAccessor()}
         {foreach $data as $row}
@@ -160,7 +89,6 @@
                 </td>
             {$tr->endTag()|noescape}
         {/foreach}
-        <tr n:if="!$control->getCount()"><td colspan="{=$showActionsColumn ? $columnCount + 1 : $columnCount}" class="no-results">{_'Grido.NoResults'}</td></tr>
     </tbody>
 {$control->getTablePrototype()->endTag()|noescape}
 {/block}

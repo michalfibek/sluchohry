@@ -35,6 +35,7 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     public function	renderDefault()
     {
+        $this->template->gameName = $this->game->getById($this->gameId)->name;
 
     }
 

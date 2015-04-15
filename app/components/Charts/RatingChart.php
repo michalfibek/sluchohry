@@ -66,23 +66,20 @@ class RatingChart extends UI\Control
     protected function createComponentRatingChart($name)
     {
         $grid = new Grid($this, $name);
-        $grid->setModel($this->score->getListByGame($this->gameId, $this->difficultyId));
+        $grid->setModel($this->score->getListByGame($this->gameId, $this->difficultyId)->order('value DESC'));
 
 //        $grid->setFilterRenderType(Filter::RENDER_INNER);
         $grid->setTemplateFile(__DIR__.'/simpleGrid.latte');
 
         $grid->addColumnText('user', 'Name')
-            ->setSortable()
             ->setCustomRender(function($item) {
                 return $this->userModel->getById($item->id)->realname;
             });
 
-        $grid->addColumnNumber('value', 'Score')
-            ->setSortable();
+        $grid->addColumnNumber('value', 'Score');
 
-        $grid->addColumnDate('update_time', 'Last update')
-            ->setDateFormat('d.m.Y H:i')
-            ->setSortable();
+//        $grid->addColumnDate('update_time', 'Last update')
+//            ->setDateFormat('d.m.Y H:i');
 
 //        $grid->addActionHref('delete', 'Delete', 'delete!')
 //            ->setIcon('fa fa-remove')
@@ -94,10 +91,6 @@ class RatingChart extends UI\Control
 //        $grid->setRowCallback(function($row, Html $tr) {
 //
 //        }); // TODO color row for current user score
-
-        $grid->setDefaultSort(array(
-            'value' => 'DESC'
-        ));
 
         return $grid;
     }
