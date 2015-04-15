@@ -1,14 +1,14 @@
 <div class="game-select-box">
     <a id="game-{$className}" class="game-select" n:href="{$url}">
-        <i class="fa fa-th-large"></i>
+        <i class="fa {$faIcon}"></i>
         {$title}
     </a>
     <div class="score-tab row">
         <a class="rankings-tab difficulty-{$maxDifficultyKey}" href="#" title="{_front.rankings.linkTitle}">
-            <i class="fa fa-bar-chart"></i> {_front.rankings.linkTitle}
+            <i class="fa fa-trophy"></i> {_front.rankings.linkTitle}
         </a>
     {foreach $scoreArray as $key => $singleScore}
-        <span class="score-single difficulty-{$key} col-sm-4">{$singleScore}</span>
+        <span class="score-single difficulty-{$key} col-xs-4">{$singleScore}</span>
     {/foreach}
     </div>
 </div>

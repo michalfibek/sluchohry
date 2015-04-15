@@ -1,4 +1,4 @@
-$( ".game-select" ).click(function( event ) {
+$( '.game-select' ).click(function( event ) {
     event.preventDefault();
     var link = $(this).attr('href');
 

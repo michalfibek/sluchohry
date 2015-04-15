@@ -2,6 +2,10 @@
 GENERAL
 */
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: 'Francois One', sans-serif;
   background-color: @color-light;
@@ -317,6 +321,7 @@ form {
 
 header#main-header {
   background-color: @color-prim-2;
+  background-image: @background-stripes-transparent;
   display: block;
   color: #fff;
   padding: 15px;
@@ -385,6 +390,45 @@ header#main-header {
       }
     }
 
+  }
+}
+
+.main {
+  margin-bottom: 40px;
+}
+
+.page-wrap {
+  height: auto;
+  min-height: 100%;
+
+  &:after {
+    content: "";
+    display: block;
+    height: @footer-height;
+  }
+}
+
+#main-footer {
+  position: relative;
+  width: 100%;
+  height: @footer-height;
+  overflow: hidden;
+  margin-top: -@footer-height;
+  padding: 10px 0;
+  background-color: @color-prim-2;
+  background-image: @background-stripes-transparent;
+  color: #FCEBEB;
+  font-size: 0.9em;
+  
+  a {
+    color: #FCEBEB;
+  }
+
+  h1 {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 2em;
+    font-weight: bold;
   }
 }
 

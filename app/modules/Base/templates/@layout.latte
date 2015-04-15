@@ -26,17 +26,21 @@
 
 <body>
 
-	{if $user->loggedIn}
-	{include 'components/header.latte'}
-	{/if}
+	<div class="page-wrap">
 
-	<div class="container">
-	{include 'flashMessage.latte'}
+		{if $user->loggedIn}
+		{include 'components/header.latte'}
+		{/if}
+
+		<div class="container">
+		{include 'flashMessage.latte'}
+		</div>
+
+		<main class="main container">
+			{include content}
+		</main>
+
 	</div>
-
-	<main class="container">
-		{include content}
-	</main>
 
 	{if $user->loggedIn}
 	{include 'components/footer.latte'}

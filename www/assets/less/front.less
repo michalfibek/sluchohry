@@ -43,10 +43,12 @@ FRONT: applies only to front module
       margin: 20px 0 0 0;
       font-size: 26px;
       background-color: @color-sec-1;
+      background-image: @background-stripes-transparent;
       border-color: @color-sec-1-border;
 
       &:hover {
         background-color: @color-sec-1-border;
+        background-image: @background-stripes-transparent;
       }
 
     }
@@ -79,7 +81,7 @@ FRONT: applies only to front module
       .btn-default();
       position: relative;
       z-index: 3;
-      font-size: 1.5em;
+      font-size: 1.8em;
       margin: 10px;
       display: block;
       width: 230px;
@@ -93,40 +95,26 @@ FRONT: applies only to front module
 
       i.fa {
         display: block;
-        font-size: 4em;
+        font-size: 3em;
         line-height: 1.4em;
       }
 
       &#game-melodic-cubes {
-        background:
-          linear-gradient(
-                  rgba(8, 142, 255, 0.72),
-                  rgba(8, 142, 255, 0.72)
-          ),
-          url('/assets/images/game-preview/melodic_cubes.jpg');
-        background-position: -31px -96px;
-        background-size: 140%;
+        background-color: #FF6100;
         color: #fff;
-
-        @media (min-width: @screen-sm-min) {
-          background-position: -42px -161px;
-        }
+        background-image: @background-stripes-transparent;
       }
 
       &#game-pexeso {
-        background:
-          linear-gradient(
-                  rgba(255, 102, 8, 0.72),
-                  rgba(255, 102, 8, 0.72)
-          ),
-          url('/assets/images/game-preview/pexeso.jpg');
-        background-position: -38px -85px;
-        background-size: 140%;
+        background-color: #FF6100;
         color: #fff;
+        background-image: @background-stripes-transparent;
+      }
 
-        @media (min-width: @screen-sm-min) {
-          background-position: -42px -161px;
-        }
+      &#game-note-steps {
+        background-color: #FF6100;
+        color: #fff;
+        background-image: @background-stripes-transparent;
       }
 
       &:hover {
@@ -137,8 +125,23 @@ FRONT: applies only to front module
   }
 
   .score-tab {
+    position: relative;
     margin: -11px 10px;
+    padding-bottom: 30px;
     text-align: center;
+    transition: all 0.3s ease;
+
+    @media (min-width: @screen-sm-min) {
+      top: -50px;
+    }
+
+    &:hover {
+      transition: all 0.2s ease;
+
+      @media (min-width: @screen-sm-min) {
+        top: 0;
+      }
+    }
 
     .score-single {
       padding: 10px 0;
