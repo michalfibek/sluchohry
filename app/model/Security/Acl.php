@@ -59,17 +59,17 @@ class Acl extends Permission
 //			'Front:Game:NoteSteps'
 //		));
 
-		/**
-		 * Teacher - access only to basic listing of users, etc. Defined by privilege (action)
-		 * fine grained permission control.
-		 */
-		$this->allow('teacher', array(
-			'Admin:Default',
-			'Admin:User',
-			'Admin:Group'
-		), array(
-			'default'
-		));
+//		/**
+//		 * Teacher - access only to basic listing of users, etc. Defined by privilege (action)
+//		 * fine grained permission control.
+//		 */
+//		$this->allow('teacher', array(
+//			'Admin:Default',
+//			'Admin:User',
+//			'Admin:Group'
+//		), array(
+//			'default'
+//		));
 
 		/**
 		 * Editor - access to everything defined here, no special exceptions in privileges/actions.
