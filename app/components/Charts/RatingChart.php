@@ -109,7 +109,7 @@ class RatingChart extends UI\Control
     {
         if ($difficultyId) $this->difficultyId = $difficultyId;
         $this->template->difficulty = $this->difficultyId;
-        $this->template->setFile(__DIR__ . '/ratingChart.latte');
+        $this->template->setFile(__DIR__ . '/RatingChart.latte');
         $this->template->render();
     }
 
