@@ -5,25 +5,60 @@
 <div id="page-rating" class="container">
     <h1>Nejlepší hráči - {$template->translate('front.game.'.$gameName)}</h1>
 
-    <div class="col-sm-4">
-        <h2>
-            <span class="difficulty-sign difficulty-easy"><i class=""></i></span>
-            {_front.game.difficulty.easy}
-        </h2>
-        {control ratingCharts-easy 1}
+    <div class="row top-three-podium">
+
+        <div class="col-xs-4 pos-2" n:ifset="$topThree[2]">
+            <div class="top-user-info">
+                <span class="name">{$topThree[2]['realname']}</span>
+                <span class="points">{$topThree[2]['score']} {_front.ratings.points}</span>
+            </div>
+            <img class="user-avatar" src="{$avatarDir}/{$topThree[2]['avatar_filename']}.svg">
+        </div>
+
+        <div class="col-xs-4 pos-1" n:ifset="$topThree[1]">
+            <div class="top-user-info">
+                <span class="name">{$topThree[1]['realname']}</span>
+                <span class="points">{$topThree[1]['score']} {_front.ratings.points}</span>
+            </div>
+            <img class="user-avatar" src="{$avatarDir}/{$topThree[1]['avatar_filename']}.svg">
+        </div>
+
+        <div class="col-xs-4 pos-3" n:ifset="$topThree[3]">
+            <div class="top-user-info">
+                <span class="name">{$topThree[3]['realname']}</span>
+                <span class="points">{$topThree[3]['score']} {_front.ratings.points}</span>
+            </div>
+            <img class="user-avatar" src="{$avatarDir}/{$topThree[3]['avatar_filename']}.svg">
+        </div>
+
+        <div class="podium-image">
+            {$podiumImage|noescape}
+        </div>
     </div>
-    <div class="col-sm-4">
-        <h2>
-            <span class="difficulty-sign difficulty-medium"><i class=""></i></span>
-            {_front.game.difficulty.medium}
-        </h2>
-        {control ratingCharts-medium 2}
-    </div>
-    <div class="col-sm-4">
-        <h2>
-            <span class="difficulty-sign difficulty-hard"><i class=""></i></span>
-            {_front.game.difficulty.hard}
-        </h2>
-        {control ratingCharts-hard 3}
+
+    <div class="container">
+
+        <div class="col-sm-4">
+            <h2>
+                <span class="difficulty-sign difficulty-easy"><i class=""></i></span>
+                {_front.game.difficulty.easy}
+            </h2>
+            {control ratingCharts-easy 1}
+        </div>
+        <div class="col-sm-4">
+            <h2>
+                <span class="difficulty-sign difficulty-medium"><i class=""></i></span>
+                {_front.game.difficulty.medium}
+            </h2>
+            {control ratingCharts-medium 2}
+        </div>
+        <div class="col-sm-4">
+            <h2>
+                <span class="difficulty-sign difficulty-hard"><i class=""></i></span>
+                {_front.game.difficulty.hard}
+            </h2>
+            {control ratingCharts-hard 3}
+        </div>
+
     </div>
 </div>

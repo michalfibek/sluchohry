@@ -27,15 +27,20 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     private $gameId;
 
+    private $topThree;
+
 
     public function actionDefault($id)
     {
         $this->gameId = $id;
+        $this->topThree = $this->score->getTopThree($this->gameId);
     }
 
     public function	renderDefault()
     {
         $this->template->gameName = $this->game->getById($this->gameId)->name;
+        $this->template->topThree = $this->topThree;
+        $this->template->podiumImage = file_get_contents('nette.safe://'.WWW_DIR.'/assets/images/podium.svg');
 
     }
 
