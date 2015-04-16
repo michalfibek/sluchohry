@@ -386,22 +386,38 @@ header#main-header {
 
   #user-profile {
 //    float: right;
-    font-size: 1.3em;
+    font-size: 1.2em;
     margin: 5px 0;
 
+    @media (min-width: @screen-sm-min) {
+      padding-left: 22px !important;
+      font-size: 1.3em;
+    }
+
     a#user-logout {
-      display: block;
+      display: inline-block;
       font-size: 0.9em;
       color: #e8d9cb;
+
+      @media (min-width: @screen-sm-min) {
+        display: block;
+      }
+
       &:hover {
         color: #fff;
       }
     }
 
     a#user-profile-edit {
-      display: block;
-      margin: 10px 0 0 0;
+      display: inline-block;
+      margin: 0 4px;
       color: #e8d9cb;
+
+      @media (min-width: @screen-sm-min) {
+        display: block;
+        margin: 10px 0 0 0;
+      }
+
       &:hover {
         color: #fff;
       }

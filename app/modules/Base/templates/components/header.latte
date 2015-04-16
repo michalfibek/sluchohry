@@ -27,7 +27,10 @@
 
 							{if $user->isAllowed('Admin:Default', 'default')}
 							<div id="admin-bar">
-								<a n:href=":Admin:Default:"><i class="fa fa-tasks"></i> {_front.homepage.admin}</a>
+								<a n:href=":Admin:Default:">
+									<i class="fa fa-tasks"></i>
+									{_front.homepage.admin}
+								</a>
 							</div>
 							{/if}
 
@@ -37,11 +40,13 @@
 					<div id="user-profile" class="col-md-3">
 
 						<a n:href=":Front:Default:logout" id="user-logout">
-							<i class="fa fa-sign-out"></i> {_front.auth.logout}
+							<i class="fa fa-sign-out"></i>
+							{_front.auth.logout}
 						</a>
 
 						<a n:href=":Front:Profile:" id="user-profile-edit">
-							<i class="fa fa-user"></i> {if strlen($user->identity->realname)}{$user->identity->realname}{else}{$user->identity->username}{/if}
+							<i class="fa fa-user"></i>
+							{if strlen($user->identity->realname)}{$user->identity->realname|truncate:19}{else}{$user->identity->username}{/if}
 						</a>
 
 					</div>
