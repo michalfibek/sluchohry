@@ -2,27 +2,39 @@
 GAME: melodic cubes
 */
 
-#btn-play, #btn-stop {
-  width: 150px;
-  height: 71px;
-  font-size: 1.6em;
-  background-color: @color-ter-1;
-  border-color: #000;
-  color: #fff;
+.control-buttons {
+  margin-bottom: 20px;
 }
 
-.game-eval-block {
-  text-align: right;
-  margin: 50px 0;
+#btn-play, #btn-stop, #btn-eval {
+  display: inline-block;
+  width: 115px;
+  margin: 5px 5px;
+  height: 71px;
+  font-size: 2em;
+  color: #fff;
+  border-color: @color-sec-1-border;
+
+  @media (min-width: @screen-sm-min) {
+    font-size: 1.6em;
+    width: 165px;
+    margin: auto;
+  }
+}
+
+#btn-play, #btn-stop {
+  background-color: @color-ter-1;
 }
 
 #btn-eval {
-  padding: 26px;
-  font-size: 1.6em;
-  color: #fff;
   background-color: @color-sec-1;
-  border-color: @color-sec-1-border;
+
+  @media (min-width: @screen-sm-min) {
+    width: auto;
+    margin-left: 20px;
+  }
 }
+
 
 .single-cube {
   //  background-color: #0000f6;

@@ -88,5 +88,16 @@
 
 {block scripts}
 {include parent}
+
+	{if $user->loggedIn}
     <script src="{$basePath}/assets/js/gameSelect.js"></script>
+
+	{else}
+
+	<script type="text/javascript">
+    $('#username').focus();
+    </script>
+
+	{/if}
+
 {/block}
