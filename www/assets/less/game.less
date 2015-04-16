@@ -8,9 +8,9 @@ GAME: melodic cubes
 
 #btn-play, #btn-stop, #btn-eval {
   display: inline-block;
-  width: 115px;
+  width: 100px;
   margin: 5px 5px;
-  height: 71px;
+  height: 65px;
   font-size: 2em;
   color: #fff;
   border-color: @color-sec-1-border;
@@ -18,6 +18,7 @@ GAME: melodic cubes
   @media (min-width: @screen-sm-min) {
     font-size: 1.6em;
     width: 165px;
+    height: 71px;
     margin: auto;
   }
 }
@@ -194,14 +195,20 @@ GAME: melodic cubes
 
   color: #fff;
   display: inline-block;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   text-align: center;
-  border-radius: 15px;
   font-size: 25px;
   vertical-align: middle;
   line-height: 25px;
   margin-top: -5px;
+
+  @media (min-width: @screen-sm-min) {
+    width: 40px;
+    height: 40px;
+    border-radius: 15px;
+  }
 
   &.difficulty-easy {
     background-color: @difficulty-easy-background;
