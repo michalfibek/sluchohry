@@ -182,6 +182,7 @@ var Game = $class({
             zIndex: 100,
             cursor: "move",
             delay: 150,
+            helper : 'clone',
             start: function() {
                 $('#play-cubes').addClass('active-drag');
                 scope.song.stop();
@@ -192,7 +193,6 @@ var Game = $class({
                 scope.cubeMoveCount++;
                 $('#play-cubes').removeClass('active-drag');
             }
-
         });
 
         $('.btn-return-game').on('click', function() {
