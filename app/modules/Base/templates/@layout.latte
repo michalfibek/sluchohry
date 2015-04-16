@@ -52,14 +52,14 @@
 	<script src="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
     <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
 	<script src="{$basePath}/assets/vendor/jquery.transit/jquery.transit.js"></script>
+	<script src="{$basePath}/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 	{ifset $initJQueryUI}<script src="{$basePath}/assets/vendor/jquery-ui/jquery-ui.min.js"></script>{/ifset}
 	{ifset $initJQueryUISortable}<script src="{$basePath}/assets/vendor/jquery-ui-sortable/jquery-ui.min.js"></script>{/ifset}
-	{ifset $initJQTouchPunch}<script src="{$basePath}/assets/vendor/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>{/ifset}
-	<script src="{$basePath}/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="{$basePath}/assets/vendor/howler/howler.min.js"></script>
+	{ifset $initHowler}<script src="{$basePath}/assets/vendor/howler/howler.min.js"></script>{/ifset}
 	<script src="{$basePath}/assets/js/netteForms.js"></script>
 	<script src="{$basePath}/assets/js/main.js"></script>
 	{ifset $initGrid}<script src="{$basePath}/assets/vendor/grido/client-side/grido.js"></script>{/ifset}
+	{ifset $initJQTouchPunch}<script src="{$basePath}/assets/vendor/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>{/ifset}
 
 	{ifset $initNetteAjax}
 	<script type="text/javascript">
