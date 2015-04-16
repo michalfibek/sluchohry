@@ -165,7 +165,6 @@ var Game = $class({
             scope.song.stop();
             scope.switchPlayBtn();
             scope.songChain[0](scope.playChain(1));
-            //songCubesChain[0](playChain(1));
         });
 
         $('#btn-stop').on('click', function(){
@@ -177,21 +176,23 @@ var Game = $class({
             scope.evalGame();
         });
 
-        $('#play-cubes').css('-ms-touch-action', 'none');
+        $('.single-cube').css('-ms-touch-action', 'none');
 
-        $('#play-cubes').sortable({
-            animation: 150,
-            onEnd: function(evt) {
-                evt.oldIndex;
-                evt.newIndex;
-                scope.cubeMoveCount++;
+        $('#play-cubes').sortable( {
+            zIndex: 100,
+            cursor: "move",
+            delay: 150,
+            start: function() {
+                $('#play-cubes').addClass('active-drag');
                 scope.song.stop();
                 scope.switchStopBtn();
-                $('#play-cubes').removeClass('active-drag');
             },
-            onStart: function (evt) {
-                $('#play-cubes').addClass('active-drag');
+            update: function() {
+                console.log('stop');
+                scope.cubeMoveCount++;
+                $('#play-cubes').removeClass('active-drag');
             }
+
         });
 
         $('.btn-return-game').on('click', function() {
@@ -232,7 +233,7 @@ var Game = $class({
     chainFunctionGenerator: function(markerIndex, markerValue, songCtrl, cubeBankFn) {
         return function(fn) {
             var cubeBank = cubeBankFn();
-            if (markerIndex !== 0) scope.clearHighlights();
+            scope.clearHighlights();
             scope.addHighlight(cubeBank[markerIndex]);
 
             scope.song.playPart(cubeBank[markerIndex]);
