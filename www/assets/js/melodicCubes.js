@@ -95,7 +95,7 @@ var Game = $class({
     },
 
     getRandomColor: function() {
-        return this.colors.splice([Math.floor(Math.random() * scope.colors.length)],1);
+        return scope.colors.splice([Math.floor(Math.random() * scope.colors.length)],1)[0];
     },
 
     show: function() {
@@ -158,7 +158,7 @@ var Game = $class({
 
         });
         cubeBtns.each( function() {
-            $(this).css("background-color", scope.getRandomColor());
+            $(this).css('background-color', scope.getRandomColor());
         })
 
         $('#btn-play').on('click', function(){
