@@ -39,7 +39,7 @@ main {
 @font-size-h5: @font-size-base;
 @font-size-h6: ceil((@font-size-base * 0.85));
 h1, .h1 {
-  font-size: 30px;
+//  font-size: 30px;
 
   @media (min-width: @screen-sm-min) {
     font-size: @font-size-h1;
@@ -333,6 +333,7 @@ form {
 header#main-header {
   background-color: @color-prim-2;
   background-image: @background-stripes-transparent;
+  border-bottom: 1px solid #FFF;
   display: block;
   color: #fff;
   padding: 15px;
@@ -343,21 +344,27 @@ header#main-header {
     color: #fff;
     text-decoration: none;
 
+    h1 {
+      margin: 5px 0;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      font-weight: bold;
+
+      @media (min-width: @screen-sm-min) {
+        font-size: 3em;
+      }
+
+    }
     &:hover {
-      color: #000;
+      h1 {
+        transform: scale(1.05);
+      }
     }
   }
 
   #site-head-title {
 //    float: left;
 
-    h1 {
-      margin: 5px 0;
-      text-transform: uppercase;
-      font-size: 3em;
-      font-weight: bold;
-      //      color: @color-prim-2;
-    }
   }
 
   #admin-bar {
@@ -373,7 +380,6 @@ header#main-header {
       text-decoration: none;
 
       &:hover {
-        color: #000;
       }
     }
   }
@@ -404,6 +410,37 @@ header#main-header {
   }
 }
 
+.back-nav-block {
+  margin: -10px 25px -30px 10px;
+  height: 0;
+
+  @media (min-width: @screen-md-min) {
+    //    margin-left: -30px;
+  }
+
+  .back-nav-button {
+    background-color: #B8472C;
+    font-size: 1.2em;
+    color: #FFF;
+    border-color: #FFF;
+
+    &:hover {
+      color: #FFF;
+      background-color: darken(#B8472C, 10%);
+
+      .fa {
+        transition: all 0.2s ease;
+        transform: translate(-5px, 0);
+      }
+    }
+
+    .fa {
+      transition: all 0.2s ease;
+    }
+
+  }
+}
+
 .main {
   margin-bottom: 40px;
 }
@@ -428,6 +465,7 @@ header#main-header {
   padding: 10px 0;
   background-color: @color-prim-2;
   background-image: @background-stripes-transparent;
+  border-top: 1px solid #FFF;
   color: #FCEBEB;
   font-size: 0.9em;
   

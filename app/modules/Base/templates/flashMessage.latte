@@ -8,11 +8,19 @@
     			<div class="arrow bottom right"></div>
     		</div>
 		</div>
-		{if $user->loggedIn}<a n:href=":Front:Profile:#edit-avatars" class="col-xs-2 flash-avatar">
-		{else}<a href="#" class="col-xs-2 flash-avatar">
-		{/if}
+		{if $user->loggedIn && $this->presenter->name == 'Front:Default'}
+
+		<a n:href=":Front:Profile:#edit-avatars" class="col-xs-2 flash-avatar">
 			<img src="{$avatarDir}/{$userAvatar}.svg">
 		</a>
+
+		{else}
+
+		<span class="col-xs-2 flash-avatar">
+			<img src="{$avatarDir}/{$userAvatar}.svg">
+		</span>
+
+		{/if}
 	{/if}
 {else}
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
