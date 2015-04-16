@@ -24,6 +24,10 @@ GAME: melodic cubes
 
 #btn-play, #btn-stop {
   background-color: @color-ter-1;
+
+  &:hover {
+    background-color: darken(@color-ter-1, 10%);
+  }
 }
 
 #btn-eval {
@@ -32,6 +36,10 @@ GAME: melodic cubes
   @media (min-width: @screen-sm-min) {
     width: auto;
     margin-left: 20px;
+  }
+
+  &:hover {
+    background-color: darken(@color-sec-1, 10%);
   }
 }
 
