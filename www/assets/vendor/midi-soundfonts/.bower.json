@@ -1,0 +1,16 @@
+{
+  "name": "MIDI.js Soundfonts",
+  "homepage": "https://github.com/gleitz/midi-js-soundfonts",
+  "main": "FluidR3_GM/*/*",
+  "license": "CC BY 3.0",
+  "_release": "842709ed36",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "842709ed36cef48a0d4148f18517059abd141bc8"
+  },
+  "_source": "git://github.com/gleitz/midi-js-soundfonts.git",
+  "_target": "*",
+  "_originalSource": "midi-soundfonts",
+  "_direct": true
+}
