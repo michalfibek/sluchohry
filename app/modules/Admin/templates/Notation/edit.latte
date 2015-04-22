@@ -1,5 +1,6 @@
 {var $backlink = ':Admin:Notation:'}
 {var $initMidiJs = true}
+{var $initHighlightTextarea = true}
 
 {block content}
 
@@ -50,7 +51,7 @@
             <div class="form-group">
                 <label n:name="sheet" for="sheet" class="col-sm-4 control-label">Sheet:</label>
                 <div class="col-sm-8">
-                    <textarea n:name="sheet" type="text" class="form-control" id="sheet" rows="4" cols="50">
+                    <textarea n:name="sheet" type="text" class="form-control" id="sheet" rows="6" cols="60" spellcheck="false">
                     </textarea>
                 </div>
             </div>
@@ -89,6 +90,7 @@
 
 {block scripts}
 {include parent}
+
 
 <script src="{$basePath}/assets/js/notationPlayer.js"></script>
 <script src="{$basePath}/assets/js/editNotation.js"></script>
