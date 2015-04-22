@@ -10,6 +10,7 @@
     {if $user->isAllowed('Admin:Group', 'default')}<li><a n:href="Group:"><i class="fa fa-users"></i> Group manager</a></li>{/if}
     {if $user->isAllowed('Admin:Event', 'default')}<li><a n:href="Event:"><i class="fa fa-file-text-o"></i> Event manager</a></li>{/if}
     {if $user->isAllowed('Admin:Song', 'default')}<li><a n:href="Song:"><i class="fa fa-music"></i> Song editor</a></li>{/if}
+    {if $user->isAllowed('Admin:Notation', 'default')}<li><a n:href="Notation:"><i class="fa fa-music"></i> Notation editor</a></li>{/if}
 </ul>
 
 {/block}

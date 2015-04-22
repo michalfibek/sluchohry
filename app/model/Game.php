@@ -31,7 +31,11 @@ class Game extends Base
     public function getBySong($songId)
     {
         return $this->db->table('game_has_song')->where('song_id', $songId);
-//        return $this->db->query('SELECT game_id FROM game_has_song WHERE song_id=?', $songId);
+    }
+
+    public function getByNotation($notationId)
+    {
+        return $this->db->table('game_has_notation')->where('notation_id', $notationId);
     }
 
     public function updateSongAssoc($songId, $gameIdArray)
@@ -55,6 +59,31 @@ class Game extends Base
                     'song_id' => $songId
                 );
                 return $this->db->table('game_has_song')->insert($insertArray);
+            }
+        }
+    }
+
+    public function updateNotationAssoc($notationId, $gameIdArray)
+    {
+        $currentAssoc = $this->getBySong($notationId);
+
+        if ($currentAssoc == $gameIdArray) {
+            return false;
+        }
+
+        // updating, so delete old records
+        $this->db->table('game_has_notation')->where('notation_id',$notationId)->delete();
+
+        // do we insert?
+        if ($gameIdArray)
+        {
+            foreach ($gameIdArray as $gameId)
+            {
+                $insertArray = array(
+                    'game_id' => $gameId,
+                    'notation_id' => $notationId
+                );
+                return $this->db->table('game_has_notation')->insert($insertArray);
             }
         }
     }

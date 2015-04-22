@@ -145,7 +145,7 @@ class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function	renderEdit($id = NULL)
 	{
-		Debugger::barDump($this->getSignal());
+//		Debugger::barDump($this->getSignal());
 		if ($groupRow = $this->group->getById($id))
 		{
 			$form = $this['editGroupForm'];

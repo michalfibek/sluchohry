@@ -12,8 +12,7 @@ class Song extends Base
     const
         TABLE_NAME_SONG = 'song',
         TABLE_NAME_MARKER = 'marker',
-        TABLE_NAME_GAME = 'game',
-        TABLE_NAME_GENRE = 'genre';
+        TABLE_NAME_GAME = 'game';
 
     /** @var Services\UploadHandler */
     private $uploadHandler;
@@ -144,16 +143,6 @@ class Song extends Base
         $markers[] = array($markersAll[$randKeys[$cubeSplits-1]]->timecode, $this->getById($songId)->duration - $markersAll[$randKeys[$cubeSplits-1]]->timecode);
 
         return $markers;
-    }
-
-    public function getGenres()
-    {
-        return $this->db->table(self::TABLE_NAME_GENRE);
-    }
-
-    public function getGenreById($id)
-    {
-        return $this->db->table(self::TABLE_NAME_GENRE)->get($id);
     }
 
     public function handleUpload()

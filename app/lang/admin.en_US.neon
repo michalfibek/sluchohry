@@ -1,0 +1,10 @@
+notation:
+    octave:
+        subcontra: "subcontra"
+        contra: "contra"
+        great: "great"
+        small: "small"
+        oneline: "one-line"
+        twoline: "two-line"
+        threeline: "three-line"
+        fourline: "four-line"

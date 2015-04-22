@@ -1,0 +1,10 @@
+notation:
+    octave:
+        subcontra: "subkontra"
+        contra: "kontra"
+        great: "velká"
+        small: "malá"
+        oneline: "jednočárkovaná"
+        twoline: "dvojčárkovaná"
+        threeline: "tříčárkovaná"
+        fourline: "čtyřčárkovaná"

@@ -23,9 +23,11 @@ class Acl extends Permission
 		$this->addResource('Front:Game:MelodicCubes');
 		$this->addResource('Front:Game:Pexeso');
 		$this->addResource('Front:Game:NoteSteps');
+		$this->addResource('Front:Game:Faders');
 
 		$this->addResource('Admin:Default');
 		$this->addResource('Admin:Song');
+		$this->addResource('Admin:Notation');
 		$this->addResource('Admin:User');
 		$this->addResource('Admin:Group');
 		$this->addResource('Admin:Event');
@@ -39,7 +41,8 @@ class Acl extends Permission
 			'Front:Profile',
 			'Front:Game:MelodicCubes',
 			'Front:Game:Pexeso',
-			'Front:Game:NoteSteps'
+			'Front:Game:NoteSteps',
+			'Front:Game:Faders'
 		));
 		$this->allow('guest', array(
 			'Front:Rating'
@@ -77,6 +80,7 @@ class Acl extends Permission
 		$this->allow('editor', array(
 			'Admin:Default',
 			'Admin:Song',
+			'Admin:Notation',
 			'Admin:User',
 			'Admin:Group'
 		));

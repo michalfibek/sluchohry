@@ -1,0 +1,29 @@
+{var $backlink = ':Admin:Default:'}
+
+{var $initGrid = true}
+{var $initNetteAjax = true}
+
+{block content}
+<div class="admin-item-editor">
+
+<header>
+<h1 n:block="title">Notation editor</h1>
+</header>
+
+{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-upload"></span> Add new notation</a>{/if}
+
+<div class="item-list" id="song-list">
+{control grid}
+</div>
+
+{*<ul id="song-list" class="item-list">*}
+{*{foreach $songList as $song}*}
+    {*<li>*}
+        {*<a n:href="edit $song->id">{if mb_strlen($song->artist) > 0}{$song->artist} - {/if}{$song->title} ({$song->duration|songTime})</a>*}
+        {*<a n:href="delete $song->id" class="delete-item"><span class="fa fa-remove"></span> delete</a>*}
+    {*</li>*}
+{*{/foreach}*}
+{*</ul>*}
+
+</div>
+{/block}

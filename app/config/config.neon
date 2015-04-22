@@ -56,9 +56,13 @@ services:
 	- App\Model\Avatar(%avatar.saveDir%)
 	- App\Model\Event
 	- App\Model\Game
+	- App\Model\Genre
 	- App\Model\Group
+	- App\Model\Octave
+	- App\Model\Notation
 	- App\Model\Score
 	- App\Model\Song(%song.uploadDir%, %song.saveDir%)
+	- App\Model\Tempo
 	- App\Model\User
 
 	- App\Services\UploadHandler

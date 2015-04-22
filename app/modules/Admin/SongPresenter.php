@@ -15,7 +15,6 @@ use Nette,
  */
 class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
-	private $songList;
 	private $songRecord;
 	private $songMarkers;
 	private $gameAssoc;
@@ -27,6 +26,9 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	/** @inject @var Model\Game */
 	public $game;
+
+	/** @inject @var Model\Genre */
+	public $genre;
 
 	/**
 	 * @return Form
@@ -95,7 +97,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function actionDefault()
 	{
-//		$this->songList = $this->songStorage->getSongAll();
+
 	}
 
 	/**
@@ -118,13 +120,13 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function	renderDefault()
 	{
-		$this->template->songList = $this->songList;
+
 	}
 
 	public function actionAdd()
 	{
-		$this->gameList = $this->game->getAll()->order('name ASC');
-		$this->genreList = $this->song->getGenres(); // fetch genre list for form
+		$this->gameList = $this->game->getAll()->where('uses_song', TRUE)->order('name ASC');
+		$this->genreList = $this->genre->getAll(); // fetch genre list for form
 	}
 
 	public function actionEdit($id)
@@ -134,8 +136,8 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 //			$this->genreList = $this->song->related('genre');
 			$this->songMarkers = $this->song->getMarkersAll($id);
 
-			$this->gameList = $this->game->getAll()->order('name ASC');
-			$this->genreList = $this->song->getGenres(); // fetch genre list for form
+			$this->gameList = $this->game->getAll()->where('uses_song', TRUE)->order('name ASC');
+			$this->genreList = $this->genre->getAll(); // fetch genre list for form
 		} else {
 			$this->flashMessage('Sorry, this song was not found.', 'error');
 			$this->redirect('default');
@@ -201,11 +203,11 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid->addColumnText('genre_id', 'Genre')
 			->setSortable()
 			->setCustomRender(function($item) {
-				return $this->song->getGenreById($item->genre_id)->name;
+				return $this->genre->getById($item->genre_id)->name;
 			});
 
 		$genres[''] = '';
-		foreach ($this->song->getGenres() as $genre)
+		foreach ($this->genre->getAll() as $genre)
 			$genres[$genre->id] = $genre->name;
 
 		$grid->addFilterSelect('genre_id', 'Genre', $genres);

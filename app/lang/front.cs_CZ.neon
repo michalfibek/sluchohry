@@ -30,6 +30,7 @@ game:
     melodicCubes: "Melodické kostky"
     noteSteps: "Krokování not"
     pexeso: "Hudební pexeso"
+    faders: "Posuvníky"
 
     homepageQuote:
         msg1: "Copak si dnes zahrajem?"
@@ -110,3 +111,7 @@ pexeso:
 noteSteps:
     stepCount: "špatných pokusů"
     hint: "Krokuj noty mačkáním na písmena na klávesnici podle jejich pořadí v notové osnově."
+
+faders:
+    stepCount: "špatných pokusů"
+    hint: "Pohybuj správně posuvníky a slož zpět rozbitou melodii."
