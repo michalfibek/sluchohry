@@ -18,7 +18,7 @@ var NotationPlayer = $class({
         this.velocity = 127;
         this.baseNoteLength = 4;
 
-        this.noteRegex = new RegExp('^(cis|dis|eis|fis|gis|ais|his|ces|des|es|fes|ges|as|hes|c#|d#|e#|f#|g#|a#|h#|cb|db|eb|fb|gb|ab|hb|[bcdefgah])([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?$');
+        this.noteRegex = new RegExp('^([cdfga]is|[dg]es|es|as|[cdfga]#|[dega]b|[bcdefgah])([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?$');
 
         this.noteToKey = { // very permissive! :)
             'c': 0,
