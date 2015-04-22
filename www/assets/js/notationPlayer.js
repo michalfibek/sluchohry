@@ -8,9 +8,9 @@ var NotationPlayer = $class({
         this.tempo = parseInt(tempo);
         this.defaultOctave = parseInt(defaultOctave);
 
-        console.log(sheet);
-        console.log(tempo);
-        console.log(defaultOctave);
+        //console.log(sheet);
+        //console.log(tempo);
+        //console.log(defaultOctave);
 
         this.soundfontUrl = '/assets/vendor/midi-soundfonts/FluidR3_GM/';
         this.instrument = 'acoustic_grand_piano';
@@ -52,7 +52,7 @@ var NotationPlayer = $class({
 
     onSongPlay: function() {},
     onSongEnd: function() {},
-    onWrongNote: function() {},
+    onWrongNote: function(noteName) {},
     onCorrectNotes: function() {},
 
     initPlayer: function(callbackProgress, callbackSuccess) {
@@ -129,17 +129,19 @@ var NotationPlayer = $class({
 
             var noteOctave = that.defaultOctave;
 
-            if (typeof(result[2] != 'undefined')) { // , or ' -> shift octave
-                if (result[2] == that.octaveUpChar)
-                    noteOctave = noteOctave+result[2].length;
+            if (typeof(result[2]) != 'undefined') { // , or ' -> shift octave
+                if (result[2][0] == that.octaveUpChar) {
+                    noteOctave = noteOctave + result[2].length;
+                }
 
-                if (result[2] == that.octaveDownChar)
-                    noteOctave = noteOctave-result[2].length;
+                if (result[2][0] == that.octaveDownChar) {
+                    noteOctave = noteOctave - result[2].length;
+                }
             }
 
             var noteLength = that.defaultNoteLength;
 
-            if (typeof(result[3] != 'undefined')) { // 1, 2, 4, 8, 16 - denominator of the fraction 1/x -> note length
+            if (typeof(result[3]) != 'undefined') { // 1, 2, 4, 8, 16 - denominator of the fraction 1/x -> note length
                 noteLength = parseInt(result[3]);
             }
 
@@ -158,7 +160,7 @@ var NotationPlayer = $class({
                 length: noteLength
             }
 
-            console.table(result);
+            //console.table(result);
             //console.table(keys[i]);
         }
 

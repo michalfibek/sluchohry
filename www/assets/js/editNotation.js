@@ -33,9 +33,11 @@ var EditNotation = $class({
 
         $('#octave').change(function() {
             scope.nPlayer.setOctave(scope.octaveList[$(this).val()]);
+            scope.nPlayer.stop();
         })
         $('#tempo').change(function() {
             scope.nPlayer.setTempo(scope.tempoList[$(this).val()]);
+            scope.nPlayer.stop();
         })
         $('#sheet').change(function() {
             scope.clearWrongNotes();
