@@ -19,6 +19,7 @@ var Game = $class({
 
         scope.initNotePlayer();
         scope.initButtons();
+        scope.initSliders();
         scope.initTimer();
         //scope.shuffleCards();
 
@@ -60,6 +61,19 @@ var Game = $class({
         scope.nPlayer.onSongPlay = function() {
             scope.switchPlayBtn();
         }
+    },
+
+    initSliders: function() {
+        $('.note-slider').each(function() {
+            $(this).noUiSlider({
+                orientation: "vertical",
+                start: [200],
+                range: {
+                    'min': 0,
+                    'max': 1000
+                }
+            })
+        })
     },
 
     initTimer: function() {

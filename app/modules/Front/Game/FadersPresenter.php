@@ -53,6 +53,7 @@ class FadersPresenter extends BaseGamePresenter
     {
         $this->template->difficulty = $this->difficulty;
         $this->template->notation = $this->gameAssets['notation'];
+        $this->template->noteArray = explode(' ', $this->gameAssets['notation']->sheet);
     }
 
 }

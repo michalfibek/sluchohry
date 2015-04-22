@@ -26,6 +26,13 @@
     </div>
 
     <div class="container-fluid">
+
+        {foreach $noteArray as $key => $note}
+        <div class="slider-wrap">
+            <div id="note-slider-{$key}" class="note-slider">
+            </div>
+        </div>
+        {/foreach}
     
     </div>
 
