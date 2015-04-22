@@ -18,7 +18,7 @@ class NotationPresenter extends BasePresenter
 {
     const
         DEFAULT_TEMPO_ID = 1,
-        DEFAULT_OCTAVE_ID = 4,
+        DEFAULT_OCTAVE_ID = 5,
         DEFAULT_GAME_ID = 4;
 
     private $notationRecord;
@@ -170,6 +170,8 @@ class NotationPresenter extends BasePresenter
 
     public function renderAdd()
     {
+        $this->template->tempoList = $this->tempo->getAll()->fetchPairs('id', 'value');
+        $this->template->octaveList = $this->octave->getAll()->fetchPairs('id', 'shift');
         $this['notationEditForm']['octave_id']->setDefaultValue(self::DEFAULT_OCTAVE_ID);
         $this['notationEditForm']['tempo_id']->setDefaultValue(self::DEFAULT_TEMPO_ID);
         $this['notationEditForm']['game']->setDefaultValue(self::DEFAULT_GAME_ID);
@@ -177,6 +179,8 @@ class NotationPresenter extends BasePresenter
 
     public function	renderEdit()
     {
+        $this->template->tempoList = $this->tempo->getAll()->fetchPairs('id', 'value');
+        $this->template->octaveList = $this->octave->getAll()->fetchPairs('id', 'shift');
         $this->template->notation = $this->notationRecord;
         $this['notationEditForm']->setDefaults($this->notationRecord->toArray());
         $this['notationEditForm']['notation_id']->setValue($this->getParameter('id'));

@@ -12,7 +12,18 @@
     <div id="game-hint">{_front.faders.hint}</div>
 </header>
 
-<div class="game-main faders">
+<div class="game-main faders hidden">
+
+    <div class="container control-buttons">
+
+        <button type="button" class="btn btn-default btn-lg" id="btn-play"><i class="fa fa-play"></i><span class="hidden-xs"> {_front.game.common.play}</span></button>
+        <button type="button" class="btn btn-default btn-lg" id="btn-stop"><i class="fa fa-stop"></i><span class="hidden-xs"> {_front.game.common.stop}</span></button>
+
+        <button type="button" class="btn btn-default btn-lg" id="btn-eval">
+            <i class="fa fa-check"></i><span class="hidden-xs"> {_front.game.common.evaluate}</span>
+        </button>
+
+    </div>
 
     <div class="container-fluid">
     
@@ -20,7 +31,9 @@
 
 </div>
 
+{include 'components/spinner.latte'}
 {include 'dialogs/solved.latte', stepsToSolveMessage => $template->translate('front.noteSteps.stepCount') }
+{include 'dialogs/wrong.latte'}
 
 {/block}
 
@@ -31,9 +44,22 @@
 <script src="{$basePath}/assets/js/ajaxLogger.js"></script>
 <script src="{$basePath}/assets/js/gameTimer.js"></script>
 
+<script src="{$basePath}/assets/js/notationPlayer.js"></script>
 <script src="{$basePath}/assets/js/faders.js"></script>
 
 <script type="text/javascript">
+
+    var sheet = {$notation->sheet},
+        tempo = {$notation->tempo->value},
+        octaveShift = {$notation->octave->shift},
+        difficulty = {$difficulty};
+
+
+    t = new GameTimer();
+    l = new AjaxLogger();
+    n = new NotationPlayer(sheet, tempo, octaveShift);
+    g = new Game(t, l, difficulty, n, l, sheet);
+
 
 </script>
 {/block}

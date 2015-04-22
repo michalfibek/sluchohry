@@ -55,6 +55,11 @@
                 </div>
             </div>
             <div class="form-group">
+                <div class="col-sm-12 text-right">
+                    <div id="wrong-input-list"><span></span></div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-4 control-label">Game:</label>
                 <div class="col-sm-8" n:inner-foreach="$form[game]->items as $key => $label">
                     <div class="checkbox">
@@ -64,8 +69,8 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right">
-                    <button type="button" class="btn btn-default" id="ex1-play-original"><span class="fa fa-play"></span> Play</button>
-                    <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> Stop</button>
+                    <button type="button" class="btn btn-default" id="btn-play"><span class="fa fa-play"></span> Play</button>
+                    <button type="button" class="btn btn-default" id="btn-stop"><span class="fa fa-stop"></span> Stop</button>
                 </div>
             </div>
             <div class="form-group main-buttons">
@@ -79,16 +84,26 @@
 
 </div>
 
-
-{*<div class="spinner">*}
-    {*<div class="rect1"></div>*}
-    {*<div class="rect2"></div>*}
-    {*<div class="rect3"></div>*}
-    {*<div class="rect4"></div>*}
-    {*<div class="rect5"></div>*}
-{*</div>*}
-
-
-
 {/block}
 
+
+{block scripts}
+{include parent}
+
+<script src="{$basePath}/assets/js/notationPlayer.js"></script>
+<script src="{$basePath}/assets/js/editNotation.js"></script>
+
+<script type="text/javascript">
+
+    var sheet = $('#sheet').val();
+    var tempoList = {$tempoList};
+    var octaveList = {$octaveList};
+    var tempoDefault = tempoList[$('#tempo').val()];
+    var octaveShiftDefault = octaveList[$('#octave').val()];
+
+    n = new NotationPlayer(sheet, tempoDefault, octaveShiftDefault);
+    g = new EditNotation(n, tempoList, octaveList);
+
+
+</script>
+{/block}

@@ -4,11 +4,13 @@
 var NotationPlayer = $class({
 
     constructor: function(sheet, tempo, defaultOctave) {
-        scope = this;
-
         this.sheet = sheet;
         this.tempo = parseInt(tempo);
         this.defaultOctave = parseInt(defaultOctave);
+
+        console.log(sheet);
+        console.log(tempo);
+        console.log(defaultOctave);
 
         this.soundfontUrl = '/assets/vendor/midi-soundfonts/FluidR3_GM/';
         this.instrument = 'acoustic_grand_piano';
@@ -40,105 +42,142 @@ var NotationPlayer = $class({
 
         this.defaultNoteLength = 4;
 
-        this.playTimer = null;
+        this.playTimer; // SetTimeout instance
 
-        scope.keys = scope.sheetToKeys(this.sheet);
+        this.keys;
+        this.setKeys(sheet);
 
-        this.initPlayer(function() {}, function() {});
 
     },
 
+    onSongPlay: function() {},
+    onSongEnd: function() {},
+    onWrongNote: function() {},
+    onCorrectNotes: function() {},
+
     initPlayer: function(callbackProgress, callbackSuccess) {
+        var that = this;
         MIDI.loadPlugin({
-            soundfontUrl: scope.soundfontUrl,
-            instrument: scope.instrument,
+            soundfontUrl: that.soundfontUrl,
+            instrument: that.instrument,
             onprogress: function(state, progress) {
                 callbackProgress(state, progress)
             },
             onsuccess: function() {
                 MIDI.setVolume(0, 127);
-                MIDI.programChange(0, scope.instrumentId);
-                scope.playOriginal();
+                MIDI.programChange(0, that.instrumentId);
                 callbackSuccess();
             }
         });
     },
 
     playOriginal: function() {
-
-        scope.playChain(scope.keys, 0);
-
+        this.onSongPlay();
+        this.playChain(this.keys, 0);
     },
 
     playChain: function(keys, i) {
+        var that = this;
 
-        console.log(keys[i]);
-        console.log(MIDI.noteToKey[keys[i]['key']]);
+        //console.log(keys[i]);
+        //console.log(MIDI.noteToKey[keys[i]['key']]);
         //console.log(i);
 
         if (i != 0) MIDI.noteOff(0, keys[i-1]['key'], 0.1);
-        if (i != keys.length) MIDI.noteOn(0, keys[i][['key']], scope.velocity, 0);
+        if (i != keys.length) MIDI.noteOn(0, keys[i][['key']], that.velocity, 0);
 
         if (i < keys.length) {
-            var delay =  (1000 / (scope.tempo / 60)) * (scope.baseNoteLength / keys[i]['length']);
-            console.log(delay);
-            scope.playTimer = setTimeout(function() {
-                    scope.playChain(keys, i + 1)
+            var delay = Math.round((1000 / (that.tempo / 60)) * (that.baseNoteLength / keys[i]['length']));
+            //console.log(delay);
+            that.playTimer = setTimeout(function() {
+                that.playChain(keys, i + 1)
             }, delay);
+        } else {
+            that.onSongEnd();
         }
 
     },
 
+    setKeys: function(sheet) {
+        this.keys = this.sheetToKeys(sheet)
+    },
+
+    setTempo: function(tempo) {
+        this.tempo = tempo;
+        this.setKeys(this.sheet);
+    },
+
+    setOctave: function(octave) {
+        this.defaultOctave = octave;
+        this.setKeys(this.sheet);
+    },
+
     sheetToKeys: function(sheet) {
+        var that = this;
+        var wrongCount = 0;
         var sheet = sheet.toLowerCase(); // normalize
         var sheetArray = sheet.split(' ');
         var sheetLength = sheetArray.length;
         var keys = [];
         for (var i = 0; i < sheetLength; i++) {
-            var result = scope.noteRegex.exec(sheetArray[i]); // regexp match
-            if (typeof(result) == 'undefined' || result == null) { continue; } // no match? skip to next pattern
+            var result = that.noteRegex.exec(sheetArray[i]); // regexp match
+            if (typeof(result) == 'undefined' || result == null) {
+                wrongCount++;
+                that.onWrongNote(sheetArray[i]);
+                continue;
+            } // no match? skip to next pattern
 
-            var noteOctave = scope.defaultOctave;
+            var noteOctave = that.defaultOctave;
 
             if (typeof(result[2] != 'undefined')) { // , or ' -> shift octave
-                if (result[2] == scope.octaveUpChar)
+                if (result[2] == that.octaveUpChar)
                     noteOctave = noteOctave+result[2].length;
 
-                if (result[2] == scope.octaveDownChar)
+                if (result[2] == that.octaveDownChar)
                     noteOctave = noteOctave-result[2].length;
             }
 
-            var noteLength = scope.defaultNoteLength;
+            var noteLength = that.defaultNoteLength;
 
             if (typeof(result[3] != 'undefined')) { // 1, 2, 4, 8, 16 - denominator of the fraction 1/x -> note length
                 noteLength = parseInt(result[3]);
             }
 
             if (typeof(result[4] != 'undefined')) { // . or t -> change length
-                if (result[4] == scope.trioleChar)
+                if (result[4] == that.trioleChar)
                     noteLength = noteLength / 3;
 
-                if (result[4] == scope.dotChar)
+                if (result[4] == that.dotChar)
                     noteLength = noteLength + noteLength / 2; // note length plus its half
             }
 
-            var noteKey = ((1+scope.noteToKey[result[1]])+noteOctave*12)-1; // set with the right octave
+            var noteKey = ((1+that.noteToKey[result[1]])+noteOctave*12)-1; // set with the right octave
 
             keys[i] = {
                 key: noteKey,
                 length: noteLength
             }
 
-            //console.table(result);
+            console.table(result);
             //console.table(keys[i]);
+        }
+
+        if (wrongCount == 0) {
+            that.onCorrectNotes();
         }
 
         return keys;
     },
 
     stop: function() {
-        //clearTimeout(scope.chainTimeout);
-        //stopPlay = true;
+        clearTimeout(this.playTimer);
+        this.onSongEnd();
+
+        try { // ugly workaround to swallow error in plugin.webaudio.js
+            MIDI.stopAllNotes();
+        } catch(err) {
+
+        }
     }
 
 })

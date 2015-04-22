@@ -4,8 +4,6 @@
 var Song = $class({
 
     constructor: function(songDefs) {
-        scope = this;
-
         this.songCtrl = this.initPlayer(songDefs); // array of song controls
     },
 
