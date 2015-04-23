@@ -175,7 +175,7 @@ class Score extends Base
     {
         $timePenalty = $this->getTimePenalty($time);
         $stepsPenalty = $steps * 20;
-        $sliderCountPenalty = ($sliderCount > 15) ? 0 : 150 - $sliderCount*10;
+        $sliderCountPenalty = ($sliderCount > 15) ? 0 : 300 - $sliderCount*20;
 
         return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty - $sliderCountPenalty));
     }
