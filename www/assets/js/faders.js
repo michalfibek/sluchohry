@@ -48,6 +48,10 @@ var Game = $class({
         }
     },
 
+    setUserPlayerKeySingle: function(keyId, value) {
+        scope.playerUser.keys[keyId]['key'] = value;
+    },
+
     setActiveSlider: function(sliderId) {
         $('#note-slider-' + sliderId).addClass('active');
     },
@@ -156,8 +160,11 @@ var Game = $class({
                 }
             })
             $(this).on({
-                change: function() {
-                    scope.setUserPlayerKeys();
+                change: function(evt, val) {
+                    var keyId = $(evt.target).data('id');
+                    scope.setUserPlayerKeySingle(keyId, val);
+                    scope.playerUser.playSingle(keyId);
+                    //scope.setUserPlayerKeys();
                 }
             })
 

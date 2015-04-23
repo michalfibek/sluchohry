@@ -3,10 +3,11 @@
  */
 var NotationPlayer = $class({
 
-    constructor: function(sheet, tempo, defaultOctave) {
+    constructor: function(sheet, tempo, defaultOctave, channelId) {
         this.sheet = sheet;
         this.tempo = parseInt(tempo);
         this.defaultOctave = parseInt(defaultOctave);
+        this.channelId = channelId;
 
         //console.log(sheet);
         //console.log(tempo);
@@ -37,6 +38,7 @@ var NotationPlayer = $class({
             'a#': 10, 'bb': 10, 'ais': 10, 'b': 10,
             'h': 11, 'cb': 11, 'ces': 11
         }
+        this.keyToNote;
         this.restSymbol = '_';
 
         this.octaveUpChar = '\'';
@@ -51,6 +53,7 @@ var NotationPlayer = $class({
 
         this.keys;
         this.setSheet(sheet);
+        this.setKeyToNote();
     },
 
     onSongPlay: function() {},
@@ -69,16 +72,34 @@ var NotationPlayer = $class({
                 callbackProgress(state, progress)
             },
             onsuccess: function() {
-                MIDI.setVolume(0, 127);
-                MIDI.programChange(0, that.instrumentId);
+                MIDI.setVolume(that.channelId, 127);
+                MIDI.programChange(that.channelId, that.instrumentId);
                 callbackSuccess();
             }
         });
     },
 
+    setKeyToNote: function() {
+
+    },
+
     play: function() {
         this.onSongPlay();
         this.playChain(this.keys, 0);
+    },
+
+    playSingle: function(keyId) {
+        var that = this;
+
+        MIDI.noteOn(0, that.keys[keyId][['key']], that.velocity, 0);
+        that.onNotePlay(keyId);
+
+        that.playTimer = setTimeout(function() {
+            MIDI.noteOff(0, that.keys[keyId]['key'], 0.1);
+            that.onNoteStop(keyId);
+        }, that.getDelay(that.keys[keyId]['length']));
+
+
     },
 
     playChain: function(keys, i) {
@@ -99,15 +120,19 @@ var NotationPlayer = $class({
         }
 
         if (i < keys.length) {
-            var delay = Math.round((1000 / (that.tempo / 60)) * (that.baseNoteLength / keys[i]['length']));
             //console.log(delay);
             that.playTimer = setTimeout(function() {
                 that.playChain(keys, i + 1)
-            }, delay);
+            }, that.getDelay(keys[i]['length']));
         } else {
             that.onSongEnd();
         }
 
+    },
+
+    getDelay: function(noteLength) {
+        var that = this;
+        return Math.round((1000 / (that.tempo / 60)) * (that.baseNoteLength / noteLength));
     },
 
     setSheet: function(sheet) {

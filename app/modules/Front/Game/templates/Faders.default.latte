@@ -67,8 +67,8 @@
 
     t = new GameTimer();
     l = new AjaxLogger();
-    nOriginal = new NotationPlayer(sheet, tempo, octaveShift);
-    nUser = new NotationPlayer(sheet, tempo, octaveShift);
+    nOriginal = new NotationPlayer(sheet, tempo, octaveShift, 0);
+    nUser = new NotationPlayer(sheet, tempo, octaveShift, 0);
     g = new Game(t, l, difficulty, nOriginal, nUser, l, sheet);
 
 
