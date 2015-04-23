@@ -62,6 +62,7 @@ var Game = $class({
         this.songChain = [];
         this.cubeMoveCount = 0;
         this.cubePlayCount = 0;
+        this.evalAttempt = 0;
         this.gameName = 'melodicCubes';
         this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
@@ -172,8 +173,9 @@ var Game = $class({
             scope.switchStopBtn();
         });
 
-        $('#btn-eval').on('mouseup', function(){
+        $('#btn-eval').on('click', function(){
             scope.evalGame();
+            scope.evalAttempt++;
         });
 
         $('.single-cube').css('-ms-touch-action', 'none');
@@ -263,7 +265,8 @@ var Game = $class({
             cubeCount: scope.chainDef.length,
             songId: scope.songId,
             steps: scope.getSteps(),
-            time: scope.timer.getTime()
+            time: scope.timer.getTime(),
+            evalAttempt: scope.evalAttempt
         };
         return result;
     },

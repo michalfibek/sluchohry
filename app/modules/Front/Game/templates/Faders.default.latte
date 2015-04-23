@@ -32,10 +32,14 @@
     <div class="container-fluid">
 
         {foreach $noteArray as $key => $note}
+        {if $note} {* skip spaces *}
         <div class="slider-wrap">
+            {if $note != '_'} {* make rest *}
             <div id="note-slider-{$key}" class="note-slider" data-id="{$key}">
             </div>
+            {/if}
         </div>
+        {/if}
         {/foreach}
     
     </div>
@@ -43,7 +47,7 @@
 </div>
 
 {include 'components/spinner.latte'}
-{include 'dialogs/solved.latte', stepsToSolveMessage => $template->translate('front.noteSteps.stepCount') }
+{include 'dialogs/solved.latte', stepsToSolveMessage => $template->translate('front.faders.stepCount') }
 {include 'dialogs/wrong.latte'}
 
 {/block}
@@ -63,14 +67,14 @@
     var sheet = {$notation->sheet},
         tempo = {$notation->tempo->value},
         octaveShift = {$notation->octave->shift},
-        difficulty = {$difficulty};
-
+        difficulty = {$difficulty},
+        notationId = {$notation->id};
 
     t = new GameTimer();
     l = new AjaxLogger();
     nOriginal = new NotationPlayer(sheet, tempo, octaveShift, 0);
-    nUser = new NotationPlayer(sheet, tempo, octaveShift, 0);
-    g = new Game(t, l, difficulty, nOriginal, nUser, l, sheet);
+    nUser = new NotationPlayer(sheet, tempo, octaveShift, 1);
+    g = new Game(t, l, notationId, difficulty, nOriginal, nUser, l, sheet);
 
 
 </script>

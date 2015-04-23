@@ -3,15 +3,20 @@
 */
 var Game = $class({
 
-    constructor: function (timer, logger, difficulty, notationPlayerOriginal, notationPlayerUser, sheet) {
+    constructor: function (timer, logger, notationId, difficulty, notationPlayerOriginal, notationPlayerUser, sheet) {
         scope = this;
         this.timer = timer;
+        this.notationId = notationId;
         this.difficulty = difficulty;
         this.logger = logger;
         this.playerOriginal = notationPlayerOriginal;
         this.playerUser = notationPlayerUser;
         this.sheet = sheet;
-        this.badAttemptCount = 0;
+        this.sliderMoveCount = 0;
+        this.userPlayCount = 0;
+        this.originalPlayCount = 0;
+        this.evalAttempt = 0;
+        this.sliderCount = $('.note-slider').length;
         this.gameName = 'faders';
         this.gameStartHandler = '?do=gameStart';
         this.gameEndHandler = '?do=gameEnd';
@@ -23,10 +28,9 @@ var Game = $class({
         scope.initSliders();
         scope.setUserPlayerKeys();
         scope.initTimer();
-        //scope.shuffleCards();
 
-        //scope.sendOnLoadRecord();
-        //scope.initOnWindowClose();
+        scope.sendOnLoadRecord();
+        scope.initOnWindowClose();
 
     },
 
@@ -48,7 +52,11 @@ var Game = $class({
     },
 
     setUserPlayerKeySingle: function(keyId, value) {
+        if (scope.playerUser.keys[keyId]['key'] == value)
+            return false; // no change
+
         scope.playerUser.keys[keyId]['key'] = value;
+        return true;
     },
 
     setActiveSlider: function(sliderId) {
@@ -113,6 +121,21 @@ var Game = $class({
         }
     },
 
+    getResult: function () {
+        var result = {
+            gameName: this.gameName,
+            notationId: scope.notationId,
+            difficulty: scope.difficulty,
+            sliderCount: scope.sliderCount,
+            steps: scope.sliderMoveCount,
+            time: scope.timer.getTime(),
+            userPlayCount: scope.userPlayCount,
+            originalPlayCount: scope.originalPlayCount,
+            evalAttempt: scope.evalAttempt
+        };
+        return result;
+    },
+
     getMinMaxKeys: function() {
         var keysCount = scope.playerOriginal.keys.length;
         var min = scope.playerOriginal.maxKey;
@@ -162,8 +185,10 @@ var Game = $class({
             $(this).on({
                 change: function(evt, val) {
                     var keyId = $(evt.target).data('id');
-                    scope.setUserPlayerKeySingle(keyId, val);
+                    var changed = scope.setUserPlayerKeySingle(keyId, val);
                     scope.playerUser.playSingle(keyId);
+                    if (changed == true)
+                        scope.sliderMoveCount++
                 },
                 slide: function(evt, val) {
                     scope.setHandlerColor($(evt.target).data('id'), val);
@@ -205,10 +230,14 @@ var Game = $class({
     },
 
     sendOnLoadRecord: function() {
+
         var record = {
             gameName: this.gameName,
-            difficulty: scope.difficulty
+            notationId: scope.notationId,
+            difficulty: scope.difficulty,
+            sliderCount: scope.sliderCount
         }
+
         this.logger.sendResult(this.gameStartHandler, record);
     },
 
@@ -217,10 +246,12 @@ var Game = $class({
 
         $('#btn-play').on('click', function(){
             scope.playerUser.play();
+            scope.userPlayCount++;
         });
 
         $('#btn-play-original').on('click', function(){
             scope.playerOriginal.play();
+            scope.originalPlayCount++;
         });
 
         $('#btn-stop').on('click', function(){
@@ -228,76 +259,72 @@ var Game = $class({
             scope.playerUser.stop();
         });
 
-        $('#btn-eval').on('mouseup', function(){
+        $('#btn-eval').on('click', function(){
             scope.evalGame();
+            scope.evalAttempt++;
         });
+
+        $('.btn-return-game').on('click', function() {
+            $('.modal-wrong').modal('hide');
+            scope.timer.start(); // re-run timeout on return to game
+        })
+    },
+
+    evalGame: function() {
+        scope.playerOriginal.stop();
+        scope.playerUser.stop();
+        scope.timer.stop();
+        var okay = true;
+        $('.note-slider').each(function() {
+
+            var keyId = $(this).data('id');
+            if ( $(this).val() !== scope.playerOriginal.keys[keyId]['key'] ) {
+                okay = false;
+                return false;
+            }
+        });
+        if (okay == true) {
+            scope.gameSolved = true;
+            $('.result-steps').find('span').empty().append(scope.sliderMoveCount);
+            $('.result-time').find('span').empty().append(scope.timer.getTime('sec'));
+            $('.modal-correct').modal('show');
+            //$('#modal-correct').modal('show');
+            this.logger.sendResult(this.gameEndHandler, this.getResult(), function(payload) {
+
+                if (payload['score'] > 0) {
+
+                    //$('.result-score').find('span').empty().append(payload['score']);
+                    $('.result-score').find('span').animateNumber(
+                        {
+                            number: parseInt(payload['score'])
+                        },
+                        800,
+                        function() { // call after number animation ends
+
+                            if (payload['personalRecord'] == true && payload['gameRecord'] == false) {
+                                $('.result-record').find('.empty').hide();
+                                $('.personal-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
+                                    this.show();
+                                });
+                            }
+
+                            if (payload['gameRecord'] == true) {
+                                $('.result-record').find('.empty').hide();
+                                $('.game-record').removeClass('hidden').transition({opacity: 1}, 400, function () {
+                                    this.show();
+                                });
+                            }
+
+                        }
+                    )
+                }
+            });
+        } else {
+            $('.modal-wrong').modal('show');
+
+            // DEBUG ONLY, possible attempt record
+            //var result = {gameName: this.gameName, steps: scope.getSteps(), time: scope.timer.getTime()};
+            //this.logger.sendResult(this.gameEndHandler, result);
+        }
     }
 });
-
-
-
-//    window.onload = function () {
-//    MIDI.loadPlugin({
-//        soundfontUrl: "/assets/vendor/midi-soundfonts/FluidR3_GM/",
-//        instruments: ["acoustic_grand_piano", "acoustic_guitar_nylon", "percussive_organ"],
-//        onprogress: function(state, progress) {
-//            console.log(state, progress);
-//        },
-//        onsuccess: function() {
-//            var delay = 0;
-//            var tempo = 120;
-//            var velocity = 127;
-//            var baseNoteLength = 4;
-//            // play the note
-//            MIDI.setVolume(0, 127);
-//            MIDI.setVolume(1, 127);
-//            MIDI.programChange(0, 17); // midi number - 1
-//            MIDI.programChange(1, 0); // midi number - 1
-//
-//            var notes = [
-//                'D4',
-//                'E4',
-//                'Gb4',
-//                'G4',
-//                'A4',
-//                'Gb4',
-//                'E4',
-//                'E4',
-//                'E4',
-//                'D4',
-//                'D4'
-//            ];
-//
-//            var lengths = [
-//                8,
-//                8,
-//                8,
-//                8,
-//                8,
-//                6,
-//                16,
-//                4,
-//                6,
-//                16,
-//                4,
-//            ];
-//
-//
-//            var i = 0;
-//
-//            var f = function() {
-//
-//                MIDI.noteOff(0, MIDI.keyToNote[notes[i-1]], 0.1);
-//                MIDI.noteOn(0, MIDI.keyToNote[notes[i]], velocity, 0);
-//
-//                i++;
-//
-//                if (i <= notes.length)
-//                    var timerId = setTimeout(f, (1000 / (tempo / 60)) * (baseNoteLength / lengths[i-1]) );
-//            }
-//
-//            f();
-//
-//        }
-//    });
-//};

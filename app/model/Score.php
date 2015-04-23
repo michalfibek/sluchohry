@@ -167,6 +167,20 @@ class Score extends Base
     }
 
     /**
+     * @param $time
+     * @param $steps
+     * @return int
+     */
+    public function calcScoreFaders($time, $steps, $sliderCount)
+    {
+        $timePenalty = $this->getTimePenalty($time);
+        $stepsPenalty = $steps * 20;
+        $sliderCountPenalty = ($sliderCount > 15) ? 0 : 150 - $sliderCount*10;
+
+        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty - $sliderCountPenalty));
+    }
+
+    /**
      * @param int $time in milliseconds
      * @return int
      */
@@ -198,6 +212,9 @@ class Score extends Base
 
         } elseif ($gameId == 3) { // noteSteps
             $score = $this->calcScoreNoteSteps($result['time'], $result['steps']);
+
+        } elseif ($gameId == 4) { // noteSteps
+            $score = $this->calcScoreFaders($result['time'], $result['steps'], $result['sliderCount']);
         }
 
         $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score);

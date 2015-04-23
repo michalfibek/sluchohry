@@ -114,5 +114,5 @@ noteSteps:
     hint: "Krokuj noty mačkáním na písmena na klávesnici podle jejich pořadí v notové osnově."
 
 faders:
-    stepCount: "špatných pokusů"
+    stepCount: "tahů"
     hint: "Pohybuj správně posuvníky a slož zpět melodii přesně podle předlohy."

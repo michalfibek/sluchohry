@@ -26,13 +26,18 @@ class Event extends Base {
         DATA_DIFFICULTY = 'difficulty',
         DATA_SOLVED = 'solved',
         DATA_CUBE_COUNT = 'cube_count', // melodicCubes
-        DATA_PLAY_STEPS = 'play_steps', // melodicCubes, pexeso
+        DATA_PLAY_STEPS = 'play_steps', // melodicCubes, pexeso, faders
         DATA_SONG_ID = 'song_id', // melodicCubes
         DATA_SONG_LIST = 'song_list', // pexeso
         DATA_BAD_ATTEMPTS = 'bad_attempts', // noteSteps
         DATA_NOTE_COUNT = 'note_count', // noteSteps
         DATA_SHIFT_SIGNS = 'shift_signs', // noteSteps
-        DATA_FIRST_LETTER = 'first_note'; // noteSteps
+        DATA_FIRST_LETTER = 'first_note', // noteSteps
+        DATA_SLIDER_COUNT = 'slider_count', // faders
+        DATA_NOTATION_ID = 'notation_id', // faders
+        DATA_USER_PLAY_COUNT = 'user_melody_played', // faders
+        DATA_ORIGINAL_PLAY_COUNT = 'original_melody_played', // faders
+        DATA_EVAL_ATTEMPT = 'eval_attempt'; // melodicCubes, faders
 
     private $httpRequest;
 
@@ -103,6 +108,13 @@ class Event extends Base {
                 self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
             );
+        } elseif ($result['gameName'] == 'faders') {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_NOTATION_ID => $result['notationId'],
+                self::DATA_DIFFICULTY => $result['difficulty'],
+                self::DATA_SLIDER_COUNT => $result['sliderCount'],
+            );
         }
         $this->insertRecord($user->getId(), self::CLASS_GAME_START, $data);
     }
@@ -123,6 +135,7 @@ class Event extends Base {
                 self::DATA_CUBE_COUNT => $result['cubeCount'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
                 self::DATA_PLAY_STEPS => $result['steps'],
+                self::DATA_EVAL_ATTEMPT => $result['evalAttempt'],
                 self::DATA_PLAY_TIME => $result['time'],
             );
         } else if ($result['gameName'] == 'pexeso') {
@@ -145,6 +158,20 @@ class Event extends Base {
                 self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
                 self::DATA_BAD_ATTEMPTS => $result['steps'],
+                self::DATA_PLAY_TIME => $result['time'],
+            );
+        } elseif ($result['gameName'] == 'faders') {
+            $data = array(
+                self::DATA_GAME_NAME => $result['gameName'],
+                self::DATA_SOLVED => $solved,
+                self::DATA_SCORE => $result['score'],
+                self::DATA_NOTATION_ID => $result['notationId'],
+                self::DATA_DIFFICULTY => $result['difficulty'],
+                self::DATA_SLIDER_COUNT => $result['sliderCount'],
+                self::DATA_PLAY_STEPS => $result['steps'],
+                self::DATA_USER_PLAY_COUNT => $result['userPlayCount'],
+                self::DATA_ORIGINAL_PLAY_COUNT => $result['originalPlayCount'],
+                self::DATA_EVAL_ATTEMPT => $result['evalAttempt'],
                 self::DATA_PLAY_TIME => $result['time'],
             );
         }
