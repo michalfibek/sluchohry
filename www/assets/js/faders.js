@@ -44,7 +44,6 @@ var Game = $class({
 
         for (var i = 0; i < keysCount; i++) {
             scope.playerUser.keys[i]['key'] = $('#note-slider-' + i).val();
-            console.log($('.note-slider').val());
         }
     },
 
@@ -139,7 +138,8 @@ var Game = $class({
         //console.log(min, max, average);
 
         $('.note-slider').each(function() {
-            var keyRecord = scope.playerOriginal.keys[$(this).data('id')];
+            var sliderId = $(this).data('id');
+            var keyRecord = scope.playerOriginal.keys[sliderId];
             $(this).parent().addClass('length-' + keyRecord['length']);
             $(this).noUiSlider({
                 orientation: "vertical",
@@ -164,7 +164,9 @@ var Game = $class({
                     var keyId = $(evt.target).data('id');
                     scope.setUserPlayerKeySingle(keyId, val);
                     scope.playerUser.playSingle(keyId);
-                    //scope.setUserPlayerKeys();
+                },
+                slide: function(evt, val) {
+                    scope.setHandlerColor($(evt.target).data('id'), val);
                 }
             })
 
@@ -173,11 +175,21 @@ var Game = $class({
                 // The tooltip HTML is 'this', so additional
                 // markup can be inserted here.
                 $(this).html(
-                    '<span>' + value + '</span>'
+                    '<span>' + scope.playerUser.keyToNote[Math.round(value)] + '</span>'
                 );
             });
+            scope.setHandlerColor(sliderId, average);
             //$(this).find('noUi-handle')
         })
+    },
+
+    setHandlerColor: function(sliderId, keyValue) {
+
+        $('#note-slider-' + sliderId).find('.noUi-handle').removeClass(function (index, css) {
+            return (css.match (/(^|\s)color-\S+/g) || []).join(' ');
+        }); // remove old class
+
+        $('#note-slider-' + sliderId).find('.noUi-handle').addClass('color-' + keyValue % 11);
     },
 
     initTimer: function() {

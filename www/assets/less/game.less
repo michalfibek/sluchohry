@@ -230,11 +230,16 @@ GAME: melodic cubes
       &.active {
         background-color: @color-prim-1;
         transition: all 0.2s ease-in-out;
+
+        .noUi-handle {
+          background-color: @color-prim-1;
+        }
       }
     }
 
     .noUi-handle {
 //      left: -11px;
+      height: 43px;
       box-shadow: none;
       background-color: #36B0DB;
 
@@ -244,8 +249,24 @@ GAME: melodic cubes
       }
 
       div {
+        position: relative;
         text-align: center;
+        top: 25%;
+        color: #fff;
       }
+
+      &.color-0 { background-color: #d39321 }
+      &.color-1 { background-color: #FF8800 }
+      &.color-2 { background-color: #0cbd7f }
+      &.color-3 { background-color: #6520DB }
+      &.color-4 { background-color: #DB20CA }
+      &.color-5 { background-color: #0047FF }
+      &.color-6 { background-color: #00a558 }
+      &.color-7 { background-color: #1a86cf }
+      &.color-8 { background-color: #db5718 }
+      &.color-9 { background-color: #9da00e }
+      &.color-10 { background-color: #8a465e }
+      &.color-11 { background-color: #835a10 }
     }
 
     &.length-16 {

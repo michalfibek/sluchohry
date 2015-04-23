@@ -38,7 +38,7 @@ var NotationPlayer = $class({
             'a#': 10, 'bb': 10, 'ais': 10, 'b': 10,
             'h': 11, 'cb': 11, 'ces': 11
         }
-        this.keyToNote;
+        this.keyToNote = [];
         this.restSymbol = '_';
 
         this.octaveUpChar = '\'';
@@ -80,7 +80,25 @@ var NotationPlayer = $class({
     },
 
     setKeyToNote: function() {
+        var keyToNote = [];
+        for (var i = 0; i <= this.maxKey; i++) {
+            var modulus = i % 12;
+            //console.log(i, modulus);
+            if (modulus === 0) { keyToNote[i] = 'c'; continue; }
+            if (modulus === 1) { keyToNote[i] = 'c#'; continue; }
+            if (modulus === 2) { keyToNote[i] = 'd'; continue; }
+            if (modulus === 3) { keyToNote[i] = 'd#'; continue; }
+            if (modulus === 4) { keyToNote[i] = 'e'; continue; }
+            if (modulus === 5) { keyToNote[i] = 'f'; continue; }
+            if (modulus === 6) { keyToNote[i] = 'f#'; continue; }
+            if (modulus === 7) { keyToNote[i] = 'g'; continue; }
+            if (modulus === 8) { keyToNote[i] = 'g#'; continue; }
+            if (modulus === 9) { keyToNote[i] = 'a'; continue; }
+            if (modulus === 10) { keyToNote[i] = 'a#'; continue; }
+            if (modulus === 11) { keyToNote[i] = 'h'; continue; }
+        }
 
+        this.keyToNote = keyToNote;
     },
 
     play: function() {
