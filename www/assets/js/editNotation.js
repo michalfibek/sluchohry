@@ -111,7 +111,7 @@ var EditNotation = $class({
         scope.switchStopBtn();
 
         $('#btn-play').on('click', function(){
-            scope.nPlayer.playOriginal();
+            scope.nPlayer.play();
         });
 
         $('#btn-stop').on('click', function(){

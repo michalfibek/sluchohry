@@ -42,6 +42,7 @@ game:
 
     common:
         play: "Hrej"
+        playOriginal: "Předloha"
         stop: "Stop"
         evaluate: "Vyhodnoť!"
         resultWrong: "Špatně!"

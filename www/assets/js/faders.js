@@ -3,12 +3,13 @@
 */
 var Game = $class({
 
-    constructor: function (timer, logger, difficulty, notationPlayer, sheet) {
+    constructor: function (timer, logger, difficulty, notationPlayerOriginal, notationPlayerUser, sheet) {
         scope = this;
         this.timer = timer;
         this.difficulty = difficulty;
         this.logger = logger;
-        this.nPlayer = notationPlayer;
+        this.playerOriginal = notationPlayerOriginal;
+        this.playerUser = notationPlayerUser;
         this.sheet = sheet;
         this.badAttemptCount = 0;
         this.gameName = 'faders';
@@ -20,6 +21,7 @@ var Game = $class({
         scope.initNotePlayer();
         scope.initButtons();
         scope.initSliders();
+        scope.setUserPlayerKeys();
         scope.initTimer();
         //scope.shuffleCards();
 
@@ -37,23 +39,37 @@ var Game = $class({
         });
     },
 
+    setUserPlayerKeys: function() {
+        var keysCount = scope.playerUser.keys.length;
+
+        for (var i = 0; i < keysCount; i++) {
+            scope.playerUser.keys[i]['key'] = $('#note-slider-' + i).val();
+            console.log($('.note-slider').val());
+        }
+    },
+
     setActiveSlider: function(sliderId) {
         $('#note-slider-' + sliderId).addClass('active');
     },
 
     setInactiveSlider: function(sliderId) {
-        console.log('stop');
         $('#note-slider-' + sliderId).removeClass('active');
+    },
+
+    setInactiveAllSliders: function() {
+        $('.note-slider').removeClass('active');
     },
 
     switchPlayBtn: function() {
         $('#btn-stop').show();
         $('#btn-play').hide();
+        $('#btn-play-original').hide();
     },
 
     switchStopBtn: function() {
         $('#btn-stop').hide();
         $('#btn-play').show();
+        $('#btn-play-original').show();
     },
 
     initNotePlayer: function() {
@@ -61,37 +77,98 @@ var Game = $class({
         var callbackSuccess = function() {
             scope.showGame();
         };
-        scope.nPlayer.initPlayer(callbackProgress, callbackSuccess);
+        scope.playerOriginal.initPlayer(callbackProgress, callbackSuccess);
 
-        // callbacks
-        scope.nPlayer.onSongEnd = function() {
+        // callbacks original player
+        scope.playerOriginal.onSongEnd = function() {
             scope.switchStopBtn();
+            scope.setInactiveAllSliders();
         }
-        scope.nPlayer.onSongPlay = function() {
+        scope.playerOriginal.onSongPlay = function() {
             scope.switchPlayBtn();
         }
-        scope.nPlayer.onNotePlay = function(noteId) {
+        scope.playerOriginal.onNotePlay = function(noteId) {
             scope.setActiveSlider(noteId);
         }
-        scope.nPlayer.onNoteStop = function(noteId) {
+        scope.playerOriginal.onNoteStop = function(noteId) {
+            scope.setInactiveSlider(noteId);
+        }
+
+        // callbacks user player
+        scope.playerUser.onSongEnd = function() {
+            scope.switchStopBtn();
+            scope.setInactiveAllSliders();
+        }
+        scope.playerUser.onSongPlay = function() {
+            scope.switchPlayBtn();
+        }
+        scope.playerUser.onNotePlay = function(noteId) {
+            scope.setActiveSlider(noteId);
+        }
+        scope.playerUser.onNoteStop = function(noteId) {
             scope.setInactiveSlider(noteId);
         }
     },
 
+    getMinMaxKeys: function() {
+        var keysCount = scope.playerOriginal.keys.length;
+        var min = scope.playerOriginal.maxKey;
+        var max = scope.playerOriginal.minKey;
+
+        for (var i = 0; i < keysCount; i++) {
+            if (scope.playerOriginal.keys[i]['key'] < min)
+                min = scope.playerOriginal.keys[i]['key'];
+
+            if (scope.playerOriginal.keys[i]['key'] > max)
+                max = scope.playerOriginal.keys[i]['key'];
+        }
+
+        return {'min': min, 'max': max}
+    },
+
     initSliders: function() {
+
+        var minMax = scope.getMinMaxKeys();
+        var min = minMax['min'];
+        var max = minMax['max'];
+        var average = Math.round((min+max)/2);
+        //console.log(min, max, average);
+
         $('.note-slider').each(function() {
-            var keyRecord = scope.nPlayer.keys[$(this).data('id')];
+            var keyRecord = scope.playerOriginal.keys[$(this).data('id')];
             $(this).parent().addClass('length-' + keyRecord['length']);
             $(this).noUiSlider({
                 orientation: "vertical",
-                start: [84],
-                step: 7,
+                direction: 'rtl',
+                start: [average],
+                step: 1,
                 range: {
-                    'min': 0,
-                    'max': 84
+                    'min': min, // absolute min - 0
+                    'max': max // absolute max - 128
+                },
+                format: {
+                    to: function ( value ) {
+                        return value;
+                    },
+                    from: function ( value ) {
+                        return value;
+                    }
                 }
             })
-            $(this).Link('lower').to('-inline-');
+            $(this).on({
+                change: function() {
+                    scope.setUserPlayerKeys();
+                }
+            })
+
+            $(this).Link('lower').to('-inline-', function ( value ) {
+
+                // The tooltip HTML is 'this', so additional
+                // markup can be inserted here.
+                $(this).html(
+                    '<span>' + value + '</span>'
+                );
+            });
             //$(this).find('noUi-handle')
         })
     },
@@ -120,11 +197,16 @@ var Game = $class({
         scope.switchStopBtn();
 
         $('#btn-play').on('click', function(){
-            scope.nPlayer.playOriginal();
+            scope.playerUser.play();
+        });
+
+        $('#btn-play-original').on('click', function(){
+            scope.playerOriginal.play();
         });
 
         $('#btn-stop').on('click', function(){
-            scope.nPlayer.stop();
+            scope.playerOriginal.stop();
+            scope.playerUser.stop();
         });
 
         $('#btn-eval').on('mouseup', function(){

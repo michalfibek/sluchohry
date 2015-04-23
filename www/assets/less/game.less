@@ -6,7 +6,7 @@ GAME: melodic cubes
   margin-bottom: 20px;
 }
 
-#btn-play, #btn-stop, #btn-eval {
+#btn-play, #btn-play-original, #btn-stop, #btn-eval {
   display: inline-block;
   width: 100px;
   margin: 5px 5px;
@@ -23,7 +23,7 @@ GAME: melodic cubes
   }
 }
 
-#btn-play, #btn-stop {
+#btn-play, #btn-play-original, #btn-stop {
   background-color: @color-ter-1;
 
   &:hover {
@@ -42,6 +42,10 @@ GAME: melodic cubes
   &:hover {
     background-color: darken(@color-sec-1, 10%);
   }
+}
+
+.btn-lg-x2#btn-stop {
+  width: 334px;
 }
 
 
@@ -202,7 +206,7 @@ GAME: melodic cubes
     padding-right: 13px;
 
     .note-slider {
-      height: 250px;
+      height: 350px;
       transition: all 0.2s ease-in-out;
 
       &.active {
@@ -215,6 +219,11 @@ GAME: melodic cubes
       left: -11px;
       box-shadow: none;
       background-color: #36B0DB;
+
+      &:before, &:after {
+        width: auto;
+        height: auto;
+      }
 
       div {
         text-align: center;
