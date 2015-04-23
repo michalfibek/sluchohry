@@ -3,18 +3,29 @@ namespace App\Model;
 
 use Nette,
     App\Services;
+use Tracy\Debugger;
 
 /**
- * Manipulate with song files.
+ * Manipulate with notation files.
  */
 class Notation extends Base
 {
-    public function getRandom()
+    public function getRandom($omitNotations = null, $gameLimit = null)
     {
         $notationsAll = $this->getAll();
-        $key = array_rand($notationsAll->fetchAll());
 
-        if ($notationsAll) return $notationsAll[$key]; else return null;
+        // skip notations with $omitNotations id's
+        if ($omitNotations)
+            $notationsAll = $notationsAll->where('id NOT IN', $omitNotations);
+
+        // fetch notations only for certain game
+        if ($gameLimit) {
+            $notationsForGame = $this->db->table('game_has_notation')->where('game_id', $gameLimit)->fetchPairs(null, 'notation_id');
+            $notationsAll = $notationsAll->where('id IN', $notationsForGame);
+        }
+
+        $fetch = $notationsAll->fetchAll();
+        if ($fetch) return $notationsAll[array_rand($fetch)]; else return null;
     }
 
     public function updateById($id, $data)

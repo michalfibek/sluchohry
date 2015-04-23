@@ -33,20 +33,41 @@ class FadersPresenter extends BaseGamePresenter
 
     protected function getAssetsRandom()
     {
-        if ($notation = $this->notation->getRandom())
+        $omitNotation = ($this->gameSession['fadersHistory']) ? explode('-',$this->gameSession['fadersHistory']) : null;
+
+        if ($notation = $this->notation->getRandom($omitNotation, 4))
         {
             $assets['notation'] = $notation;
             return $assets;
         } else {
             return null;
         }
+
     }
 
     public function actionDefault($id = null, $difficulty = 2, $nextRound = null)
     {
         $this->difficulty = (int)$difficulty;
 //        $this->stepRatio = $this->getVariationByDifficulty($this->difficulty);
+
+        if (!$nextRound) {
+            unset($this->gameSession['fadersHistory']);
+        }
+
         $this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
+        if (!$this->gameAssets) {
+
+            $msg = Nette\Utils\Html::el('span', $this->translator->translate('front.faders.flash.playedAll'));
+            $msg->add( Nette\Utils\Html::el('a', $this->translator->translate('front.faders.flash.playAgain'))->href($this->link('default')) );
+            $status = 'success';
+
+            $this->flashMessage($msg, $status);
+            $this->redirect(':Front:Default:');
+        }
+        if ($nextRound)
+            $this->gameSession['fadersHistory'] = $this->gameSession['fadersHistory'].'-'.$this->gameAssets['notation']['id'];
+        else
+            $this->gameSession['fadersHistory'] = $this->gameAssets['notation']['id'];
     }
 
     public function renderDefault()

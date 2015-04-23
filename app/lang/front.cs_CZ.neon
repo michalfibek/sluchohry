@@ -116,3 +116,7 @@ noteSteps:
 faders:
     stepCount: "tahů"
     hint: "Pohybuj správně posuvníky a slož zpět melodii přesně podle předlohy."
+
+    flash:
+        playedAll: "Všechny písničky dohrány! "
+        playAgain: "Hrát znovu"

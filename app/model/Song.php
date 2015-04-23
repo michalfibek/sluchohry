@@ -74,22 +74,25 @@ class Song extends Base
         $markedSongs = $this->db->table('marker')->select('DISTINCT song_id')->fetchPairs(null, 'song_id');
 
         // fetch only songs with set markers
-        if ($requireMarkers)
+        if ($requireMarkers) {
             $songsAll = $songsAll->where('id IN', $markedSongs);
+        }
 
         // skip songs with $omitSongs id's
-        if ($omitSongs)
+        if ($omitSongs) {
             $songsAll = $songsAll->where('id NOT IN', $omitSongs);
+        }
 
         // fetch only songs for certain game
-        if ($gameLimit)
+        if ($gameLimit) {
             $songsForGame = $this->db->table('game_has_song')->where('game_id', $gameLimit)->fetchPairs(null, 'song_id');
             $songsAll = $songsAll->where('id IN', $songsForGame);
+        }
 
         if ($songCount == 1) { // fetching only one song
 
-            $key = array_rand($songsAll->fetchAll());
-            if ($songsAll) return $songsAll[$key]; else return null;
+            $fetch = $songsAll->fetchAll();
+            if ($fetch) return $songsAll[array_rand($fetch)]; else return null;
 
         } elseif ($songCount > 1 && count($songsAll) >= $songCount) { // fetching more than one song
 
