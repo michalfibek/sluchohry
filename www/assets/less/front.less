@@ -66,11 +66,12 @@ FRONT: applies only to front module
 #game-list {
   list-style: none;
   padding: 0;
-  margin: 5px 0 20px 0;
+  margin: 5px auto 20px auto;
   text-align: center;
 
   @media (min-width: @screen-sm-min) {
-    margin: 20px 0 20px 0;
+    margin: 20px auto;
+    width: 700px;
   }
 
 
@@ -113,6 +114,12 @@ FRONT: applies only to front module
       }
 
       &#game-note-steps {
+        background-color: #ea5e00;
+        color: #fff;
+        background-image: @background-stripes-transparent;
+      }
+
+      &#game-faders {
         background-color: #ea5e00;
         color: #fff;
         background-image: @background-stripes-transparent;

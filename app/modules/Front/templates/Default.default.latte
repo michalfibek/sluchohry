@@ -38,7 +38,7 @@
 
 		<ul id="game-list">
 
-			<li>
+			{if $user->isAllowed('Front:Game:MelodicCubes', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:MelodicCubes:',
 					title => $template->translate('front.game.melodicCubes'),
@@ -48,9 +48,9 @@
 					scoreArray => $scoreMelodicCubes,
 					faIcon => 'fa-th-large'
 				}
-			</li>
+			</li>{/if}
 
-			<li>
+			{if $user->isAllowed('Front:Game:Pexeso', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:Pexeso:',
 					title => $template->translate('front.game.pexeso'),
@@ -60,9 +60,9 @@
 					scoreArray => $scorePexeso,
 					faIcon => 'fa-th'
 				}
-			</li>
+			</li>{/if}
 
-			<li>
+			{if $user->isAllowed('Front:Game:NoteSteps', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:NoteSteps:',
 					title => $template->translate('front.game.noteSteps'),
@@ -72,7 +72,19 @@
 					scoreArray => $scoreNoteSteps,
 					faIcon => 'fa-music'
 				}
-			</li>
+			</li>{/if}
+
+			{if $user->isAllowed('Front:Game:Faders', 'default')}<li>
+				{include 'components/gameSelectBox.latte',
+					url => ':Front:Game:Faders:',
+					title => $template->translate('front.game.faders'),
+					className => 'faders',
+					gameId => 3,
+					maxDifficultyKey => $fadersMaxdiffKey,
+					scoreArray => $scoreFaders,
+					faIcon => 'fa-sliders fa-rotate-90'
+				}
+			</li>{/if}
 
 		</ul>
 

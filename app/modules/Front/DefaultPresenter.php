@@ -54,6 +54,10 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$scoreNoteSteps = $this->score->getAllByUser($this->user->getId(), 3, true);
 			$this->template->scoreNoteSteps = $scoreNoteSteps;
 			$this->template->noteStepsMaxdiffKey = Utils::arrayMaxWithIndex($scoreNoteSteps)['i'];
+
+			$scoreFaders = $this->score->getAllByUser($this->user->getId(), 4, true);
+			$this->template->scoreFaders = $scoreFaders;
+			$this->template->fadersMaxdiffKey = Utils::arrayMaxWithIndex($scoreFaders)['i'];
 		}
 
 	}
