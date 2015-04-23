@@ -8,6 +8,7 @@
     <h1 n:block="title">
         <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
         {_front.game.faders}
+    <small>{if !isset($notation->artist)}{$notation->artist} - {/if}{$notation->title}</small>
     </h1>
     <div id="game-hint">{_front.faders.hint}</div>
 </header>
