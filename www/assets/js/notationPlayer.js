@@ -18,22 +18,23 @@ var NotationPlayer = $class({
         this.velocity = 127;
         this.baseNoteLength = 4;
 
-        this.noteRegex = new RegExp('^([cdfga]is|[dg]es|es|as|[cdfga]#|[dega]b|[bcdefgah])([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?$');
+        this.noteRegex = new RegExp('^([cdefgah]is|[cdfg]es|es|as|[cdefgah]#|[cdefga]b|[bcdefgah]|_)([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?$');
 
         this.noteToKey = { // very permissive! :)
-            'c': 0,
+            'c': 0, 'h#': 0, 'his': 0,
             'c#': 1, 'db': 1, 'cis': 1, 'des': 1,
             'd': 2,
             'd#': 3, 'eb': 3, 'dis': 3, 'es': 3,
-            'e': 4,
-            'f': 5,
+            'e': 4, 'fb': 4, 'fes': 4,
+            'f': 5, 'e#': 5, 'eis': 5,
             'f#': 6, 'gb': 6, 'fis': 6, 'ges': 6,
             'g': 7,
             'g#': 8, 'ab': 8, 'gis': 8, 'as': 8,
             'a': 9,
             'a#': 10, 'bb': 10, 'ais': 10, 'b': 10,
-            'h': 11
+            'h': 11, 'cb': 11, 'ces': 11
         }
+        this.restSymbol = '_';
 
         this.octaveUpChar = '\'';
         this.octaveDownChar = ',';
@@ -41,17 +42,18 @@ var NotationPlayer = $class({
         this.dotChar = '.';
 
         this.defaultNoteLength = 4;
+        this.lastNoteLength = this.defaultNoteLength;
 
         this.playTimer; // SetTimeout instance
 
         this.keys;
-        this.setKeys(sheet);
-
-
+        this.setSheet(sheet);
     },
 
     onSongPlay: function() {},
     onSongEnd: function() {},
+    onNotePlay: function(noteId) {},
+    onNoteStop: function(noteId) {},
     onWrongNote: function(noteName) {},
     onCorrectNotes: function() {},
 
@@ -83,8 +85,15 @@ var NotationPlayer = $class({
         //console.log(MIDI.noteToKey[keys[i]['key']]);
         //console.log(i);
 
-        if (i != 0) MIDI.noteOff(0, keys[i-1]['key'], 0.1);
-        if (i != keys.length) MIDI.noteOn(0, keys[i][['key']], that.velocity, 0);
+        if (i != 0) {
+            MIDI.noteOff(0, keys[i - 1]['key'], 0.1);
+            that.onNoteStop(i-1);
+        }
+
+        if (i != keys.length && keys[i]['key'] != that.restSymbol) {
+            MIDI.noteOn(0, keys[i][['key']], that.velocity, 0);
+            that.onNotePlay(i);
+        }
 
         if (i < keys.length) {
             var delay = Math.round((1000 / (that.tempo / 60)) * (that.baseNoteLength / keys[i]['length']));
@@ -98,18 +107,18 @@ var NotationPlayer = $class({
 
     },
 
-    setKeys: function(sheet) {
+    setSheet: function(sheet) {
         this.keys = this.sheetToKeys(sheet)
     },
 
     setTempo: function(tempo) {
         this.tempo = tempo;
-        this.setKeys(this.sheet);
+        this.setSheet(this.sheet);
     },
 
     setOctave: function(octave) {
         this.defaultOctave = octave;
-        this.setKeys(this.sheet);
+        this.setSheet(this.sheet);
     },
 
     sheetToKeys: function(sheet) {
@@ -118,8 +127,12 @@ var NotationPlayer = $class({
         var sheet = sheet.toLowerCase(); // normalize
         var sheetArray = sheet.split(' ');
         var sheetLength = sheetArray.length;
+        that.lastNoteLength = that.defaultNoteLength; // reset note length to default
         var keys = [];
         for (var i = 0; i < sheetLength; i++) {
+
+            if (sheetArray[i].length == 0) continue; // skip space
+
             var result = that.noteRegex.exec(sheetArray[i]); // regexp match
             if (typeof(result) == 'undefined' || result == null) {
                 wrongCount++;
@@ -139,10 +152,11 @@ var NotationPlayer = $class({
                 }
             }
 
-            var noteLength = that.defaultNoteLength;
+            var noteLength = that.lastNoteLength;
 
             if (typeof(result[3]) != 'undefined') { // 1, 2, 4, 8, 16 - denominator of the fraction 1/x -> note length
                 noteLength = parseInt(result[3]);
+                that.lastNoteLength = noteLength; // change default note length based on this note
             }
 
             if (typeof(result[4] != 'undefined')) { // . or t -> change length
@@ -153,7 +167,10 @@ var NotationPlayer = $class({
                     noteLength = noteLength + noteLength / 2; // note length plus its half
             }
 
-            var noteKey = ((1+that.noteToKey[result[1]])+noteOctave*12)-1; // set with the right octave
+            if (result[1] == that.restSymbol)
+                var noteKey = that.restSymbol; // space symbol
+            else
+                var noteKey = ((1+that.noteToKey[result[1]])+noteOctave*12)-1; // set with the right octave
 
             keys[i] = {
                 key: noteKey,

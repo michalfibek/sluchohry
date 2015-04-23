@@ -37,6 +37,15 @@ var Game = $class({
         });
     },
 
+    setActiveSlider: function(sliderId) {
+        $('#note-slider-' + sliderId).addClass('active');
+    },
+
+    setInactiveSlider: function(sliderId) {
+        console.log('stop');
+        $('#note-slider-' + sliderId).removeClass('active');
+    },
+
     switchPlayBtn: function() {
         $('#btn-stop').show();
         $('#btn-play').hide();
@@ -61,18 +70,29 @@ var Game = $class({
         scope.nPlayer.onSongPlay = function() {
             scope.switchPlayBtn();
         }
+        scope.nPlayer.onNotePlay = function(noteId) {
+            scope.setActiveSlider(noteId);
+        }
+        scope.nPlayer.onNoteStop = function(noteId) {
+            scope.setInactiveSlider(noteId);
+        }
     },
 
     initSliders: function() {
         $('.note-slider').each(function() {
+            var keyRecord = scope.nPlayer.keys[$(this).data('id')];
+            $(this).parent().addClass('length-' + keyRecord['length']);
             $(this).noUiSlider({
                 orientation: "vertical",
-                start: [200],
+                start: [84],
+                step: 7,
                 range: {
                     'min': 0,
-                    'max': 1000
+                    'max': 84
                 }
             })
+            $(this).Link('lower').to('-inline-');
+            //$(this).find('noUi-handle')
         })
     },
 

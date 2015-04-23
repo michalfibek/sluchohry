@@ -41,13 +41,13 @@ var EditNotation = $class({
         })
         $('#sheet').change(function() {
             scope.clearWrongNotes();
-            scope.nPlayer.setKeys($(this).val());
+            scope.nPlayer.setSheet($(this).val());
         })
 
         $('#sheet').highlightTextarea({
             words: [{
                 color: '#83FF7B',
-                words: ['([cdfga]is|[dg]es|es|as|[cdfga]#|[dega]b|[bcdefgah])([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?']
+                words: ['([cdefgah]is|[cdfg]es|es|as|[cdefgah]#|[cdefga]b|[bcdefgah]|_)([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?']
             }]
         });
     },
@@ -77,7 +77,7 @@ var EditNotation = $class({
     },
 
     clearWrongNotes: function() {
-        $('#wrong-input-list').find('span').empty();
+        $('#wrong-input-list').find('span').remove();
     },
 
     writeWrongNote: function(wrongNote) {
@@ -88,7 +88,7 @@ var EditNotation = $class({
         //    }]
         //});
 
-        $('#wrong-input-list').find('span').append(wrongNote + ' ');
+        $('#wrong-input-list').append('<span>' + wrongNote + '</span>');
     },
 
     initOnWindowClose: function() {
