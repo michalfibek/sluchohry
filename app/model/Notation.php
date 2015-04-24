@@ -19,17 +19,13 @@ class Notation extends Base
             $notationsForGame = $this->db->table('game_has_notation')->where('game_id', $gameLimit)->fetchPairs(null, 'notation_id');
         }
 
-        Debugger::barDump($omitNotations, 'omit in db');
-
         // skip notations with $omitNotations id's
         if ($omitNotations) {
             if ($gameLimit) {
                 foreach ($notationsForGame as $keyGame => $idViaGame) {
-                    Debugger::barDump('foreach' . $keyGame . $idViaGame);
                     if ($keyOmit = array_search($idViaGame, $omitNotations)) {
                         unset($omitNotations[$keyOmit]);
                         unset($notationsForGame[$keyGame]);
-                        Debugger::barDump('unset');
                     }
                 }
 
@@ -42,10 +38,12 @@ class Notation extends Base
             $notationsAll = $notationsAll->where('id', $notationsForGame);
         }
 
-        if (isset($whereId)) $notationsAll = call_user_func(array($notationsAll, 'where'), $whereId);
-
         $fetch = $notationsAll->fetchAll();
-        if ($fetch) return $notationsAll[array_rand($fetch)]; else return null;
+
+        if ($fetch)
+            return $notationsAll[array_rand($fetch)];
+        else
+            return null;
     }
 
     public function updateById($id, $data)
