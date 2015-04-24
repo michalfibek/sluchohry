@@ -17,25 +17,12 @@ class Notation extends Base
         // fetch notations only for certain game
         if ($gameLimit) {
             $notationsForGame = $this->db->table('game_has_notation')->where('game_id', $gameLimit)->fetchPairs(null, 'notation_id');
+            $notationsAll = $notationsAll->where('id IN', $notationsForGame);
         }
 
-        // skip notations with $omitNotations id's
+        // skip notations with $omitSongs id's
         if ($omitNotations) {
-            if ($gameLimit) {
-                foreach ($notationsForGame as $keyGame => $idViaGame) {
-                    if ($keyOmit = array_search($idViaGame, $omitNotations)) {
-                        unset($omitNotations[$keyOmit]);
-                        unset($notationsForGame[$keyGame]);
-                    }
-                }
-
-            } else {
-                $notationsAll = $notationsAll->where('id NOT', $omitNotations);
-            }
-        }
-
-        if ($gameLimit) {
-            $notationsAll = $notationsAll->where('id', $notationsForGame);
+            $notationsAll = $notationsAll->where('id NOT IN', $omitNotations);
         }
 
         $fetch = $notationsAll->fetchAll();
