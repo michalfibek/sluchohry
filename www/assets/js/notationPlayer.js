@@ -141,16 +141,17 @@ var NotationPlayer = $class({
             //console.log(delay);
             that.playTimer = setTimeout(function() {
                 that.playChain(keys, i + 1)
-            }, that.getDelay(keys[i]['length']));
+            }, that.getDelay( keys[i]['length'], keys[i]['multiplier'])
+            );
         } else {
             that.onSongEnd();
         }
 
     },
 
-    getDelay: function(noteLength) {
+    getDelay: function(noteLength, multiplier) {
         var that = this;
-        return Math.round((1000 / (that.tempo / 60)) * (that.baseNoteLength / noteLength));
+        return Math.round((1000 / (that.tempo / 60)) * (multiplier * that.baseNoteLength / noteLength));
     },
 
     setSheet: function(sheet) {
@@ -176,6 +177,8 @@ var NotationPlayer = $class({
         that.lastNoteLength = that.defaultNoteLength; // reset note length to default
         var keys = [];
         for (var i = 0; i < sheetLength; i++) {
+
+            var noteMultiplier = 1;
 
             if (sheetArray[i].length == 0) continue; // skip space
 
@@ -207,20 +210,21 @@ var NotationPlayer = $class({
 
             if (typeof(result[4] != 'undefined')) { // . or t -> change length
                 if (result[4] == that.trioleChar)
-                    noteLength = noteLength / 3;
+                    noteMultiplier = 1/3;
 
                 if (result[4] == that.dotChar)
-                    noteLength = noteLength + noteLength / 2; // note length plus its half
+                    noteMultiplier = noteMultiplier * 1.5; // note length plus its half
             }
 
             if (result[1] == that.restSymbol)
                 var noteKey = that.restSymbol; // space symbol
             else
-                var noteKey = ((1+that.noteToKey[result[1]])+noteOctave*12)-1; // set with the right octave
+                var noteKey = ( (1 + that.noteToKey[result[1]] ) + noteOctave * 12) - 1; // set with the right octave
 
             keys[i] = {
                 key: noteKey,
-                length: noteLength
+                length: noteLength,
+                multiplier: noteMultiplier
             }
 
             //console.table(result);

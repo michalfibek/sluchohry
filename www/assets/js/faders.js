@@ -163,7 +163,9 @@ var Game = $class({
         $('.note-slider').each(function() {
             var sliderId = $(this).data('id');
             var keyRecord = scope.playerOriginal.keys[sliderId];
-            $(this).parent().addClass('length-' + keyRecord['length']);
+            var className = keyRecord['length'];
+            if (keyRecord['multiplier'] == 1.5) className = className + '-dot';
+            $(this).parent().addClass('length-' + className);
             $(this).noUiSlider({
                 orientation: "vertical",
                 direction: 'rtl',
