@@ -65,7 +65,6 @@ services:
 	- App\Model\Tempo
 	- App\Model\User
 
-	- App\Services\GameSaver(@session)
 	- App\Services\UploadHandler
 	- App\Services\SongTagHandler
 	- \getID3

@@ -14,13 +14,22 @@ class FadersPresenter extends BaseGamePresenter
     /** @inject @var Model\Notation */
     public $notation;
 
-//    private $fadersHistory;
+    /** @var \Nette\Http\SessionSection */
+    protected $gameHistory;
 
     public function startup()
     {
         parent::startup();
         $this->gameId = self::GAME_FADERS;
-//        $this->$fadersHistory = $this->session->getSection(__CLASS__);
+
+        $this->gameHistory = $this->getSession('fadersHistory');
+
+        if (!$this->getParameter('nextRound')) {
+            $this->gameHistory->remove();
+//            $this->session->close();
+//            $this->session->start();
+            Debugger::barDump($this->gameHistory, 'sess after remove');
+        }
     }
 
     protected function getAssetsById($id)
@@ -36,8 +45,9 @@ class FadersPresenter extends BaseGamePresenter
 
     protected function getAssetsRandom()
     {
-        $omitNotation = ($this->gameSaver->getItemsForGame($this->gameId)) ? explode('-',$this->gameSaver->getItemsForGame($this->gameId)) : null;
+        $omitNotation = ($this->gameHistory->getIterator()->getArrayCopy()) ? $this->gameHistory->getIterator()->getArrayCopy() : null;
 //        Debugger::barDump($omitNotation, 'omit array');
+//        $omitNotation = null;
 
         if ($notation = $this->notation->getRandom($omitNotation, self::GAME_FADERS))
         {
@@ -54,9 +64,18 @@ class FadersPresenter extends BaseGamePresenter
         $this->difficulty = (int)$difficulty;
 //        $this->stepRatio = $this->getVariationByDifficulty($this->difficulty);
 
-        if ($this->getParameter('nextRound') == null) {
-            $this->gameSaver->removeForGame($this->gameId);
-        }
+//        $this->gameHistory = $this->getSession('fadersHistory');
+//
+//        if (!$this->getParameter('nextRound')) {
+////            $this->gameHistory->remove();
+////            $this->session->close();
+////            $this->session->start();
+//            Debugger::barDump($this->gameHistory, 'sess after remove');
+//        }
+
+//        $this->gameHistory = $this->getSession(__CLASS__);
+
+        Debugger::log('living component');
 
         $this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
         if (!$this->gameAssets) {
@@ -65,13 +84,28 @@ class FadersPresenter extends BaseGamePresenter
             $msg->add( Nette\Utils\Html::el('a', $this->translator->translate('front.faders.flash.playAgain'))->href($this->link('default')) );
             $status = 'success';
 
+//            Debugger::log($this->gameHistory);
+            Debugger::log($this->gameHistory->getIterator()->getArrayCopy());
+
             $this->flashMessage($msg, $status);
             $this->redirect(':Front:Default:');
         }
 
-        $this->gameSaver->add($this->gameId, $this->gameAssets['notation']['id']);
+        Debugger::barDump($this->gameHistory, 'sess1');
 
-        Debugger::barDump($this->gameSaver->getItems(), 'sess');
+//        $this->gameHistory++;
+//        if (!$this->getParameter('nextRound')) {
+//            $this->gameHistory->offsetSet($this->gameAssets['notation']['id'], $this->gameAssets['notation']['id']);
+//        } else {
+//            $this->gameHistory = $this->gameAssets['notation']['id'];
+//        }
+
+        $this->gameHistory->offsetSet($this->gameAssets['notation']['id'], $this->gameAssets['notation']['id']);
+        $this->session->close();
+//        $this->session->start();
+
+//        Debugger::barDump($this->getSession('fadersHistory')->getIterator(), 'sess2');
+//        Debugger::barDump($this->session->getIterator()->getArrayCopy(), 's name');
     }
 
     public function renderDefault()

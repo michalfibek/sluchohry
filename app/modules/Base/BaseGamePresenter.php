@@ -16,17 +16,11 @@ abstract class BaseGamePresenter extends BasePresenter
         GAME_NOTE_STEPS = 3,
         GAME_FADERS = 4;
 
-    /** @var \Nette\Http\SessionSection */
-    protected $gameSession;
-
     /** @inject @var Model\Game */
     public $game;
 
     /** @inject @var Model\Score */
     public $score;
-
-    /** @inject @var Services\GameSaver */
-    public $gameSaver;
 
     protected $gameId;
     protected $difficulty;
@@ -41,8 +35,10 @@ abstract class BaseGamePresenter extends BasePresenter
     public function startup()
     {
         parent::startup();
-        $this->gameSession = $this->getSession('game');
-        $this->gameSession->setExpiration(0);
+
+        if ($this->isSignalReceiver($this, 'gameStart') || $this->isSignalReceiver($this, 'gameEnd') || $this->isSignalReceiver($this, 'gameForceEnd')) {
+            $this->processSignal();
+        }
     }
 
     protected function getVariationByDifficulty($difficulty)
@@ -53,6 +49,8 @@ abstract class BaseGamePresenter extends BasePresenter
     public function handleGameStart(array $result)
     {
         $this->onGameStart($result);
+
+        $this->presenter->terminate();
     }
 
     public function handleGameEnd(array $result)
@@ -72,6 +70,8 @@ abstract class BaseGamePresenter extends BasePresenter
         $result['score'] = 0;
 
         $this->onGameForceEnd($result);
+
+        $this->presenter->terminate();
     }
 
     protected function beforeRender()
