@@ -8,6 +8,7 @@ use Nette,
 	Grido,
 	Grido\Grid,
 	Tracy\Debugger;
+use Nette\Application\Responses\JsonResponse;
 
 
 /**
@@ -166,11 +167,11 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$saveResult = $this->song->save($uploadResult);
 			$saveResult['durationReadable'] = $this->getSongTimeFormat($saveResult['duration']); // format duration
 		} catch (\Exception $e) {
-			$this->sendResponse(new Nette\Application\Responses\JsonResponse(array(
+			$this->sendResponse(new JsonResponse(array(
 				'error' => $e->getMessage(),
 			)));
 		}
-		$this->sendResponse(new Nette\Application\Responses\JsonResponse($saveResult));
+		$this->sendResponse(new JsonResponse($saveResult));
 	}
 
 

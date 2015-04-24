@@ -14,10 +14,13 @@ class FadersPresenter extends BaseGamePresenter
     /** @inject @var Model\Notation */
     public $notation;
 
+//    private $fadersHistory;
+
     public function startup()
     {
         parent::startup();
-        $this->gameId = 4;
+        $this->gameId = self::GAME_FADERS;
+//        $this->$fadersHistory = $this->session->getSection(__CLASS__);
     }
 
     protected function getAssetsById($id)
@@ -33,9 +36,10 @@ class FadersPresenter extends BaseGamePresenter
 
     protected function getAssetsRandom()
     {
-        $omitNotation = ($this->gameSession['fadersHistory']) ? explode('-',$this->gameSession['fadersHistory']) : null;
+        $omitNotation = ($this->gameSaver->getItemsForGame($this->gameId)) ? explode('-',$this->gameSaver->getItemsForGame($this->gameId)) : null;
+//        Debugger::barDump($omitNotation, 'omit array');
 
-        if ($notation = $this->notation->getRandom($omitNotation, 4))
+        if ($notation = $this->notation->getRandom($omitNotation, self::GAME_FADERS))
         {
             $assets['notation'] = $notation;
             return $assets;
@@ -50,8 +54,8 @@ class FadersPresenter extends BaseGamePresenter
         $this->difficulty = (int)$difficulty;
 //        $this->stepRatio = $this->getVariationByDifficulty($this->difficulty);
 
-        if (!$nextRound) {
-            unset($this->gameSession['fadersHistory']);
+        if ($this->getParameter('nextRound') == null) {
+            $this->gameSaver->removeForGame($this->gameId);
         }
 
         $this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
@@ -64,10 +68,10 @@ class FadersPresenter extends BaseGamePresenter
             $this->flashMessage($msg, $status);
             $this->redirect(':Front:Default:');
         }
-        if ($nextRound)
-            $this->gameSession['fadersHistory'] = $this->gameSession['fadersHistory'].'-'.$this->gameAssets['notation']['id'];
-        else
-            $this->gameSession['fadersHistory'] = $this->gameAssets['notation']['id'];
+
+        $this->gameSaver->add($this->gameId, $this->gameAssets['notation']['id']);
+
+        Debugger::barDump($this->gameSaver->getItems(), 'sess');
     }
 
     public function renderDefault()

@@ -18,7 +18,7 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 	public function startup()
 	{
 		parent::startup();
-		$this->gameId = 2;
+		$this->gameId = self::GAME_PEXESO;
 	}
 
 	protected function getAssetsById($id)

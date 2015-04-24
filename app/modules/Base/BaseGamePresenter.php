@@ -5,13 +5,16 @@ namespace App\Module\Base\Presenters;
 
 use Nette,
     App\Model,
+    App\Services,
     Tracy\Debugger;
 
 abstract class BaseGamePresenter extends BasePresenter
 {
     const
         GAME_MELODIC_CUBES = 1,
-        GAME_PEXESO = 2;
+        GAME_PEXESO = 2,
+        GAME_NOTE_STEPS = 3,
+        GAME_FADERS = 4;
 
     /** @var \Nette\Http\SessionSection */
     protected $gameSession;
@@ -21,6 +24,9 @@ abstract class BaseGamePresenter extends BasePresenter
 
     /** @inject @var Model\Score */
     public $score;
+
+    /** @inject @var Services\GameSaver */
+    public $gameSaver;
 
     protected $gameId;
     protected $difficulty;
@@ -36,6 +42,7 @@ abstract class BaseGamePresenter extends BasePresenter
     {
         parent::startup();
         $this->gameSession = $this->getSession('game');
+        $this->gameSession->setExpiration(0);
     }
 
     protected function getVariationByDifficulty($difficulty)

@@ -19,7 +19,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 	public function startup()
 	{
 		parent::startup();
-		$this->gameId = 1;
+		$this->gameId = self::GAME_MELODIC_CUBES;
 	}
 
 	protected function getAssetsById($id)
@@ -73,7 +73,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 			$this->gameSession['melodicCubesHistory'] = $this->gameSession['melodicCubesHistory'].'-'.$this->gameAssets['song']['id'];
 		else
 			$this->gameSession['melodicCubesHistory'] = $this->gameAssets['song']['id'];
-//		Debugger::barDump($this->gameSession);
+		Debugger::barDump($this->gameSession['melodicCubesHistory']);
 	}
 
 	public function renderDefault()

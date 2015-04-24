@@ -23,7 +23,7 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
     public function startup()
     {
         parent::startup();
-        $this->gameId = 3;
+        $this->gameId = self::GAME_NOTE_STEPS;
         $this->noteBtoH = true;
         $this->noteCount = 7; // default 7
     }
