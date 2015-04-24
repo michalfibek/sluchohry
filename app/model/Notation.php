@@ -19,7 +19,7 @@ class Notation extends Base
             $notationsForGame = $this->db->table('game_has_notation')->where('game_id', $gameLimit)->fetchPairs(null, 'notation_id');
         }
 
-        Debugger::barDump($omitNotations, 'omit');
+        Debugger::barDump($omitNotations, 'omit in db');
 
         // skip notations with $omitNotations id's
         if ($omitNotations) {

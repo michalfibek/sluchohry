@@ -22,6 +22,9 @@ abstract class BaseGamePresenter extends BasePresenter
     /** @inject @var Model\Score */
     public $score;
 
+    /** @var \Nette\Http\SessionSection */
+    protected $gameHistory;
+
     protected $gameId;
     protected $difficulty;
     protected $gameAssets;
@@ -39,6 +42,27 @@ abstract class BaseGamePresenter extends BasePresenter
         if ($this->isSignalReceiver($this, 'gameStart') || $this->isSignalReceiver($this, 'gameEnd') || $this->isSignalReceiver($this, 'gameForceEnd')) {
             $this->processSignal();
         }
+
+        $this->gameHistory = $this->getSession(__CLASS__); // get session by specific game name
+    }
+
+    protected function historyAdd($recordId, $recordKey = NULL)
+    {
+        if (!$recordKey) $recordKey = $recordId;
+        $this->gameHistory->offsetSet($recordKey,$recordId);
+    }
+
+    protected function historyGetAll()
+    {
+        if (empty($this->gameHistory->getIterator()->getArrayCopy()))
+            return null;
+
+        return $this->gameHistory->getIterator()->getArrayCopy();
+    }
+
+    protected function historyClear()
+    {
+        $this->gameHistory->remove();
     }
 
     protected function getVariationByDifficulty($difficulty)

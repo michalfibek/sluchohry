@@ -36,8 +36,7 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 
 	protected function getAssetsRandom()
 	{
-		$omitSongs = ($this->gameSession['melodicCubesHistory']) ? explode('-',$this->gameSession['melodicCubesHistory']) : null;
-		if ($song = $this->song->getRandom($omitSongs, true, self::GAME_MELODIC_CUBES))
+		if ($song = $this->song->getRandom($this->historyGetAll(), true, self::GAME_MELODIC_CUBES))
 		{
 			$assets['song'] = $song;
 			$assets['markers'] = $this->song->getCubeMarkersByCount($song->id, $this->cubeCount);
@@ -54,8 +53,9 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 		$this->cubeCount = $this->getVariationByDifficulty($this->difficulty);
 
 		if (!$nextRound) {
-			unset($this->gameSession['melodicCubesHistory']);
+			$this->historyClear();
 		}
+
 		$this->gameAssets = (isset($id)) ? $this->getAssetsById($id) : $this->getAssetsRandom();
 		if (!$this->gameAssets) {
 			if (isset($id)) {
@@ -69,11 +69,8 @@ class MelodicCubesPresenter extends \App\Module\Base\Presenters\BaseGamePresente
 			$this->flashMessage($msg, $status);
 			$this->redirect(':Front:Default:');
 		}
-		if ($nextRound)
-			$this->gameSession['melodicCubesHistory'] = $this->gameSession['melodicCubesHistory'].'-'.$this->gameAssets['song']['id'];
-		else
-			$this->gameSession['melodicCubesHistory'] = $this->gameAssets['song']['id'];
-		Debugger::barDump($this->gameSession['melodicCubesHistory']);
+
+		$this->historyAdd($this->gameAssets['song']['id']);
 	}
 
 	public function renderDefault()
