@@ -210,11 +210,9 @@ class NotationPresenter extends BasePresenter
                 return $this->genre->getById($item->genre_id)->name;
             });
 
-        $grid->addColumnText('tempo_id', 'Tempo')
+        $grid->addColumnText('length', 'Length')
             ->setSortable()
-            ->setCustomRender(function($item) {
-                return $this->tempo->getById($item->tempo_id)->name;
-            });
+            ->setFilterText();
 
         $genres[''] = '';
         foreach ($this->genre->getAll() as $genre)
