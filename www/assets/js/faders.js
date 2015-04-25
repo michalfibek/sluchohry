@@ -164,8 +164,8 @@ var Game = $class({
             var sliderId = $(this).data('id');
             var keyRecord = scope.playerOriginal.keys[sliderId];
             var className = keyRecord['length'];
-            if (keyRecord['multiplier'] == 1.5) className = className + '-dot';
             $(this).parent().addClass('length-' + className);
+            if (keyRecord['multiplier'] == 1.5) $(this).parent().addClass('dot');
             $(this).noUiSlider({
                 orientation: "vertical",
                 direction: 'rtl',
