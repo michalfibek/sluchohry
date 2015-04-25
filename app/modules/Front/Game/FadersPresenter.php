@@ -14,6 +14,8 @@ class FadersPresenter extends BaseGamePresenter
     /** @inject @var Model\Notation */
     public $notation;
 
+    private $notationLengthRange;
+
     public function startup()
     {
         parent::startup();
@@ -33,7 +35,7 @@ class FadersPresenter extends BaseGamePresenter
 
     protected function getAssetsRandom()
     {
-        if ($notation = $this->notation->getRandom($this->historyGetAll(), self::GAME_FADERS))
+        if ($notation = $this->notation->getRandom($this->historyGetAll(), self::GAME_FADERS, $this->notationLengthRange))
         {
             $assets['notation'] = $notation;
             return $assets;
@@ -46,7 +48,7 @@ class FadersPresenter extends BaseGamePresenter
     public function actionDefault($id = null, $difficulty = 2, $nextRound = null)
     {
         $this->difficulty = (int)$difficulty;
-//        $this->stepRatio = $this->getVariationByDifficulty($this->difficulty);
+        $this->notationLengthRange = $this->getVariationByDifficulty($this->difficulty);
 
         if (!$nextRound) {
             $this->historyClear();

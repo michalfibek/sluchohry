@@ -39,7 +39,7 @@ var NotationPlayer = $class({
             'h': 11, 'cb': 11, 'ces': 11
         }
         this.keyToNote = [];
-        this.restSymbol = '_';
+        this.restSymbol = '_'; // also defined in edit notation model
 
         this.octaveUpChar = '\'';
         this.octaveDownChar = ',';
