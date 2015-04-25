@@ -15,7 +15,7 @@
 <h1 n:block="title">
     <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
     {_front.game.melodicCubes}
-    <small>{if !isset($song->artist)}{$song->artist} - {/if}{$song->title}</small>
+    <small>{if strlen($song->artist)>0}{$song->artist} - {/if}{$song->title}</small>
 </h1>
 <div id="game-hint">{_front.melodicCubes.hint}</div>
 </header>
