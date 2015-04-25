@@ -60,15 +60,15 @@ var Game = $class({
     },
 
     setActiveSlider: function(sliderId) {
-        $('#note-slider-' + sliderId).addClass('active');
+        $('#note-slider-' + sliderId).addClass('active-play');
     },
 
     setInactiveSlider: function(sliderId) {
-        $('#note-slider-' + sliderId).removeClass('active');
+        $('#note-slider-' + sliderId).removeClass('active-play');
     },
 
     setInactiveAllSliders: function() {
-        $('.note-slider').removeClass('active');
+        $('.note-slider').removeClass('active-play');
     },
 
     switchPlayBtn: function() {
@@ -191,9 +191,11 @@ var Game = $class({
                     scope.playerUser.playSingle(keyId);
                     if (changed == true)
                         scope.sliderMoveCount++
+                    $(evt.target).removeClass('active-drag');
                 },
                 slide: function(evt, val) {
                     scope.setHandlerColor($(evt.target).data('id'), val);
+                    $(evt.target).addClass('active-drag');
                 }
             })
 

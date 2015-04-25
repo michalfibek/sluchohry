@@ -221,13 +221,14 @@ GAME: melodic cubes
     .note-slider {
       height: 190px;
       width: 12px;
+      margin: 0 auto;
       transition: all 0.2s ease-in-out;
 
       @media (min-width: @screen-sm-min) {
         height: 350px;
       }
 
-      &.active {
+      &.active-play {
         background-color: @color-ter-1;
         transition: all 0.2s ease-in-out;
 
@@ -235,13 +236,18 @@ GAME: melodic cubes
           background-color: @color-ter-1;
         }
       }
+
+      &.active-drag {
+        background-color: #eec4be;
+      }
     }
 
     .noUi-handle {
-//      left: -11px;
-      height: 43px;
+      height: 50px;
       box-shadow: none;
       background-color: #36B0DB;
+      margin: 0 5px;
+//      border-radius: 0;
 
       &:before, &:after {
         width: auto;
@@ -252,7 +258,7 @@ GAME: melodic cubes
         font-family: @classic-font-family;
         position: relative;
         text-align: center;
-        top: 14%;
+        top: 17%;
         font-size: 1.4em;
         color: #fff;
       }
@@ -271,59 +277,21 @@ GAME: melodic cubes
       &.color-11 { background-color: #835a10 }
     }
 
-    .note-slider-mixin(@slider-margin; @divided-by; @handle-left ) {
-      width: auto;
+    // pure magic, but that time spent here...
+    .note-slider-mixin(@divided-by) {
+      width: 150px / ( pow(@divided-by, 0.5));
 
-      .note-slider {
-        margin: @slider-margin
-      }
       .noUi-handle {
-        width: 200px / ( pow(@divided-by, 0.8));
-        left: (200px / ( pow(@divided-by, 0.8)) * -1) / 2.8;
+        width: 150px / ( pow(@divided-by, 0.5));
+        left: (150px / ( pow(@divided-by, 0.5)) * -1) / 2;
       }
     }
 
-    &.length-16 {
-      .note-slider-mixin(
-        @slider-margin: 0 8px;
-        @divided-by: 16;
-      );
-    }
-
-    &.length-12 {
-      .note-slider-mixin(
-        @slider-margin: 0 8px;
-        @divided-by: 12;
-      );
-    }
-
-    &.length-8 {
-      .note-slider-mixin(
-        @slider-margin: 0 8px;
-        @divided-by: 8;
-      );
-    }
-
-    &.length-4 {
-      .note-slider-mixin(
-        @slider-margin: 0 18px;
-        @divided-by: 4;
-      );
-    }
-
-    &.length-2 {
-      .note-slider-mixin(
-        @slider-margin: 0 18px;
-        @divided-by: 2;
-      );
-    }
-
-    &.length-1 {
-      .note-slider-mixin(
-        @slider-margin: 0 25px;
-        @divided-by: 2;
-      );
-    }
+    &.length-16 { .note-slider-mixin(16); }
+    &.length-8 { .note-slider-mixin(8); }
+    &.length-4 { .note-slider-mixin(4); }
+    &.length-2 { .note-slider-mixin(2); }
+    &.length-1 { .note-slider-mixin(1); }
 
   }
 
