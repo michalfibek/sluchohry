@@ -279,11 +279,25 @@ GAME: melodic cubes
 
     // pure magic, but that time spent here...
     .note-slider-mixin(@divided-by) {
-      width: 150px / ( pow(@divided-by, 0.5));
+
+      @magic-constant: 0.5;
+      @base-size: 140px;
+      @dot-multiplier: 0.75;
+
+      width: @base-size / ( pow(@divided-by, @magic-constant));
 
       .noUi-handle {
-        width: 150px / ( pow(@divided-by, 0.5));
-        left: (150px / ( pow(@divided-by, 0.5)) * -1) / 2;
+        width: @base-size / ( pow(@divided-by, @magic-constant));
+        left: (@base-size / ( pow(@divided-by, @magic-constant)) * -1) / 2;
+      }
+
+      &.dot {
+        width: @base-size / ( pow(@divided-by * @dot-multiplier, @magic-constant));
+
+        .noUi-handle {
+          width: @base-size / ( pow(@divided-by * @dot-multiplier, @magic-constant));
+          left: (@base-size / ( pow(@divided-by * @dot-multiplier, @magic-constant)) * -1) / 2;
+        }
       }
     }
 
