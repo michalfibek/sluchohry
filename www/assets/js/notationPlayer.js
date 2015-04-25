@@ -115,7 +115,7 @@ var NotationPlayer = $class({
         that.playTimer = setTimeout(function() {
             MIDI.noteOff(0, that.keys[keyId]['key'], 0.1);
             that.onNoteStop(keyId);
-        }, that.getDelay(that.keys[keyId]['length']));
+        }, that.getDelay(that.keys[keyId]['length'], that.keys[keyId]['multiplier']));
 
 
     },
