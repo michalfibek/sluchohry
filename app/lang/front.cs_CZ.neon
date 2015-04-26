@@ -37,8 +37,12 @@ game:
         msg2: "Nudím se... jakou sluchohru si zahrajem dnes?"
         msg3: "Víš, že mě můžeš převléknout? Klikni na mě!"
         msg4: "Víš, že sovy mají dobře vyvinutý sluch? Nic nám neunikne!"
-        msg5: "Nevím, jak ty, ale já bych si zahrál pexeso na drsňáka!"
+        msg5: "Nevím, jak ty, ale já bych si zahrál Pexeso za drsňáky!"
         msg6: "Netopýři prý slyší ještě líp, než já... jeden bydlí v jeskyni kousek ode mne, je to starej hluchota!"
+        msg7: "Ani nevím, jak se jmenuji - co třeba Hůůůůgo?"
+        msg8: "Jestli používáš sluchátka do uší, dej si pozor na hlasitost – příliš hlasitá hudba otravuje tvůj sluch a tvé okolí. Jo, a taky sovy."
+        msg9: "Sova je noční pták, a proto spí ve dne – nechceš si taky schrupnout? Ale předtím si dej Posuvníky za drsňáky!"
+        msg10: "Výzva - já dal právě 954 bodů v Krokování za Klasiky. Dáš víc?"
 
     common:
         play: "Hrej"
