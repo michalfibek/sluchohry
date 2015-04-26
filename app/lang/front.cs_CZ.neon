@@ -67,8 +67,8 @@ game:
         hard: "Drsňák"
 
 ratings:
-    title: "Nejlepší hráči"
-    linkTitle: "Nejlepší hráči"
+    title: "Tvůj rekord"
+    linkTitle: "Klikni pro žebříčky všech nejlepších hráčů"
     name: "Jméno"
     score: "Rekord"
     points: "bodů"
