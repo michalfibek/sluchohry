@@ -27,13 +27,3 @@ foreach ($users as $u) {
 		exit(1);
 	}
 }
-
-
-try {
-	$manager->add($user, $password);
-	echo "User $user was added.\n";
-
-} catch (App\Model\DuplicateNameException $e) {
-	echo "Error: duplicate name.\n";
-	exit(1);
-}
