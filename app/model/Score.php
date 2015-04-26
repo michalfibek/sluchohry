@@ -95,7 +95,7 @@ class Score extends Base
      * @param $value
      * @return bool|int|Nette\Database\Table\IRow
      */
-    private function updateScore($userId, $gameId, $difficultyId, $value)
+    private function updateScore($userId, $gameId, $difficultyId, $value, $time)
     {
         $scoreData = array(
             'user_id' => $userId,
@@ -112,6 +112,12 @@ class Score extends Base
 
         if ($data = $row->fetch())
         {
+            $row->update(array('play_count' => $data->play_count + 1));
+
+            if ($data->best_time > $time)
+                $row->update(array('best_time' => $time)); // best time updated
+                // TODO update in additional function and return this status
+
             if ($data->value > $value)
                 return false; // no insert - old score value is bigger
 
@@ -119,6 +125,8 @@ class Score extends Base
                 'value' => $value
             ));
         } else {
+            $scoreData['play_count'] = 1;
+            $scoreData['best_time'] = $time;
             return $this->db->table($this->tableName)->insert($scoreData);
         }
     }
@@ -169,6 +177,7 @@ class Score extends Base
     /**
      * @param $time
      * @param $steps
+     * @param $sliderCount
      * @return int
      */
     public function calcScoreFaders($time, $steps, $sliderCount)
@@ -217,7 +226,7 @@ class Score extends Base
             $score = $this->calcScoreFaders($result['time'], $result['steps'], $result['sliderCount']);
         }
 
-        $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score);
+        $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score, $result['time']);
 
         $currentGameRecord = $this->db->table($this->tableName)->where('game_id', (string)$gameId)->max('value');
 
