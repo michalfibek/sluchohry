@@ -86,7 +86,7 @@ class User extends Base
 
            return $this->db->table('user_has_group')->insert(array(
                 'user_id' => $id,
-                'group_id' => $group
+                'group_id' => $groups
             ));
 
         }
