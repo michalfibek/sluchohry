@@ -72,6 +72,28 @@ class Score extends Base
         return $result;
     }
 
+    public function getScoreSum($userId)
+    {
+        $games = $this->db->table('game')->fetchAll();
+
+        $difficulties = $this->db->table('difficulty')->fetchAll();
+
+        foreach ($difficulties as $d) {
+            $scoreSum[$d->id] = 0; // init array with zero scores per difficulty
+        }
+
+        foreach ($games as $g) {
+            $scoreForGame = $this->db->table($this->tableName)->where('user_id', $userId)->where('game_id',$g->id)->fetchPairs('difficulty_id', 'value');
+
+            foreach ($scoreForGame as $difficulty => $scoreValue) {
+                $scoreSum[$difficulty] = $scoreSum[$difficulty] + $scoreValue;
+            }
+        };
+
+        return $scoreSum;
+
+    }
+
     public function getTopThree($gameId)
     {
         $i = 1;

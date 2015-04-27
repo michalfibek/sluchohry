@@ -58,6 +58,8 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$scoreFaders = $this->score->getAllByUser($this->user->getId(), 4, true);
 			$this->template->scoreFaders = $scoreFaders;
 			$this->template->fadersMaxdiffKey = Utils::arrayMaxWithIndex($scoreFaders)['i'];
+
+			$this->template->scoreSum = $this->score->getScoreSum($this->user->getId());
 		}
 
 	}

@@ -10,15 +10,22 @@
 		</div>
 		{if $user->loggedIn && $this->presenter->name == 'Front:Default'}
 
-		<a n:href=":Front:Profile:#edit-avatars" class="col-xs-2 flash-avatar">
-			<img src="{$avatarDir}/{$userAvatar}.svg">
-		</a>
+		<div class="col-xs-2 flash-avatar">
+			<a n:href=":Front:Profile:#edit-avatars"><img src="{$avatarDir}/{$userAvatar}.svg"></a>
+
+			<div id="score-ribbons">
+				<span class="ribbon difficulty-1">{$scoreSum[1]}</span>
+				<span class="ribbon difficulty-2">{$scoreSum[2]}</span>
+				<span class="ribbon difficulty-3">{$scoreSum[3]}</span>
+			</div>
+
+		</div>
 
 		{else}
 
-		<span class="col-xs-2 flash-avatar">
+		<div class="col-xs-2 flash-avatar">
 			<img src="{$avatarDir}/{$userAvatar}.svg">
-		</span>
+		</div>
 
 		{/if}
 	{/if}

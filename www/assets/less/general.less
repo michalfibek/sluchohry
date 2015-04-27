@@ -577,10 +577,11 @@ div.flash.warning {
 }
 
 .flash-bubble {
-  margin: 20px 0 5px 0;
+  margin: 20px -10px;
 
   @media (min-width: @screen-sm-min) {
     padding-left: 100px;
+    margin: 20px 0 5px 0;
   }
 
   .flash {
@@ -658,9 +659,108 @@ div.flash.warning {
 
   img {
     width: 110px;
+    z-index: 20;
+
   }
 //    position: relative;
 //    right: 10px;
 //    bottom: -160px;
 }
 
+
+
+
+/*
+Top header ribbons
+*/
+
+#score-ribbons {
+  position: absolute;
+  top: 128px;
+  width: 180px;
+  left: -10px;
+  z-index: -5;
+
+  @media (min-width: @screen-sm-min) {
+    left: 0;
+  }
+
+  &:before {
+    display: block;
+    content: "";
+    border-top: 6px solid #AD6D0B;
+    margin-left: -14px;
+    box-shadow: 4px 3px 10px 0px rgba(0,0,0,.42);
+  }
+
+  .ribbon {
+
+    @ribbon-width: 50px;
+
+    margin: -6px 2px 0 0;
+    float: left;
+    display: block;
+    width: @ribbon-width;
+    position: relative;
+    color: #fff;
+    padding: 20px 0 10px;
+    text-align: center;
+    font-family: arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 13px 6px 34px 2px rgba(0,0,0,0.42);
+    cursor: default;
+
+    @media (min-width: @screen-sm-min) {
+      margin: -6px 10px 0 0;
+    }
+
+    &:hover {
+      padding-top: 30px;
+    }
+
+    &:before {
+      display: block;
+      width: @ribbon-width;
+      height: 0;
+      position: absolute;
+      top: 10px;
+      content: "";
+      border-top: 1px dotted rgba(0, 0, 0, 0.2);
+      border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+    }
+
+    &:after {
+      display: block;
+      width: 0;
+      height: 0;
+      content: "";
+      position: relative;
+      bottom: -25px;
+      border-width: 0 @ribbon-width/2 15px @ribbon-width/2;
+      border-style: solid;
+    }
+
+    &.difficulty-1 {
+      background-color: @difficulty-easy-background;
+      &:after {
+        border-color: @difficulty-easy-background @difficulty-easy-background transparent @difficulty-easy-background;
+      }
+    }
+
+    &.difficulty-2 {
+      background-color: @difficulty-medium-background;
+      &:after {
+        border-color: @difficulty-medium-background @difficulty-medium-background transparent @difficulty-medium-background;
+      }
+    }
+
+    &.difficulty-3 {
+      background-color: @difficulty-hard-background;
+      &:after {
+        border-color: @difficulty-hard-background @difficulty-hard-background transparent @difficulty-hard-background;
+      }
+    }
+  }
+
+}
