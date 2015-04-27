@@ -82,6 +82,8 @@ class RatingChart extends UI\Control
 
         $grid->setDefaultSort(array('score' => 'DESC'));
 
+        $grid->setDefaultPerPage(15);
+
         $grid->setTranslator($this->translator);
 
 //        $grid->addColumnDate('update_time', 'Last update')
