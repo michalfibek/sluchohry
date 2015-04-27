@@ -621,18 +621,18 @@ div.flash.warning {
     width: 0px;
     height: 0px;
     border-color: transparent transparent transparent #fff;
-    border-width: 14px 0 14px 34.6px;
+    border-width: 14px 0 0 34.6px;
     top: 20px;
-  }
 
-  .bottom:after {
-    border-color: transparent transparent transparent @color-ter-1;
-    border-style: solid;
-    border-width: 14px 0 14px 34.6px;
-    bottom: -15px;
-    content: "";
-    position: absolute;
-    left: -34px;
+    &:after {
+      border-color: transparent transparent transparent @color-ter-1;
+      border-style: solid;
+      border-width: 14px 0 14px 34.6px;
+      bottom: -15px;
+      content: "";
+      position: absolute;
+      left: -35px;
+    }
   }
 
   .flash.success + .bottom:after {
@@ -707,7 +707,6 @@ Top header ribbons
     text-align: center;
     font-family: arial, sans-serif;
     font-weight: bold;
-    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
     box-shadow: 13px 6px 34px 2px rgba(0,0,0,0.42);
     cursor: default;
 
