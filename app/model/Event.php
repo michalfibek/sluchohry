@@ -8,12 +8,13 @@ use Tracy\Debugger;
 class Event extends Base {
 
     const
-        CLASS_GAME_END = 1,
-        CLASS_GAME_START = 2,
-        CLASS_AUTH = 3,
-        CLASS_ERROR = 4,
-        CLASS_ADMIN = 5,
-        CLASS_PROFILE = 6;
+        CLASS_AUTH = 1,
+        CLASS_ERROR = 2,
+        CLASS_PROFILE = 3,
+        CLASS_ADMIN = 4,
+        CLASS_GAME_STARTED = 5,
+        CLASS_GAME_SOLVED = 6,
+        CLASS_GAME_CLOSED = 7;
 
     const
         DATA_GAME_NAME = 'game_name',
@@ -116,7 +117,7 @@ class Event extends Base {
                 self::DATA_SLIDER_COUNT => $result['sliderCount'],
             );
         }
-        $this->insertRecord($user->getId(), self::CLASS_GAME_START, $data);
+        $this->insertRecord($user->getId(), self::CLASS_GAME_STARTED, $data);
     }
 
     /**
@@ -129,7 +130,6 @@ class Event extends Base {
         if ($result['gameName'] == 'melodicCubes') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
-                self::DATA_SOLVED => $solved,
                 self::DATA_SCORE => $result['score'],
                 self::DATA_SONG_ID => $result['songId'],
                 self::DATA_CUBE_COUNT => $result['cubeCount'],
@@ -141,7 +141,6 @@ class Event extends Base {
         } else if ($result['gameName'] == 'pexeso') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
-                self::DATA_SOLVED => $solved,
                 self::DATA_SCORE => $result['score'],
                 self::DATA_SONG_LIST => $result['songList'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
@@ -151,7 +150,6 @@ class Event extends Base {
         } else if ($result['gameName'] == 'noteSteps') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
-                self::DATA_SOLVED => $solved,
                 self::DATA_SCORE => $result['score'],
                 self::DATA_FIRST_LETTER => $result['firstLetter'],
                 self::DATA_NOTE_COUNT => $result['noteCount'],
@@ -163,7 +161,6 @@ class Event extends Base {
         } elseif ($result['gameName'] == 'faders') {
             $data = array(
                 self::DATA_GAME_NAME => $result['gameName'],
-                self::DATA_SOLVED => $solved,
                 self::DATA_SCORE => $result['score'],
                 self::DATA_NOTATION_ID => $result['notationId'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
@@ -175,7 +172,10 @@ class Event extends Base {
                 self::DATA_PLAY_TIME => $result['time'],
             );
         }
-        $this->insertRecord($user->getId(), self::CLASS_GAME_END, $data);
+
+        $recordClass = ($solved) ? self::CLASS_GAME_SOLVED : self::CLASS_GAME_CLOSED;
+
+        $this->insertRecord($user->getId(), $recordClass, $data);
     }
 
     /**
