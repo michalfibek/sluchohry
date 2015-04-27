@@ -63,7 +63,7 @@ class Score extends Base
 
     public function getListByGame($gameId, $difficultyId)
     {
-        foreach ($this->db->table('user')->order('username ASC')->limit(20) as $key => $user) {
+        foreach ($this->db->table('user')->order('username ASC') as $key => $user) {
             $score = $user->related('score')->where('game_id', $gameId)->where('difficulty_id', $difficultyId)->fetch();
             $result[$key]['user_id'] = $user->id;
             $result[$key]['realname'] = $user->realname;
