@@ -84,7 +84,8 @@ class Acl extends Permission
 			'Admin:Notation',
 			'Admin:User',
 			'Admin:Group',
-			'Admin:Rating'
+			'Admin:Rating',
+			'Admin:Event'
 		));
 
 		$this->allow('admin', Permission::ALL, Permission::ALL);
