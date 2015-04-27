@@ -215,7 +215,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 				foreach ($playCount as $cnt) {
 					$gameName = $this->gameModel->getById($cnt['game_id'])->name;
-					$renderCount[] = $gameName . ': ' . $cnt['play_count'];
+					$renderCount[] = $gameName . ':&nbsp;' . $cnt['play_count'];
 				}
 
 				return implode(', ', $renderCount);
