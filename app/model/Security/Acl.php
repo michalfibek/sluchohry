@@ -30,6 +30,7 @@ class Acl extends Permission
 		$this->addResource('Admin:Notation');
 		$this->addResource('Admin:User');
 		$this->addResource('Admin:Group');
+		$this->addResource('Admin:Rating');
 		$this->addResource('Admin:Event');
 
 
@@ -82,7 +83,8 @@ class Acl extends Permission
 			'Admin:Song',
 			'Admin:Notation',
 			'Admin:User',
-			'Admin:Group'
+			'Admin:Group',
+			'Admin:Rating'
 		));
 
 		$this->allow('admin', Permission::ALL, Permission::ALL);

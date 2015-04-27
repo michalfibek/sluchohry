@@ -11,7 +11,7 @@
 </header>
 
 {if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-user-plus"></span> Add new user</a>{/if}
-{if $user->isAllowed($presenter->name, 'scores')}<a n:href="scores" class="btn btn-default item-secondary"><span class="fa fa-bar-chart"></span> Show scores</a>{/if}
+{if $user->isAllowed('Admin:Rating', 'default')}<a n:href="Rating:" class="btn btn-default item-secondary"><span class="fa fa-bar-chart"></span> Show scores</a>{/if}
 
 <div class="item-list" id="user-list">
 {control grid}

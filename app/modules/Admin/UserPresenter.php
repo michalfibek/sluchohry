@@ -24,6 +24,9 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 	/** @inject @var Model\Score */
 	public $scoreModel;
 
+	/** @inject @var Model\Group */
+	public $groupModel;
+
 	/** @inject @var Components\IUserProfileFactory */
 	public $userProfile;
 
@@ -177,53 +180,6 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 		$grid->setDefaultSort(array(
 			'username' => 'ASC'
-		));
-
-		return $grid;
-	}
-
-	protected function createComponentScoreGrid($name)
-	{
-		$grid = new Grid($this, $name);
-		$grid->setModel($this->scoreModel->getScoreView());
-
-//		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
-
-		$grid->addColumnNumber('user_id','User id')
-			->setSortable()
-			->setFilterText();
-
-		$grid->addColumnText('realname', 'Full name')
-			->setSortable()
-			->setFilterText();
-
-		$grid->addColumnText('score_easy', 'Score sum easy')
-			->setSortable();
-
-		$grid->addColumnText('score_medium', 'Score sum medium')
-			->setSortable();
-
-		$grid->addColumnText('score_hard', 'Score sum hard')
-			->setSortable();
-
-		$grid->addColumnText('play_count', 'Total plays count')
-			->setSortable()
-			->setCustomRender(function($item) {
-				$playCount = $this->scoreModel->getPlayCountPerUser($item['user_id']);
-
-				Debugger::barDump($playCount);
-
-				foreach ($playCount as $cnt) {
-					$gameName = $this->gameModel->getById($cnt['game_id'])->name;
-					$renderCount[] = $gameName . ':&nbsp;' . $cnt['play_count'];
-				}
-
-				return implode(', ', $renderCount);
-			});
-
-
-		$grid->setDefaultSort(array(
-			'realname' => 'ASC'
 		));
 
 		return $grid;
