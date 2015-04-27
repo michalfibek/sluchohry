@@ -12,9 +12,9 @@
 {*</div>*}
 
 <header>
-    <h1 n:block="title">
+    <h1>
         <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
-        {_front.game.melodicCubes}
+        {block title}{_front.game.melodicCubes}{/block}
         <small>{if strlen($song->artist)>0}{$song->artist} - {/if}{$song->title}</small>
     </h1>
 

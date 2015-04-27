@@ -5,9 +5,9 @@
 
 
 <header>
-    <h1 n:block="title">
+    <h1>
         <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
-        {_front.game.faders}
+        {block title}{_front.game.faders}{/block}
     <small>{if strlen($notation->artist)>0}{$notation->artist} - {/if}{$notation->title}</small>
     </h1>
         
