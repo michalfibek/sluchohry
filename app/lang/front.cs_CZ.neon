@@ -43,6 +43,7 @@ game:
         msg8: "Jestli používáš sluchátka do uší, dej si pozor na hlasitost – příliš hlasitá hudba otravuje tvůj sluch a tvé okolí. Jo, a taky sovy."
         msg9: "Sova je noční pták, a proto spí ve dne – nechceš si taky schrupnout? Ale předtím si dej Posuvníky za drsňáky!"
         msg10: "Výzva - já dal právě 954 bodů v Krokování za Klasiky. Dáš víc?"
+        msg11: "Máš Facebůůk? Přijď za mnou pokecat! Stačí kliknout tady na stránce úplně dole."
 
     common:
         play: "Hrej"

@@ -10,20 +10,12 @@
 <h1 n:block="title">User manager</h1>
 </header>
 
-{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn item-new btn-primary"><span class="fa fa-user-plus"></span> Add new user</a>{/if}
+{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-user-plus"></span> Add new user</a>{/if}
+{if $user->isAllowed($presenter->name, 'scores')}<a n:href="scores" class="btn btn-default item-secondary"><span class="fa fa-bar-chart"></span> Show scores</a>{/if}
 
 <div class="item-list" id="user-list">
 {control grid}
 </div>
-
-{*<ul id="user-list" class="item-list">*}
-{*{foreach $users as $user}*}
-    {*<li>*}
-        {*<a n:href="edit $user->id">{$user->username}{if strlen($user->realname)>0} ({$user->realname}){/if}</a>*}
-        {*<a n:href="delete $user->id" class="delete-item"><span class="fa fa-remove"></span> delete</a>*}
-    {*</li>*}
-{*{/foreach}*}
-{*</ul>*}
 
 </div>
 {/block}

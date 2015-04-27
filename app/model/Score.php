@@ -61,9 +61,15 @@ class Score extends Base
         return $return;
     }
 
-    public function getListByGame($gameId, $difficultyId)
+    public function getListByGame($gameId, $difficultyId, $groupLimit = NULL)
     {
-        foreach ($this->db->table('user')->order('username ASC') as $key => $user) {
+        $userList = $this->db->table('user')->order('username ASC');
+        if ($groupLimit) {
+            $usersForGroupLimit = $this->db->table('user_has_group')->where('group_id', $groupLimit)->fetchPairs(NULL, 'user_id');
+            $userList = $userList->where('id', $usersForGroupLimit);
+        }
+
+        foreach ($userList as $key => $user) {
             $score = $user->related('score')->where('game_id', $gameId)->where('difficulty_id', $difficultyId)->fetch();
             $result[$key]['user_id'] = $user->id;
             $result[$key]['realname'] = $user->realname;
@@ -92,6 +98,16 @@ class Score extends Base
 
         return $scoreSum;
 
+    }
+
+    public function getPlayCountPerUser($userId)
+    {
+        return $this->db->table('score')->where('user_id', $userId)->select('game_id, sum(play_count) AS play_count')->group('game_id');
+    }
+
+    public function getScoreView()
+    {
+        return $this->db->table('view_scores');
     }
 
     public function getTopThree($gameId)

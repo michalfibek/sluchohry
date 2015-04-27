@@ -333,11 +333,13 @@ form {
 header#main-header {
   background-color: @color-prim-2;
   background-image: @background-stripes-transparent;
+  background-attachment: fixed;
   border-bottom: 1px solid #FFF;
   display: block;
   color: #fff;
   padding: 15px;
   margin: 0;
+  box-shadow: 0 4px 20px 5px rgba(0,0,0,.2);
   .clearfix();
 
   a {
@@ -694,7 +696,7 @@ Top header ribbons
     content: "";
     border-top: 6px solid #AD6D0B;
     margin-left: -14px;
-    box-shadow: 4px 3px 10px 0px rgba(0,0,0,.42);
+    box-shadow: 4px 3px 10px 0px rgba(0,0,0,0.20);
   }
 
   .ribbon {
@@ -709,7 +711,7 @@ Top header ribbons
     color: #fff;
     padding: 20px 0 10px;
     text-align: center;
-    box-shadow: 13px 6px 34px 2px rgba(0,0,0,0.42);
+    box-shadow: 13px 6px 34px 2px rgba(0,0,0,0.20);
     cursor: default;
 
     @media (min-width: @screen-sm-min) {
