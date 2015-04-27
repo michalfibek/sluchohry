@@ -58,6 +58,7 @@ game:
         scorePoints: "bodů"
         newPersonalRecord: "Tvůj nový rekord!"
         newGameRecord: "Nový rekord pro tuto hru!"
+        help: "nápověda"
 
     difficulty:
         difficultyTitle: "Obtížnost"
@@ -101,6 +102,7 @@ user:
 melodicCubes:
     stepCount: "tahů"
     hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu. Zvažuj pečlivě každý tah, počítá se přehrávání i posun kostek!"
+    hintLong: "Ahůůůůj člověče. Tuto hru budeš možná znát - u vás se jmenuje puzzle. Vidíš před sebou kostky, pod kterými se nachází krátká část melodie. Tvým úkolem je přeskupit kostky tak, aby zazněla melodie ve správném pořadí. Přeskupování se provádí přetažením kostky na své nové místo. Čím těžší verze, tím více kostek. Tak hůůůůůrá do toho!"
 
     flash:
         noMarkers: "Tahle písnička ještě není připravená :("
@@ -110,16 +112,19 @@ melodicCubes:
 pexeso:
     stepCount: "kliknutí"
     hint: "Najdi kompletní písničku schovanou pod dvěma kostkami a označ je ve správném pořadí."
+    hintLong: "Ahůůůůj člověče! Tato hra se jmenuje pexeso a pravidla jsou stejná jako ve vaší člověčí verzi. Musíš najít dvě kostky, které k sobě patří – v naší sluchové verzi se však pod kostkama nenachází obrázky, ale melodie. Z vašeho člověčího rádia jsem nahrál několik melodií, které jsem rozdělil na dvě části. Tvým úkolem je najít tyto části ve správném pořadí. Vyzkoušej si to a uvidíš, že ti to nebude dělat problémy. Jednotlivé úrovně se liší v počtu kostek a různě potrápí tvou hudební paměť. Tak do toho!"
     flash:
         noSongFound: "Budeš se divit, ale zatím nemáme dost písniček pro takovou obtížnost! Zkus to prosím později znovu."
 
 noteSteps:
     stepCount: "špatných pokusů"
     hint: "Krokuj noty mačkáním na písmena na klávesnici podle jejich pořadí v notové osnově."
+    hintLong: "Ahůůůůůj člověče. Hudební teorii máme my sovy zmáknutou bravurně a co ty? Vyzkouším si tě. Před sebou vidíš prázdné rámečky a mezi nimi šipky. Úkol je jednoduchý: do prázdných rámečků s otazníkem musíš napsat správné názvy not. Jediné, co k tomu potřebuješ vědět, je znalost hudební stupnice, která se skládá pouze z osmi písmen. V prvním rámečku máš jednopísmeno napsané. Do dalšího rámečku napíš písmeno, které je od předchozího vzdálené tolik kroků, jako je šipek mezi rámečky. Směr šipek určuje, jestli budeš krokovat nahoru nebo dolů. Je to stejné, jako bych se tě zaptal, jaké písmeno je ve vaší abecedě za písmenem A? Je to B. A nebo jaké písmeno je před písmenem C? Je to zase B. My sovy to máme jednoduché - máme jen dvě písmena. Víš jaká? Hůůůůůů!"
 
 faders:
     stepCount: "tahů"
-    hint: "Pohybuj správně posuvníky a slož zpět melodii přesně podle předlohy."
+    hint: "Upravuj posuvníky tónů v melodii a slož ji zpět tak, aby hrála podle předlohy."
+    hintLong: "Ahůůůůůj člověče. Nejprve si poslechni originální melodii tlačítkem PŘEDLOHA. Pak je tvým úkolem najít tu správnou melodii posouváním kostek nahoru nebo dolů. Každým přetažením ti příslušný tón přehraju a kdyby tě zajímalo, jak si vedeš, klikni na tlačítko HREJ. Tvou melodii ti zahraji. Jestli se ti něco nelíbí, přesuň kostky na nové pozice a jestli jsi spokojený, klikni na tlačítko VYHODNOŤ. Hůůůůůrá do toho!"
 
     flash:
         playedAll: "Všechny písničky dohrány! "

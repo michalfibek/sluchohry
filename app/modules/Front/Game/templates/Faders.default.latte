@@ -10,7 +10,13 @@
         {_front.game.faders}
     <small>{if strlen($notation->artist)>0}{$notation->artist} - {/if}{$notation->title}</small>
     </h1>
-    <div id="game-hint">{_front.faders.hint}</div>
+        
+    <div class="help-header">
+        <a id="game-hint-toggle" class="btn btn-default btn-help"><i class="fa fa-question"></i> {_front.game.common.help}</a>
+        <div id="game-hint-short">{_front.faders.hint}</div>
+        <div id="game-hint-long" class="hidden">{_front.faders.hintLong}</div>
+    </div>
+
 </header>
 
 <div class="game-main faders hidden">

@@ -100,3 +100,11 @@ $(window).on('resize', centerModals);
     };
 
 })(jQuery);
+
+/**
+ * Help button toggle
+ */
+$('#game-hint-toggle').click(function() {
+    $('#game-hint-short').toggleClass('hidden');
+    $('#game-hint-long').toggleClass('hidden');
+})

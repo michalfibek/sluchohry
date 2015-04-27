@@ -12,12 +12,18 @@
 {*</div>*}
 
 <header>
-<h1 n:block="title">
-    <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
-    {_front.game.melodicCubes}
-    <small>{if strlen($song->artist)>0}{$song->artist} - {/if}{$song->title}</small>
-</h1>
-<div id="game-hint">{_front.melodicCubes.hint}</div>
+    <h1 n:block="title">
+        <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
+        {_front.game.melodicCubes}
+        <small>{if strlen($song->artist)>0}{$song->artist} - {/if}{$song->title}</small>
+    </h1>
+
+    <div class="help-header">
+        <a id="game-hint-toggle" class="btn btn-default btn-help"><i class="fa fa-question"></i> {_front.game.common.help}</a>
+        <div id="game-hint-short">{_front.melodicCubes.hint}</div>
+        <div id="game-hint-long" class="hidden">{_front.melodicCubes.hintLong}</div>
+    </div>
+    
 </header>
 
 <div class="game-main hidden">

@@ -21,7 +21,13 @@
         <span class="difficulty-sign difficulty-{$difficultyName}"><i class="{$difficultySymbol}"></i></span>
         {_front.game.pexeso}
     </h1>
-    <div id="game-hint">{_front.pexeso.hint}</div>
+
+    <div class="help-header">
+        <a id="game-hint-toggle" class="btn btn-default btn-help"><i class="fa fa-question"></i> {_front.game.common.help}</a>
+        <div id="game-hint-short">{_front.pexeso.hint}</div>
+        <div id="game-hint-long" class="hidden">{_front.pexeso.hintLong}</div>
+    </div>
+
 </header>
 
 <div class="game-main pexeso hidden">
