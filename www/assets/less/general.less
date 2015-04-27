@@ -484,10 +484,17 @@ header#main-header {
   background-image: @background-stripes-transparent;
   border-top: 1px solid #FFF;
   color: #FCEBEB;
-  font-size: 0.9em;
+  font-size: 1.15em;
   
   a {
     color: #FCEBEB;
+    display: inline-block;
+
+    &:hover {
+      text-decoration: none;
+      color: #fff;
+      transform: scale(1.1);
+    }
   }
 
   h1 {
