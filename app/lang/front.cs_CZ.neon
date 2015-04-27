@@ -119,7 +119,7 @@ pexeso:
 noteSteps:
     stepCount: "špatných pokusů"
     hint: "Krokuj noty mačkáním na písmena na klávesnici podle jejich pořadí v notové osnově."
-    hintLong: "Ahůůůůůj člověče. Hudební teorii máme my sovy zmáknutou bravurně a co ty? Vyzkouším si tě. Před sebou vidíš prázdné rámečky a mezi nimi šipky. Úkol je jednoduchý: do prázdných rámečků s otazníkem musíš napsat správné názvy not. Jediné, co k tomu potřebuješ vědět, je znalost hudební stupnice, která se skládá pouze z osmi písmen. V prvním rámečku máš jednopísmeno napsané. Do dalšího rámečku napíš písmeno, které je od předchozího vzdálené tolik kroků, jako je šipek mezi rámečky. Směr šipek určuje, jestli budeš krokovat nahoru nebo dolů. Je to stejné, jako bych se tě zaptal, jaké písmeno je ve vaší abecedě za písmenem A? Je to B. A nebo jaké písmeno je před písmenem C? Je to zase B. My sovy to máme jednoduché - máme jen dvě písmena. Víš jaká? Hůůůůůů!"
+    hintLong: "Ahůůůůůj člověče. Hudební teorii máme my sovy zmáknutou bravurně, a co ty? Vyzkouším si tě. Před sebou vidíš prázdné rámečky a mezi nimi šipky. Úkol je jednoduchý: do prázdných rámečků s otazníkem musíš napsat správné názvy not. Jediné, co k tomu potřebuješ vědět, je znalost hudební stupnice, která se skládá pouze z osmi písmen. V prvním rámečku máš jednopísmeno napsané. Do dalšího rámečku napíš písmeno, které je od předchozího vzdálené tolik kroků, jako je šipek mezi rámečky. Směr šipek určuje, jestli budeš krokovat nahoru nebo dolů. Je to stejné, jako bych se tě zaptal, jaké písmeno je ve vaší abecedě za písmenem A? Je to B. A nebo jaké písmeno je před písmenem C? Je to zase B. My sovy to máme jednoduché - máme jen dvě písmena. Víš jaká? Hůůůůůů!"
 
 faders:
     stepCount: "tahů"
