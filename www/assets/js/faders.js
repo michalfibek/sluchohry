@@ -164,8 +164,10 @@ var Game = $class({
             var sliderId = $(this).data('id');
             var keyRecord = scope.playerOriginal.keys[sliderId];
             var className = keyRecord['length'];
+
             $(this).parent().addClass('length-' + className);
             if (keyRecord['multiplier'] == 1.5) $(this).parent().addClass('dot');
+
             $(this).noUiSlider({
                 orientation: "vertical",
                 direction: 'rtl',
@@ -184,6 +186,7 @@ var Game = $class({
                     }
                 }
             })
+
             $(this).on({
                 change: function(evt, val) {
                     var keyId = $(evt.target).data('id');
@@ -200,13 +203,11 @@ var Game = $class({
             })
 
             $(this).Link('lower').to('-inline-', function ( value ) {
-
-                // The tooltip HTML is 'this', so additional
-                // markup can be inserted here.
                 $(this).html(
                     '<span>' + scope.playerUser.keyToNote[Math.round(value)] + '</span>'
                 );
             });
+
             scope.setHandlerColor(sliderId, average);
             //$(this).find('noUi-handle')
         })

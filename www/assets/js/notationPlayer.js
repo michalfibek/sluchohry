@@ -19,7 +19,7 @@ var NotationPlayer = $class({
         this.velocity = 127;
         this.baseNoteLength = 4;
 
-        this.maxKey = 96;
+        this.maxKey = 127;
         this.minKey = 0;
 
         this.noteRegex = new RegExp('^([cdefgah]is|[cdfg]es|es|as|[cdefgah]#|[cdefga]b|[bcdefgah]|_)([,]{0,7}|[\']{0,7})?(16|8|4|2|1)?([.t])?$');
