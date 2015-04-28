@@ -1,5 +1,4 @@
 {default $stepsToSolveMessage = 'steps'}
-
 <div class="modal fade modal-simple modal-correct" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <img class="modal-avatar hidden-xs" src="{$avatarDir}/{$userAvatar}.svg">
@@ -27,7 +26,10 @@
 
             <div class="modal-footer">
                 <a n:href=":Front:Default:" class="btn btn-default btn-lg btn-close-game"><i class="fa fa-times"></i> {_front.game.common.closeGame}</a>
-                <a n:href="this nextRound=>true"  class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.game.common.nextGame}</a>
+                <a n:href="this nextRound=>true" class="btn btn-primary btn-lg btn-next-game"><i class="fa fa-arrow-right"></i> {_front.game.common.nextGame}</a>
+                {ifset $harderLevel}
+                <a n:href="this nextRound=>true, difficulty=>$harderLevel"  class="btn btn-primary btn-lg btn-add-difficulty difficulty-{$harderName}"><i class="{$harderSymbol}"></i> {_front.game.common.harderDifficulty}</a>
+                {/ifset}
             </div>
         </div>
     </div>

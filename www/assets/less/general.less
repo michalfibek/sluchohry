@@ -169,6 +169,33 @@ form {
     color: #fff;
   }
 
+  .btn-add-difficulty {
+
+    display: block;
+    width: 200px;
+
+    @media (min-width: @screen-sm-min) {
+      width: 260px;
+    }
+
+
+    &.difficulty-easy, &.difficulty-easy &:hover {
+      margin: 5px auto;
+      background-color: @difficulty-easy-background;
+    }
+
+    &.difficulty-medium, &.difficulty-medium &:hover {
+      margin: 5px auto;
+      background-color: @difficulty-medium-background;
+    }
+
+    &.difficulty-hard, &.difficulty-hard &:hover {
+      margin: 5px auto;
+      background-color: @difficulty-hard-background;
+    }
+
+  }
+
   .game-results {
     display: block;
   }
@@ -286,18 +313,6 @@ form {
     top: -25px;
     left: -120px;
     z-index: 2;
-  }
-
-  .difficulty-easy {
-    background-color: @difficulty-easy-background;
-  }
-
-  .difficulty-medium {
-    background-color: @difficulty-medium-background;
-  }
-
-  .difficulty-hard {
-    background-color: @difficulty-hard-background;
   }
 
   .btn-difficulty {
@@ -763,4 +778,16 @@ Top header ribbons
     }
   }
 
+}
+
+.difficulty-easy {
+  background-color: @difficulty-easy-background;
+}
+
+.difficulty-medium {
+  background-color: @difficulty-medium-background;
+}
+
+.difficulty-hard {
+  background-color: @difficulty-hard-background;
 }

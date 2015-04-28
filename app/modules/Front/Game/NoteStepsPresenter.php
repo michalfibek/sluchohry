@@ -42,7 +42,22 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
         $signList = '+-';
         for ($i = 0; $i < $this->noteCount; $i++) {
             $sign = $signList[rand(0,1)];
-            $shiftSigns[] = $sign . rand(1,self::MAX_RAND_MULTIPLY)*$this->stepRatio;
+
+            // generate non-reversing arrows only on higher difficulty
+            if ($i != 0 && $this->difficulty != 1) {
+                $shiftValueSingle = NULL;
+                $previousSymbol = substr($shiftSigns[$i-1], 0, 1);
+                $previousValue =  substr($shiftSigns[$i-1], 1);
+
+                while (($shiftValueSingle == NULL) || (($shiftValueSingle == $previousValue) && ($previousSymbol != $sign))) {
+                    $shiftValueSingle = rand(1, self::MAX_RAND_MULTIPLY) * $this->stepRatio;
+                    $shiftSignSingle = $sign . $shiftValueSingle;
+                }
+            } else {
+                $shiftSignSingle = $sign . rand(1, self::MAX_RAND_MULTIPLY) * $this->stepRatio;
+            }
+
+            $shiftSigns[$i] = $shiftSignSingle;
         }
 
         return array(
@@ -54,11 +69,17 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
     public function actionDefault($id = null, $difficulty = 2, $nextRound = null)
     {
+        if (!$nextRound) {
+            $this->historyClear();
+        }
+
         $this->difficulty = (int)$difficulty;
 
         $this->stepRatio = $this->getVariationByDifficulty($this->difficulty);
 
         $this->gameAssets = $this->getAssetsRandom();
+
+        $this->historyAdd();
     }
 
     public function renderDefault()

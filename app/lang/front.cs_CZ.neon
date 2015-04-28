@@ -62,6 +62,7 @@ game:
         resultWrong: "Špatně!"
         resultCorrectTitle: "Správně!"
         nextGame: "Další kolo"
+        harderDifficulty: "Přidej obtížnost!"
         closeGame: "Ukončit"
         tryAgain: "Zkusit znovu"
         seconds: "sekund"

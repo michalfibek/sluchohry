@@ -3,6 +3,7 @@ namespace App\Module\Front\Game\Presenters;
 
 use Nette,
 	App\Model;
+use Tracy\Debugger;
 
 /**
  * Homepage presenter.
@@ -39,15 +40,21 @@ class PexesoPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 
 	public function actionDefault($difficulty = 2, $nextRound = null)
 	{
+		if (!$nextRound) {
+			$this->historyClear();
+		}
+
 		$this->difficulty = (int)$difficulty;
 
 		$this->songPairCount = $this->getVariationByDifficulty($this->difficulty);
 
 		$this->gameAssets = $this->getAssetsRandom();
 		if (!$this->gameAssets) {
-			$this->flashMessage($this->translator->translate('front.pexeso.flash.noSongFound'), 'errror');
+			$this->flashMessage($this->translator->translate('front.pexeso.flash.noSongFound'), 'error');
 			$this->redirect(':Front:Default:');
 		}
+
+		$this->historyAdd();
 	}
 
 	public function renderDefault()

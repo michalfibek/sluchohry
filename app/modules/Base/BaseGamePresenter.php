@@ -14,7 +14,8 @@ abstract class BaseGamePresenter extends BasePresenter
         GAME_MELODIC_CUBES = 1,
         GAME_PEXESO = 2,
         GAME_NOTE_STEPS = 3,
-        GAME_FADERS = 4;
+        GAME_FADERS = 4,
+        HARDER_CHALLENGE_EVERY = 7;
 
     /** @inject @var Model\Game */
     public $game;
@@ -46,8 +47,9 @@ abstract class BaseGamePresenter extends BasePresenter
         $this->gameHistory = $this->getSession(__CLASS__); // get session by specific game name
     }
 
-    protected function historyAdd($recordId, $recordKey = NULL)
+    protected function historyAdd($recordId = NULL, $recordKey = NULL)
     {
+        if (!$recordId) $recordId = date("dHis");
         if (!$recordKey) $recordKey = $recordId;
         $this->gameHistory->offsetSet($recordKey,$recordId);
     }
@@ -58,6 +60,13 @@ abstract class BaseGamePresenter extends BasePresenter
             return null;
 
         return $this->gameHistory->getIterator()->getArrayCopy();
+    }
+
+    protected function historyGetCount()
+    {
+        if (empty($this->gameHistory->getIterator()->getArrayCopy()))
+            return 0;
+        return count($this->gameHistory->getIterator()->getArrayCopy());
     }
 
     protected function historyClear()
@@ -117,7 +126,19 @@ abstract class BaseGamePresenter extends BasePresenter
         }
         $this->template->difficultySymbol = ''; // override - no symbol
 
+        $historyCount = (int)$this->historyGetCount();
 
+        if ($historyCount % self::HARDER_CHALLENGE_EVERY == 0) {
+            if ($this->difficulty == 1) {
+                $this->template->harderLevel = 2;
+                $this->template->harderName = 'medium';
+                $this->template->harderSymbol = 'fa fa-car';
+            } elseif ($this->difficulty == 2) {
+                $this->template->harderLevel = 3;
+                $this->template->harderName = 'hard';
+                $this->template->harderSymbol = 'fa fa-rocket';
+            }
+        }
     }
 
 }
