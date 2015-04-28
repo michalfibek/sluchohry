@@ -1,5 +1,9 @@
 <header>
-<h1>{if $adminMode}{_front.user.profile}{else}{_front.user.profilePersonal}{/if} <small>{ifset $userRow}{$userRow->username}{else}Add new user{/ifset}</small></h1>
+<h1>
+{if $adminMode}{_front.user.profile}{else}{_front.user.profilePersonal}{/if}
+<small>{ifset $userRow}{if strlen($userRow->realname)>0}{$userRow->realname}{else}{$userRow->username}{/if}
+{else}Add new user{/ifset}</small>
+</h1>
 </header>
 
 <div class="container user-editor">
