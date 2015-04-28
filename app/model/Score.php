@@ -228,10 +228,7 @@ class Score extends Base
 
         $score = intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
 
-        if ($score <= 0)
-            return 0;
-        else
-            return $score;
+        return $score;
     }
 
     /**
@@ -270,6 +267,13 @@ class Score extends Base
 
         } elseif ($gameId == 4) { // noteSteps
             $score = $this->calcScoreFaders($result['time'], $result['steps'], $result['sliderCount']);
+        }
+
+        // possible range problem fix
+        if ($score < 0) {
+            $score = 0;
+        } else if ($score > self::MAX_SCORE) {
+            $score = self::MAX_SCORE;
         }
 
         $updated = $this->updateScore($userId, $gameId, $result['difficulty'], $score, $result['time']);
