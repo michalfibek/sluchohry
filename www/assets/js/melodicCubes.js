@@ -30,6 +30,13 @@ var Song = $class({
         this.songCtrl.play(partId);
     },
 
+    playComplete: function() {
+        this.songCtrl.once('end', function() {
+            g.clearHighlights();
+            g.switchStopBtn();
+        }).play('complete');
+    },
+
     playPartOnly: function(partId) {
         this.songCtrl.once('end', function() {
             g.clearHighlights();
@@ -290,6 +297,9 @@ var Game = $class({
             }
         }
         if (okay == true) {
+            scope.switchPlayBtn();
+            scope.song.playComplete();
+
             scope.gameSolved = true;
             $('.result-steps').find('span').empty().append(scope.getSteps());
             $('.result-time').find('span').empty().append(scope.timer.getTime('sec'));
