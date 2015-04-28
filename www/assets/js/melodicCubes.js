@@ -179,6 +179,7 @@ var Game = $class({
         });
 
         $('.single-cube').css('-ms-touch-action', 'none');
+        $('.single-cube').css('touch-action', 'none');
 
         $('#play-cubes').sortable( {
             zIndex: 100,

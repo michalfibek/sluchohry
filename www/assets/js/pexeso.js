@@ -54,7 +54,7 @@ var Song = $class({
  */
 var Game = $class({
 
-    constructor: function(song, timer, logger, pairCount, songList, difficulty) {
+    constructor: function(song, timer, logger, pairCount, songList, difficulty, songTitles) {
         scope = this;
         this.song = song;
         this.timer = timer;
@@ -62,6 +62,7 @@ var Game = $class({
         this.difficulty = difficulty;
         this.logger = logger;
         this.pairCount = pairCount;
+        this.songTitles = songTitles;
         this.cubeClickCount = 0;
         this.songsLoaded = 0;
         this.gameName = 'pexeso';
@@ -97,6 +98,15 @@ var Game = $class({
                 this.show();
             });
         });
+    },
+
+    showTitle: function(cubeId) {
+        var titleDisplay = $('#title-display').find('span');
+        titleDisplay.empty().append(scope.songTitles[cubeId]);
+        titleDisplay.addClass('visible');
+        setTimeout(function() {
+            titleDisplay.removeClass('visible');
+        }, 6000)
     },
 
     addHighlight: function(cubeId) {
@@ -161,6 +171,7 @@ var Game = $class({
         scope.clearHighlights();
 
         var cubeBtns = $('.cube-play');
+
         cubeBtns.on('click', function() {
             var cubeId = $(this).attr('id');
             if (!$('#'+cubeId).parent().hasClass('cube-found')) // still unchecked
@@ -189,6 +200,8 @@ var Game = $class({
                         $('#'+cubeId).parent().addClass('cube-found');
                         $('#'+scope.lastCubeId).parent().addClass('cube-found');
 
+                        scope.showTitle(songId);
+
                         scope.clearPairHighlights();
                         scope.addPairMatchHighlight(cubeId, secondCube);
 
@@ -214,10 +227,10 @@ var Game = $class({
                             scope.clearPairHighlights();
                             scope.addPairingHighlight(cubeId);
                         }
-                        console.log('pair reset');
+                        //console.log('pair reset');
                     } else {
                         scope.pairCounter = scope.pairCounter + 1;
-                        console.log('pair ' + scope.pairCounter);
+                        //console.log('pair ' + scope.pairCounter);
                         scope.addPairingHighlight(cubeId);
                     }
 
@@ -227,7 +240,7 @@ var Game = $class({
 
                 var songId = $(this).data('song');
 
-                console.log('same');
+                //console.log('same');
                 scope.song.stop(songId);
                 scope.clearHighlights();
                 scope.clearPairHighlights();
@@ -243,6 +256,10 @@ var Game = $class({
         $('.btn-return-game').on('click', function() {
             $('.modal-wrong').modal('hide');
             scope.timer.start(); // re-run timeout on return to game
+        })
+
+        $('#title-display').find('span').on('click', function() {
+            $(this).removeClass('visible');
         })
     },
 

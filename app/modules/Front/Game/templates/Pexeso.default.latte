@@ -31,6 +31,7 @@
 </header>
 
 <div class="game-main pexeso hidden">
+
     <div class="container-fluid">
         <div class="row {$rowClass}" id="play-cubes">
             {foreach $songs as $s}
@@ -48,6 +49,10 @@
         </div>
     </div>
 
+    <div id="title-display" class="container">
+        <span>aaa</span>
+    </div>
+
 </div>
 
 {include 'components/spinner.latte'}
@@ -61,17 +66,16 @@
     <script src="{$basePath}/assets/vendor/jquery-animateNumber/jquery.animateNumber.min.js"></script>
     <script src="{$basePath}/assets/js/ajaxLogger.js"></script>
     <script src="{$basePath}/assets/js/gameTimer.js"></script>
-    <script src="{$basePath}/assets/js/pexeso.js?v=3.0"></script>
+    <script src="{$basePath}/assets/js/pexeso.js?v=4.0"></script>
     <script type="text/javascript">
 
         var songPair = [],
             difficulty = {$difficulty},
-            pairCount = {count($songs)};
+            pairCount = {count($songs)}
+            songTitles = [];
 
-        /**
-         * songs -> playable sprites definition
-         */
         {foreach $songs as $s}
+        songTitles[{$iterator->counter-1}] = {if strlen($s->artist)>0}{$s->artist} -{/if}{$s->title};
         songPair[{$iterator->counter-1}] = {
             src: ['/assets/sounds/songs/{$s->filename|noescape}.mp3'],
             sprite: { complete: [0, {$s->duration}], partA: [0, {$s->duration/2}], partB: [{$s->duration/2}, {$s->duration}]{sep},{/sep} } }
@@ -82,7 +86,7 @@
         l = new AjaxLogger();
         t = new GameTimer();
         s = new Song(songPair);
-        g = new Game(s, t, l, pairCount, songList, difficulty);
+        g = new Game(s, t, l, pairCount, songList, difficulty, songTitles);
 
     </script>
 {/block}
