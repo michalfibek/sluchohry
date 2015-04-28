@@ -65,7 +65,13 @@ class User extends Base
 
         $updateResult = parent::updateById($id, $data);
 
-        return ($updateResult) ? $updateResult : $groupResult;
+        if ($updateResult)
+            return $updateResult;
+
+        if (isset($groupResult))
+            return $groupResult;
+
+        return false;
     }
 
     private function addGroupsToUser($id, $groups)
