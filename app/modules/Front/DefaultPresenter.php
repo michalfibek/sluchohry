@@ -12,7 +12,7 @@ use Tracy\Debugger;
 class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	const
-		HOMEPAGE_QUOTE_COUNT = 11;
+		HOMEPAGE_QUOTE_COUNT = 20;
 
 	/** @persistent */
 	public $backlink;
