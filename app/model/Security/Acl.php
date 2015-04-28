@@ -129,19 +129,32 @@ class Acl extends Permission
 			if (!$children) return false;
 		}
 
+		// clean arrays - one element array -> string
+		if (is_array($children) && count($children) == 1) {
+			$children = array_shift($children);
+		}
+		if (is_array($parents) && count($parents) == 1) {
+			$parents = array_shift($parents);
+		}
+
+		// main final check of element
+		if (!is_array($children)&&!is_array($parents)) {
+			if (in_array($children, $this->getRoleAncestors($parents))) return true;
+		}
+
+		// recursive check
 		if (is_array($children)) {
 			foreach ($children as $singleChild) {
-				if ($this->isChildRole($singleChild, $parents)) return true; // recursive check
+				if ($this->isChildRole($singleChild, $parents)) return true;
 			}
 		}
 
+		// recursive check
 		if (is_array($parents)) {
 			foreach ($parents as $singleParent) {
-				if ($this->isChildRole($children, $singleParent)) return true; // recursive check
+				if ($this->isChildRole($children, $singleParent)) return true;
 			}
 		}
-
-		if (in_array($children, $this->getRoleAncestors($parents))) return true; // main final check of element
 
 		return false;
 	}
