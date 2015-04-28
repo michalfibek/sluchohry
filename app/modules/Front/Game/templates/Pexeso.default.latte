@@ -75,7 +75,7 @@
             songTitles = [];
 
         {foreach $songs as $s}
-        songTitles[{$iterator->counter-1}] = '{if strlen($s->artist)>0}{$s->artist|noescape} -{/if}{$s->title|noescape}';
+        songTitles[{$iterator->counter-1}] = '{if strlen($s->artist)>0}{$s->artist|noescape} – {/if}{$s->title|noescape}';
         songPair[{$iterator->counter-1}] = {
             src: ['/assets/sounds/songs/{$s->filename|noescape}.mp3'],
             sprite: { complete: [0, {$s->duration}], partA: [0, {$s->duration/2}], partB: [{$s->duration/2}, {$s->duration}]{sep},{/sep} } }
