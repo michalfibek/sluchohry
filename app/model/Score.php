@@ -220,22 +220,30 @@ class Score extends Base
      */
     public function calcScoreFaders($time, $steps, $sliderCount)
     {
-        $timePenalty = $this->getTimePenalty($time);
-        $stepsPenalty = $steps * 20;
-        $sliderCountPenalty = ($sliderCount > 15) ? 0 : 300 - $sliderCount*20;
+        $maxTime = ($sliderCount * 60 * 1000) * 0.8; // maximum time to get timePenalty < self::MAX_TIME_PENALTY is calculated by slider count
+        $timePenalty = $this->getTimePenalty($time, $maxTime);
 
-        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty - $sliderCountPenalty));
+        $sliderCountAffect = ($sliderCount >= 15) ? 1 : (15 - $sliderCount);
+        $stepsPenalty = $steps * $sliderCountAffect;
+
+        $score = intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
+
+        if ($score <= 0)
+            return 0;
+        else
+            return $score;
     }
 
     /**
      * @param int $time in milliseconds
+     * @param int $maxTime
      * @return int
      */
-    private function getTimePenalty($time)
+    private function getTimePenalty($time, $maxTime = self::MAX_TIME_MSEC)
     {
-        if ($time >= self::MAX_TIME_MSEC) return self::MAX_TIME_PENALTY;
+        if ($time >= $maxTime) return self::MAX_TIME_PENALTY;
 
-        $timeConstant = self::MAX_TIME_MSEC / self::MAX_TIME_PENALTY;
+        $timeConstant = $maxTime / self::MAX_TIME_PENALTY;
 
         return round($time / $timeConstant); // todo change penalty to more non-linear function
     }

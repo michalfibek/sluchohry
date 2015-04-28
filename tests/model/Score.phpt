@@ -45,38 +45,11 @@ class ScoreTest extends Tester\TestCase
 	public function getGameEndArgs()
 	{
 		return array(
-//			array(
-//				array(
-//					'gameName' => 'pexeso',
-//					'difficulty' => 1,
-//					'songList' => '1,5,20,3,8,5',
-//					'time' => 2000*1000,
-//					'steps' => 38,
-//				),
-//			),
-//			array(
-//				array(
-//					'gameName' => 'pexeso',
-//					'difficulty' => 1,
-//					'songList' => '1,5,20,3,18,51',
-//					'time' => 2*1000,
-//					'steps' => 12
-//				)
-//			),
-//			array(
-//				array(
-//					'gameName' => 'pexeso',
-//					'difficulty' => 1,
-//					'songList' => '11,5,20,3,8,5,20,30,1,8',
-//					'time' => 20*1000,
-//					'steps' => 150
-//				)
-//			),
 			array(
 				array(
 					'gameName' => 'pexeso',
 					'difficulty' => 1,
-					'songList' => '17,22,25,30',
+					'songList' => '17,22,125,30',
 					'time' => 1520,
 					'steps' => 7
 				)
@@ -92,11 +65,11 @@ class ScoreTest extends Tester\TestCase
 			),
 			array(
 				array(
-					'gameName' => 'melodicCubes',
+					'gameName' => 'faders',
 					'difficulty' => 3,
-					'cubeCount' => '9',
-					'time' => 21*1000,
-					'steps' => 150
+					'sliderCount' => 15,
+					'time' => 133200,
+					'steps' => 15
 				)
 			),
 		);
