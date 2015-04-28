@@ -70,6 +70,7 @@ var Game = $class({
         this.gameForceEndHandler = '?do=gameForceEnd';
         this.gameSolved = false;
         this.lastCubeId = null;
+        this.pairCounter = 0;
 
         scope.initButtons();
         scope.initTimer();
@@ -103,13 +104,37 @@ var Game = $class({
         $('#'+cubeId).find('.cube-spinner').show();
     },
 
+    addPairingHighlight: function(cubeId) {
+        $('#'+cubeId).parent().addClass('cube-pairing');
+    },
+
+    addPairMatchHighlight: function(cubeIdFirst, cubeIdSecond) {
+        $('#'+cubeIdFirst).parent().addClass('cube-pair-match');
+        $('#'+cubeIdSecond).parent().addClass('cube-pair-match');
+        $('#'+cubeIdFirst).find('.cube-spinner').show();
+        $('#'+cubeIdSecond).find('.cube-spinner').show();
+    },
+
     isHighlight: function(cubeId) {
-        return $('#'+cubeId).parent().hasClass('cube-highlight');
+        return ( $('#'+cubeId).parent().hasClass('cube-highlight'));
     },
 
     clearHighlights: function() {
         $('.single-cube').each( function() {
             $(this).removeClass('cube-highlight').transition();
+            $(this).find('.cube-spinner').hide();
+        });
+    },
+
+    clearPairHighlights: function() {
+        $('.single-cube').each( function() {
+            $(this).removeClass('cube-pairing').transition();
+        });
+    },
+
+    clearPairMatchHighlights: function() {
+        $('.single-cube').each( function() {
+            $(this).removeClass('cube-pair-match').transition();
             $(this).find('.cube-spinner').hide();
         });
     },
@@ -138,23 +163,42 @@ var Game = $class({
         var cubeBtns = $('.cube-play');
         cubeBtns.on('click', function() {
             var cubeId = $(this).attr('id');
-            if (!$('#'+cubeId).parent().hasClass('cube-found'))
+            if (!$('#'+cubeId).parent().hasClass('cube-found')) // still unchecked
             {
                 var partId = $(this).data('part');
                 var songId = $(this).data('song');
+
                 if (scope.isHighlight(cubeId)) // if user clicks on currently playing cube
                 {
                     scope.song.stop(songId);
                     scope.clearHighlights();
+                    scope.clearPairHighlights();
+                    scope.pairCounter = 0;
+
                 } else {
+
+                    var pairFound = false;
 
                     scope.song.stopAll();
                     scope.clearHighlights();
+                    scope.clearPairMatchHighlights();
 
-                    if (scope.isPair(cubeId, scope.lastCubeId))
-                    {
+                    if ((scope.isPair(cubeId, scope.lastCubeId)) && (scope.pairCounter = 2)) {
+                        pairFound = true;
+                        var secondCube = scope.lastCubeId;
                         $('#'+cubeId).parent().addClass('cube-found');
                         $('#'+scope.lastCubeId).parent().addClass('cube-found');
+
+                        scope.clearPairHighlights();
+                        scope.addPairMatchHighlight(cubeId, secondCube);
+
+                        setTimeout(function() {
+                            scope.song.playPart(function() {
+                                //scope.clearHighlights();
+                                scope.clearPairMatchHighlights();
+                            }, songId, 'complete');
+                        }, 300);
+
                         scope.evalGame();
                     } else {
                         scope.cubeClickCount++;
@@ -163,8 +207,31 @@ var Game = $class({
                         }, songId, partId);
                         scope.addHighlight(cubeId);
                     }
+
+                    if (scope.pairCounter == 2) {
+                        scope.pairCounter = 1;
+                        if (!pairFound) {
+                            scope.clearPairHighlights();
+                            scope.addPairingHighlight(cubeId);
+                        }
+                        console.log('pair reset');
+                    } else {
+                        scope.pairCounter = scope.pairCounter + 1;
+                        console.log('pair ' + scope.pairCounter);
+                        scope.addPairingHighlight(cubeId);
+                    }
+
                     scope.lastCubeId = cubeId;
                 }
+            } else if ($('#'+cubeId).parent().hasClass('cube-pair-match')) {
+
+                var songId = $(this).data('song');
+
+                console.log('same');
+                scope.song.stop(songId);
+                scope.clearHighlights();
+                scope.clearPairHighlights();
+                scope.clearPairMatchHighlights();
             }
 
         });

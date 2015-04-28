@@ -67,9 +67,9 @@ class ScoreTest extends Tester\TestCase
 				array(
 					'gameName' => 'faders',
 					'difficulty' => 3,
-					'sliderCount' => 15,
-					'time' => 133200,
-					'steps' => 15
+					'sliderCount' => 3,
+					'time' => 127100,
+					'steps' => 25
 				)
 			),
 		);

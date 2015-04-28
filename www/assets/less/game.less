@@ -61,13 +61,16 @@ GAME: melodic cubes
   }
 }
 
+@cube-scale-default: 0.90;
+@cube-scale-active: 1.0;
+@cube-scale-found: 1.1;
 
 .single-cube {
   //  background-color: #0000f6;
   padding: 0;
   margin: 0;
 
-  transform: scale(0.90);
+  transform: scale(@cube-scale-default);
   transition: all 0.3s ease-in-out;
   box-shadow: none;
 
@@ -97,7 +100,7 @@ GAME: melodic cubes
 .cube-highlight {
 
   opacity: 1;
-  transform: scale(1);
+  transform: scale(@cube-scale-active);
   z-index: 10;
   box-shadow: 0 10px 35px rgba(0,0,0,0.3);
 
@@ -107,6 +110,34 @@ GAME: melodic cubes
     opacity: 1;
   }
 
+}
+
+.cube-pairing {
+
+  opacity: 1;
+  transform: scale(@cube-scale-active);
+  z-index: 10;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+
+  .btn {
+    transition: all 0.1s ease-in-out;
+    background-color: #ff0000 !important;
+    opacity: 1;
+  }
+}
+
+.cube-pair-match {
+
+  opacity: 1 !important;
+  transform: scale(@cube-scale-found);
+  z-index: 10;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.3);
+
+  .btn {
+    transition: all 0.6s ease-in-out;
+    background-color: #0d00ff !important;
+    opacity: 1;
+  }
 }
 
 

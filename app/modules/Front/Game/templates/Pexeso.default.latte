@@ -61,7 +61,7 @@
     <script src="{$basePath}/assets/vendor/jquery-animateNumber/jquery.animateNumber.min.js"></script>
     <script src="{$basePath}/assets/js/ajaxLogger.js"></script>
     <script src="{$basePath}/assets/js/gameTimer.js"></script>
-    <script src="{$basePath}/assets/js/pexeso.js"></script>
+    <script src="{$basePath}/assets/js/pexeso.js?v=2.0"></script>
     <script type="text/javascript">
 
         var songPair = [],
@@ -74,11 +74,7 @@
         {foreach $songs as $s}
         songPair[{$iterator->counter-1}] = {
             src: ['/assets/sounds/songs/{$s->filename|noescape}.mp3'],
-            sprite: {
-                partA: [0, {$s->duration/2}],
-                partB: [{$s->duration/2}, {$s->duration}]{sep},{/sep}
-            }
-        }
+            sprite: { complete: [0, {$s->duration}], partA: [0, {$s->duration/2}], partB: [{$s->duration/2}, {$s->duration}]{sep},{/sep} } }
         {/foreach}
 
         songList = '{foreach $songs as $s}{$s->id}{sep},{/sep}{/foreach}';
