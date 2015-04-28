@@ -63,7 +63,7 @@ GAME: melodic cubes
 
 @cube-scale-default: 0.90;
 @cube-scale-active: 1.0;
-@cube-scale-found: 1.1;
+@cube-scale-found: 1.05;
 
 .single-cube {
   //  background-color: #0000f6;
@@ -105,7 +105,7 @@ GAME: melodic cubes
   box-shadow: 0 10px 35px rgba(0,0,0,0.3);
 
   .btn {
-    transition: all 0.5s ease-in-out;
+    transition: all 0.3s ease-in-out;
     background-color: #ff0000 !important;
     opacity: 1;
   }
@@ -128,33 +128,38 @@ GAME: melodic cubes
 
 .cube-pair-match {
 
-  opacity: 1 !important;
+  opacity: 1;
   transform: scale(@cube-scale-found);
+  transition: all 0.2s ease-in-out;
   z-index: 10;
   box-shadow: 0 10px 35px rgba(0,0,0,0.3);
 
-  .btn {
-    transition: all 0.6s ease-in-out;
-    background-color: #0d00ff !important;
-    opacity: 1;
+  &.single-cube {
+    background-color: @color-ter-1;
   }
+
 }
 
-
 .game-main.pexeso {
-
   .single-cube {
-
-    //    background: none;
-
     .btn {
-      background: #ff3d31;
+      background-color: #ff3d31;
     }
 
+    &.cube-pair-match .btn {
+      background-color: @color-ter-1;
+    }
   }
-
   .cube-found {
     opacity: 0.4;
+
+    &.cube-pair-match {
+      opacity: 1;
+
+      .btn {
+        opacity: 0.6;
+      }
+    }
 
     .btn {
       opacity: 0.1;
