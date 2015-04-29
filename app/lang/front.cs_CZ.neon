@@ -52,7 +52,7 @@ game:
         msg17: "Nenávidím žáby - když je jich víc, kvákají jak žáby. Moment, čím se živí sova?"
         msg18: "Umím otočit hlavu o 360 stupňů - větrník ze mě ale nebude :("
         msg19: "Dej si pohov - makáš, až se mi zavařily číselníky."
-        msg20: "Až potkáš nějakého sluchvého mistra, zazpívej mu písničku o sově."
+        msg20: "Až potkáš nějakého sluchového mistra, zazpívej mu písničku o sově."
 
     common:
         play: "Hrej"
