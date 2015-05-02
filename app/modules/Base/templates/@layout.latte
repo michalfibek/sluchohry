@@ -17,7 +17,7 @@
 	{ifset $initGrid}<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">{/ifset}
 	<link rel="stylesheet" href="{$basePath}/style.css">
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">
+	{if $presenter->name == 'Front:Default'}<link rel="stylesheet" href="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">{/if}
 	{ifset $initNoUiSlider}<link rel="stylesheet" href="{$basePath}/assets/vendor/nouislider/distribute/jquery.nouislider.min.css">{/ifset}
 	{ifset $initHighlightTextarea}<link rel="stylesheet" href="{$basePath}/assets/vendor/jquery-highlighttextarea/jquery.highlighttextarea.min.css">{/ifset}
 	{/block}
@@ -32,7 +32,7 @@
 
 <body>
 
-	<div class="page-wrap{if $this->presenter->name == 'Front:Default'} home-game-page{/if}">
+	<div class="page-wrap{if $presenter->name == 'Front:Default'} home-game-page{/if}">
 
 		{if $user->loggedIn}
 		{include 'components/header.latte'}
@@ -56,7 +56,7 @@
 
 	{block scripts}
 
-	<script src="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
+	{if $presenter->name == 'Front:Default'}<script src="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>{/if}
     <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
 	<script src="{$basePath}/assets/vendor/jquery.transit/jquery.transit.js"></script>
 	<script src="{$basePath}/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
