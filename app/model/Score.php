@@ -208,9 +208,9 @@ class Score extends Base
             $pairPenalty = 0;
 
         if ($stepsPenalty > self::MAX_STEPS_PENALTY) $stepsPenalty = self::MAX_STEPS_PENALTY;
-        echo 'timepen:' . $timePenalty . ';';
-        echo 'stepspen:' . $stepsPenalty . ';';
-        echo 'pairpen:' . $pairPenalty . ';';
+//        echo 'timepen:' . $timePenalty . ';';
+//        echo 'stepspen:' . $stepsPenalty . ';';
+//        echo 'pairpen:' . $pairPenalty . ';';
 
         return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty - $pairPenalty));
     }
