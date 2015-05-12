@@ -202,17 +202,11 @@ class Score extends Base
 
         $stepsPenalty = ($steps - $songCount) * 12;
 
-        if ($songCount < self::PEXESO_PAIR_THRESHOLD)
-            $pairPenalty = (self::PEXESO_PAIR_THRESHOLD - $songCount) * 6;
-        else
-            $pairPenalty = 0;
-
         if ($stepsPenalty > self::MAX_STEPS_PENALTY) $stepsPenalty = self::MAX_STEPS_PENALTY;
 //        echo 'timepen:' . $timePenalty . ';';
 //        echo 'stepspen:' . $stepsPenalty . ';';
-//        echo 'pairpen:' . $pairPenalty . ';';
-
-        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty - $pairPenalty));
+        
+        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
     }
 
     /**
