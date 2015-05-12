@@ -48,10 +48,10 @@ class ScoreTest extends Tester\TestCase
 			array(
 				array(
 					'gameName' => 'pexeso',
-					'songList' => '17,22,125,30',
+					'songList' => '18,50,53,54',
 					'difficulty' => 1,
-					'time' => 5 * 1000,
-					'steps' => 8
+					'time' => 24000,
+					'steps' => 5
 				)
 			),
 			array(
