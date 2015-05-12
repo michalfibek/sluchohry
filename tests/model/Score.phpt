@@ -48,28 +48,29 @@ class ScoreTest extends Tester\TestCase
 			array(
 				array(
 					'gameName' => 'pexeso',
-					'difficulty' => 1,
 					'songList' => '17,22,125,30',
-					'time' => 1520,
-					'steps' => 7
+					'difficulty' => 1,
+					'time' => 5 * 1000,
+					'steps' => 8
 				)
 			),
 			array(
 				array(
-					'gameName' => 'melodicCubes',
+					'gameName' => 'pexeso',
+					'songList' => '17,22,125,30',
 					'difficulty' => 2,
 					'cubeCount' => '6',
 					'time' => 20*1000,
-					'steps' => 12
+					'steps' => 8
 				)
 			),
 			array(
 				array(
-					'gameName' => 'faders',
+					'gameName' => 'pexeso',
+					'songList' => '16,17,18,19,20,21,25,32,44,46,52',
 					'difficulty' => 3,
-					'sliderCount' => 3,
-					'time' => 127100,
-					'steps' => 25
+					'steps' => 70,
+					'time' => 135100,
 				)
 			),
 		);

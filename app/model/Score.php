@@ -15,6 +15,7 @@ class Score extends Base
         MAX_SCORE = 1000,
         MAX_STEPS_PENALTY = 500,
         MAX_TIME_PENALTY = 500,
+        PEXESO_PAIR_THRESHOLD = 12,
         MAX_TIME_MSEC = 300000; // 5*60*1000
 
     /** @var Game */
@@ -178,7 +179,10 @@ class Score extends Base
     public function calcScoreMelodicCubes($time, $steps, $cubeCount)
     {
         $timePenalty = $this->getTimePenalty($time);
-        $stepsPenalty = round(self::MAX_STEPS_PENALTY - (self::MAX_STEPS_PENALTY / $steps));
+        $stepsPenalty = $steps * 30;
+        if ($stepsPenalty > self::MAX_STEPS_PENALTY) $stepsPenalty = self::MAX_STEPS_PENALTY;
+//        echo 'timepen:' . $timePenalty . ';';
+//        echo 'stepspen:' . $stepsPenalty . ';';
 
         return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
     }
@@ -191,12 +195,22 @@ class Score extends Base
      */
     private function calcScorePexeso($time, $steps, $songCount)
     {
-        $timePenalty = $this->getTimePenalty($time);
+        $maxTime = ($songCount * 60 * 1000) * 0.8;
+        $timePenalty = $this->getTimePenalty($time, $maxTime);
 
-        $minSteps = ($songCount*2)-1;
-        $stepsPenalty = round(self::MAX_STEPS_PENALTY - (self::MAX_STEPS_PENALTY / ($steps/$minSteps)));
+        $stepsPenalty = ($steps - $songCount) * 12;
 
-        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty));
+        if ($songCount < self::PEXESO_PAIR_THRESHOLD)
+            $pairPenalty = (self::PEXESO_PAIR_THRESHOLD - $songCount) * 6;
+        else
+            $pairPenalty = 0;
+
+        if ($stepsPenalty > self::MAX_STEPS_PENALTY) $stepsPenalty = self::MAX_STEPS_PENALTY;
+//        echo 'timepen:' . $timePenalty . ';';
+//        echo 'stepspen:' . $stepsPenalty . ';';
+//        echo 'pairpen:' . $pairPenalty . ';';
+
+        return intval(round(self::MAX_SCORE - $timePenalty - $stepsPenalty - $pairPenalty));
     }
 
     /**
