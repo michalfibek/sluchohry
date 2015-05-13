@@ -81,6 +81,8 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 		unset($values->markers, $values->markersUpdated, $values->game);
 
+		$values['update_user_id'] = $this->user->getId();
+
 		$this->song->updateById($songId, $values);
 		if ($updateMarkers)// if markers were set by the form, delete old and insert new
 			$this->song->updateMarkers($songId, $updateMarkers);
@@ -164,7 +166,7 @@ class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
 	public function handleUploadFile() {
 		try {
 			$uploadResult = $this->song->handleUpload();
-			$saveResult = $this->song->save($uploadResult);
+			$saveResult = $this->song->save($uploadResult, $this->user->getId());
 			$saveResult['durationReadable'] = $this->getSongTimeFormat($saveResult['duration']); // format duration
 		} catch (\Exception $e) {
 			$this->sendResponse(new JsonResponse(array(

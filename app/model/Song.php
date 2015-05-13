@@ -177,7 +177,7 @@ class Song extends Base
     }
 
 
-    public function save($uploadResult)
+    public function save($uploadResult, $userId)
     {
         $uploadUUIDName = $uploadResult['uuid'];
         $uploadFilePath = $this->uploadDir . $uploadUUIDName . '/' . $this->uploadHandler->getUploadName();
@@ -203,6 +203,7 @@ class Song extends Base
         $row['title'] = $title;
         $row['duration'] = $duration;
         $row['filename'] = $uploadUUIDName;
+        $row['update_user_id'] = $userId;
 
         try {
             $songInsert = $this->insert($row);
