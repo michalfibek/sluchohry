@@ -230,13 +230,16 @@ class Event extends Base {
             ->table($this->tableName)
             ->where('event_class_id', $eventId);
 
+        if ($mondayFirst) $intervalOffset = 2;
+            else $intervalOffset = 1;
+
         if ($thisWeek) {
-            $query = $query->where('event_time BETWEEN DATE_ADD(CURDATE(), INTERVAL 1-DAYOFWEEK(CURDATE()) DAY)
+            $query = $query->where('event_time BETWEEN DATE_ADD(CURDATE(), INTERVAL '.$intervalOffset.'-DAYOFWEEK(CURDATE()) DAY)
             AND DATE_ADD(CURDATE(), INTERVAL 7-DAYOFWEEK(CURDATE()) DAY)');
         } else {
             $query = $query->where(
                 'event_time >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
-                AND event_time < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY'
+                AND event_time < curdate() - INTERVAL DAYOFWEEK(curdate())-'.$intervalOffset.' DAY'
             );
         }
 
