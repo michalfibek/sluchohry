@@ -267,15 +267,14 @@ class Event extends Base {
     public function getGameStats($eventId)
     {
         $query = $this->db
-            ->table($this->tableName)
-            ->where('event_class_id', $eventId);
+            ->table('event_data')
+            ->where('event.event_class_id', $eventId);
 
         $query = $query
-            ->where('event_data.name', self::DATA_GAME_NAME)
-            ->where('event_data.value', 'faders');
+            ->where('name', self::DATA_GAME_NAME);
 
         $evtCount = $query
-            ->select('COUNT(id) AS event_count, event_data.value AS game_name')
+            ->select('COUNT(*) AS event_count, value AS game_name')
             ->group('game_name')
             ->fetchPairs('game_name', 'event_count');
 

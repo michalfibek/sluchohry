@@ -7,7 +7,8 @@
 <h1 n:block="title">Administrator</h1>
 </header>
 
-<div class="container">
+<div class="container admin-dashboard">
+
     <div class="col-xs-12 col-md-6">
         <div id="week-current-plays">
             <h2>
@@ -25,6 +26,17 @@
         </div>
         <div id="legend-week-plays" class="chart-legend"></div>
     </div>
+
+    <div class="col-xs-12 col-md-6">
+        <div id="fav-games">
+            <h2>
+                Nejoblíbenější hry
+            </h2>
+            <canvas id="chart-fav-games" width="400" height="200"></canvas>
+        </div>
+        <div id="legend-fav-games" class="chart-legend"></div>
+    </div>
+
 </div>
 
 <ul id="settings-list">
@@ -50,6 +62,8 @@
 
     var solvedByWeekPrevious = {$solvedByWeekPrevious};
     var startedByWeekPrevious = {$startedByWeekPrevious};
+
+    var favGameStats = {$favGameStats};
     
     </script>
 

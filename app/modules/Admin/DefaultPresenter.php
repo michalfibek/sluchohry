@@ -26,8 +26,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->template->solvedByWeekPrevious = $this->event->getEventClassByWeek(Event::CLASS_GAME_SOLVED, false);
 		$this->template->startedByWeekPrevious = $this->event->getEventClassByWeek(Event::CLASS_GAME_STARTED, false);
 
-//		$this->template->gameStats = $this->event->getGameStats(Event::CLASS_GAME_STARTED);
-//		Debugger::barDump($this->template->gameStats);
+		$this->template->favGameStats = $this->event->getGameStats(Event::CLASS_GAME_STARTED);
 
 
 	}

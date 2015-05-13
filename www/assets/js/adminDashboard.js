@@ -4,6 +4,7 @@ var labelSolved = "vyřešené hry";
 
 var ctxWeekCurrentPlays = $('#chart-week-current-plays').get(0).getContext('2d');
 var ctxWeekPreviousPlays = $('#chart-week-previous-plays').get(0).getContext('2d');
+var ctxFavGameStats = $('#chart-fav-games').get(0).getContext('2d');
 
 var dataCurrent = {
     labels: ["Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota", "Neděle"],
@@ -48,16 +49,46 @@ var dataPrevious = {
     ]
 };
 
+var dataFavGames = [
+    {
+        value: favGameStats['melodicCubes'],
+        color:"#F7464A",
+        highlight: "#FF5A5E",
+        label: "Melodické kostky"
+    },
+    {
+        value: favGameStats['pexeso'],
+        color: "#46BFBD",
+        highlight: "#5AD3D1",
+        label: "Pexeso"
+    },
+    {
+        value: favGameStats['noteSteps'],
+        color: "#FDB45C",
+        highlight: "#FFC870",
+        label: "Krokování not"
+    },
+    {
+        value: favGameStats['faders'],
+        color: "#5cfd91",
+        highlight: "#9bffbc",
+        label: "Posuvníky"
+    }
+]
+
 var options = {
+
 }
 
 var chartWeekCurrentPlays = new Chart(ctxWeekCurrentPlays).Bar(dataCurrent, options);
 var chartWeekPreviousPlays = new Chart(ctxWeekPreviousPlays).Bar(dataPrevious, options);
+var chartFavGameStats = new Chart(ctxFavGameStats).Doughnut(dataFavGames,options);
 
 var legendCurrentPlays = chartWeekCurrentPlays.generateLegend();
-//var legendPreviousPlays = chartWeekPreviousPlays.generateLegend();
+var legendFavGames = chartFavGameStats.generateLegend();
 
 $('#legend-week-plays').append(legendCurrentPlays);
+$('#legend-fav-games').append(legendFavGames);
 
 
 var currentPlaysBox = $('#week-current-plays');
