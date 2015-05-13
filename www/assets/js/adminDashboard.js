@@ -49,14 +49,15 @@ var dataPrevious = {
 };
 
 var options = {
-
 }
 
 var chartWeekCurrentPlays = new Chart(ctxWeekCurrentPlays).Bar(dataCurrent, options);
 var chartWeekPreviousPlays = new Chart(ctxWeekPreviousPlays).Bar(dataPrevious, options);
 
 var legendCurrentPlays = chartWeekCurrentPlays.generateLegend();
-var legendPreviousPlays = chartWeekPreviousPlays.generateLegend();
+//var legendPreviousPlays = chartWeekPreviousPlays.generateLegend();
+
+$('#legend-week-plays').append(legendCurrentPlays);
 
 
 var currentPlaysBox = $('#week-current-plays');
