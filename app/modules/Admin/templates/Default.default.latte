@@ -9,12 +9,20 @@
 
 <div class="container">
     <div class="col-xs-12 col-md-6">
-        <h2>Herní aktivita (tento týden)</h2>
-        <canvas id="chart-week-current-plays" width="400" height="200"></canvas>
-    </div>
-    <div class="col-xs-12 col-md-6">
-        <h2>Herní aktivita (minulý týden)</h2>
-        <canvas id="chart-week-previous-plays" width="400" height="200"></canvas>
+        <div id="week-current-plays">
+            <h2>
+                Herní aktivita
+                <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> tento týden</a>
+            </h2>
+            <canvas id="chart-week-current-plays" width="400" height="200"></canvas>
+        </div>
+        <div id="week-previous-plays">
+            <h2>
+                Herní aktivita
+                <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> minulý týden</a>
+            </h2>
+            <canvas id="chart-week-previous-plays" width="400" height="200"></canvas>
+        </div>
     </div>
 </div>
 
@@ -36,66 +44,14 @@
 {include parent}
 
     <script>
-
     var solvedByWeekCurrent = {$solvedByWeekCurrent};
     var startedByWeekCurrent = {$startedByWeekCurrent};
 
     var solvedByWeekPrevious = {$solvedByWeekPrevious};
     var startedByWeekPrevious = {$startedByWeekPrevious};
-
-    var ctxWeekCurrentPlays = $('#chart-week-current-plays').get(0).getContext('2d');
-    var ctxWeekPreviousPlays = $('#chart-week-previous-plays').get(0).getContext('2d');
-
-    var dataCurrent = {
-        labels: ["Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota", "Neděle"],
-        datasets: [
-            {
-                label: "Zahájené hry v tomto týdnu",
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,0.8)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)",
-                data: startedByWeekCurrent
-            },
-            {
-                label: "Vyřešené hry v tomto týdnu",
-                fillColor: "rgba(151,187,205,0.5)",
-                strokeColor: "rgba(151,187,205,0.8)",
-                highlightFill: "rgba(151,187,205,0.75)",
-                highlightStroke: "rgba(151,187,205,1)",
-                data: solvedByWeekCurrent
-            }
-        ]
-    };
-    var dataPrevious = {
-        labels: ["Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek", "Sobota", "Neděle"],
-        datasets: [
-            {
-                label: "Zahájené hry v minulém týdnu",
-                fillColor: "rgba(220,220,220,0.5)",
-                strokeColor: "rgba(220,220,220,0.8)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)",
-                data: startedByWeekPrevious
-            },
-            {
-                label: "Vyřešené hry v minulém týdnu",
-                fillColor: "rgba(151,187,205,0.5)",
-                strokeColor: "rgba(151,187,205,0.8)",
-                highlightFill: "rgba(151,187,205,0.75)",
-                highlightStroke: "rgba(151,187,205,1)",
-                data: solvedByWeekPrevious
-            }
-        ]
-    };
-
-    var options = {
-
-    }
-
-    var chartWeekPlays = new Chart(ctxWeekCurrentPlays).Bar(dataCurrent, options);
-    var chartWeekPlays = new Chart(ctxWeekPreviousPlays).Bar(dataPrevious, options);
-
+    
     </script>
+
+    <script src="{$basePath}/assets/js/adminDashboard.js"></script>
 
 {/block}
