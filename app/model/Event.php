@@ -224,4 +224,41 @@ class Event extends Base {
         $this->insertRecord($user->getId(), self::CLASS_PROFILE, $result);
     }
 
+    public function getEventClassByWeek($eventId, $thisWeek = true, $mondayFirst = true)
+    {
+        $query = $this->db
+            ->table($this->tableName)
+            ->where('event_class_id', $eventId);
+
+        if ($thisWeek) {
+            $query = $query->where('event_time BETWEEN DATE_ADD(CURDATE(), INTERVAL 1-DAYOFWEEK(CURDATE()) DAY)
+            AND DATE_ADD(CURDATE(), INTERVAL 7-DAYOFWEEK(CURDATE()) DAY)');
+        } else {
+            $query = $query->where(
+                'event_time >= curdate() - INTERVAL DAYOFWEEK(curdate())+6 DAY
+                AND event_time < curdate() - INTERVAL DAYOFWEEK(curdate())-1 DAY'
+            );
+        }
+
+        $evtCount = $query
+            ->select('COUNT(id) AS event_count, DAYOFWEEK(event_time) AS event_day')
+            ->group('event_day')
+            ->fetchPairs('event_day', 'event_count');
+
+
+        for ($i = 1; $i <= 7; $i++) {
+            if (isset($evtCount[$i]))
+                $data[$i] = $evtCount[$i];
+            else
+                $data[$i] = 0;
+        }
+
+        if ($mondayFirst) {
+            $lastDay = array_shift($data);
+            $data[] = $lastDay;
+        }
+
+        return $data;
+    }
+
 }

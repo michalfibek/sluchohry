@@ -250,4 +250,9 @@ abstract class Base extends Nette\Object
     {
         return $this->db->query($query);
     }
+
+    protected function setLocaleNames($localeName = 'cs_CZ')
+    {
+        return $this->db->query('SET lc_time_names = ' . $localeName);
+    }
 }

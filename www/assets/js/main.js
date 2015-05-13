@@ -15,15 +15,19 @@ function addLoadEvent(func) {
         }
     }
 }
+
+// if page with outdated browser warning is present, run this...
+if (typeof outdatedBrowser == 'function') {
 //call plugin function after DOM ready
-addLoadEvent(function(){
-    outdatedBrowser({
-        bgColor: '#f25648',
-        color: '#ffffff',
-        lowerThan: 'transform',
-        languagePath: '/assets/vendor/outdated-browser/outdatedbrowser/lang/cz.html'
-    })
-});
+    addLoadEvent(function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'transform',
+            languagePath: '/assets/vendor/outdated-browser/outdatedbrowser/lang/cz.html'
+        })
+    });
+}
 
 
 /**
