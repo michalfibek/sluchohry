@@ -40,12 +40,12 @@
 </div>
 
 <ul id="settings-list">
-    {if $user->isAllowed('Admin:User', 'default')}<li><a n:href="User:"><i class="fa fa-user"></i> {_admin.user.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Rating', 'default')}<li><a n:href="Rating:"><i class="fa fa-bar-chart"></i> {_admin.rating.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Group', 'default')}<li><a n:href="Group:"><i class="fa fa-users"></i> {_admin.group.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Event', 'default')}<li><a n:href="Event:"><i class="fa fa-file-text-o"></i> {_admin.event.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Song', 'default')}<li><a n:href="Song:"><i class="fa fa-music"></i> {_admin.song.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Notation', 'default')}<li><a n:href="Notation:"><i class="fa fa-music"></i> {_admin.notation.title}</a></li>{/if}
+    {if $user->isAllowed('Admin:Users', 'default')}<li><a n:href="Users:"><i class="fa fa-user"></i> {_admin.users.title}</a></li>{/if}
+    {if $user->isAllowed('Admin:Stats', 'default')}<li><a n:href="Stats:"><i class="fa fa-bar-chart"></i> {_admin.stats.title}</a></li>{/if}
+    {if $user->isAllowed('Admin:Groups', 'default')}<li><a n:href="Groups:"><i class="fa fa-users"></i> {_admin.groups.title}</a></li>{/if}
+    {if $user->isAllowed('Admin:Events', 'default')}<li><a n:href="Events:"><i class="fa fa-file-text-o"></i> {_admin.events.title}</a></li>{/if}
+    {if $user->isAllowed('Admin:Songs', 'default')}<li><a n:href="Songs:"><i class="fa fa-music"></i> {_admin.songs.title}</a></li>{/if}
+    {if $user->isAllowed('Admin:Notations', 'default')}<li><a n:href="Notations:"><i class="fa fa-music"></i> {_admin.notations.title}</a></li>{/if}
 </ul>
 
 

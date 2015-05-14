@@ -14,7 +14,7 @@ use Nette\Application\Responses\JsonResponse;
 /**
  * Sign in/out presenters.
  */
-class SongPresenter extends \App\Module\Base\Presenters\BasePresenter
+class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	private $songRecord;
 	private $songMarkers;

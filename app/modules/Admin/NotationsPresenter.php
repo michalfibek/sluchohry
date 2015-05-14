@@ -14,7 +14,7 @@ use Nette,
 /**
  * Sign in/out presenters.
  */
-class NotationPresenter extends BasePresenter
+class NotationsPresenter extends BasePresenter
 {
     const
         DEFAULT_TEMPO_ID = 1,

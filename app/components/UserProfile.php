@@ -82,7 +82,7 @@ class UserProfile extends UI\Control
         $this->avatar = $avatar;
         $this->translator = $translator;
 
-        if ($this->user->isAllowed('Admin:User', 'edit')) {
+        if ($this->user->isAllowed('Admin:Users', 'edit')) {
             $this->adminMode = true;
         }
     }

@@ -13,7 +13,7 @@ use Nette,
 /**
  * User editing presenter.
  */
-class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
+class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @inject @var Model\User */
 	public $userModel;
@@ -106,7 +106,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$form = $this->userProfile->create();
 		$form->setDefaultSignals();
 		$form->onReturnAction = function() {
-			$this->redirect(':Admin:User:');
+			$this->redirect(':Admin:Users:');
 		};
 		$form->onFailAction = function() {
 			$this->redirect('this');
@@ -146,7 +146,7 @@ class UserPresenter extends \App\Module\Base\Presenters\BasePresenter
 				$groups = $this->userModel->getUserGroups($item->id);
 				$render = '';
 				foreach ($groups as $g) {
-					$render .= '<a href=\''.$this->link('Group:Edit', $g->group_id).'\' class=\'grid-cell-subitem\'>'.$g->ref('group')->name.'</a>';
+					$render .= '<a href=\''.$this->link('Groups:Edit', $g->group_id).'\' class=\'grid-cell-subitem\'>'.$g->ref('group')->name.'</a>';
 				}
 				return $render;
 			})

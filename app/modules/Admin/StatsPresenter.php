@@ -13,7 +13,7 @@ use Nette,
 /**
  * User editing presenter.
  */
-class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
+class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @inject @var Model\User */
 	public $userModel;
@@ -53,23 +53,23 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 //		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
 
-		$grid->addColumnText('realname', 'admin.rating.realName')
+		$grid->addColumnText('realname', 'admin.stats.realName')
 			->setSortable()
 			->setFilterText()
 			->setSuggestion('realname');
 
-		$grid->addColumnText('score_easy', 'admin.rating.scoreSum.easy')
+		$grid->addColumnText('score_easy', 'admin.stats.scoreSum.easy')
 			->setSortable();
 
-		$grid->addColumnText('score_medium','admin.rating.scoreSum.medium')
+		$grid->addColumnText('score_medium','admin.stats.scoreSum.medium')
 			->setSortable();
 
-		$grid->addColumnText('score_hard', 'admin.rating.scoreSum.hard')
+		$grid->addColumnText('score_hard', 'admin.stats.scoreSum.hard')
 			->setSortable();
 
 		$groupList = $this->groupModel->getAll()->fetchPairs('id', 'name');
 
-		$grid->addColumnText('user_group', 'admin.rating.groups')
+		$grid->addColumnText('user_group', 'admin.stats.groups')
 			->setCustomRender(function($item) {
 				$groups = $this->userModel->getUserGroups($item['user_id']);
 
@@ -87,7 +87,7 @@ class RatingPresenter extends \App\Module\Base\Presenters\BasePresenter
 					: NULL;
 			});;
 
-		$grid->addColumnText('play_count', 'admin.rating.totalPlays')
+		$grid->addColumnText('play_count', 'admin.stats.totalPlays')
 			->setCustomRender(function($item) {
 				$playCount = $this->scoreModel->getPlayCountPerUser($item['user_id']);
 

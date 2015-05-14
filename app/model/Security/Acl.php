@@ -26,12 +26,12 @@ class Acl extends Permission
 		$this->addResource('Front:Game:Faders');
 
 		$this->addResource('Admin:Default');
-		$this->addResource('Admin:Song');
-		$this->addResource('Admin:Notation');
-		$this->addResource('Admin:User');
-		$this->addResource('Admin:Group');
-		$this->addResource('Admin:Rating');
-		$this->addResource('Admin:Event');
+		$this->addResource('Admin:Songs');
+		$this->addResource('Admin:Notations');
+		$this->addResource('Admin:Users');
+		$this->addResource('Admin:Groups');
+		$this->addResource('Admin:Stats');
+		$this->addResource('Admin:Events');
 
 
 		/**
@@ -69,8 +69,8 @@ class Acl extends Permission
 //		 */
 //		$this->allow('teacher', array(
 //			'Admin:Default',
-//			'Admin:User',
-//			'Admin:Group'
+//			'Admin:Users',
+//			'Admin:Groups'
 //		), array(
 //			'default'
 //		));
@@ -80,12 +80,12 @@ class Acl extends Permission
 		 */
 		$this->allow('editor', array(
 			'Admin:Default',
-			'Admin:Song',
-			'Admin:Notation',
-			'Admin:User',
-			'Admin:Group',
-			'Admin:Rating',
-			'Admin:Event'
+			'Admin:Songs',
+			'Admin:Notations',
+			'Admin:Users',
+			'Admin:Groups',
+			'Admin:Stats',
+			'Admin:Events'
 		));
 
 		$this->allow('admin', Permission::ALL, Permission::ALL);

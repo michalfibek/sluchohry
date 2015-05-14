@@ -13,7 +13,7 @@ use Nette,
 /**
  * Sign in/out presenters.
  */
-class EventPresenter extends \App\Module\Base\Presenters\BasePresenter
+class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
     /** @inject @var Model\Event */
     public $event;

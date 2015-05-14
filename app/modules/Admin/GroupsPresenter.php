@@ -13,7 +13,7 @@ use Nette,
 /**
  * Sign in/out presenters.
  */
-class GroupPresenter extends \App\Module\Base\Presenters\BasePresenter
+class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
 	/** @inject @var Model\User */
 	public $userModel;

@@ -1,4 +1,4 @@
-notation:
+notations:
     title: "Editor not"
     octave:
         subcontra: "subkontra"
@@ -10,8 +10,8 @@ notation:
         threeline: "tříčárkovaná"
         fourline: "čtyřčárkovaná"
 
-rating:
-    title: "Hodnocení uživatelů"
+stats:
+    title: "Statistiky"
     realName: "Jméno"
     scoreSum:
         easy: "Součet obtížnost 1"
@@ -20,14 +20,14 @@ rating:
     groups: "Skupiny"
     totalPlays: "Počet vyřešených her"
 
-user:
+users:
     title: "Uživatelské účty"
 
-group:
+groups:
     title: "Skupiny"
 
-event:
+events:
     title: "Události"
 
-song:
+songs:
     title: "Editor písniček"
