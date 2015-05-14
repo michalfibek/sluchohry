@@ -150,27 +150,31 @@
       padding-left: 5px;
     }
 
-
     &.auth-table {
       li {
         line-height: 2em;
       }
     }
 
-    .itm-auth span {
+    .itm-auth {
 
-      padding: 5px;
-      margin: 2px;
-      border-radius: .5em;
+      padding-left: 0;
 
-      &.evt-login {
-        background: rgba(0, 206, 0, 0.52);
+      span {
+
+        padding: 5px;
+        margin: 2px;
+        border-radius: .5em;
+
+        &.evt-login {
+          background: rgba(0, 206, 0, 0.52);
+
+        }
+        &.evt-logout {
+          background: rgba(198, 0, 0, 0.35);
+        }
 
       }
-      &.evt-logout {
-        background: rgba(198, 0, 0, 0.35);
-      }
-
     }
   }
 }
