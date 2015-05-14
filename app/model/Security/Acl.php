@@ -45,6 +45,7 @@ class Acl extends Permission
 			'Front:Game:NoteSteps',
 			'Front:Game:Faders'
 		));
+
 		$this->allow('guest', array(
 			'Front:Rating'
 		), array(
