@@ -4,15 +4,121 @@
 {var $initNetteAjax = true}
 
 {block content}
-<div class="admin-item-editor">
 
 <header>
-<h1 n:block="title">Event manager</h1>
+<h1 n:block="title">Poslední aktivity</h1>
 </header>
 
-<div class="item-list" id="event-list">
-{control grid}
-</div>
+{if $user->isAllowed($presenter->name, 'advanced')}<a n:href="advanced" class="btn btn-primary"><span class="fa fa-list-ul"></span> Detailní aktivity</a>{/if}
+
+<div class="admin-dashboard-stats">
+
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="recent-solved">
+                <h3>
+                    Poslední vyřešené hry
+                </h3>
+
+                <ul class="activity-table">
+                    <li n:foreach="$lastPlaysSolved as $play" class="clearfix difficulty-{$play->related('event_data')->where('name', 'difficulty')->fetch()['value']}">
+
+                        <span class="col-xs-12 itm-username">
+                            <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <a n:href="Users:edit $play->user_id">{$play->ref('user')['realname']|truncate:15}</a>
+                        </span>
+
+                        <span class="col-xs-5 itm-game">
+                            {var $gameName = $template->translate('front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value'])}
+                            <a href="javascript:;" title="{$gameName}">{$gameName|truncate:14}</a>
+                        </span>
+
+                        <span class="col-xs-7 itm-score text-right">
+                            <span n:if="$play->related('event_data')->where('name', 'play_steps')->fetch()['value']">
+                                <i class="fa fa-hand-o-up"></i>
+                                {$play->related('event_data')->where('name', 'play_steps')->fetch()['value']}
+                            </span>
+                            <span>
+                                <i class="fa fa-clock-o"></i>
+                                {$play->related('event_data')->where('name', 'play_time')->fetch()['value']|songTime}
+                            </span>
+                            <span>
+                                <i class="fa fa-bar-chart"></i>
+                                {$play->related('event_data')->where('name', 'score')->fetch()['value']}
+                            </span>
+                        </span>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="recent-closed">
+                <h3>
+                    Poslední zavřené hry
+                </h3>
+
+                <ul class="activity-table">
+                    <li n:foreach="$lastPlaysClosed as $play" class="clearfix difficulty-{$play->related('event_data')->where('name', 'difficulty')->fetch()['value']}">
+                        <span class="col-xs-12 itm-username">
+                            <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <a n:href="Users:edit $play->user_id">{$play->ref('user')['realname']|truncate:15}</a>
+                        </span>
+                        <span class="col-xs-5 itm-game">
+                            {var $gameName = $template->translate('front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value'])}
+                            <a href="javascript:;" title="{$gameName}">{$gameName|truncate:14}</a>
+                        </span>
+                        <span class="col-xs-7 itm-score text-right">
+                            <span n:if="$play->related('event_data')->where('name', 'play_steps')->fetch()['value']">
+                                <i class="fa fa-hand-o-up"></i>
+                                {$play->related('event_data')->where('name', 'play_steps')->fetch()['value']}
+                            </span>
+                            <span>
+                                <i class="fa fa-clock-o"></i>
+                                {$play->related('event_data')->where('name', 'play_time')->fetch()['value']|songTime}
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="recent-auth">
+                <h3>
+                    Poslední přihlášení
+                </h3>
+
+                <ul class="activity-table auth-table">
+                    <li n:foreach="$lastLogins as $evt" class="clearfix">
+                        <span class="col-xs-1 itm-auth">
+                            {var $login = $evt->related('event_data')->where('name', 'login')->where('value', '1')->fetch()}
+                            {if $login}<span class="fa fa-sign-in evt-login" title="Přihlášení"></span>{/if}
+                            {var $logout = $evt->related('event_data')->where('name', 'logout')->where('value', '1')->fetch()}
+                            {if $logout}<span class="fa fa-sign-out evt-logout" title="Odhlášení"></span>{/if}
+                        </span>
+                        <span class="col-xs-5 itm-username">
+                            <a n:href="Users:edit $evt->user_id">{$evt->ref('user')['realname']|truncate:15}</a>
+                        </span>
+                        <span class="col-xs-5 itm-evtdate text-right">
+                            <span title="{$evt->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                                {$evt->event_time|date:'%A %R'}
+                            </span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </div>
 

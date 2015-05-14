@@ -20,7 +20,7 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderDefault()
 	{
-		$this->template->lastPlays = $this->event->getLastEvents(Event::CLASS_GAME_SOLVED);
+		$this->template->lastPlays = $this->event->getLastEvents(Event::CLASS_GAME_SOLVED, 6);
 
 		$this->template->solvedByWeekCurrent = $this->event->getEventClassByWeek(Event::CLASS_GAME_SOLVED, true);
 		$this->template->startedByWeekCurrent = $this->event->getEventClassByWeek(Event::CLASS_GAME_STARTED, true);

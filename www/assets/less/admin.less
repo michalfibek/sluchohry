@@ -82,10 +82,14 @@
 
 
 .admin-dashboard-stats {
-  margin-top: -20px;
   font-family: @classic-font-family;
   font-size: 0.9em;
   text-align: center;
+  margin-top: 20px;
+
+  &.main-dashboard {
+    margin-top: -20px;
+  }
 
   .stat-section {
     background-color: #FFF;
@@ -107,13 +111,50 @@
       list-style-type: none;
       padding: 3px 0 3px 0;
       border-bottom: 1px solid #C7C7C7;
+      border-left: 8px solid #fff;
+      margin-left: -6px;
 
       &:last-of-type {
         border-bottom: none;
       }
+
+      &.difficulty-1 {
+        border-left-color: @difficulty-easy-background;
+      }
+      &.difficulty-2 {
+        border-left-color: @difficulty-medium-background;
+      }
+      &.difficulty-3 {
+        border-left-color: @difficulty-hard-background;
+      }
+    }
+
+    .itm-score span {
+      padding-left: 5px;
     }
 
 
+    &.auth-table {
+      li {
+        line-height: 2em;
+      }
+    }
+
+    .itm-auth span {
+
+      padding: 5px;
+      margin: 2px;
+      border-radius: .5em;
+
+      &.evt-login {
+        background: rgba(0, 206, 0, 0.52);
+
+      }
+      &.evt-logout {
+        background: rgba(198, 0, 0, 0.35);
+      }
+
+    }
   }
 }
 
@@ -148,9 +189,9 @@
 
   font-family: @classic-font-family;
   font-size: 0.9em;
-
-  background-color: rgba(242, 134, 74, 0.64);
-  border: 1px solid #666;
+  text-align: center;
+  background-color: #FFF;
+  border: 1px solid #D3D3D3;
   border-radius: 4px;
   padding: 15px;
   margin: 20px 0;
@@ -162,7 +203,7 @@
 
   a {
     .btn();
-    .btn-default();
+    .btn-primary();
     width: 190px;
     margin: 3px;
     font-size: 1.2em;

@@ -27,7 +27,7 @@ groups:
     title: "Skupiny"
 
 events:
-    title: "Události"
+    title: "Aktivity"
 
 songs:
     title: "Editor písniček"

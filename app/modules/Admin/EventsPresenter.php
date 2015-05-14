@@ -4,6 +4,7 @@ namespace App\Module\Admin\Presenters;
 
 use Nette,
     App\Model,
+    App\Model\Event,
     Nette\Application\UI\Form,
     Tracy\Debugger,
     Grido,
@@ -20,10 +21,22 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     public function actionDefault()
     {
-        
+
     }
-    
+
     public function renderDefault()
+    {
+        $this->template->lastPlaysSolved = $this->event->getLastEvents(Event::CLASS_GAME_SOLVED, 15);
+        $this->template->lastPlaysClosed = $this->event->getLastEvents(Event::CLASS_GAME_CLOSED, 15);
+        $this->template->lastLogins = $this->event->getLastEvents(Event::CLASS_AUTH, 20);
+    }
+
+    public function actionAdvanced()
+    {
+
+    }
+
+    public function renderAdvanced()
     {
 
     }
@@ -33,7 +46,7 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
      * @return Grid
      */
 
-    protected function createComponentGrid($name)
+    protected function createComponentGridAdvanced($name)
     {
         $grid = new Grid($this, $name);
         $grid->setModel($this->event->getAllView());
@@ -70,7 +83,7 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
             ->setFilterText();
 
         $grid->setDefaultSort(array(
-           'event_time' => 'DESC'
+            'event_time' => 'DESC'
         ));
 
         return $grid;

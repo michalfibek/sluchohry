@@ -7,26 +7,26 @@
 <h1 n:block="title">Administrator</h1>
 </header>
 
-<div class="admin-dashboard-stats">
+<div class="admin-dashboard-stats main-dashboard">
 
     <div class="col-xs-6 col-md-4">
         <div class="stat-section">
             <div id="recent-activity">
                 <h3>
-                    Poslední aktivita
+                    <a n:href=":Admin:Events:">Poslední vyřešené hry</a>
                 </h3>
 
                 <ul class="activity-table">
                     <li n:foreach="$lastPlays as $play" class="clearfix">
-                        <span class="col-xs-6 itm-date" title="{$play->event_time|date:'%A %e.%m. - %R hod.'}">
-                            <i class="fa fa-calendar"></i> {$play->event_time|date:'%R (%A)'}
-                        </span>
-                        <span class="col-xs-6 itm-username text-right">
-                            <a n:href="Users:edit $play->user_id"><i class="fa fa-user"></i> {$play->ref('user')['realname']|truncate:15}</a>
+                        <span class="col-xs-12 itm-username">
+                            <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+                            <a n:href="Users:edit $play->user_id">{$play->ref('user')['realname']|truncate:15}</a>
                         </span>
                         <span class="col-xs-5 itm-game">
                             {var $gameName = $template->translate('front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value'])}
-                            <a href="javascript;" title="{$gameName}">{$gameName|truncate:14}</a>
+                            <a href="javascript:;" title="{$gameName}">{$gameName|truncate:14}</a>
                         </span>
                         <span class="col-xs-4 itm-playtime text-right">
                             <i class="fa fa-clock-o"></i>
@@ -49,14 +49,14 @@
                     Týdenní přehled
                     <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> tento týden</a>
                 </h3>
-                <canvas id="chart-week-current-plays" width="320" height="200"></canvas>
+                <canvas id="chart-week-current-plays" width="320" height="230"></canvas>
             </div>
             <div id="week-previous-plays">
                 <h3>
                     Týdenní přehled
                     <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> minulý týden</a>
                 </h3>
-                <canvas id="chart-week-previous-plays" width="320" height="200"></canvas>
+                <canvas id="chart-week-previous-plays" width="320" height="230"></canvas>
             </div>
             <div id="legend-week-plays" class="chart-legend"></div>
         </div>
@@ -68,7 +68,7 @@
                 <h3>
                     Nejoblíbenější hry
                 </h3>
-                <canvas id="chart-fav-games" width="200" height="200"></canvas>
+                <canvas id="chart-fav-games" width="220" height="220"></canvas>
             </div>
             <div id="legend-fav-games" class="chart-legend"></div>
         </div>

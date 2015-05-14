@@ -281,9 +281,9 @@ class Event extends Base {
         return $evtCount;
     }
 
-    public function getLastEvents($eventId)
+    public function getLastEvents($eventId, $limit = 10, $offset = 0)
     {
-        return $this->get($limit = 6, $offset = 0)
+        return $this->get($limit, $offset)
             ->where('event_class_id', $eventId)
             ->order('event_time DESC');
     }
