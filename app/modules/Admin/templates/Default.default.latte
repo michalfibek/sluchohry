@@ -7,46 +7,98 @@
 <h1 n:block="title">Administrator</h1>
 </header>
 
-<div class="container admin-dashboard">
+<div class="admin-dashboard-stats">
 
-    <div class="col-xs-12 col-md-6">
-        <div id="week-current-plays">
-            <h2>
-                Herní aktivita
-                <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> tento týden</a>
-            </h2>
-            <canvas id="chart-week-current-plays" width="400" height="200"></canvas>
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="recent-activity">
+                <h3>
+                    Poslední aktivita
+                </h3>
+
+                <ul class="activity-table">
+                    <li n:foreach="$lastPlays as $play" class="clearfix">
+                        <span class="col-xs-6 itm-date" title="{$play->event_time|date:'%A %e.%m. - %R hod.'}">
+                            <i class="fa fa-calendar"></i> {$play->event_time|date:'%R (%A)'}
+                        </span>
+                        <span class="col-xs-6 itm-username text-right">
+                            <a n:href="Users:edit $play->user_id"><i class="fa fa-user"></i> {$play->ref('user')['realname']|truncate:15}</a>
+                        </span>
+                        <span class="col-xs-5 itm-game">
+                            {var $gameName = $template->translate('front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value'])}
+                            <a href="javascript;" title="{$gameName}">{$gameName|truncate:14}</a>
+                        </span>
+                        <span class="col-xs-4 itm-playtime text-right">
+                            <i class="fa fa-clock-o"></i>
+                            {$play->related('event_data')->where('name', 'play_time')->fetch()['value']|songTime}
+                        </span>
+                        <span class="col-xs-3 itm-score text-right">
+                            <i class="fa fa-bar-chart"></i>
+                            {$play->related('event_data')->where('name', 'score')->fetch()['value']}
+                        </span>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div id="week-previous-plays">
-            <h2>
-                Herní aktivita
-                <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> minulý týden</a>
-            </h2>
-            <canvas id="chart-week-previous-plays" width="400" height="200"></canvas>
-        </div>
-        <div id="legend-week-plays" class="chart-legend"></div>
     </div>
 
-    <div class="col-xs-12 col-md-6">
-        <div id="fav-games">
-            <h2>
-                Nejoblíbenější hry
-            </h2>
-            <canvas id="chart-fav-games" width="400" height="200"></canvas>
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="week-current-plays">
+                <h3>
+                    Týdenní přehled
+                    <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> tento týden</a>
+                </h3>
+                <canvas id="chart-week-current-plays" width="320" height="200"></canvas>
+            </div>
+            <div id="week-previous-plays">
+                <h3>
+                    Týdenní přehled
+                    <a href="javascript:;" class="btn btn-default week-switch"><i class="fa fa-calendar"></i> minulý týden</a>
+                </h3>
+                <canvas id="chart-week-previous-plays" width="320" height="200"></canvas>
+            </div>
+            <div id="legend-week-plays" class="chart-legend"></div>
         </div>
-        <div id="legend-fav-games" class="chart-legend"></div>
     </div>
 
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="fav-games">
+                <h3>
+                    Nejoblíbenější hry
+                </h3>
+                <canvas id="chart-fav-games" width="200" height="200"></canvas>
+            </div>
+            <div id="legend-fav-games" class="chart-legend"></div>
+        </div>
+    </div>
 </div>
 
-<ul id="settings-list">
-    {if $user->isAllowed('Admin:Users', 'default')}<li><a n:href="Users:"><i class="fa fa-user"></i> {_admin.users.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Stats', 'default')}<li><a n:href="Stats:"><i class="fa fa-bar-chart"></i> {_admin.stats.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Groups', 'default')}<li><a n:href="Groups:"><i class="fa fa-users"></i> {_admin.groups.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Events', 'default')}<li><a n:href="Events:"><i class="fa fa-file-text-o"></i> {_admin.events.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Songs', 'default')}<li><a n:href="Songs:"><i class="fa fa-music"></i> {_admin.songs.title}</a></li>{/if}
-    {if $user->isAllowed('Admin:Notations', 'default')}<li><a n:href="Notations:"><i class="fa fa-music"></i> {_admin.notations.title}</a></li>{/if}
-</ul>
+
+    <div class="col-xs-6 col-md-4">
+        <div class="admin-dashboard-section">
+            <h2>Uživatelé</h2>
+            <a n:href="Users:" n:if="$user->isAllowed('Admin:Users', 'default')"><i class="fa fa-user"></i> {_admin.users.title}</a>
+            <a n:href="Groups:" n:if="$user->isAllowed('Admin:Groups', 'default')"><i class="fa fa-users"></i> {_admin.groups.title}</a>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+        <div class="admin-dashboard-section">
+        <h2>Statistiky</h2>
+        <a n:href="Stats:" n:if="$user->isAllowed('Admin:Stats', 'default')"><i class="fa fa-bar-chart"></i> {_admin.stats.title}</a>
+        <a n:href="Events:" n:if="$user->isAllowed('Admin:Events', 'default')"><i class="fa fa-file-text-o"></i> {_admin.events.title}</a>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+        <div class="admin-dashboard-section">
+        <h2>Herní zdroje</h2>
+        <a n:href="Songs:" n:if="$user->isAllowed('Admin:Songs', 'default')"><i class="fa fa-music"></i> {_admin.songs.title}</a>
+        <a n:href="Notations:" n:if="$user->isAllowed('Admin:Notations', 'default')"><i class="fa fa-music"></i> {_admin.notations.title}</a>
+        </div>
+    </div>
 
 
 {/block}

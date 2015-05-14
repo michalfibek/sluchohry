@@ -29,6 +29,8 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	{
 		parent::startup();
 
+		setlocale(LC_ALL, 'cs_CZ.UTF-8');
+
 		if (!in_array($this->name, array('Front:Default', 'Base:Error'))) {
 			if (!$this->user->isLoggedIn()) {
 				if ($this->user->getLogoutReason() === Nette\Security\IUserStorage::INACTIVITY) {

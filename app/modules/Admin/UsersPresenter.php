@@ -18,15 +18,6 @@ class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 	/** @inject @var Model\User */
 	public $userModel;
 
-	/** @inject @var Model\Game */
-	public $gameModel;
-
-	/** @inject @var Model\Score */
-	public $scoreModel;
-
-	/** @inject @var Model\Group */
-	public $groupModel;
-
 	/** @inject @var Components\IUserProfileFactory */
 	public $userProfile;
 
@@ -61,15 +52,6 @@ class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 	{
 		$this['userProfile']
 			->edit($id);
-	}
-
-	public function actionScores()
-	{
-		if (!$this->user->isAllowed($this->name, 'scores'))	{
-			$this->flashMessage('Access denied.', 'error');
-			$this->redirect(':Admin:Default');
-		}
-
 	}
 
 	/**
