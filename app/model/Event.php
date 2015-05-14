@@ -30,7 +30,6 @@ class Event extends Base {
         DATA_PLAY_STEPS = 'play_steps', // melodicCubes, pexeso, faders
         DATA_SONG_ID = 'song_id', // melodicCubes
         DATA_SONG_LIST = 'song_list', // pexeso
-        DATA_BAD_ATTEMPTS = 'bad_attempts', // noteSteps
         DATA_NOTE_COUNT = 'note_count', // noteSteps
         DATA_SHIFT_SIGNS = 'shift_signs', // noteSteps
         DATA_FIRST_LETTER = 'first_note', // noteSteps
@@ -155,7 +154,7 @@ class Event extends Base {
                 self::DATA_NOTE_COUNT => $result['noteCount'],
                 self::DATA_SHIFT_SIGNS => $result['shiftSigns'],
                 self::DATA_DIFFICULTY => $result['difficulty'],
-                self::DATA_BAD_ATTEMPTS => $result['steps'],
+                self::DATA_PLAY_STEPS => $result['steps'],
                 self::DATA_PLAY_TIME => $result['time'],
             );
         } elseif ($result['gameName'] == 'faders') {
