@@ -41,6 +41,11 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     }
 
+    public function renderView($id)
+    {
+        $this->template->event = $this->event->getByIdView($id);
+    }
+
     /**
      * @param $name
      * @return Grid
@@ -57,15 +62,27 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
 //            ->setSortable();
 
         $grid->addColumnDate('event_time', 'Event time')
+            ->setCustomRender(function($item) {
+                $url = $this->link('View', $item->id);
+                return '<a href="'. $url . '">' . $item->event_time . '</a>';
+            })
             ->setDateFormat('d.m.Y H:i:s')
             ->setSortable()
             ->setFilterDateRange();
 
         $grid->addColumnText('username', 'Username')
+            ->setCustomRender(function($item) {
+                $url = $this->link('View', $item->id);
+                return '<a href="'. $url . '">' . $item->username . '</a>';
+            })
             ->setSortable()
             ->setFilterText();
 
         $grid->addColumnText('event_name', 'Event class')
+            ->setCustomRender(function($item) {
+                $url = $this->link('View', $item->id);
+                return '<a href="'. $url . '">' . $item->event_name . '</a>';
+            })
             ->setSortable();
 
         $eventClassNames[''] = '';
@@ -75,10 +92,10 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
         $grid->addFilterSelect('event_name', 'Event class', $eventClassNames);
 
         $grid->addColumnText('event_data', 'Event data')
-            ->setSortable()
-            ->setFilterText();
-
-        $grid->addColumnText('user_ip', 'User IP address')
+            ->setCustomRender(function($item) {
+                $url = $this->link('View', $item->id);
+                return '<a href="'. $url . '">' . $item->event_data . '</a>';
+            })
             ->setSortable()
             ->setFilterText();
 

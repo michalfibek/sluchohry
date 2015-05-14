@@ -1,0 +1,49 @@
+{var $backlink = ':Admin:Default:'}
+
+{var $initGrid = true}
+{var $initNetteAjax = true}
+
+{block content}
+
+<header>
+<h1 n:block="title">Detail aktivity</h1>
+</header>
+
+<div class="item-detail-content">
+
+  <div class="col-xs-12 col-md-8">
+    <div class="item-detail-row clearfix">
+      <span class="col-sm-2">Event time</span>
+        <div class="col-sm-10">{$event->event_time|date:"d.m.Y H:i:s"}</div>
+    </div>
+
+    <div class="item-detail-row clearfix">
+      <span class="col-sm-2">User</span>
+        <div class="col-sm-10">{$event->username}</div>
+    </div>
+
+    <div class="item-detail-row clearfix">
+      <span class="col-sm-2">Event name</span>
+        <div class="col-sm-10">{$event->event_name}</div>
+    </div>
+
+    <div class="item-detail-row clearfix">
+      <span class="col-sm-2">Data</span>
+        <div class="col-sm-10">{$event->event_data}</div>
+    </div>
+
+    <div class="item-detail-row clearfix">
+      <span class="col-sm-2">IP address</span>
+        <div class="col-sm-10">{$event->user_ip}</div>
+    </div>
+
+    <div class="item-detail-row clearfix">
+      <span class="col-sm-2">Browser agent</span>
+        <div class="col-sm-10">{$event->user_agent}</div>
+    </div>
+  </div>
+
+</div>
+
+{/block}
+

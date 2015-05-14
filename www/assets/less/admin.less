@@ -73,6 +73,12 @@
     //      }
     //    }
   }
+
+  #event-list {
+    a {
+      color: #283679;
+    }
+  }
 }
 
 #user-list {
@@ -223,4 +229,19 @@
     @media (min-width: @screen-sm-min) {
     }
   }
+}
+
+.item-detail-content {
+  font-family: @classic-font-family;
+
+  .item-detail-row {
+//    margin: 10px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #777;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+
 }

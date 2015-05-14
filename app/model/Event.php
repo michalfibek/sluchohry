@@ -52,6 +52,11 @@ class Event extends Base {
         return $this->db->table('view_eventlog');
     }
 
+    public function getByIdView($id)
+    {
+        return $this->db->table('view_eventlog')->where('id', $id)->fetch();
+    }
+
     public function getAllEventClass() {
         return $this->db->table('event_class');
     }
