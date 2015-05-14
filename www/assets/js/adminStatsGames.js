@@ -1,5 +1,5 @@
 var options = {
-
+    responsive: true
 }
 
 var dataFavGames = [
@@ -30,7 +30,7 @@ var dataFavGames = [
 ]
 
 var ctxFavGameStats = $('#chart-fav-games').get(0).getContext('2d');
-var chartFavGameStats = new Chart(ctxFavGameStats).Doughnut(dataFavGames,options);
+var chartFavGameStats = new Chart(ctxFavGameStats).Doughnut(dataFavGames,{responsive: false});
 var legendFavGames = chartFavGameStats.generateLegend();
 $('#legend-fav-games').append(legendFavGames);
 
