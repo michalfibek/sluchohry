@@ -4,6 +4,7 @@ namespace App\Module\Admin\Presenters;
 
 use Nette,
 	App\Model,
+	App\Model\Event,
 	App\Components,
 	Grido,
 	Grido\Grid,
@@ -15,6 +16,9 @@ use Nette,
  */
 class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 {
+	/** @inject @var Model\Event */
+	public $event;
+
 	/** @inject @var Model\User */
 	public $userModel;
 
@@ -42,6 +46,11 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 	public function	renderDefault()
 	{
 
+	}
+
+	public function	renderGames()
+	{
+		$this->template->favGameStats = $this->event->getGameStats(Event::CLASS_GAME_STARTED);
 	}
 
 	protected function createComponentScoreGrid($name)

@@ -1,0 +1,45 @@
+{var $backlink = ':Admin:Stats:'}
+
+{var $initChartJs = true}
+
+{block content}
+
+<header>
+<h1 n:block="title">Herní statistiky</h1>
+</header>
+
+<div class="admin-dashboard-stats main-dashboard">
+
+    <div class="col-xs-6 col-md-4">
+        <div class="stat-section">
+            <div id="fav-games">
+                <h3>
+                    Nejoblíbenější hry
+                </h3>
+                <canvas id="chart-fav-games" width="220" height="220"></canvas>
+            </div>
+            <div id="legend-fav-games" class="chart-legend"></div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+    </div>
+
+
+</div>
+
+{/block}
+
+{block scripts}
+{include parent}
+
+    <script>
+    var favGameStats = {$favGameStats};
+    </script>
+
+    <script src="{$basePath}/assets/js/adminStatsGames.js"></script>
+
+{/block}

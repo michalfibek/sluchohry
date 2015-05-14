@@ -13,7 +13,7 @@ auth:
         password: "Heslo"
         requiredUsername: "Zadej prosím svoje přihlašovací jméno."
         requiredPassword: "Nezapomeň zadat heslo."
-        remember: "přihlašuji se doma"
+        remember: "uložit heslo"
         loginButton: "Přihlásit se"
         usernameIncorrect: "Špatné uživatelské jméno. Nemáš v něm někde chybu?"
         passwordIncorrect: "Špatné heslo. Nemáš zaplý Caps lock?"
