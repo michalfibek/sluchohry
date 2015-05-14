@@ -51,6 +51,11 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 	public function	renderGames()
 	{
 		$this->template->favGameStats = $this->event->getGameStats(Event::CLASS_GAME_STARTED);
+
+		$this->template->gameRatioMelodicCubes = $this->event->getGameRatio('melodicCubes');
+		$this->template->gameRatioPexeso = $this->event->getGameRatio('pexeso');
+		$this->template->gameRatioNoteSteps = $this->event->getGameRatio('noteSteps');
+		$this->template->gameRatioFaders = $this->event->getGameRatio('faders');
 	}
 
 	protected function createComponentScoreGrid($name)

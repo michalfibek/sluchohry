@@ -22,12 +22,53 @@
         </div>
     </div>
 
-    <div class="col-xs-6 col-md-4">
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-melodicCubes">
+                <h3>
+                    {_front.game.melodicCubes}
+                </h3>
+                <canvas id="chart-ratio-melodicCubes" width="210" height="120"></canvas>
+            </div>
+            <div id="legend-ratio-melodicCubes" class="chart-legend"></div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-pexeso">
+                <h3>
+                    {_front.game.pexeso}
+                </h3>
+                <canvas id="chart-ratio-pexeso" width="210" height="120"></canvas>
+            </div>
+            <div id="legend-ratio-pexeso" class="chart-legend"></div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-noteSteps">
+                <h3>
+                    {_front.game.noteSteps}
+                </h3>
+                <canvas id="chart-ratio-noteSteps" width="210" height="120"></canvas>
+            </div>
+            <div id="legend-ratio-noteSteps" class="chart-legend"></div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-faders">
+                <h3>
+                    {_front.game.faders}
+                </h3>
+                <canvas id="chart-ratio-faders" width="210" height="120"></canvas>
+            </div>
+            <div id="legend-ratio-faders" class="chart-legend"></div>
+        </div>
     </div>
 
     <div class="col-xs-6 col-md-4">
     </div>
-
 
 </div>
 
@@ -38,6 +79,10 @@
 
     <script>
     var favGameStats = {$favGameStats};
+    var gameRatioMelodicCubes = {$gameRatioMelodicCubes};
+    var gameRatioPexeso = {$gameRatioPexeso};
+    var gameRatioNoteSteps = {$gameRatioNoteSteps};
+    var gameRatioFaders = {$gameRatioFaders};
     </script>
 
     <script src="{$basePath}/assets/js/adminStatsGames.js"></script>
