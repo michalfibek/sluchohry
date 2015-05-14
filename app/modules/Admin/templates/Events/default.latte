@@ -107,7 +107,7 @@
                             {if $logout}<span class="fa fa-sign-out evt-logout" title="Odhlášení"></span>{/if}
                         </span>
                         <span class="col-xs-5 itm-username">
-                            <a n:href="Users:edit $evt->user_id" title="{$evt->ref('user')['realname']} ({$evt->ref('user')['username']})">{$evt->ref('user')['realname']|truncate:16}</a>
+                            <a n:href="Users:edit $evt->user_id" title="{$evt->ref('user')['realname']} ({$evt->ref('user')['username']})">{$evt->ref('user')['realname']|truncate:15}</a>
                         </span>
                         <span class="col-xs-5 itm-evtdate text-right">
                             <span title="{$evt->event_time|date:'%A %e.%m.%Y - %R hod.'}">
