@@ -88,6 +88,7 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
         $this->template->firstLetter = $this->gameAssets['firstLetter'];
         $this->template->shiftSigns = $this->gameAssets['shiftSigns'];
         $this->template->noteBtoH = $this->noteBtoH;
+        Debugger::barDump($this->gameAssets);
 //        $this->template->firstLetter = 'h';
 //        $this->template->shiftSigns = ['+1','-1','+2'];
     }
