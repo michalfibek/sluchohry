@@ -78,7 +78,6 @@ var Game = $class({
 
         scope.initButtons();
         scope.initChain();
-        scope.initTimer();
         scope.initOnWindowClose();
         scope.sendOnLoadRecord();
 
@@ -91,6 +90,7 @@ var Game = $class({
                 this.show();
             });
         });
+        scope.initTimer();
     },
 
     getCubeBank: function() {
@@ -219,7 +219,7 @@ var Game = $class({
     },
 
     initTimer: function() {
-        scope.timer.start()
+        scope.timer.start();
     },
 
     initOnWindowClose: function() {

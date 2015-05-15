@@ -74,7 +74,6 @@ var Game = $class({
         this.pairCounter = 0;
 
         scope.initButtons();
-        scope.initTimer();
         scope.shuffleCards();
 
         scope.showOnLoad();
@@ -89,6 +88,7 @@ var Game = $class({
                 this.show();
             });
         });
+        scope.initTimer();
     },
 
     show: function() {
@@ -264,7 +264,7 @@ var Game = $class({
     },
 
     initTimer: function() {
-        scope.timer.start()
+        scope.timer.start();
     },
 
     initOnWindowClose: function() {

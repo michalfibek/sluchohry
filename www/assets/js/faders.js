@@ -27,7 +27,6 @@ var Game = $class({
         scope.initButtons();
         scope.initSliders();
         scope.setUserPlayerKeys();
-        scope.initTimer();
 
         scope.sendOnLoadRecord();
         scope.initOnWindowClose();
@@ -41,6 +40,7 @@ var Game = $class({
                 this.show();
             });
         });
+        scope.initTimer();
     },
 
     setUserPlayerKeys: function() {
@@ -223,7 +223,7 @@ var Game = $class({
     },
 
     initTimer: function() {
-        scope.timer.start()
+        scope.timer.start();
     },
 
     initOnWindowClose: function() {
