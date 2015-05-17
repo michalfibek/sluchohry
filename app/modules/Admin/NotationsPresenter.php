@@ -114,7 +114,7 @@ class NotationsPresenter extends BasePresenter
         $octaves = $this->octave->getAll()->order('order');
 
         foreach ($octaves as $oct) {
-            $output[$oct->id] = $oct->symbol . ' (' . $this->translator->translate('admin.notation.octave.'.$oct->name) . ')';
+            $output[$oct->id] = $oct->symbol . ' (' . $this->translator->translate('admin.notations.octave.'.$oct->name) . ')';
         }
 
         return $output;
