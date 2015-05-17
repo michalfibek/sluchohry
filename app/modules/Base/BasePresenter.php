@@ -62,7 +62,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	protected function beforeRender()
 	{
 		// debug intention only
-		if (in_array($$this->getHttpRequest->getUrl()->getHost(), array('sluchohry.cz', 'dp.sluchohry.cz')))
+		if (in_array($this->getHttpRequest()->getUrl()->getHost(), array('sluchohry.cz', 'dp.sluchohry.cz')))
 			$this->template->devServer = false;
 		else
 			$this->template->devServer = true;
