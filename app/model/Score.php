@@ -176,7 +176,7 @@ class Score extends Base
      * @param $cubeCount
      * @return int
      */
-    public function calcScoreMelodicCubes($time, $steps, $cubeCount)
+    private function calcScoreMelodicCubes($time, $steps, $cubeCount)
     {
         $timePenalty = $this->getTimePenalty($time);
         $stepsPenalty = $steps * 30;
@@ -214,7 +214,7 @@ class Score extends Base
      * @param $badSteps
      * @return int
      */
-    public function calcScoreNoteSteps($time, $badSteps)
+    private function calcScoreNoteSteps($time, $badSteps)
     {
         $timePenalty = $this->getTimePenalty($time);
         $stepsPenalty = $badSteps * 30;
@@ -228,7 +228,7 @@ class Score extends Base
      * @param $sliderCount
      * @return int
      */
-    public function calcScoreFaders($time, $steps, $sliderCount)
+    private function calcScoreFaders($time, $steps, $sliderCount)
     {
         $maxTime = ($sliderCount * 60 * 1000) * 0.8; // maximum time to get timePenalty < self::MAX_TIME_PENALTY is calculated by slider count
         $timePenalty = $this->getTimePenalty($time, $maxTime);
