@@ -102,7 +102,7 @@ class RatingChart extends UI\Control
 
             return $tr;
 
-        }); // TODO color row for current user score
+        });
 
         return $grid;
     }
