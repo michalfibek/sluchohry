@@ -22,7 +22,7 @@
                             <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
                                 <i class="fa fa-calendar"></i>
                             </span>
-                            <a n:href="Users:edit $play->user_id" title="{$play->ref('user')['realname']} ({$play->ref('user')['username']})">{$play->ref('user')['realname']|truncate:35}</a>
+                            <a n:href="Stats:User $play->user_id" title="{$play->ref('user')['realname']} ({$play->ref('user')['username']})">{$play->ref('user')['realname']|truncate:35}</a>
                         </span>
                         <span class="col-xs-5 itm-game">
                             {var $gameName = $template->translate('front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value'])}

@@ -58,6 +58,22 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$this->template->gameRatioFaders = $this->event->getGameRatio('faders');
 	}
 
+	public function	renderUser($id)
+	{
+		$this->template->userRow = $this->userModel->getById($id);
+		$this->template->favGameStats = $this->event->getGameStats(Event::CLASS_GAME_STARTED, null, $id);
+
+		$this->template->gameRatioMelodicCubes = $this->event->getGameRatio('melodicCubes', $id);
+		$this->template->gameRatioPexeso = $this->event->getGameRatio('pexeso', $id);
+		$this->template->gameRatioNoteSteps = $this->event->getGameRatio('noteSteps', $id);
+		$this->template->gameRatioFaders = $this->event->getGameRatio('faders', $id);
+
+		$this->template->scoreSum = $this->scoreModel->getScoreSum($id);
+
+		$userRoles = $this->userModel->getUserRoles($id);
+		$this->template->allowEdit = $this->acl->isChildRole($userRoles, $this->user->roles, false);
+	}
+
 	protected function createComponentScoreGrid($name)
 	{
 		$grid = new Grid($this, $name);
@@ -68,6 +84,10 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 //		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
 
 		$grid->addColumnText('realname', 'admin.stats.realName')
+			->setCustomRender(function($item) {
+				$url = $this->link('User', $item->user_id);
+				return '<a href="'. $url . '">' . $item->realname . '</a>';
+			})
 			->setSortable()
 			->setFilterText()
 			->setSuggestion('realname');

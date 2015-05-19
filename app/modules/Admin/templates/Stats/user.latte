@@ -1,18 +1,125 @@
-{var $backlink = ':Admin:Users:'}
+{var $backlink = ':Admin:Stats:'}
 
-{var $initGrid = true}
-{var $initNetteAjax = true}
+{var $initChartJs = true}
 
 {block content}
-<div class="admin-item-editor">
 
 <header>
-<h1 n:block="title">User scores</h1>
+<h1 n:block="title">Herní profil
+<small>{if strlen($userRow->realname)>0}{$userRow->realname}{else}{$userRow->username}{/if}
+</h1>
 </header>
 
-<div class="item-list" id="user-list">
-{control scoreGrid}
-</div>
+{if $allowEdit}<a n:href="Users:edit $userRow->id" class="btn btn-lg btn-primary"><span class="fa fa-user"></span> Uživatelský účet</a>{/if}
+
+<div class="admin-dashboard-stats">
+
+    <div class="col-xs-12 col-md-4">
+        <div class="stat-section section-small section-dynamic">
+            <div id="score-profile-sum">
+                <h3>
+                    Celkové počty bodů
+                </h3>
+                <span class="difficulty-1">{$scoreSum[1]}</span>
+                <span class="difficulty-2">{$scoreSum[2]}</span>
+                <span class="difficulty-3">{$scoreSum[3]}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-xs-12 col-md-4">
+        <div class="stat-section">
+            <div id="fav-games">
+                <h3>
+                    Nejoblíbenější hry
+                </h3>
+                <canvas id="chart-fav-games" width="220" height="220"></canvas>
+            </div>
+            <div id="legend-fav-games" class="chart-legend"></div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-melodicCubes">
+                <h3>
+                    {_front.game.melodicCubes}
+                </h3>
+                {if $gameRatioMelodicCubes[0]}
+                <canvas id="chart-ratio-melodicCubes" width="210" height="120"></canvas>
+                {else}
+                <span class="empty-result">Uživatel zatím nehrál jedinou hru.</span>
+                {/if}
+            </div>
+            <div id="legend-ratio-melodicCubes" class="chart-legend"></div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-pexeso">
+                <h3>
+                    {_front.game.pexeso}
+                </h3>
+                {if $gameRatioPexeso[0]}
+                <canvas id="chart-ratio-pexeso" width="210" height="120"></canvas>
+                {else}
+                <span class="empty-result">Uživatel zatím nehrál jedinou hru.</span>
+                {/if}
+            </div>
+            <div id="legend-ratio-pexeso" class="chart-legend"></div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-noteSteps">
+                <h3>
+                    {_front.game.noteSteps}
+                </h3>
+                {if $gameRatioNoteSteps[0]}
+                <canvas id="chart-ratio-noteSteps" width="210" height="120"></canvas>
+                {else}
+                <span class="empty-result">Uživatel zatím nehrál jedinou hru.</span>
+                {/if}
+            </div>
+            <div id="legend-ratio-noteSteps" class="chart-legend"></div>
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <div class="stat-section section-small">
+            <div id="ratio-faders">
+                <h3>
+                    {_front.game.faders}
+                </h3>
+                {if $gameRatioFaders[0]}
+                <canvas id="chart-ratio-faders" width="210" height="120"></canvas>
+                {else}
+                <span class="empty-result">Uživatel zatím nehrál jedinou hru.</span>
+                {/if}
+            </div>
+            <div id="legend-ratio-faders" class="chart-legend"></div>
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-md-4">
+    </div>
 
 </div>
+
+{/block}
+
+{block scripts}
+{include parent}
+
+    <script>
+    var favGameStats = {$favGameStats};
+    var gameRatioMelodicCubes = {$gameRatioMelodicCubes};
+    var gameRatioPexeso = {$gameRatioPexeso};
+    var gameRatioNoteSteps = {$gameRatioNoteSteps};
+    var gameRatioFaders = {$gameRatioFaders};
+    </script>
+
+    <script src="{$basePath}/assets/js/adminStatsUser.js"></script>
+
 {/block}

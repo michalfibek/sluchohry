@@ -86,7 +86,7 @@ ratings:
     points: "bodů"
 
 user:
-    profile: "Profil"
+    profile: "Uživatelský účet"
     profilePersonal: "Tvůj profil"
     username: "Přihlašovací jméno"
     email: "E-mail"

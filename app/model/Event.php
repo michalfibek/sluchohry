@@ -268,7 +268,7 @@ class Event extends Base {
         return $data;
     }
 
-    public function getGameStats($eventId, $gameName = null)
+    public function getGameStats($eventId, $gameName = null, $userId = null)
     {
         $query = $this->db
             ->table('event_data')
@@ -282,20 +282,30 @@ class Event extends Base {
                 ->where('value', $gameName);
         }
 
+        if ($userId) {
+            $query = $query
+                ->where('event.user_id', $userId);
+        }
+
         $evtCount = $query
             ->select('COUNT(*) AS event_count, value AS game_name')
             ->group('game_name')
             ->fetchPairs('game_name', 'event_count');
 
+
+        if ($gameName) {
+            $evtCount = (isset($evtCount[$gameName])) ? $evtCount : array($gameName => 0);
+        }
+
         return $evtCount;
     }
 
-    public function getGameRatio($gameId)
+    public function getGameRatio($gameName, $userId = null)
     {
-        $gameSolved = $this->getGameStats(self::CLASS_GAME_SOLVED, $gameId);
-        $gameClosed = $this->getGameStats(self::CLASS_GAME_CLOSED, $gameId);
+        $gameSolved = $this->getGameStats(self::CLASS_GAME_SOLVED, $gameName, $userId);
+        $gameClosed = $this->getGameStats(self::CLASS_GAME_CLOSED, $gameName, $userId);
 
-        return array($gameSolved[$gameId], $gameClosed[$gameId]);
+        return array($gameSolved[$gameName], $gameClosed[$gameName]);
 
     }
 

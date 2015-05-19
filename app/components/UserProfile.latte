@@ -6,6 +6,10 @@
 </h1>
 </header>
 
+{if $user->isAllowed('Admin:Stats', 'user')}
+<a href="{plink :Admin:Stats:User $userRow->id}" class="btn btn-lg btn-primary"><span class="fa fa-bar-chart"></span> Herní profil</a>
+{/if}
+
 <div class="container user-editor">
 
     <div class="container">

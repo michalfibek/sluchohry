@@ -97,6 +97,30 @@
     margin-top: -20px;
   }
 
+  #score-profile-sum {
+    font-size: 1.3em;
+    padding-bottom: 15px;
+
+    span {
+      display: inline-block;
+      padding: 5px;
+      color: #fff;
+      width: 60px;
+      border-radius: 4px;
+
+      &.difficulty-1 {
+        background-color: @difficulty-easy-background;
+      }
+      &.difficulty-2 {
+        background-color: @difficulty-medium-background;
+      }
+      &.difficulty-3 {
+        background-color: @difficulty-hard-background;
+      }
+    }
+
+  }
+
   .stat-section {
     margin-top: 20px;
     background-color: #FFF;
@@ -111,6 +135,18 @@
       h3 {
         font-size: 1.2em;
       }
+    }
+
+    &.section-dynamic {
+      min-height: unset;
+
+      h3 {
+        margin: 15px 0;
+      }
+    }
+
+    .empty-result {
+      font-size: 1.5em;
     }
 
     h3 {
