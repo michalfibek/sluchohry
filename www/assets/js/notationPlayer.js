@@ -13,7 +13,7 @@ var NotationPlayer = $class({
         //console.log(tempo);
         //console.log(defaultOctave);
 
-        this.soundfontUrl = '/assets/vendor/midi-soundfonts/FluidR3_GM/';
+        this.soundfontUrl = '/assets/vendor/midi-soundfonts-partial/FluidR3_GM/';
         this.instrument = 'acoustic_grand_piano';
         this.instrumentId = 0;
         this.velocity = 127;
