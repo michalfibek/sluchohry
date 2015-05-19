@@ -31,14 +31,14 @@ if (favGameStats['noteSteps'])
 if (favGameStats['faders'])
     dataFavGames.push({
         value: favGameStats['faders'],
-        color: "#5cfd91",
-        highlight: "#9bffbc",
+        color: "#44cc71",
+        highlight: "#50e07f",
         label: "Posuvníky"
     });
 
 
 var ctxFavGameStats = $('#chart-fav-games').get(0).getContext('2d');
-var chartFavGameStats = new Chart(ctxFavGameStats).Doughnut(dataFavGames,{responsive: false});
+var chartFavGameStats = new Chart(ctxFavGameStats).DoughnutAlt(dataFavGames,{responsive: false});
 var legendFavGames = chartFavGameStats.generateLegend();
 $('#legend-fav-games').append(legendFavGames);
 
@@ -59,7 +59,7 @@ if (gameRatioMelodicCubes[0] || gameRatioMelodicCubes[1]) {
     ]
 
     var ctxRatioMelodicCubes = $('#chart-ratio-melodicCubes').get(0).getContext('2d');
-    var chartRatioMelodicCubes = new Chart(ctxRatioMelodicCubes).Doughnut(dataRatioMelodicCubes, options);
+    var chartRatioMelodicCubes = new Chart(ctxRatioMelodicCubes).DoughnutAlt(dataRatioMelodicCubes, options);
     var legendFavGames = chartRatioMelodicCubes.generateLegend();
     $('#legend-ratio-melodicCubes').append(legendFavGames);
 }
@@ -81,7 +81,7 @@ if (gameRatioPexeso[0] || gameRatioPexeso[1]) {
     ]
 
     var ctxRatioPexeso = $('#chart-ratio-pexeso').get(0).getContext('2d');
-    var chartRatioPexeso = new Chart(ctxRatioPexeso).Doughnut(dataRatioPexeso, options);
+    var chartRatioPexeso = new Chart(ctxRatioPexeso).DoughnutAlt(dataRatioPexeso, options);
     var legendFavGames = chartRatioPexeso.generateLegend();
     $('#legend-ratio-pexeso').append(legendFavGames);
 }
@@ -103,7 +103,7 @@ if (gameRatioNoteSteps[0] || gameRatioNoteSteps[1]) {
     ]
 
     var ctxRatioNoteSteps = $('#chart-ratio-noteSteps').get(0).getContext('2d');
-    var chartRatioNoteSteps = new Chart(ctxRatioNoteSteps).Doughnut(dataRatioNoteSteps, options);
+    var chartRatioNoteSteps = new Chart(ctxRatioNoteSteps).DoughnutAlt(dataRatioNoteSteps, options);
     var legendFavGames = chartRatioNoteSteps.generateLegend();
     $('#legend-ratio-noteSteps').append(legendFavGames);
 }
@@ -125,7 +125,7 @@ if (gameRatioFaders[0] || gameRatioFaders[1]) {
     ]
 
     var ctxRatioFaders = $('#chart-ratio-faders').get(0).getContext('2d');
-    var chartRatioFaders = new Chart(ctxRatioFaders).Doughnut(dataRatioFaders, options);
+    var chartRatioFaders = new Chart(ctxRatioFaders).DoughnutAlt(dataRatioFaders, options);
     var legendFavGames = chartRatioFaders.generateLegend();
     $('#legend-ratio-faders').append(legendFavGames);
 }

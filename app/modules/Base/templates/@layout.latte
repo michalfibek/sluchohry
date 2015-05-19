@@ -69,7 +69,10 @@
 	{ifset $initJQTouchPunch}<script src="{$basePath}/assets/vendor/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>{/ifset}
 	{ifset $initNoUiSlider}<script src="{$basePath}/assets/vendor/nouislider/distribute/jquery.nouislider.all.min.js"></script>{/ifset}
 	{ifset $initHighlightTextarea}<script src="{$basePath}/assets/vendor/jquery-highlighttextarea/jquery.highlighttextarea.min.js"></script>{/ifset}
-	{ifset $initChartJs}<script src="{$basePath}/assets/vendor/Chart.js/Chart.js"></script>{/ifset}
+	{ifset $initChartJs}
+	<script src="{$basePath}/assets/vendor/Chart.js/Chart.js"></script>
+	<script src="{$basePath}/assets/js/chartExtends.js"></script>
+	{/ifset}
 
 	{ifset $initMidiJs}
 	<!-- polyfill -->

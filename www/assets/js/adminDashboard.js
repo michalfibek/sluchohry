@@ -70,8 +70,8 @@ var dataFavGames = [
     },
     {
         value: favGameStats['faders'],
-        color: "#5cfd91",
-        highlight: "#9bffbc",
+        color: "#44cc71",
+        highlight: "#50e07f",
         label: "Posuvníky"
     }
 ]
@@ -82,7 +82,7 @@ var options = {
 
 var chartWeekCurrentPlays = new Chart(ctxWeekCurrentPlays).Bar(dataCurrent, options);
 var chartWeekPreviousPlays = new Chart(ctxWeekPreviousPlays).Bar(dataPrevious, options);
-var chartFavGameStats = new Chart(ctxFavGameStats).Doughnut(dataFavGames,options);
+var chartFavGameStats = new Chart(ctxFavGameStats).DoughnutAlt(dataFavGames,options);
 
 var legendCurrentPlays = chartWeekCurrentPlays.generateLegend();
 var legendFavGames = chartFavGameStats.generateLegend();

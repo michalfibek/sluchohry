@@ -6,7 +6,7 @@
 
 <header>
 <h1 n:block="title">Herní profil
-<small>{if strlen($userRow->realname)>0}{$userRow->realname}{else}{$userRow->username}{/if}
+<small>{if strlen($userRow->realname)>0}{$userRow->realname}{else}{$userRow->username}{/if}</small>
 </h1>
 </header>
 
@@ -15,6 +15,7 @@
 <div class="admin-dashboard-stats">
 
     <div class="col-xs-12 col-md-4">
+
         <div class="stat-section section-small section-dynamic">
             <div id="score-profile-sum">
                 <h3>
@@ -25,11 +26,7 @@
                 <span class="difficulty-3">{$scoreSum[3]}</span>
             </div>
         </div>
-    </div>
-
-    <div class="clearfix"></div>
-
-    <div class="col-xs-12 col-md-4">
+        
         <div class="stat-section">
             <div id="fav-games">
                 <h3>
@@ -39,6 +36,7 @@
             </div>
             <div id="legend-fav-games" class="chart-legend"></div>
         </div>
+
     </div>
 
     <div class="col-xs-6 col-md-3">
@@ -102,8 +100,6 @@
         </div>
     </div>
 
-    <div class="col-xs-6 col-md-4">
-    </div>
 
 </div>
 
