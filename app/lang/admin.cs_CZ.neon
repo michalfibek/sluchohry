@@ -67,7 +67,7 @@ songs:
     addNewTitle: "Nová skladba"
     songArtist: "Autor"
     songTitle: "Název skladby"
-    duration: "délka"
+    duration: "Délka"
     genre: "Žánr"
     games: "Hry"
     flash:
