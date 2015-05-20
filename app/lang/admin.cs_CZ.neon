@@ -1,14 +1,15 @@
-notations:
-    title: "Editor not"
-    octave:
-        subcontra: "subkontra"
-        contra: "kontra"
-        great: "velká"
-        small: "malá"
-        oneline: "jednočárkovaná"
-        twoline: "dvojčárkovaná"
-        threeline: "tříčárkovaná"
-        fourline: "čtyřčárkovaná"
+common:
+    edit: "Upravit"
+    delete: "Smazat"
+    save: "Uložit"
+    cancel: "Zrušit"
+    createTime: "Vytvořeno"
+    updateTime: "Upraveno"
+    id: "id"
+    playback:
+        play: "Hrej"
+        stop: "Stop"
+        pause: "Pauza"
 
 stats:
     title: "Statistiky"
@@ -19,15 +20,90 @@ stats:
         hard: "Součet obtížnost 3"
     groups: "Skupiny"
     totalPlays: "Počet vyřešených her"
+    gameStats:
+        title: "Herní statistiky"
+        mostFavGames: "Nejoblíbenější hry"
+    userStats:
+        title: "Uživatelské statistiky"
+        mostFavGames: "Nejoblíbenější hry"
+        scoresSum: "Celkové počty bodů"
+
 
 users:
     title: "Uživatelské účty"
+    username: "Uživ. jméno"
+    realname: "Jméno"
+    email: "E-mail"
+    groups: "Skupiny"
+    createTime: "Vytvořen"
+    lastLoginTime: "Posl. přihl."
+    addNew: "Vytvořit uživatele"
+    flash:
+        deleted: "Uživatel byl úspěšně smazán"
+
 
 groups:
     title: "Skupiny"
+    titleEditor: "Skupina"
+    name: "Název skupiny"
+    role: "Role"
+    addNew: "Vytvořit skupinu"
+    addNewTitle: "Vytvoření skupiny"
 
 events:
     title: "Aktivity"
+    advanced:
+        title: "Podrobné aktivity"
+        time: "Čas události"
+        username: "Uživatelské jméno"
+        evtClass: "Třída události"
+        evtData: "Data události"
+
 
 songs:
-    title: "Editor písniček"
+    title: "Hudební zdroje"
+    titleEditor: "Editor hudby"
+    addNew: "Nahrát skladbu"
+    addNewTitle: "Nová skladba"
+    songArtist: "Autor"
+    songTitle: "Název skladby"
+    duration: "délka"
+    genre: "Žánr"
+    games: "Hry"
+    flash:
+        notFound: "Skladba nebyla nalezena."
+        deleted: "Skladba byla úspěšně smazána."
+        saved: "Skladba byla úspěšně uložena."
+    edit:
+        markers: "Značky"
+        markerAdd: "Marker (M)"
+        play: "Hrej"
+        pause: "Pauza"
+        stop: "Stop"
+        uploadFileButton: "Vyberte soubor s hudbou (formát mp3)"
+        dropHere: "Přetáhněte soubor sem pro jeho nahrání (formát mp3)"
+        processing: "Zpracování souboru..."
+
+notations:
+    title: "Notové zápisy"
+    addNew: "Vytvořit skladbu"
+    titleEditor: "Editor not"
+    addNewTitle: "Nová skladba"
+    songArtist: "Autor"
+    songTitle: "Název"
+    length: "Délka"
+    genre: "Žánr"
+    games: "Hry"
+    tempo: "Tempo"
+    sheet: "Zápis"
+    wrongNotes: "Chybné noty"
+    octave:
+        title: "Oktáva"
+        subcontra: "subkontra"
+        contra: "kontra"
+        great: "velká"
+        small: "malá"
+        oneline: "jednočárkovaná"
+        twoline: "dvojčárkovaná"
+        threeline: "tříčárkovaná"
+        fourline: "čtyřčárkovaná"

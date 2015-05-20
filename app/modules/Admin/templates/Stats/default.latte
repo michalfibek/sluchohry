@@ -10,7 +10,7 @@
 <h1 n:block="title">{_admin.stats.title}</h1>
 </header>
 
-{if $user->isAllowed($presenter->name, 'games')}<a n:href="games" class="btn btn-lg btn-primary"><span class="fa fa-pie-chart"></span> Herní statistiky</a>{/if}
+{if $user->isAllowed($presenter->name, 'games')}<a n:href="games" class="btn btn-lg btn-primary"><span class="fa fa-pie-chart"></span> {_admin.stats.gameStats.title}</a>{/if}
 
 <div class="item-list" id="user-list">
 {control scoreGrid}

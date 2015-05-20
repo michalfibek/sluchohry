@@ -44,20 +44,22 @@ class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid = new Grid($this, $name);
 		$grid->setModel($this->group->getAll());
 
+		$grid->setTranslator($this->translator);
+
 		$grid->setEditableColumns();
 //		$grid->setTemplateFile(__DIR__.'/templates/components/simpleGrid.latte');
 
 //		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_OUTER);
 
-		$grid->addColumnNumber('id', 'id')
+		$grid->addColumnNumber('id', 'admin.common.id')
 			->setSortable();
 //			->setFilterText();
 
-		$grid->addColumnText('name', 'Group name')
+		$grid->addColumnText('name', 'admin.groups.name')
 			->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('role_id', 'Role')
+		$grid->addColumnText('role_id', 'admin.groups.role')
 			->setSortable()
 			->setCustomRender(function($item) {
 				return $this->group->getRoleById($item->role_id)->name;
@@ -73,13 +75,13 @@ class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 //			->setSortable()
 //			->setFilterDateRange();
 
-		$grid->addActionHref('edit', 'Edit')
+		$grid->addActionHref('edit', 'admin.common.edit')
 			->setIcon('fa fa-pencil')
 			->setDisable(function ($item) {
 				return (!$this->user->isAllowed($this->name, 'edit'));
 			});
 
-		$grid->addActionHref('delete', 'Delete', 'delete!')
+		$grid->addActionHref('delete', 'admin.common.delete', 'delete!')
 			->setIcon('fa fa-remove')
 			->setConfirm('Do you really want to delete this group?')
 			->setDisable(function ($item) {

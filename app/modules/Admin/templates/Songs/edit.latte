@@ -25,7 +25,7 @@
 {block content}
 
 <header>
-<h1 n:block="title">Song editor <small>{ifset $song}{$song->title}{else}Upload new song{/ifset}</small></h1>
+<h1 n:block="title">{_admin.songs.titleEditor} <small>{ifset $song}{$song->title}{else}{_admin.songs.addNewTitle}{/ifset}</small></h1>
 </header>
 
 {if !isset($song)}
@@ -38,13 +38,13 @@
 <script type="text/template" id="qq-template-bootstrap">
     <div class="qq-uploader-selector qq-uploader span12">
         <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
-            <span>Drop files here to upload</span>
+            <span>{_admin.songs.edit.dropHere}</span>
         </div>
         <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto;">
-            <div><i class="icon-upload icon-white"></i>Upload a file</div>
+            <div><i class="icon-upload icon-white"></i>{_admin.songs.edit.uploadFileButton}</div>
         </div>
     <span class="qq-drop-processing-selector qq-drop-processing">
-      <span>Processing dropped files...</span>
+      <span>{_admin.songs.edit.processing}</span>
       <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
     </span>
         <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
@@ -55,7 +55,7 @@
                 <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
                 <span class="qq-upload-file-selector qq-upload-file"></span>
                 <span class="qq-upload-size-selector qq-upload-size"></span>
-                <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Cancel</a>
+                <a class="qq-upload-cancel-selector qq-upload-cancel" href="#">{_admin.common.cancel}</a>
                 <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
             </li>
         </ul>
@@ -71,26 +71,26 @@
         <form n:name="songEditForm" class="form-horizontal">
             <input n:name="songId" id="songId" type="hidden">
             <div class="form-group">
-                <label n:name="artist" for="artist" class="col-sm-4 control-label">Artist:</label>
+                <label n:name="artist" for="artist" class="col-sm-4 control-label">{_admin.songs.songArtist}:</label>
                 <div class="col-sm-8">
                     <input n:name="artist" type="text" class="form-control" id="artist">
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="title" for="title" class="col-sm-4 control-label">Title:</label>
+                <label n:name="title" for="title" class="col-sm-4 control-label">{_admin.songs.songTitle}:</label>
                 <div class="col-sm-8">
                     <input n:name="title" type="text" class="form-control" id="title">
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="genre_id" for="genre" class="col-sm-4 control-label">Genre:</label>
+                <label n:name="genre_id" for="genre" class="col-sm-4 control-label">{_admin.songs.genre}:</label>
                 <div class="col-sm-8">
                     <select n:name="genre_id" id="genre" class="form-control">
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">Game:</label>
+                <label class="col-sm-4 control-label">{_admin.songs.games}:</label>
                 <div class="col-sm-8" n:inner-foreach="$form[game]->items as $key => $label">
                     <div class="checkbox">
                         <label n:name="game:$key"><input n:name="game:$key"> {$label}</label>
@@ -98,21 +98,21 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="duration" class="col-sm-4 control-label">Duration:</label>
+                <label for="duration" class="col-sm-4 control-label">{_admin.songs.duration}:</label>
                 <div class="col-sm-8">
                     <p class="form-control-static" id="duration">{ifset $song}{$song->duration|songTime}{/ifset}</p>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right">
-                    <button type="button" class="btn btn-default" id="ex1-play-original"><span class="fa fa-play"></span> Play</button>
-                    <button type="button" class="btn btn-default hidden" id="ex1-pause"><span class="fa fa-pause"></span> Pause</button>
-                    <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> Stop</button>
+                    <button type="button" class="btn btn-default" id="ex1-play-original"><span class="fa fa-play"></span> {_admin.common.playback.play}</button>
+                    <button type="button" class="btn btn-default hidden" id="ex1-pause"><span class="fa fa-pause"></span> {_admin.common.playback.pause}</button>
+                    <button type="button" class="btn btn-default" id="ex1-stop"><span class="fa fa-stop"></span> {_admin.common.playback.stop}</button>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right">
-                    <button type="button" class="btn btn-default btn-lg disabled" id="ex1-mark"><span class="fa fa-thumb-tack fa-lg"></span> Marker (M)</button>
+                    <button type="button" class="btn btn-default btn-lg disabled" id="ex1-mark"><span class="fa fa-thumb-tack fa-lg"></span> {_admin.songs.edit.markerAdd}</button>
                 </div>
             </div>
             <div class="form-group">
@@ -121,7 +121,7 @@
                 </div>
             </div>
             <div class="form-group marker-list">
-                <label class="col-sm-2">Markers:</label>
+                <label class="col-sm-2">{_admin.songs.edit.markers}:</label>
                 <div class="col-sm-10">
                     <div id="time-markers"></div>
                     <input n:name="markers" id="markers" type="hidden">
@@ -130,8 +130,8 @@
             </div>
             <div class="form-group main-buttons">
                 <div class="col-sm-12 text-right">
-                    <button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> Delete</button>
-                    <button n:name="update" id="button-update" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> Update</button>
+                    <button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> {_admin.common.delete}</button>
+                    <button n:name="update" id="button-update" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> {_admin.common.save}</button>
                 </div>
             </div>
         </form>

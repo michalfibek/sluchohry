@@ -89,7 +89,8 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 		$this->game->updateSongAssoc($songId, $gameIdArray);
 
-		$this->flashMessage("Song description been successfully updated.", 'success');
+		$msg = $this->translator->translate('admin.songs.flash.saved');
+		$this->flashMessage($msg, 'success');
 		$this->redirect('default');
 	}
 
@@ -114,9 +115,11 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		}
 
 		if (!$this->song->deleteById($id)) {
-			$this->flashMessage("Song not found.", 'error');
+			$msg = $this->translator->translate('admin.songs.flash.notFound');
+			$this->flashMessage($msg, 'error');
 		} else {
-			$this->flashMessage("Song has been deleted.", 'success');
+			$msg = $this->translator->translate('admin.songs.flash.deleted');
+			$this->flashMessage($msg, 'success');
 		}
 		$this->redirect('default');
 	}
@@ -142,7 +145,8 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$this->gameList = $this->game->getAll()->where('uses_song', TRUE)->order('name ASC');
 			$this->genreList = $this->genre->getAll(); // fetch genre list for form
 		} else {
-			$this->flashMessage('Sorry, this song was not found.', 'error');
+			$msg = $this->translator->translate('admin.songs.flash.notFound');
+			$this->flashMessage($msg, 'error');
 			$this->redirect('default');
 		}
 	}
@@ -182,28 +186,30 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid = new Grid($this, $name);
 		$grid->setModel($this->song->getAll());
 
+		$grid->setTranslator($this->translator);
+
 //		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_OUTER);
 
-		$grid->addColumnNumber('id', 'id')
+		$grid->addColumnNumber('id', 'admin.common.id')
 			->setSortable();
 //			->setFilterText();
 
-		$grid->addColumnText('artist', 'Artist')
+		$grid->addColumnText('artist', 'admin.songs.songArtist')
 			->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('title', 'Title')
+		$grid->addColumnText('title', 'admin.songs.songTitle')
 			->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('duration', 'Duration')
+		$grid->addColumnText('duration', 'admin.songs.duration')
 			->setSortable()
 			->setCustomRender(function($item) {
 				return $this->getSongTimeFormat($item->duration);
 			})
 			->setFilterText();
 
-		$grid->addColumnText('genre_id', 'Genre')
+		$grid->addColumnText('genre_id', 'admin.songs.genre')
 			->setSortable()
 			->setCustomRender(function($item) {
 				return $this->genre->getById($item->genre_id)->name;
@@ -213,9 +219,9 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		foreach ($this->genre->getAll() as $genre)
 			$genres[$genre->id] = $genre->name;
 
-		$grid->addFilterSelect('genre_id', 'Genre', $genres);
+		$grid->addFilterSelect('genre_id', 'admin.songs.genre', $genres);
 
-		$grid->addColumnText('games', 'Games')
+		$grid->addColumnText('games', 'admin.songs.games')
 			->setSortable()
 			->setCustomRender(function($item) {
 				$games = $this->game->getBySong($item->id)->fetchPairs(NULL, 'game_id');
@@ -231,23 +237,23 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 			})
 			->setFilterText();
 
-		$grid->addColumnDate('create_time', 'Created')
+		$grid->addColumnDate('create_time', 'admin.common.createTime')
 			->setDateFormat('d.m.Y H:i:s')
 			->setSortable()
 			->setFilterDateRange();
 
-		$grid->addColumnDate('update_time', 'Updated')
+		$grid->addColumnDate('update_time', 'admin.common.updateTime')
 			->setDateFormat('d.m.Y H:i:s')
 			->setSortable()
 			->setFilterDateRange();
 
-		$grid->addActionHref('edit', 'Edit')
+		$grid->addActionHref('edit', 'admin.common.edit')
 			->setIcon('fa fa-pencil')
 			->setDisable(function ($item) {
 				return (!$this->user->isAllowed($this->name, 'edit'));
 			});
 
-		$grid->addActionHref('delete', 'Delete', 'delete!')
+		$grid->addActionHref('delete', 'admin.common.delete', 'delete!')
 			->setIcon('fa fa-remove')
 			->setConfirm('Do you really want to delete this group?')
 			->setDisable(function ($item) {

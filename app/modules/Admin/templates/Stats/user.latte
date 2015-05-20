@@ -5,7 +5,7 @@
 {block content}
 
 <header>
-<h1 n:block="title">Herní profil
+<h1 n:block="title">{_admin.stats.userStats.title}
 <small>{if strlen($userRow->realname)>0}{$userRow->realname}{else}{$userRow->username}{/if}</small>
 </h1>
 </header>
@@ -19,7 +19,7 @@
         <div class="stat-section section-small section-dynamic">
             <div id="score-profile-sum">
                 <h3>
-                    Celkové počty bodů
+                    {_admin.stats.userStats.scoresSum}
                 </h3>
                 <span class="difficulty-1">{$scoreSum[1]}</span>
                 <span class="difficulty-2">{$scoreSum[2]}</span>
@@ -30,7 +30,7 @@
         <div class="stat-section">
             <div id="fav-games">
                 <h3>
-                    Nejoblíbenější hry
+                    {_admin.stats.userStats.mostFavGames}
                 </h3>
                 <canvas id="chart-fav-games" width="220" height="220"></canvas>
             </div>

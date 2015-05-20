@@ -56,12 +56,14 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
         $grid = new Grid($this, $name);
         $grid->setModel($this->event->getAllView());
 
+        $grid->setTranslator($this->translator);
+
 //        $grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
 
 //        $grid->addColumnNumber('id','id')
 //            ->setSortable();
 
-        $grid->addColumnDate('event_time', 'Event time')
+        $grid->addColumnDate('event_time', 'admin.events.advanced.title')
             ->setCustomRender(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->event_time . '</a>';
@@ -70,7 +72,7 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
             ->setSortable()
             ->setFilterDateRange();
 
-        $grid->addColumnText('username', 'Username')
+        $grid->addColumnText('username', 'admin.events.advanced.username')
             ->setCustomRender(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->username . '</a>';
@@ -78,7 +80,7 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
             ->setSortable()
             ->setFilterText();
 
-        $grid->addColumnText('event_name', 'Event class')
+        $grid->addColumnText('event_name', 'admin.events.advanced.evtClass')
             ->setCustomRender(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->event_name . '</a>';
@@ -89,9 +91,9 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
         foreach ($this->event->getAllEventClass() as $evtClass)
             $eventClassNames[$evtClass->name] = $evtClass->name;
 
-        $grid->addFilterSelect('event_name', 'Event class', $eventClassNames);
+        $grid->addFilterSelect('event_name', 'admin.events.advanced.evtClass', $eventClassNames);
 
-        $grid->addColumnText('event_data', 'Event data')
+        $grid->addColumnText('event_data', 'admin.events.advanced.evtData')
             ->setCustomRender(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->event_data . '</a>';

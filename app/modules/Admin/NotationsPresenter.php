@@ -192,25 +192,27 @@ class NotationsPresenter extends BasePresenter
         $grid = new Grid($this, $name);
         $grid->setModel($this->notation->getAll());
 
-        $grid->addColumnNumber('id', 'id')
+        $grid->setTranslator($this->translator);
+
+        $grid->addColumnNumber('id', 'admin.common.id')
             ->setSortable();
 //			->setFilterText();
 
-        $grid->addColumnText('artist', 'Artist')
+        $grid->addColumnText('artist', 'admin.notations.songArtist')
             ->setSortable()
             ->setFilterText();
 
-        $grid->addColumnText('title', 'Title')
+        $grid->addColumnText('title', 'admin.notations.songTitle')
             ->setSortable()
             ->setFilterText();
 
-        $grid->addColumnText('genre_id', 'Genre')
+        $grid->addColumnText('genre_id', 'admin.notations.genre')
             ->setSortable()
             ->setCustomRender(function($item) {
                 return $this->genre->getById($item->genre_id)->name;
             });
 
-        $grid->addColumnText('length', 'Length')
+        $grid->addColumnText('length', 'admin.notations.length')
             ->setSortable()
             ->setFilterText();
 
@@ -218,9 +220,9 @@ class NotationsPresenter extends BasePresenter
         foreach ($this->genre->getAll() as $genre)
             $genres[$genre->id] = $genre->name;
 
-        $grid->addFilterSelect('genre_id', 'Genre', $genres);
+        $grid->addFilterSelect('genre_id', 'admin.notations.genre', $genres);
 
-        $grid->addColumnText('games', 'Games')
+        $grid->addColumnText('games', 'admin.notations.games')
             ->setSortable()
             ->setCustomRender(function($item) {
                 $games = $this->game->getByNotation($item->id)->fetchPairs(NULL, 'game_id');
@@ -236,23 +238,23 @@ class NotationsPresenter extends BasePresenter
             })
             ->setFilterText();
 
-        $grid->addColumnDate('create_time', 'Created')
+        $grid->addColumnDate('create_time', 'admin.common.createTime')
             ->setDateFormat('d.m.Y H:i:s')
             ->setSortable()
             ->setFilterDateRange();
 
-        $grid->addColumnDate('update_time', 'Updated')
+        $grid->addColumnDate('update_time', 'admin.common.updateTime')
             ->setDateFormat('d.m.Y H:i:s')
             ->setSortable()
             ->setFilterDateRange();
 
-        $grid->addActionHref('edit', 'Edit')
+        $grid->addActionHref('edit', 'admin.common.edit')
             ->setIcon('fa fa-pencil')
             ->setDisable(function ($item) {
                 return (!$this->user->isAllowed($this->name, 'edit'));
             });
 
-        $grid->addActionHref('delete', 'Delete', 'delete!')
+        $grid->addActionHref('delete', 'admin.common.delete', 'delete!')
             ->setIcon('fa fa-remove')
             ->setConfirm('Do you really want to delete this group?')
             ->setDisable(function ($item) {

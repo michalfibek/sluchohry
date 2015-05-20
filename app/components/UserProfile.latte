@@ -2,11 +2,11 @@
 <h1>
 {if $adminMode}{_front.user.profile}{else}{_front.user.profilePersonal}{/if}
 <small>{ifset $userRow}{if strlen($userRow->realname)>0}{$userRow->realname}{else}{$userRow->username}{/if}
-{else}Add new user{/ifset}</small>
+{else}{_front.user.addNewTitle}{/ifset}</small>
 </h1>
 </header>
 
-{if $user->isAllowed('Admin:Stats', 'user')}
+{if $user->isAllowed('Admin:Stats', 'user') && $userRow}
 <a href="{plink :Admin:Stats:User $userRow->id}" class="btn btn-lg btn-primary"><span class="fa fa-bar-chart"></span> Herní profil</a>
 {/if}
 
@@ -37,7 +37,7 @@
             </div>
             {if $adminMode}
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="group_id">Group:</label>
+                <label class="col-sm-2 control-label" for="group_id">{_front.user.group}:</label>
                 <div class="col-sm-4" n:inner-foreach="$form[group_id]->items as $key => $label">
                     <div class="checkbox">
                         <label n:name="group_id:$key"><input n:name="group_id:$key"> {$label}</label>

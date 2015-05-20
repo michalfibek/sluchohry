@@ -61,8 +61,10 @@ class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
-		if ($this->userModel->deleteById($id))
-			$this->flashMessage('User successfully deleted.', 'success');
+		if ($this->userModel->deleteById($id)) {
+			$msg = $this->translator->translate('admin.users.flash.deleted');
+			$this->flashMessage($msg, 'success');
+		}
 	}
 
 	public function	renderDefault()
@@ -104,25 +106,27 @@ class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$grid = new Grid($this, $name);
 		$grid->setModel($this->userModel->getAll(true));
 
+		$grid->setTranslator($this->translator);
+
 		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
 
         $grid->addColumnNumber('id','id')
             ->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('username', 'Username')
+		$grid->addColumnText('username', 'admin.users.username')
 			->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('realname', 'Full name')
+		$grid->addColumnText('realname', 'admin.users.realname')
 			->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('email', 'E-mail')
+		$grid->addColumnText('email', 'admin.users.email')
 			->setSortable()
 			->setFilterText();
 
-		$grid->addColumnText('groups', 'Groups')
+		$grid->addColumnText('groups', 'admin.users.groups')
 			->setSortable()
 			->setCustomRender(function($item) {
 				$groups = $this->userModel->getUserGroups($item->id);
@@ -134,31 +138,30 @@ class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 			})
 			->setFilterText();
 
-		$grid->addColumnDate('create_time', 'Created')
+		$grid->addColumnDate('create_time', 'admin.users.createTime')
 			->setDateFormat('d.m.Y H:i:s')
 			->setSortable()
 			->setFilterDateRange();
 
-		$grid->addColumnDate('last_login_time', 'Last login')
+		$grid->addColumnDate('last_login_time', 'admin.users.lastLoginTime')
 			->setDateFormat('d.m.Y H:i:s')
 			->setSortable()
 			->setFilterDateRange();
 
-		$grid->addActionHref('edit', 'Edit')
+		$grid->addActionHref('edit', 'admin.common.edit')
 			->setIcon('fa fa-pencil')
 			->setDisable(function ($item) {
 				$roles = $this->userModel->getUserRoles($item->id);
 				return !$this->acl->isChildRole($roles, $this->user->roles, $this->editNoGroupUsers);
 			});
 
-		$grid->addActionHref('delete', 'Delete', 'delete!')
+		$grid->addActionHref('delete', 'admin.common.delete', 'delete!')
 			->setIcon('fa fa-remove')
 			->setConfirm('Do you really want to delete user? All user logs will be deleted too!')
 			->setDisable(function ($item) {
 				$roles = $this->userModel->getUserRoles($item->id);
 				return !$this->acl->isChildRole($roles, $this->user->roles, $this->editNoGroupUsers);
 			});
-
 
 		$grid->setDefaultSort(array(
 			'username' => 'ASC'

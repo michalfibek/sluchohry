@@ -5,7 +5,7 @@
 {block content}
 
 <header>
-<h1 n:block="title">Herní statistiky</h1>
+<h1 n:block="title">{_admin.stats.gameStats.title}</h1>
 </header>
 
 <div class="admin-dashboard-stats">
@@ -14,7 +14,7 @@
         <div class="stat-section">
             <div id="fav-games">
                 <h3>
-                    Nejoblíbenější hry
+                    {_admin.stats.gameStats.mostFavGames}
                 </h3>
                 <canvas id="chart-fav-games" width="220" height="220"></canvas>
             </div>

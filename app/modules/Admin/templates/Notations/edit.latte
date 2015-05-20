@@ -5,7 +5,7 @@
 {block content}
 
 <header>
-<h1 n:block="title">Notation editor <small>{ifset $notation}{$notation->title}{else}Add new notation{/ifset}</small></h1>
+<h1 n:block="title">{_admin.notations.titleEditor} <small>{ifset $notation}{$notation->title}{else}{_admin.notations.addNewTitle}{/ifset}</small></h1>
 </header>
 
 <div class="clearfix"></div>
@@ -16,53 +16,53 @@
         <form n:name="notationEditForm" class="form-horizontal">
             <input n:name="notation_id" id="notation_id" type="hidden">
             <div class="form-group">
-                <label n:name="artist" for="artist" class="col-sm-4 control-label">Artist:</label>
+                <label n:name="artist" for="artist" class="col-sm-4 control-label">{_admin.notations.songArtist}:</label>
                 <div class="col-sm-8">
                     <input n:name="artist" type="text" class="form-control" id="artist">
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="title" for="title" class="col-sm-4 control-label">Title:</label>
+                <label n:name="title" for="title" class="col-sm-4 control-label">{_admin.notations.songTitle}:</label>
                 <div class="col-sm-8">
                     <input n:name="title" type="text" class="form-control" id="title">
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="genre_id" for="genre" class="col-sm-4 control-label">Genre:</label>
+                <label n:name="genre_id" for="genre" class="col-sm-4 control-label">{_admin.notations.genre}:</label>
                 <div class="col-sm-8">
                     <select n:name="genre_id" id="genre" class="form-control">
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="octave_id" for="octave" class="col-sm-4 control-label">Octave:</label>
+                <label n:name="octave_id" for="octave" class="col-sm-4 control-label">{_admin.notations.octave.title}:</label>
                 <div class="col-sm-8">
                     <select n:name="octave_id" id="octave" class="form-control">
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="tempo_id" for="tempo" class="col-sm-4 control-label">Tempo:</label>
+                <label n:name="tempo_id" for="tempo" class="col-sm-4 control-label">{_admin.notations.tempo}:</label>
                 <div class="col-sm-8">
                     <select n:name="tempo_id" id="tempo" class="form-control">
                     </select>
                 </div>
             </div>
             <div class="form-group">
-                <label n:name="sheet" for="sheet" class="col-sm-4 control-label">Sheet:</label>
+                <label n:name="sheet" for="sheet" class="col-sm-4 control-label">{_admin.notations.sheet}:</label>
                 <div class="col-sm-8">
                     <textarea n:name="sheet" type="text" class="form-control" id="sheet" rows="6" cols="60" spellcheck="false">
                     </textarea>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-4 control-label">Wrong notes:</div>
+                <div class="col-sm-4 control-label">{_admin.notations.wrongNotes}:</div>
                 <div class="col-sm-8 text-right">
                     <p id="wrong-input-list" class="form-control-static"></p>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-4 control-label">Game:</label>
+                <label class="col-sm-4 control-label">{_admin.notations.games}:</label>
                 <div class="col-sm-8" n:inner-foreach="$form[game]->items as $key => $label">
                     <div class="checkbox">
                         <label n:name="game:$key"><input n:name="game:$key"> {$label}</label>
@@ -71,14 +71,14 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12 text-right">
-                    <button type="button" class="btn btn-default" id="btn-play"><span class="fa fa-play"></span> Play</button>
-                    <button type="button" class="btn btn-default" id="btn-stop"><span class="fa fa-stop"></span> Stop</button>
+                    <button type="button" class="btn btn-default" id="btn-play"><span class="fa fa-play"></span> {_admin.common.playback.play}</button>
+                    <button type="button" class="btn btn-default" id="btn-stop"><span class="fa fa-stop"></span> {_admin.common.playback.stop}</button>
                 </div>
             </div>
             <div class="form-group main-buttons">
                 <div class="col-sm-12 text-right">
-                    <button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> Delete</button>
-                    <button n:name="update" id="button-update" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> Update</button>
+                    <button n:name="delete" id="button-delete" type="submit" class="btn btn-danger"><span class="fa fa-remove"></span> {_admin.common.delete}</button>
+                    <button n:name="update" id="button-update" type="submit" class="btn btn-primary btn-lg"><span class="fa fa-check fa-lg"></span> {_admin.common.save}</button>
                 </div>
             </div>
         </form>

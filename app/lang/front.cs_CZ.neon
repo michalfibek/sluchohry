@@ -92,10 +92,12 @@ user:
     email: "E-mail"
     realname: "Jméno a příjmení"
     role: "Role"
+    group: "Skupina"
     password: "Heslo"
     passwordVerify: "Heslo (znovu)"
     generatePassword: "Generovat heslo"
     save: "Uložit"
+    addNewTitle: "Vytvoření uživatele"
 
     flash:
         duplicateEmail: "Promiň, e-mail %email% už je registrován někým jiným. Nejsi to ty?"
