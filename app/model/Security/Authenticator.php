@@ -40,6 +40,11 @@ class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
 		$userRow = $this->userModel->getByColumn('username', $username);
 
 		if (!$userRow) {
+			
+			if (in_array($username, array('dpadmin', 'dpzak'))) { // specialni info kvuli testovani diplomky, casem odstranit
+				throw new Nette\Security\AuthenticationException('front.auth.loginForm.usernameIncorrectDPtesting', self::IDENTITY_NOT_FOUND);
+			}
+
 			throw new Nette\Security\AuthenticationException('front.auth.loginForm.usernameIncorrect', self::IDENTITY_NOT_FOUND);
 
 		} elseif (!Passwords::verify($password, $userRow['password'])) {
