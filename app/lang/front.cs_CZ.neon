@@ -16,7 +16,7 @@ auth:
         remember: "uložit heslo"
         loginButton: "Přihlásit se"
         usernameIncorrect: "Špatné uživatelské jméno. Nemáš v něm někde chybu?"
-        usernameIncorrectDPtesting: "Špatné uživatelské jméno. Chtěli jste testovat diplomovou práci? Navštivte http://dp.fibek.cz/"
+        usernameIncorrectDPtesting: "Špatné uživatelské jméno. Chtěli jste testovat diplomovou práci? Navštivte veřejnou verzi na http://dp.fibek.cz/"
         passwordIncorrect: "Špatné heslo. Nemáš zaplý Caps lock?"
 
     flash:
