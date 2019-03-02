@@ -8,7 +8,11 @@ $configurator = new Nette\Configurator;
 //$configurator->defaultExtensions['decorator'] = Nette\DI\Extensions\DecoratorExtension::class;
 //$configurator->defaultExtensions['inject'] = Nette\DI\Extensions\InjectExtension::class;
 
-$configurator->setDebugMode(['secretCookie147@192.168.1.10', 'secretCookie147@188.75.144.92']);
+$configurator->setDebugMode([
+	'secretCookie147@192.168.1.10',
+	'secretCookie147@188.75.144.92',
+	'secretCookie147@176.74.128.122'
+]);
 $configurator->enableDebugger(__DIR__ . '/../log');
 
 $configurator->setTempDirectory(__DIR__ . '/../temp');

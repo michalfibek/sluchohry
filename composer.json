@@ -1,29 +1,31 @@
 {
-	"name": "nette/sandbox",
-	"description": "The sandbox is a pre-packaged Nette Framework project, basic configured structure for your application.",
-	"homepage": "http://nette.org",
-	"type": "project",
-	"license": ["Unlicense"],
-	"authors": [
-		{
-			"name": "David Grudl",
-			"homepage": "http://davidgrudl.com"
-		},
-		{
-			"name": "Nette Community",
-			"homepage": "http://nette.org/contributors"
-		}
-	],
-	"require": {
-		"php": ">= 5.3.7",
-		"nette/nette": "~2.3.0",
-		"james-heinrich/getid3": "~1.9",
-		"kdyby/events": "~2.3",
-		"kdyby/translation": "~2.0",
-		"o5/grido": "~2.0"
+  "name": "nette/sandbox",
+  "description": "The sandbox is a pre-packaged Nette Framework project, basic configured structure for your application.",
+  "homepage": "http://nette.org",
+  "type": "project",
+  "license": [
+	"Unlicense"
+  ],
+  "authors": [
+	{
+	  "name": "David Grudl",
+	  "homepage": "http://davidgrudl.com"
 	},
-	"require-dev": {
-		"nette/tester": "~1.4"
-	},
-	"minimum-stability": "stable"
+	{
+	  "name": "Nette Community",
+	  "homepage": "http://nette.org/contributors"
+	}
+  ],
+  "require": {
+	"php": ">=7.0.0",
+	"nette/nette": "~2.3.0",
+	"james-heinrich/getid3": "~1.9",
+	"kdyby/events": "~2.3",
+	"kdyby/translation": "~2.0",
+	"o5/grido": "~2.0"
+  },
+  "require-dev": {
+	"nette/tester": "~1.4"
+  },
+  "minimum-stability": "stable"
 }
