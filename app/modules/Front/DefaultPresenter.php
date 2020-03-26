@@ -19,9 +19,6 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 	public $onSuccessAdd;
 
 	/** @var array */
-	public $onDuplicateUsername;
-
-	/** @var array */
 	public $onRegFail;
 
 	/** @persistent */
@@ -164,7 +161,8 @@ protected function createComponentLoginForm()
 
 						if (!$this->userModel->isUniqueColumn('username', $values['username']))
 						{
-								$this->onDuplicateUsername($values);
+								$msg = $this->translator->translate('front.user.flash.duplicateUsername', NULL, array('username' => $values['username']));
+								$this->getPresenter()->flashMessage($msg, 'error');
 								$this->redirect('this');
 						}
 
@@ -214,11 +212,6 @@ protected function createComponentLoginForm()
 
 		public function setDefaultSignals()
 		{
-						$this->onDuplicateUsername[] = function($values) {
-										$msg = $this->translator->translate('front.user.flash.duplicateUsername', NULL, array('username' => $values['username']));
-										$this->getPresenter()->flashMessage($msg, 'error');
-						};
-
 						$this->onSuccessAdd[] = function($values) {
 										$msg = $this->translator->translate('front.user.flash.successAdd', NULL, array('username' => $values['username']));
 										$this->getPresenter()->flashMessage($msg, 'success');
