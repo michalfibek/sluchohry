@@ -5,11 +5,22 @@
 	<div id="owl-onpage"></div>
 
 
-	<div class="homepage col-xs-9 col-md-5 col-lg-4">
+<div class="homepage col-xs-12 col-sm-9 col-md-5 col-lg-4">
 
-		<h1>{_front.homepage.sluchohry}</h1>
+	<h1>{_front.homepage.sluchohry}</h1>
 
-		<div id="login-form">
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#login" aria-controls="login" role="tab" data-toggle="tab">Přihlášení</a></li>
+		<li role="presentation"><a href="#registration" aria-controls="registration" role="tab" data-toggle="tab">Registrace</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="login">
+
+		<div class="login-form" id="login-form">
 			<form n:name="loginForm">
 				<div class="form-group input-group input-group-lg">
 					<span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -19,16 +30,49 @@
 					<span class="input-group-addon"><i class="fa fa-key"></i></span>
 					<input n:name="password" type="password" class="form-control" id="password" placeholder="{_front.auth.loginForm.password}">
 				</div>
-				<div class="checkbox" id="remember-check">
+				<div class="checkbox remember-check" id="remember-check">
 					<label>
 						<input n:name="remember" type="checkbox">{_front.auth.loginForm.remember}
 					</label>
 				</div>
-				<button n:name="send" type="submit" class="btn btn-primary btn-lg" id="login-button"><i class="fa fa-check"></i> {_front.auth.loginForm.loginButton}</button>
+				<button n:name="send" type="submit" class="btn btn-primary btn-lg btn-login" id="login-button"><i class="fa fa-check"></i> {_front.auth.loginForm.loginButton}</button>
 			</form>
 		</div>
 
-	</div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="registration">
+
+		<div class="login-form" id="registration-form">
+			<form n:name="registerForm">
+				<div class="form-group input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-user"></i></span>
+					<input n:name="username" type="text" class="form-control" id="reg-username" placeholder="{_front.auth.loginForm.username}" autofocus>
+				</div>
+				<div class="form-group input-group input-group-lg">
+					<span class="input-group-addon"><i class="fa fa-key"></i></span>
+					<input n:name="password" type="password" class="form-control" id="reg-password" placeholder="{_front.auth.loginForm.password}">
+				</div>
+				<div class="checkbox remember-check" id="reg-remember-check">
+					<label>
+						<input n:name="remember" type="checkbox">{_front.auth.loginForm.remember}
+					</label>
+				</div>
+				<button n:name="send" type="submit" class="btn btn-primary btn-lg btn-login" id="register-button"><i class="fa fa-user"></i> {_front.auth.loginForm.registerButton}</button>
+			</form>
+		</div>
+
+
+		</div>
+</div>
+
+
+<div>
+
+
+
+</div>
+
+</div>
 
 	{else}
 

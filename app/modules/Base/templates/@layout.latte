@@ -12,10 +12,24 @@
 	<meta name="msapplication-config" content="/browserconfig.xml">
 
 	<title>{if $devServer}@ {/if}{ifset title}{include title|striptags} | {/ifset}{_front.homepage.sluchohry}</title>
+
+	<meta name="description" content="Hudební nauka hravě. Čtyři hudební hry - melodické kostky, hudební pexeso, krokování not a posuvníky." />
+	<meta property="og:locale" content="cs_CZ" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Sluchohry" />
+	<meta property="og:description" content="Hudební nauka hravě. Čtyři hudební hry - melodické kostky, hudební pexeso, krokování not a posuvníky." />
+	<meta property="og:url" content="https://sluchohry.cz" />
+	<meta property="og:site_name" content="Sluchohry" />
+	<meta property="og:image" content="https://sluchohry.cz{$basePath}/assets/images/sluchohry_fb.png" />
+	<meta property="og:image:secure_url" content="https://sluchohry.cz{$basePath}/assets/images/sluchohry_fb.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:type" content="image/png" />
+
 	{block styles}
 	{*<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">*}
 	{ifset $initGrid}<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">{/ifset}
-	<link rel="stylesheet" href="{$basePath}/style.css">
+	<link rel="stylesheet" href="{$basePath}/style.css?v=20202603">
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
 	{if $presenter->name == 'Front:Default'}<link rel="stylesheet" href="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">{/if}
 	{ifset $initNoUiSlider}<link rel="stylesheet" href="{$basePath}/assets/vendor/nouislider/distribute/jquery.nouislider.min.css">{/ifset}
@@ -48,9 +62,8 @@
 
 	</div>
 
-	{if $user->loggedIn}
-	{include 'components/footer.latte'}
-	{/if}
+{include 'components/footer.latte'}
+
 
 	<div id="outdated"></div>
 

@@ -14,6 +14,16 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 	const
 		HOMEPAGE_QUOTE_COUNT = 20;
 
+
+	/** @var array */
+	public $onSuccessAdd;
+
+	/** @var array */
+	public $onDuplicateUsername;
+
+	/** @var array */
+	public $onRegFail;
+
 	/** @persistent */
 	public $backlink;
 
@@ -22,6 +32,9 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	/** @inject @var Model\Game */
 	public $game;
+
+	/** @inject @var Model\User */
+	public $userModel;
 
 	public function actionLogout()
 	{
@@ -64,29 +77,29 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	}
 
-	/**
-	 * Sign-in form factory.
-	 * @return Nette\Application\UI\Form
-	 */
-	protected function createComponentLoginForm()
-	{
-		$form = new Nette\Application\UI\Form;
-		$form->setTranslator(
-			$this->translator->domain('front.auth.loginForm')
-		);
-		$form->addText('username', 'username')
-			->setRequired('requiredUsername');
+/**
+* Sign-in form factory.
+* @return Nette\Application\UI\Form
+*/
+protected function createComponentLoginForm()
+{
+	$form = new Nette\Application\UI\Form;
+	$form->setTranslator(
+		$this->translator->domain('front.auth.loginForm')
+	);
+	$form->addText('username', 'username')
+		->setRequired('requiredUsername');
 
-		$form->addPassword('password', 'password')
-			->setRequired('requiredPassword');
+	$form->addPassword('password', 'password')
+		->setRequired('requiredPassword');
 
-		$form->addCheckbox('remember', 'remember');
+	$form->addCheckbox('remember', 'remember');
 
-		$form->addSubmit('send', 'loginButton');
+	$form->addSubmit('send', 'loginButton');
 
-		$form->onSuccess[] = array($this, 'processLoginForm');
-		return $form;
-	}
+	$form->onSuccess[] = array($this, 'processLoginForm');
+	return $form;
+}
 
 	public function processLoginForm($form, $values)
 	{
@@ -108,5 +121,116 @@ class DefaultPresenter extends \App\Module\Base\Presenters\BasePresenter
 			$form->addError($e->getMessage());
 		}
 	}
+
+	/**
+	* Sign-in form factory.
+	* @return Nette\Application\UI\Form
+	*/
+	protected function createComponentRegisterForm()
+	{
+		$form = new Nette\Application\UI\Form;
+		$form->setTranslator(
+			$this->translator->domain('front.auth.loginForm')
+		);
+		$form->addText('username', 'username')
+			->setRequired('requiredUsername');
+
+		$form->addPassword('password', 'password')
+			->setRequired('requiredPassword');
+
+		$form->addCheckbox('remember', 'remember');
+
+		$form->addSubmit('send', 'registerButton');
+
+		$form->onSuccess[] = array($this, 'processRegisterForm');
+		return $form;
+	}
+
+		public function processRegisterForm($form, $values)
+		{
+
+			// nasleduje copy and paste kodu z UserProfile.php, upraveny pro potreby zde (z duvodu rychleho otevreni sluchoher)
+			// pokud se k tomuto nekdo znovu dostane, udelat cisteji
+
+
+			$values = $form->getValues();
+
+			//        if (isset($values['username']) && $this->userRow->username) // what? don't know what the hell this meant
+			//            $values['username'] = $this->userRow->username;
+
+					$values['avatar_id'] = 1; // set default avatar
+
+					$defaultGroupId = 4; // TODO natvrdo skupina hoste
+
+						if (!$this->userModel->isUniqueColumn('username', $values['username']))
+						{
+								$this->onDuplicateUsername($values);
+								$this->redirect('this');
+						}
+
+						$insertData = array(
+								'username' => $values['username'],
+								'password' => $values['password'],
+								'email' => "", // vynechavame email z formu, nebudeme otravovat uzivatele
+								'realname' => $values['username'], // vynechavame realname z formu, nebudeme otravovat uzivatele
+								'avatar_id' => $values['avatar_id'],
+								'group_id' => $defaultGroupId
+						);
+
+						$result = $this->userModel->insert($insertData);
+
+						if ($result == true)
+						{
+							// pokusime se rovnou prihlasit
+
+								try {
+
+									if ($values->remember) {
+										$this->getUser()->setExpiration('14 days', FALSE);
+									} else {
+										$this->getUser()->setExpiration('90 minutes', TRUE);
+									}
+
+									$this->getUser()->login($values->username, $values->password);
+
+									unset($values['password'],$values['passwordVerify']);
+
+									$name = $this->user->identity->realname;
+
+									$this->flashMessage($this->translator->translate('front.auth.flash.login', NULL, array('name' => $name)), 'success');
+									$this->redirect(':Front:Default:default');
+
+								} catch (Nette\Security\AuthenticationException $e) {
+									$this->flashMessage($e->getMessage(), 'error');
+								$form->addError($e->getMessage());
+							}
+
+						} else {
+								$this->onRegFail($values);
+								$this->redirect('this');
+						}
+		}
+
+
+		public function setDefaultSignals()
+		{
+						$this->onDuplicateUsername[] = function($values) {
+										$msg = $this->translator->translate('front.user.flash.duplicateUsername', NULL, array('username' => $values['username']));
+										$this->getPresenter()->flashMessage($msg, 'error');
+						};
+
+						$this->onSuccessAdd[] = function($values) {
+										$msg = $this->translator->translate('front.user.flash.successAdd', NULL, array('username' => $values['username']));
+										$this->getPresenter()->flashMessage($msg, 'success');
+						};
+
+						$this->onRegFail[] = function($values) {
+										$msg = $this->translator->translate('front.user.flash.editFail', NULL, array('username' => $values['username']));
+										$this->getPresenter()->flashMessage($msg, 'error');
+						};
+
+						return $this;
+		}
+
 
 }
