@@ -2,9 +2,7 @@ log/*
 temp/*
 sessions/*
 node_modules/*
-# nette packages unignored
-# vendor/*
-# !vendor/others
+vendor/*
 
 .DS_Store
 !.gitignore
@@ -14,10 +12,6 @@ app/config/config.local.neon
 .idea/*
 @dropbox/*
 
-# Ignore everything in output
-@prace/out/*
-# Except thesis output
-!@prace/out/thesis.pdf
 *.mp3
 *.bak
 
