@@ -22,3 +22,4 @@ app/config/config.local.neon
 *.bak
 
 @misc/*
+.vscode/sftp.json
