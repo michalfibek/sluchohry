@@ -1,8 +1,8 @@
 # Sluchohry *(Eargames)*
 
-***Interaktivní e-learningová aplikace pro podporu hudební nauky na ZŠ.<br />Běží na https://sluchohry.cz/***
+***Interaktivní e-learningová aplikace pro podporu hudební nauky na ZŠ.<br />Implementováno v PHP / Nette framework.<br />Běží na https://sluchohry.cz/***
 
-*Interactive e-learning application for supporting music theory in primary schools.<br />Running at https://sluchohry.cz/*
+*Interactive e-learning application for supporting music theory in primary schools.<br />Implemented in PHP / Nette framework.<br />Running at https://sluchohry.cz/*
 
 --
 
