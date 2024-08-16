@@ -116,7 +116,7 @@ user:
 
 melodicCubes:
     stepCount: "tahů"
-    hint: "Posunuj kostkami tak, aby jsi dal dohromady původní skladbu. Zvažuj pečlivě každý tah, počítá se přehrávání i posun kostek!"
+    hint: "Posunuj kostkami tak, abys dal dohromady původní skladbu. Zvažuj pečlivě každý tah, počítá se přehrávání i posun kostek!"
     hintLong: "Ahůůůůj člověče. Tuto hru budeš možná znát - u vás se jmenuje puzzle. Vidíš před sebou kostky, pod kterými se nachází krátká část melodie. Tvým úkolem je přeskupit kostky tak, aby zazněla melodie ve správném pořadí. Přeskupování se provádí přetažením kostky na své nové místo. Čím těžší verze, tím více kostek. Tak hůůůůůrá do toho!"
 
     flash:
