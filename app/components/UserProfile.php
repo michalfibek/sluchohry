@@ -104,9 +104,9 @@ class UserProfile extends UI\Control
                 ->addRule(Form::EQUAL, 'Passwords do not match', $form['password']);
         }
 
-        $form->addText('email')
-            ->addRule(Form::EMAIL, 'E-mail format is incorrect.')
-            ->setRequired();
+        $form->addText('email');
+            // ->addRule(Form::EMAIL, 'E-mail format is incorrect.')
+            // ->setRequired();
 
         $form->addText('realname');
 
