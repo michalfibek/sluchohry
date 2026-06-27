@@ -17,6 +17,9 @@ class ProfilePresenter extends \App\Module\Base\Presenters\BasePresenter
     /** @inject @var Components\IUserProfileFactory */
     public $userProfile;
 
+    /** @inject @var Model\EventListeners\UserListener */
+    public $logger;
+
     /**
      * List all users
      *
@@ -39,6 +42,12 @@ class ProfilePresenter extends \App\Module\Base\Presenters\BasePresenter
     {
         $form = $this->userProfile->create();
         $form->setDefaultSignals();
+        $form->onSuccessAdd[] = function ($values) {
+            $this->logger->onUserProfileSuccessAdd($this->user, $values);
+        };
+        $form->onSuccessEdit[] = function ($values) {
+            $this->logger->onUserProfileSuccessEdit($this->user, $values);
+        };
         $form->onReturnAction[] = function() {
             $this->redirect(':Front:Default:');
         };

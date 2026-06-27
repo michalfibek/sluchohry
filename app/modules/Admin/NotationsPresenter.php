@@ -6,8 +6,8 @@ use App\Module\Base\Presenters\BasePresenter;
 use Nette,
     App\Model,
     Nette\Application\UI\Form,
-    Grido,
-    Grido\Grid,
+    Contributte\Datagrid\Datagrid,
+    Contributte\Datagrid\Column\Action\Confirmation\StringConfirmation,
     Tracy\Debugger;
 
 
@@ -136,7 +136,7 @@ class NotationsPresenter extends BasePresenter
      */
     public function handleDelete($id)
     {
-        if (!$this->user->isAllowed($this->name, 'delete')) {
+        if (!$this->user->isAllowed($this->getName(), 'delete')) {
             $this->flashMessage($this->translator->translate('front.auth.flash.actionForbidden'), 'error');
         }
 
@@ -190,33 +190,33 @@ class NotationsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = new Grid();
+        $grid = new Datagrid();
         $this->addComponent($grid, $name);
-        $grid->setModel($this->notation->getAll());
+        $grid->setDataSource($this->notation->getAll());
+        $grid->setMultiSortEnabled();
 
         $grid->setTranslator($this->translator);
 
         $grid->addColumnNumber('id', 'admin.common.id')
             ->setSortable();
-//			->setFilterText();
 
         $grid->addColumnText('artist', 'admin.notations.songArtist')
-            ->setSortable()
-            ->setFilterText();
+            ->setSortable();
+        $grid->addFilterText('artist', 'admin.notations.songArtist');
 
         $grid->addColumnText('title', 'admin.notations.songTitle')
-            ->setSortable()
-            ->setFilterText();
+            ->setSortable();
+        $grid->addFilterText('title', 'admin.notations.songTitle');
 
         $grid->addColumnText('genre_id', 'admin.notations.genre')
             ->setSortable()
-            ->setCustomRender(function($item) {
+            ->setRenderer(function($item) {
                 return $this->genre->getById($item->genre_id)->name;
             });
 
         $grid->addColumnText('length', 'admin.notations.length')
-            ->setSortable()
-            ->setFilterText();
+            ->setSortable();
+        $grid->addFilterText('length', 'admin.notations.length');
 
         $genres[''] = '';
         foreach ($this->genre->getAll() as $genre)
@@ -226,7 +226,7 @@ class NotationsPresenter extends BasePresenter
 
         $grid->addColumnText('games', 'admin.notations.games')
             ->setSortable()
-            ->setCustomRender(function($item) {
+            ->setRenderer(function($item) {
                 $games = $this->game->getByNotation($item->id)->fetchPairs(NULL, 'game_id');
                 $render = '';
                 foreach ($games as $g) {
@@ -238,29 +238,30 @@ class NotationsPresenter extends BasePresenter
                 }
                 return $render;
             })
-            ->setFilterText();
+            ->setTemplateEscaping(false);
+        $grid->addFilterText('games', 'admin.notations.games');
 
-        $grid->addColumnDate('create_time', 'admin.common.createTime')
-            ->setDateFormat('d.m.Y H:i:s')
-            ->setSortable()
-            ->setFilterDateRange();
+        $grid->addColumnDateTime('create_time', 'admin.common.createTime')
+            ->setFormat('d.m.Y H:i:s')
+            ->setSortable();
+        $grid->addFilterDateRange('create_time', 'admin.common.createTime');
 
-        $grid->addColumnDate('update_time', 'admin.common.updateTime')
-            ->setDateFormat('d.m.Y H:i:s')
-            ->setSortable()
-            ->setFilterDateRange();
+        $grid->addColumnDateTime('update_time', 'admin.common.updateTime')
+            ->setFormat('d.m.Y H:i:s')
+            ->setSortable();
+        $grid->addFilterDateRange('update_time', 'admin.common.updateTime');
 
-        $grid->addActionHref('edit', 'admin.common.edit')
-            ->setIcon('fa fa-pencil')
-            ->setDisable(function ($item) {
-                return (!$this->user->isAllowed($this->name, 'edit'));
+        $grid->addAction('edit', 'admin.common.edit')
+            ->setIcon('pencil')
+            ->setRenderCondition(function ($item) {
+                return $this->user->isAllowed($this->getName(), 'edit');
             });
 
-        $grid->addActionHref('delete', 'admin.common.delete', 'delete!')
-            ->setIcon('fa fa-remove')
-            ->setConfirm('Do you really want to delete this group?')
-            ->setDisable(function ($item) {
-                return (!$this->user->isAllowed($this->name, 'delete'));
+        $grid->addAction('delete', 'admin.common.delete', 'delete!')
+            ->setIcon('remove')
+            ->setConfirmation(new StringConfirmation('Do you really want to delete this group?'))
+            ->setRenderCondition(function ($item) {
+                return $this->user->isAllowed($this->getName(), 'delete');
             });
 
         $grid->setDefaultSort(array(

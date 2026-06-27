@@ -108,7 +108,9 @@ protected function createComponentLoginForm()
 
 		try {
 			$this->getUser()->login($values->username, $values->password);
-			$this->restoreRequest($this->backlink);
+			if ($this->backlink) {
+				$this->restoreRequest($this->backlink);
+			}
 			$name = $this->user->identity->realname;
 			$this->flashMessage($this->translator->translate('front.auth.flash.login', NULL, array('name' => $name)), 'success');
 			$this->redirect(':Front:Default:default');

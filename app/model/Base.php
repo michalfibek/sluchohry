@@ -16,7 +16,7 @@ abstract class Base
     protected $tableName;
 
 
-    public function __construct(\Nette\Database\Context $connection)
+    public function __construct(\Nette\Database\Explorer $connection)
     {
         $this->db = $connection;
         $this->tableName = $this->tableNameByClass(get_class($this));

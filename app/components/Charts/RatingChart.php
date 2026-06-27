@@ -8,8 +8,7 @@ use Nette,
     Nette\Security\Authorizator,
     Nette\Security\User,
     App\Model,
-    Grido\Grid,
-    Grido\Components\Filters,
+    Contributte\Datagrid\Datagrid,
     Tracy\Debugger;
 
 class RatingChart extends UI\Control
@@ -71,12 +70,10 @@ class RatingChart extends UI\Control
 
     protected function createComponentRatingChart($name)
     {
-        $grid = new Grid();
+        $grid = new Datagrid();
         $this->addComponent($grid, $name);
-        $grid->setModel($this->score->getListByGame($this->gameId, $this->difficultyId));
-
-//        $grid->setFilterRenderType(Filter::RENDER_INNER);
-        $grid->setTemplateFile(__DIR__.'/simpleGrid.latte');
+        $grid->setPrimaryKey('user_id');
+        $grid->setDataSource($this->score->getListByGame($this->gameId, $this->difficultyId));
 
         $grid->addColumnText('realname', 'front.ratings.name');
         $grid->addColumnNumber('score', 'front.ratings.score');
@@ -86,16 +83,6 @@ class RatingChart extends UI\Control
         $grid->setDefaultPerPage(15);
 
         $grid->setTranslator($this->translator);
-
-//        $grid->addColumnDate('update_time', 'Last update')
-//            ->setDateFormat('d.m.Y H:i');
-
-//        $grid->addActionHref('delete', 'Delete', 'delete!')
-//            ->setIcon('fa fa-remove')
-//            ->setConfirm('Do you really want to delete this user\'s score record?')
-//            ->setDisable(function ($item) {
-//                return !$this->user->isAllowed($this->presenter->getName(), 'delete');
-//            });
 
         $grid->setRowCallback(function ($item, $tr) {
             if ($item['user_id'] == $this->user->getId())

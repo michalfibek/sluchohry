@@ -23,6 +23,9 @@ abstract class BaseGamePresenter extends BasePresenter
     /** @inject @var Model\Score */
     public $score;
 
+    /** @inject @var Model\EventListeners\UserListener */
+    public $logger;
+
     /** @var \Nette\Http\SessionSection */
     protected $gameHistory;
 
@@ -45,6 +48,16 @@ abstract class BaseGamePresenter extends BasePresenter
         }
 
         $this->gameHistory = $this->getSession(__CLASS__); // get session by specific game name
+
+        $this->onGameStart[] = function ($result) {
+            $this->logger->onGameStart($this->user, $result);
+        };
+        $this->onGameEnd[] = function ($result) {
+            $this->logger->onGameEnd($this->user, $result);
+        };
+        $this->onGameForceEnd[] = function ($result) {
+            $this->logger->onGameForceEnd($this->user, $result);
+        };
     }
 
     protected function historyAdd($recordId = NULL, $recordKey = NULL)

@@ -22,10 +22,10 @@ class Score extends Base
     private $game;
 
     /**
-     * @param Nette\Database\Context $db
+     * @param Nette\Database\Explorer $db
      * @param Game $game
      */
-    public function __construct(Nette\Database\Context $db, Game $game)
+    public function __construct(Nette\Database\Explorer $db, Game $game)
     {
         parent::__construct($db);
         $this->game = $game;

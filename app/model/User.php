@@ -12,7 +12,7 @@ class User extends Base
     /** @var Passwords */
     private $passwords;
 
-    public function __construct(\Nette\Database\Context $connection, Passwords $passwords)
+    public function __construct(\Nette\Database\Explorer $connection, Passwords $passwords)
     {
         parent::__construct($connection);
         $this->passwords = $passwords;

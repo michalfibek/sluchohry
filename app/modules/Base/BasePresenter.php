@@ -22,18 +22,15 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @inject @var \App\Model\Avatar */
 	public $avatar;
 
-
-	public $onStartup = array();
-
 	protected function startup()
 	{
 		parent::startup();
 
 		setlocale(LC_ALL, 'cs_CZ.UTF-8');
 
-		if (!in_array($this->name, array('Front:Default', 'Base:Error'))) {
+		if (!in_array($this->getName(), array('Front:Default', 'Base:Error'))) {
 			if (!$this->user->isLoggedIn()) {
-				if ($this->user->getLogoutReason() === Nette\Security\IUserStorage::INACTIVITY) {
+				if ($this->user->getLogoutReason() === Nette\Security\User::INACTIVITY) {
 					$this->flashMessage('front.auth.flash.sessionTimeout');
 				}
 
@@ -42,7 +39,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 				));
 
 			} else {
-				$resource = $this->name;
+				$resource = $this->getName();
 				$privilege = $this->getAction();
 
 //				Debugger::barDump($this->getAction(), 'action');
@@ -81,9 +78,9 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	 * Enables song duration formatting latte filter.
 	 *
 	 */
-	protected function createTemplate(): Nette\Application\UI\Template
+	protected function createTemplate(?string $class = null): Nette\Application\UI\Template
 	{
-		$template = parent::createTemplate();
+		$template = parent::createTemplate($class);
 		$template->addFilter('songTime', function ($s, $precision = 'seconds') {
 			return $this->getSongTimeFormat($s, $precision);
 		});
@@ -125,7 +122,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 	public function getModulePrefix()
 	{
-		$pos = strrpos($this->name, ':');
+		$pos = strrpos($this->getName(), ':');
 		if (is_int($pos)) {
 			return explode(':', $this->getPresenter()->getName())[0];
 		}

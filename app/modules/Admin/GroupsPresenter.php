@@ -5,8 +5,8 @@ namespace App\Module\Admin\Presenters;
 use Nette,
 	App\Model,
 	Nette\Application\UI\Form,
-	Grido,
-	Grido\Grid,
+	Contributte\Datagrid\Datagrid,
+	Contributte\Datagrid\Column\Action\Confirmation\StringConfirmation,
 	Tracy\Debugger;
 
 
@@ -41,52 +41,37 @@ class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	protected function createComponentGrid($name)
 	{
-		$grid = new Grid();
+		$grid = new Datagrid();
 		$this->addComponent($grid, $name);
-		$grid->setModel($this->group->getAll());
+		$grid->setDataSource($this->group->getAll());
 
 		$grid->setTranslator($this->translator);
 
-		$grid->setEditableColumns();
-//		$grid->setTemplateFile(__DIR__.'/templates/components/simpleGrid.latte');
-
-//		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_OUTER);
-
 		$grid->addColumnNumber('id', 'admin.common.id')
 			->setSortable();
-//			->setFilterText();
 
 		$grid->addColumnText('name', 'admin.groups.name')
-			->setSortable()
-			->setFilterText();
+			->setSortable();
+		$grid->addFilterText('name', 'admin.groups.name');
 
 		$grid->addColumnText('role_id', 'admin.groups.role')
 			->setSortable()
-			->setCustomRender(function($item) {
+			->setRenderer(function($item) {
 				return $this->group->getRoleById($item->role_id)->name;
-			})
-			->setFilterText();
+			});
+		$grid->addFilterText('role_id', 'admin.groups.role');
 
-//		$grid->addColumnText('userCount', 'User count')
-//			->setSortable()
-//			->setFilterText();
-
-//		$grid->addColumnDate('create_time', 'Created')
-//			->setDateFormat('d.m.Y H:i:s')
-//			->setSortable()
-//			->setFilterDateRange();
-
-		$grid->addActionHref('edit', 'admin.common.edit')
-			->setIcon('fa fa-pencil')
-			->setDisable(function ($item) {
-				return (!$this->user->isAllowed($this->name, 'edit'));
+		$grid->addAction('edit', 'admin.common.edit')
+			->setIcon('pencil')
+			->setRenderCondition(function ($item) {
+				return $this->user->isAllowed($this->getName(), 'edit');
 			});
 
-		$grid->addActionHref('delete', 'admin.common.delete', 'delete!')
-			->setIcon('fa fa-remove')
-			->setConfirm('Do you really want to delete this group?')
-			->setDisable(function ($item) {
-				return (!$this->user->isAllowed($this->name, 'delete'));
+		$grid->addAction('delete', 'admin.common.delete', 'delete!')
+			->setIcon('remove')
+			->setConfirmation(new StringConfirmation('Do you really want to delete this group?'))
+			->setRenderCondition(function ($item) {
+				return $this->user->isAllowed($this->getName(), 'delete');
 			});
 
 		$grid->setDefaultSort(array(
@@ -130,7 +115,7 @@ class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 	 */
 	public function handleDelete($id)
 	{
-		if (!$this->user->isAllowed($this->name, 'delete')) {
+		if (!$this->user->isAllowed($this->getName(), 'delete')) {
 			$this->flashMessage($this->translator->translate('front.auth.flash.actionForbidden'), 'error');
 		}
 		$this->group->deleteById($id);

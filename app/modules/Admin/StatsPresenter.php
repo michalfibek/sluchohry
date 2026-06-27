@@ -6,8 +6,7 @@ use Nette,
 	App\Model,
 	App\Model\Event,
 	App\Components,
-	Grido,
-	Grido\Grid,
+	Contributte\Datagrid\Datagrid,
 	Tracy\Debugger;
 
 
@@ -36,7 +35,7 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 		public function actionDefault()
 	{
-		if (!$this->user->isAllowed($this->name, 'default'))	{
+		if (!$this->user->isAllowed($this->getName(), 'default'))	{
 			$this->flashMessage('Access denied.', 'error');
 			$this->redirect(':Admin:Default');
 		}
@@ -76,22 +75,25 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	protected function createComponentScoreGrid($name)
 	{
-		$grid = new Grid();
+		$grid = new Datagrid();
 		$this->addComponent($grid, $name);
-		$grid->setModel($this->scoreModel->getScoreView());
+		$grid->setPrimaryKey('user_id');
+		$grid->setDataSource($this->scoreModel->getScoreView());
+		// view_scores has no real primary key, which makes Nette\Database's
+		// internal row-cache (triggered by LIMIT/pagination) throw; the old
+		// Grido grid never paginated this view either, so keep it unpaginated.
+		$grid->setPagination(false);
 
 		$grid->setTranslator($this->translator);
 
-//		$grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
-
 		$grid->addColumnText('realname', 'admin.stats.realName')
-			->setCustomRender(function($item) {
+			->setRenderer(function($item) {
 				$url = $this->link('User', $item->user_id);
 				return '<a href="'. $url . '">' . $item->realname . '</a>';
 			})
-			->setSortable()
-			->setFilterText()
-			->setSuggestion('realname');
+			->setTemplateEscaping(false)
+			->setSortable();
+		$grid->addFilterText('realname', 'admin.stats.realName');
 
 		$grid->addColumnText('score_easy', 'admin.stats.scoreSum.easy')
 			->setSortable();
@@ -105,7 +107,7 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		$groupList = $this->groupModel->getAll()->fetchPairs('id', 'name');
 
 		$grid->addColumnText('user_group', 'admin.stats.groups')
-			->setCustomRender(function($item) {
+			->setRenderer(function($item) {
 				$groups = $this->userModel->getUserGroups($item['user_id']);
 
 				foreach ($groups as $g) {
@@ -113,17 +115,16 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 				}
 
 				return implode(', ', $renderGroups);
-			})
-			->setFilterSelect($groupList)
-			->setWhere(function($value, \Nette\Database\Table\Selection $connection) {
+			});
+
+		$grid->addFilterSelect('user_group', 'admin.stats.groups', $groupList, 'user_group')
+			->setCondition(function (\Nette\Database\Table\Selection $connection, $value) {
 				$usersFiltered = $this->groupModel->getById($value)->related('user')->fetchPairs(NULL, 'user_id');
-				$value
-					? $connection->where('user_id IN' , $usersFiltered)
-					: NULL;
-			});;
+				$connection->where('user_id IN', $usersFiltered);
+			});
 
 		$grid->addColumnText('play_count', 'admin.stats.totalPlays')
-			->setCustomRender(function($item) {
+			->setRenderer(function($item) {
 				$playCount = $this->scoreModel->getPlayCountPerUser($item['user_id']);
 
 				foreach ($playCount as $cnt) {

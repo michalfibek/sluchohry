@@ -13,9 +13,9 @@ class Avatar extends Base
 
     /**
      * @param $saveDir string
-     * @param Nette\Database\Context $db
+     * @param Nette\Database\Explorer $db
      */
-    public function __construct($saveDir, Nette\Database\Context $db)
+    public function __construct($saveDir, Nette\Database\Explorer $db)
     {
         parent::__construct($db);
         $this->saveDir = $saveDir;

@@ -10,7 +10,7 @@
 <h1 n:block="title">{_admin.groups.title}</h1>
 </header>
 
-{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn item-new btn-primary"><span class="fa fa-users"></span> {_admin.groups.addNew}</a>{/if}
+{if $user->isAllowed($presenter->getName(), 'add')}<a n:href="add" class="btn item-new btn-primary"><span class="fa fa-users"></span> {_admin.groups.addNew}</a>{/if}
 
 <div class="item-list" id="group-list">
 {control grid}

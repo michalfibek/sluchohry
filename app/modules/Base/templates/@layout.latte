@@ -28,10 +28,10 @@
 
 	{block styles}
 	{*<link rel="stylesheet" href="{$basePath}/assets/css/bootstrap.css">*}
-	{ifset $initGrid}<link rel="stylesheet" href="{$basePath}/assets/vendor/grido/client-side/grido.css">{/ifset}
+	{ifset $initGrid}<link rel="stylesheet" href="{$basePath}/assets/vendor/contributte-datagrid/datagrid.css">{/ifset}
 	<link rel="stylesheet" href="{$basePath}/style.css?v=20202603">
 	<link rel="stylesheet" href="{$basePath}/assets/vendor/font-awesome/css/font-awesome.min.css">
-	{if $presenter->name == 'Front:Default'}<link rel="stylesheet" href="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">{/if}
+	{if $presenter->getName() == 'Front:Default'}<link rel="stylesheet" href="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.css">{/if}
 	{ifset $initNoUiSlider}<link rel="stylesheet" href="{$basePath}/assets/vendor/nouislider/distribute/jquery.nouislider.min.css">{/ifset}
 	{ifset $initHighlightTextarea}<link rel="stylesheet" href="{$basePath}/assets/vendor/jquery-highlighttextarea/jquery.highlighttextarea.min.css">{/ifset}
 	{/block}
@@ -46,7 +46,7 @@
 
 <body>
 
-	<div class="page-wrap{if $presenter->name == 'Front:Default'} home-game-page{/if}">
+	<div class="page-wrap{if $presenter->getName() == 'Front:Default'} home-game-page{/if}">
 
 		{if $user->loggedIn}
 		{include 'components/header.latte'}
@@ -69,7 +69,7 @@
 
 	{block scripts}
 
-	{if $presenter->name == 'Front:Default'}<script src="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>{/if}
+	{if $presenter->getName() == 'Front:Default'}<script src="{$basePath}/assets/vendor/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>{/if}
     <script src="{$basePath}/assets/vendor/nette.ajax.js/nette.ajax.js"></script>
 	<script src="{$basePath}/assets/vendor/jquery.transit/jquery.transit.js"></script>
 	<script src="{$basePath}/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -78,7 +78,6 @@
 	{ifset $initHowler}<script src="{$basePath}/assets/vendor/howler/howler.min.js"></script>{/ifset}
 	<script src="{$basePath}/assets/js/netteForms.js"></script>
 	<script src="{$basePath}/assets/js/main.js"></script>
-	{ifset $initGrid}<script src="{$basePath}/assets/vendor/grido/client-side/grido.js"></script>{/ifset}
 	{ifset $initJQTouchPunch}<script src="{$basePath}/assets/vendor/jqueryui-touch-punch/jquery.ui.touch-punch.min.js"></script>{/ifset}
 	{ifset $initNoUiSlider}<script src="{$basePath}/assets/vendor/nouislider/distribute/jquery.nouislider.all.min.js"></script>{/ifset}
 	{ifset $initHighlightTextarea}<script src="{$basePath}/assets/vendor/jquery-highlighttextarea/jquery.highlighttextarea.min.js"></script>{/ifset}

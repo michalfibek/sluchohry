@@ -23,13 +23,7 @@ session:
 	savePath: %appDir%/../sessions # custom session path to fix php maxlifetime feature in debian-based systems
 
 extensions:
-    events: Kdyby\Events\DI\EventsExtension
     translation: Contributte\Translation\DI\TranslationExtension
-    fixEventBindings: App\DI\FixEventBindingsExtension
-
-events:
-#    globalDispatchFirst: on
-    debugger: on # off
 
 translation:
     locales:
@@ -38,6 +32,10 @@ translation:
         whitelist: [cs, en]
     dirs:
         - %appDir%/lang
+    localeResolvers:
+        - Contributte\Translation\LocalesResolvers\Router
+        - Contributte\Translation\LocalesResolvers\Parameter
+        - Contributte\Translation\LocalesResolvers\Header
 
 services:
 	routerFactory: App\RouterFactory
@@ -48,7 +46,6 @@ services:
 
 	logger:
 		class: App\Model\EventListeners\UserListener
-		tags: [kdyby.subscriber]
 
 	userProfileFactory:
 		implement: App\Components\IUserProfileFactory
@@ -71,4 +68,10 @@ services:
 	- App\Services\UploadHandler
 	- App\Services\SongTagHandler
 	- \getID3
+
+decorator:
+	Nette\Security\User:
+		setup:
+			- '$onLoggedIn[]' = [@logger, 'onLoggedIn']
+			- '$onLoggedOut[]' = [@logger, 'onLoggedOut']
 

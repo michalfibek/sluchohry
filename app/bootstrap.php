@@ -2,6 +2,9 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+// App ships Font Awesome 4 ("fa fa-x"), not the "fas fa-x" the package defaults to.
+Contributte\Datagrid\Datagrid::$iconPrefix = 'fa fa-';
+
 $configurator = new Nette\Bootstrap\Configurator;
 
 // PresentersLocator extension:

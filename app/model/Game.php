@@ -11,9 +11,9 @@ use Tracy\Debugger;
 class Game extends Base
 {
     /**
-     * @param Nette\Database\Context $db
+     * @param Nette\Database\Explorer $db
      */
-    public function __construct(Nette\Database\Context $db)
+    public function __construct(Nette\Database\Explorer $db)
     {
         parent::__construct($db);
     }

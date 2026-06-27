@@ -28,13 +28,13 @@ class Song extends Base
     private $allowedExtensions;
 
     /**
-     * @param Nette\Database\Context $db
+     * @param Nette\Database\Explorer $db
      * @param $uploadDir
      * @param $saveDir
      * @param Services\UploadHandler $uploadHandler
      * @param Services\SongTagHandler $tagHandler
      */
-    public function __construct($uploadDir, $saveDir, Nette\Database\Context $db, Services\UploadHandler $uploadHandler, Services\SongTagHandler $tagHandler)
+    public function __construct($uploadDir, $saveDir, Nette\Database\Explorer $db, Services\UploadHandler $uploadHandler, Services\SongTagHandler $tagHandler)
     {
         parent::__construct($db);
         $this->uploadDir = $uploadDir;

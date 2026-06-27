@@ -10,7 +10,7 @@
 <h1 n:block="title">{_admin.songs.title}</h1>
 </header>
 
-{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-upload"></span> {_admin.songs.addNew}</a>{/if}
+{if $user->isAllowed($presenter->getName(), 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-upload"></span> {_admin.songs.addNew}</a>{/if}
 
 <div class="item-list" id="song-list">
 {control grid}

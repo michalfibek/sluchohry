@@ -8,7 +8,7 @@
     			<div class="arrow bottom right"></div>
     		</div>
 		</div>
-		{if $user->loggedIn && $presenter->name == 'Front:Default'}
+		{if $user->loggedIn && $presenter->getName() == 'Front:Default'}
 
 		<div class="col-xs-2 flash-avatar">
 			<a n:href=":Front:Profile:#edit-avatars"><img src="{$avatarDir}/{$userAvatar}.svg"></a>

@@ -7,7 +7,7 @@ use Nette,
     App\Model,
     Tracy\Debugger;
 
-class UserListener implements \Kdyby\Events\Subscriber
+class UserListener
 {
     use Nette\SmartObject;
 
@@ -16,53 +16,28 @@ class UserListener implements \Kdyby\Events\Subscriber
     /** @var User */
     private $userModel;
 
-    /** @var Nette\Security\User */
-    private $user;
-
     /** @var Model\Score */
     private $score;
 
-    function __construct(Nette\Security\User $user, Model\Event $event, Model\User $userModel)
+    function __construct(Model\Event $event, Model\User $userModel)
     {
         $this->event = $event;
         $this->userModel = $userModel;
-        $this->user = $user;
     }
 
-    public function getSubscribedEvents()
+    public function onGameStart(Nette\Security\User $user, $result)
     {
-        return array(
-            'App\Module\Base\Presenters\BaseGamePresenter::onGameStart',
-            'App\Module\Base\Presenters\BaseGamePresenter::onGameEnd',
-            'App\Module\Base\Presenters\BaseGamePresenter::onGameForceEnd',
-            'App\Components\UserProfile::onSuccessAdd' => 'onUserProfileSuccessAdd',
-            'App\Components\UserProfile::onSuccessEdit' => array('onUserProfileSuccessEdit', 30),
-            'App\Components\UserProfile::onEditFail' => 'onUserProfileEditFail',
-            'App\Components\UserProfile::onNoChange' => 'onUserProfileNoChange',
-            'App\Components\UserProfile::onDuplicateEmail' => 'onUserProfileDuplicateEmail',
-            'App\Components\UserProfile::onDuplicateUsername' => 'onUserProfileDuplicateUsername',
-            'App\Components\UserProfile::onAccessDenied' => 'onUserProfileAccessDenied',
-            'App\Components\UserProfile::onNotFound' => 'onUserProfileNotFound',
-//            'Nette\Application\Application::onError' => 'onError',
-//            'App\Module\Base\Presenters\BasePresenter::onStartup' => 'onStartup',
-            'Nette\Security\User::onLoggedIn',
-            'Nette\Security\User::onLoggedOut'
-        );
+        $this->event->saveGameStart($user, $result);
     }
 
-    public function onGameStart($result)
+    public function onGameEnd(Nette\Security\User $user, $result)
     {
-        $this->event->saveGameStart($this->user, $result);
+        $this->event->saveGameEndResult($user, $result, true);
     }
 
-    public function onGameEnd($result)
+    public function onGameForceEnd(Nette\Security\User $user, $result)
     {
-        $this->event->saveGameEndResult($this->user, $result, true);
-    }
-
-    public function onGameForceEnd($result)
-    {
-        $this->event->saveGameEndResult($this->user, $result, false);
+        $this->event->saveGameEndResult($user, $result, false);
     }
 
     public function onStartup(\App\Module\Base\Presenters\BasePresenter $presenter)
@@ -74,24 +49,24 @@ class UserListener implements \Kdyby\Events\Subscriber
     {
 //        Debugger::barDump('Error: ' . $e->getMessage());
     }
-    public function onLoggedIn()
+    public function onLoggedIn(Nette\Security\User $user)
     {
-        $this->userModel->updateById($this->user->getId(), array('last_login_time' => new Nette\Utils\DateTime));
-        $this->event->saveUserLoggedIn($this->user);
+        $this->userModel->updateById($user->getId(), array('last_login_time' => new Nette\Utils\DateTime));
+        $this->event->saveUserLoggedIn($user);
     }
-    public function onLoggedOut()
+    public function onLoggedOut(Nette\Security\User $user)
     {
-        $this->event->saveUserLoggedOut($this->user);
-    }
-
-    public function onUserProfileSuccessAdd($values)
-    {
-        $this->event->saveUserProfileCreated($this->user, $values);
+        $this->event->saveUserLoggedOut($user);
     }
 
-    public function onUserProfileSuccessEdit($values)
+    public function onUserProfileSuccessAdd(Nette\Security\User $user, $values)
     {
-        $this->event->saveUserProfileEdited($this->user, $values);
+        $this->event->saveUserProfileCreated($user, $values);
+    }
+
+    public function onUserProfileSuccessEdit(Nette\Security\User $user, $values)
+    {
+        $this->event->saveUserProfileEdited($user, $values);
     }
 
     public function onUserProfileEditFail($values)

@@ -7,8 +7,7 @@ use Nette,
     App\Model\Event,
     Nette\Application\UI\Form,
     Tracy\Debugger,
-    Grido,
-    Grido\Grid;
+    Contributte\Datagrid\Datagrid;
 
 
 /**
@@ -48,44 +47,41 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     /**
      * @param $name
-     * @return Grid
+     * @return Datagrid
      */
 
     protected function createComponentGridAdvanced($name)
     {
-        $grid = new Grid();
+        $grid = new Datagrid();
         $this->addComponent($grid, $name);
-        $grid->setModel($this->event->getAllView());
+        $grid->setDataSource($this->event->getAllView());
 
         $grid->setTranslator($this->translator);
 
-//        $grid->setFilterRenderType(Grido\Components\Filters\Filter::RENDER_INNER);
-
-//        $grid->addColumnNumber('id','id')
-//            ->setSortable();
-
-        $grid->addColumnDate('event_time', 'admin.events.advanced.title')
-            ->setCustomRender(function($item) {
+        $grid->addColumnDateTime('event_time', 'admin.events.advanced.title')
+            ->setRenderer(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->event_time . '</a>';
             })
-            ->setDateFormat('d.m.Y H:i:s')
-            ->setSortable()
-            ->setFilterDateRange();
+            ->setTemplateEscaping(false)
+            ->setSortable();
+        $grid->addFilterDateRange('event_time', 'admin.events.advanced.title');
 
         $grid->addColumnText('username', 'admin.events.advanced.username')
-            ->setCustomRender(function($item) {
+            ->setRenderer(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->username . '</a>';
             })
-            ->setSortable()
-            ->setFilterText();
+            ->setTemplateEscaping(false)
+            ->setSortable();
+        $grid->addFilterText('username', 'admin.events.advanced.username');
 
         $grid->addColumnText('event_name', 'admin.events.advanced.evtClass')
-            ->setCustomRender(function($item) {
+            ->setRenderer(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->event_name . '</a>';
             })
+            ->setTemplateEscaping(false)
             ->setSortable();
 
         $eventClassNames[''] = '';
@@ -95,12 +91,13 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
         $grid->addFilterSelect('event_name', 'admin.events.advanced.evtClass', $eventClassNames);
 
         $grid->addColumnText('event_data', 'admin.events.advanced.evtData')
-            ->setCustomRender(function($item) {
+            ->setRenderer(function($item) {
                 $url = $this->link('View', $item->id);
                 return '<a href="'. $url . '">' . $item->event_data . '</a>';
             })
-            ->setSortable()
-            ->setFilterText();
+            ->setTemplateEscaping(false)
+            ->setSortable();
+        $grid->addFilterText('event_data', 'admin.events.advanced.evtData');
 
         $grid->setDefaultSort(array(
             'event_time' => 'DESC'

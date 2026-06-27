@@ -10,7 +10,7 @@
 <h1 n:block="title">{_admin.users.title}</h1>
 </header>
 
-{if $user->isAllowed($presenter->name, 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-user-plus"></span> {_admin.users.addNew}</a>{/if}
+{if $user->isAllowed($presenter->getName(), 'add')}<a n:href="add" class="btn btn-primary item-new"><span class="fa fa-user-plus"></span> {_admin.users.addNew}</a>{/if}
 {if $user->isAllowed('Admin:Stats', 'default')}<a n:href="Stats:" class="btn btn-default item-secondary"><span class="fa fa-bar-chart"></span> {_admin.stats.title}</a>{/if}
 
 <div class="item-list" id="user-list">

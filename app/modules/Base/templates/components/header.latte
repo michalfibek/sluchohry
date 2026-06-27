@@ -57,7 +57,7 @@
 		</div>
 
 		<div class="container">
-			{if $presenter->name != 'Front:Default'}
+			{if $presenter->getName() != 'Front:Default'}
 			<div class="back-nav-block">
 				<a class="btn btn-default btn-lg back-nav-button" n:href="$backlink">
 					<i class="fa fa-arrow-left"></i> Zpět{* Hlavní nabídka*}

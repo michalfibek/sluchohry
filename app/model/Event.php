@@ -41,7 +41,7 @@ class Event extends Base {
 
     private $httpRequest;
 
-    public function __construct(Nette\Database\Context $db, Nette\Http\Request $httpRequest)
+    public function __construct(Nette\Database\Explorer $db, Nette\Http\Request $httpRequest)
     {
         parent::__construct($db);
         $this->httpRequest = $httpRequest;

@@ -5,9 +5,7 @@ namespace App\Module\Front\Presenters;
 use Nette,
     Nette\Application\UI\Multiplier,
     App\Model,
-    App\Components,
-    Grido\Grid,
-    Grido\Components\Filters\Filter;
+    App\Components;
 use Tracy\Debugger;
 
 
