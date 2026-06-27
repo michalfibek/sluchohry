@@ -1,12 +1,10 @@
 FROM php:8.4-apache
 
-RUN set -eux; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends \
-      libpng-dev libjpeg62-turbo-dev libfreetype6-dev libicu-dev libzip-dev libonig-dev unzip git; \
-    rm -rf /var/lib/apt/lists/*; \
-    docker-php-ext-configure gd --with-freetype --with-jpeg; \
-    docker-php-ext-install pdo_mysql mysqli mbstring gd intl zip
+# Installs prebuilt extension binaries instead of compiling from source
+# (docker-php-ext-install always compiles, which was taking minutes per
+# extension and timing out Coolify's build step).
+COPY --from=mlocati/php-extension-installer:2 /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions pdo_mysql mysqli mbstring gd intl zip
 
 RUN { \
       echo 'memory_limit = 256M'; \
