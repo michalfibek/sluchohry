@@ -18,3 +18,7 @@ app/config/config.local.neon
 @misc/*
 .vscode/sftp.json
 stats/*
+
+.env
+docker/db-init/*
+!docker/db-init/.gitkeep

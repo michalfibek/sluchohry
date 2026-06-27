@@ -1,0 +1,39 @@
+FROM php:7.0-apache
+
+# php:7.0-apache ships with Debian stretch, which is EOL — point apt at the
+# archived repos so package installs still work (same trick as production).
+RUN { \
+      echo 'deb http://archive.debian.org/debian stretch main'; \
+      echo 'deb http://archive.debian.org/debian-security stretch/updates main'; \
+    } > /etc/apt/sources.list \
+  && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get -o Acquire::AllowInsecureRepositories=true update \
+  && apt-get install -y --no-install-recommends --allow-unauthenticated \
+       libpng-dev libjpeg62-turbo-dev libfreetype6-dev libicu-dev libzip-dev unzip git \
+  && docker-php-ext-configure gd --with-freetype-dir=/usr --with-jpeg-dir=/usr \
+  && docker-php-ext-install pdo_mysql mysqli mbstring gd intl zip \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN { \
+      echo 'memory_limit = 256M'; \
+      echo 'upload_max_filesize = 20M'; \
+      echo 'post_max_size = 20M'; \
+      echo 'display_errors = On'; \
+    } > /usr/local/etc/php/conf.d/zz-sluchohry.ini
+
+# App's docroot is www/, not the repo root
+RUN sed -ri -e 's!/var/www/html!/var/www/html/www!g' /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
+  && sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf \
+  && a2enmod rewrite
+
+# Composer 2.3+ dropped support for PHP <7.2.5, so pin to the 2.2 LTS line
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
+
+COPY docker/local-entrypoint.sh /usr/local/bin/local-entrypoint.sh
+RUN chmod +x /usr/local/bin/local-entrypoint.sh
+
+ENTRYPOINT ["local-entrypoint.sh"]
+CMD ["apache2-foreground"]
