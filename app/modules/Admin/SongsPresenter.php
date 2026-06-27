@@ -52,7 +52,7 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 		}
 		$form->addSubmit('update'); // default
 		$form->addSubmit('delete')
-			->onClick[] = \callback($this, 'songDeleteClicked');
+			->onClick[] = array($this, 'songDeleteClicked');
 
 		$form->onSuccess[] = array($this, 'songEditFormSucceed');
 
@@ -153,7 +153,7 @@ class SongsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderAdd()
 	{
-
+		$this->setView('edit');
 	}
 
 	public function	renderEdit()

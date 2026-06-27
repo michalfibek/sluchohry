@@ -61,7 +61,7 @@ class NotationsPresenter extends BasePresenter
 
         $form->addSubmit('update'); // default
         $form->addSubmit('delete')
-            ->onClick[] = \callback($this, 'notationDeleteClicked');
+            ->onClick[] = array($this, 'notationDeleteClicked');
 
         $form->onSuccess[] = array($this, 'notationEditFormSucceed');
 
@@ -170,6 +170,7 @@ class NotationsPresenter extends BasePresenter
 
     public function renderAdd()
     {
+        $this->setView('edit');
         $this->template->tempoList = $this->tempo->getAll()->fetchPairs('id', 'value');
         $this->template->octaveList = $this->octave->getAll()->fetchPairs('id', 'shift');
         $this['notationEditForm']['octave_id']->setDefaultValue(self::DEFAULT_OCTAVE_ID);

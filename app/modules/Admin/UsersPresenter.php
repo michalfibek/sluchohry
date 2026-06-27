@@ -74,7 +74,7 @@ class UsersPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderAdd()
 	{
-
+		$this->setView('edit');
 	}
 
 	public function	renderEdit()

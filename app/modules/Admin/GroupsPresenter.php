@@ -138,7 +138,7 @@ class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	public function renderAdd()
 	{
-
+		$this->setView('edit');
 	}
 
 	/**
