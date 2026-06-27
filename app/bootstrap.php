@@ -10,9 +10,7 @@ $configurator = new Nette\Configurator;
 
 $configurator->setDebugMode([
 	'secretCookie147@192.168.1.10',
-	'secretCookie147@188.75.144.92',
-	'secretCookie147@176.74.128.122',
-	'secretCookie147@84.42.180.117'
+	'secretCookie147@217.66.188.1'
 ]);
 $configurator->enableDebugger(__DIR__ . '/../log');
 
