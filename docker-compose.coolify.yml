@@ -1,8 +1,17 @@
 services:
   sluchohry:
-    image: 'php:8.4-apache'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: sluchohry-db
+      DB_NAME: sluchohry
+      DB_USER: sluchohry
+      DB_PASSWORD: '${DB_PASSWORD}'
     volumes:
-      - 'sluchohry_www:/var/www/sluchohry'
+      - 'sluchohry_uploads:/var/www/html/uploads'
+      - 'sluchohry_sessions:/var/www/html/sessions'
+      - 'sluchohry_log:/var/www/html/log'
     ports:
       - '80'
     depends_on:
@@ -12,22 +21,6 @@ services:
     mem_reservation: 256m
     pids_limit: 128
     restart: unless-stopped
-    command: >
-      bash -c "
-      sed -ri -e 's!/var/www/html!/var/www/sluchohry/www!g' /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf &&
-      sed -ri -e 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf &&
-      a2enmod rewrite &&
-      EXT_DIR=\$$(php -r 'echo ini_get(\"extension_dir\");');
-      if [ ! -f \$$EXT_DIR/pdo_mysql.so ] || [ ! -f \$$EXT_DIR/mysqli.so ] || [ ! -f \$$EXT_DIR/mbstring.so ] || [ ! -f \$$EXT_DIR/gd.so ] || [ ! -f \$$EXT_DIR/intl.so ] || [ ! -f \$$EXT_DIR/zip.so ]; then
-        apt-get update &&
-        apt-get install -y --no-install-recommends libpng-dev libjpeg62-turbo-dev libfreetype6-dev libicu-dev libzip-dev &&
-        docker-php-ext-configure gd --with-freetype --with-jpeg &&
-        docker-php-ext-install pdo_mysql mysqli mbstring gd intl zip &&
-        rm -rf /var/lib/apt/lists/*;
-      fi &&
-      { echo 'memory_limit = 256M'; echo 'session.auto_start = 0'; echo 'upload_max_filesize = 20M'; echo 'post_max_size = 20M'; } > /usr/local/etc/php/conf.d/zz-sluchohry.ini &&
-      apache2-foreground
-      "
   sluchohry-db:
     image: 'mariadb:10.5'
     environment:
@@ -43,5 +36,7 @@ services:
     pids_limit: 256
     restart: unless-stopped
 volumes:
-  sluchohry_www: null
+  sluchohry_uploads: null
+  sluchohry_sessions: null
+  sluchohry_log: null
   sluchohry_db: null
