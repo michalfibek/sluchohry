@@ -17,3 +17,4 @@ app/config/config.local.neon
 
 @misc/*
 .vscode/sftp.json
+stats/*
