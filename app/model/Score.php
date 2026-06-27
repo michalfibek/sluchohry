@@ -64,17 +64,27 @@ class Score extends Base
 
     public function getListByGame($gameId, $difficultyId, $groupLimit = NULL)
     {
-        $userList = $this->db->table('user')->order('username ASC');
+        // Joined in a single query instead of looping every user and fetching
+        // their score one by one (was ~5000+ extra round trips on this table).
+        $sql = '
+            SELECT `user`.`id` AS `user_id`, `user`.`realname` AS `realname`, `score`.`value` AS `score`
+            FROM `user`
+            LEFT JOIN `score` ON `score`.`user_id` = `user`.`id` AND `score`.`game_id` = ? AND `score`.`difficulty_id` = ?
+        ';
+        $params = array($gameId, $difficultyId);
+
         if ($groupLimit) {
-            $usersForGroupLimit = $this->db->table('user_has_group')->where('group_id', $groupLimit)->fetchPairs(NULL, 'user_id');
-            $userList = $userList->where('id', $usersForGroupLimit);
+            $sql .= ' WHERE `user`.`id` IN (SELECT `user_id` FROM `user_has_group` WHERE `group_id` = ?)';
+            $params[] = $groupLimit;
         }
 
-        foreach ($userList as $key => $user) {
-            $score = $user->related('score')->where('game_id', $gameId)->where('difficulty_id', $difficultyId)->fetch();
-            $result[$key]['user_id'] = $user->id;
-            $result[$key]['realname'] = $user->realname;
-            $result[$key]['score'] = isset($score->value) ? $score->value : 0;
+        $sql .= ' ORDER BY `user`.`username` ASC';
+
+        $result = array();
+        foreach ($this->db->query($sql, ...$params) as $key => $row) {
+            $result[$key]['user_id'] = $row->user_id;
+            $result[$key]['realname'] = $row->realname;
+            $result[$key]['score'] = $row->score ?? 0;
         }
         return $result;
     }
