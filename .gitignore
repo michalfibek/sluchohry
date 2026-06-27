@@ -22,3 +22,5 @@ stats/*
 .env
 docker/db-init/*
 !docker/db-init/.gitkeep
+
+CLAUDE.md
