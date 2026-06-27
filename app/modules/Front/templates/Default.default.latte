@@ -85,7 +85,7 @@
 			{if $user->isAllowed('Front:Game:MelodicCubes', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:MelodicCubes:',
-					title => $template->translate('front.game.melodicCubes'),
+					title => ('front.game.melodicCubes'|translate),
 					className => 'melodic-cubes',
 					gameId => 1,
 					maxDifficultyKey => $melodicCubesMaxdiffKey,
@@ -97,7 +97,7 @@
 			{if $user->isAllowed('Front:Game:Pexeso', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:Pexeso:',
-					title => $template->translate('front.game.pexeso'),
+					title => ('front.game.pexeso'|translate),
 					className => 'pexeso',
 					gameId => 2,
 					maxDifficultyKey => $pexesoMaxdiffKey,
@@ -109,7 +109,7 @@
 			{if $user->isAllowed('Front:Game:NoteSteps', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:NoteSteps:',
-					title => $template->translate('front.game.noteSteps'),
+					title => ('front.game.noteSteps'|translate),
 					className => 'note-steps',
 					gameId => 3,
 					maxDifficultyKey => $noteStepsMaxdiffKey,
@@ -121,7 +121,7 @@
 			{if $user->isAllowed('Front:Game:Faders', 'default')}<li>
 				{include 'components/gameSelectBox.latte',
 					url => ':Front:Game:Faders:',
-					title => $template->translate('front.game.faders'),
+					title => ('front.game.faders'|translate),
 					className => 'faders',
 					gameId => 4,
 					maxDifficultyKey => $fadersMaxdiffKey,

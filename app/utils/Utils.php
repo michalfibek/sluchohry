@@ -16,7 +16,7 @@ class Utils
     {
         $maxValue = max($array);
 
-        while (list($key, $value) = each($array)) {
+        foreach ($array as $key => $value) {
             if ($value == $maxValue) $maxIndex = $key;
         }
 

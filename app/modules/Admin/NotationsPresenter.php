@@ -189,7 +189,8 @@ class NotationsPresenter extends BasePresenter
 
     protected function createComponentGrid($name)
     {
-        $grid = new Grid($this, $name);
+        $grid = new Grid();
+        $this->addComponent($grid, $name);
         $grid->setModel($this->notation->getAll());
 
         $grid->setTranslator($this->translator);

@@ -8,7 +8,7 @@
  *}
 
 {snippet grid}
-{?
+{php
     $form->getElementPrototype()->class[] = 'ajax grido simple-grid';
 
     $operation = $control->hasOperation();
@@ -48,7 +48,7 @@
     <tbody>
         {var $propertyAccessor = $control->getPropertyAccessor()}
         {foreach $data as $row}
-            {? $checkbox = $operation
+            {php $checkbox = $operation
                     ? $form[\Grido\Components\Operation::ID][\Grido\Helpers::formatColumnName($propertyAccessor->getProperty($row, $control->getComponent(\Grido\Components\Operation::ID)->getPrimaryKey()))]
                     : NULL;
                 $tr = $control->getRowPrototype($row);
@@ -61,7 +61,7 @@
                     {$checkbox->getControl()}
                 </td>
                 {foreach $columns as $column}
-                    {?$td = $column->getCellPrototype($row)}
+                    {php $td = $column->getCellPrototype($row)}
                     {$td->startTag()|noescape}
                         {if is_string($column->getCustomRender()) && $column->getCustomRenderVariables()}
                             {include $column->getCustomRender() control => $control, presenter => $control->getPresenter(), item => $row, column => $column, (expand) $column->getCustomRenderVariables()}

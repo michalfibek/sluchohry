@@ -113,6 +113,7 @@ class Score extends Base
 
     public function getTopThree($gameId)
     {
+        $topPlayers = [];
         $i = 1;
         foreach ($this->db->table($this->tableName)->where('game_id', $gameId)->group('user_id')->select('*, SUM(value) AS value')->order('value DESC')->limit('3') as $s) {
             $topPlayers[$i]['user_id'] = $s->ref('user')->id;

@@ -3,10 +3,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.local
+      args:
+        PHP_VERSION: ${PHP_VERSION:-7.0}
     ports:
       - '8080:80'
     volumes:
       - .:/var/www/html
+    environment:
+      APP_DEBUG: '1'
     depends_on:
       - db
   db:

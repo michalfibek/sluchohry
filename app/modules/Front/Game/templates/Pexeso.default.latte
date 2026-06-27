@@ -57,7 +57,7 @@
 
 {include 'components/spinner.latte'}
 
-{include 'dialogs/solved.latte', stepsToSolveMessage => $template->translate('front.pexeso.stepCount') }
+{include 'dialogs/solved.latte', stepsToSolveMessage => ('front.pexeso.stepCount'|translate) }
 
 {/block}
 

@@ -76,7 +76,8 @@ class StatsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	protected function createComponentScoreGrid($name)
 	{
-		$grid = new Grid($this, $name);
+		$grid = new Grid();
+		$this->addComponent($grid, $name);
 		$grid->setModel($this->scoreModel->getScoreView());
 
 		$grid->setTranslator($this->translator);

@@ -41,7 +41,8 @@ class GroupsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
 	protected function createComponentGrid($name)
 	{
-		$grid = new Grid($this, $name);
+		$grid = new Grid();
+		$this->addComponent($grid, $name);
 		$grid->setModel($this->group->getAll());
 
 		$grid->setTranslator($this->translator);

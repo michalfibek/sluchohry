@@ -8,7 +8,7 @@ $configurator = new Nette\Configurator;
 //$configurator->defaultExtensions['decorator'] = Nette\DI\Extensions\DecoratorExtension::class;
 //$configurator->defaultExtensions['inject'] = Nette\DI\Extensions\InjectExtension::class;
 
-$configurator->setDebugMode([
+$configurator->setDebugMode(getenv('APP_DEBUG') === '1' ? true : [
 	'secretCookie147@192.168.1.10',
 	'secretCookie147@217.66.188.1'
 ]);

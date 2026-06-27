@@ -51,7 +51,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 
 				if (!$this->user->isAllowed($resource, $privilege)) {
 					$this->flashMessage('front.auth.flash.accessDenied', 'error');
-					$this->redirect(':Front:default:');
+					$this->redirect(':Front:Default:');
 				}
 			}
 		}

@@ -53,7 +53,8 @@ class EventsPresenter extends \App\Module\Base\Presenters\BasePresenter
 
     protected function createComponentGridAdvanced($name)
     {
-        $grid = new Grid($this, $name);
+        $grid = new Grid();
+        $this->addComponent($grid, $name);
         $grid->setModel($this->event->getAllView());
 
         $grid->setTranslator($this->translator);

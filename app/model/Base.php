@@ -4,8 +4,10 @@ namespace App\Model;
 use Nette;
 use Tracy\Debugger;
 
-abstract class Base extends Nette\Object
+abstract class Base
 {
+    use Nette\SmartObject;
+
     const TABLE_PREFIX = '';
 
     protected $db;

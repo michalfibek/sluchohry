@@ -139,7 +139,7 @@ class UserProfile extends UI\Control
 
         $form->addSubmit('save');
 
-        $form->onSuccess[] = $this->processForm;
+        $form->onSuccess[] = [$this, 'processForm'];
 
         return $form;
     }

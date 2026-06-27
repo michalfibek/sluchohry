@@ -7,8 +7,10 @@ use Nette,
     App\Model,
     Tracy\Debugger;
 
-class UserListener extends Nette\Object implements \Kdyby\Events\Subscriber
+class UserListener implements \Kdyby\Events\Subscriber
 {
+    use Nette\SmartObject;
+
     private $event;
 
     /** @var User */

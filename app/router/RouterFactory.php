@@ -12,8 +12,10 @@ use Tracy\Debugger;
 /**
  * Router factory.
  */
-class RouterFactory extends Nette\Object
+class RouterFactory
 {
+	use Nette\SmartObject;
+
 	/** @var bool */
 	private $useHttps;
 

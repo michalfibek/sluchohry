@@ -25,8 +25,8 @@
                             <a n:href="Stats:User $play->user_id" title="{$play->ref('user')['realname']} ({$play->ref('user')['username']})">{$play->ref('user')['realname']|truncate:35}</a>
                         </span>
                         <span class="col-xs-5 itm-game">
-                            {var $gameName = $template->translate('front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value'])}
-                            <a href="javascript:;" title="{$gameName}">{$gameName|truncate:14}</a>
+                            {var $gameNameKey = 'front.game.' . $play->related('event_data')->where('name', 'game_name')->fetch()['value']}
+                            <a href="javascript:;" title="{($gameNameKey|translate)}">{($gameNameKey|translate)|truncate:14}</a>
                         </span>
                         <span class="col-xs-4 itm-playtime text-right">
                             <i class="fa fa-clock-o"></i>

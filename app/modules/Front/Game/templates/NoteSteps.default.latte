@@ -30,7 +30,7 @@
 
 </div>
 
-{include 'dialogs/solved.latte', stepsToSolveMessage => $template->translate('front.noteSteps.stepCount') }
+{include 'dialogs/solved.latte', stepsToSolveMessage => ('front.noteSteps.stepCount'|translate) }
 
 {/block}
 

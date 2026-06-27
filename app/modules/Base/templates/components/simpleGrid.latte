@@ -8,7 +8,7 @@
  *}
 
 {snippet grid}
-{?
+{php
     $form->getElementPrototype()->class[] = 'ajax grido simple-grid';
 
     $operation = $control->hasOperation();
@@ -30,16 +30,16 @@
     $operation ? $form['operations']['operations']->controlPrototype->class[] = 'form-control' : NULL}
 
     {foreach $filters as $filter}
-        {?$filter->controlPrototype->class[] = 'form-control'}
+        {php $filter->controlPrototype->class[] = 'form-control'}
     {/foreach}
 
     {foreach $actions as $action}
-        {?
+        {php
             $element = $action->getElementPrototype();
             $element->class[] = 'btn btn-default btn-xs btn-mini';
         }
         {if $icon = $action->getOption('icon')}
-        {?
+        {php
             $element->setText(' ' . $action->getLabel());
             $element->insert(0, \Nette\Utils\Html::el('i')->setClass(array("glyphicon glyphicon-$icon fa fa-$icon icon-$icon")));
         }
@@ -119,7 +119,7 @@
             <td colspan="{=$showActionsColumn ? $columnCount + 1 : $columnCount}">
                 <span n:if="$operation" n:block="operations" class="operations"  title="{_'Grido.SelectSomeRow'}">
                     {$form[\Grido\Components\Operation::ID][\Grido\Components\Operation::ID]->control}
-                    {?$form[\Grido\Grid::BUTTONS][\Grido\Components\Operation::ID]->controlPrototype->class[] = 'hide'}
+                    {php $form[\Grido\Grid::BUTTONS][\Grido\Components\Operation::ID]->controlPrototype->class[] = 'hide'}
                     {$form[\Grido\Grid::BUTTONS][\Grido\Components\Operation::ID]->control}
                 </span>
                 <span n:if="$paginator->steps && $paginator->pageCount > 1" n:block="paginator" class="paginator">
@@ -145,7 +145,7 @@
                     {/if}
                 </span>
                 <span n:block="count" class="count">
-                    {= sprintf($template->translate('Grido.Items'), $paginator->getCountBegin(), $paginator->getCountEnd(), $control->getCount())}
+                    {= sprintf('Grido.Items'|translate, $paginator->getCountBegin(), $paginator->getCountEnd(), $control->getCount())}
                     {input count}
                     {formContainer buttons}
                         {input perPage, class => 'hide'}
@@ -158,7 +158,7 @@
     <tbody>
         {var $propertyAccessor = $control->getPropertyAccessor()}
         {foreach $data as $row}
-            {? $checkbox = $operation
+            {php $checkbox = $operation
                     ? $form[\Grido\Components\Operation::ID][\Grido\Helpers::formatColumnName($propertyAccessor->getProperty($row, $control->getComponent(\Grido\Components\Operation::ID)->getPrimaryKey()))]
                     : NULL;
                 $tr = $control->getRowPrototype($row);
@@ -171,7 +171,7 @@
                     {$checkbox->getControl()}
                 </td>
                 {foreach $columns as $column}
-                    {?$td = $column->getCellPrototype($row)}
+                    {php $td = $column->getCellPrototype($row)}
                     {$td->startTag()|noescape}
                         {if is_string($column->getCustomRender()) && $column->getCustomRenderVariables()}
                             {include $column->getCustomRender() control => $control, presenter => $control->getPresenter(), item => $row, column => $column, (expand) $column->getCustomRenderVariables()}

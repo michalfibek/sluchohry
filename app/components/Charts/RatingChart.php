@@ -71,7 +71,8 @@ class RatingChart extends UI\Control
 
     protected function createComponentRatingChart($name)
     {
-        $grid = new Grid($this, $name);
+        $grid = new Grid();
+        $this->addComponent($grid, $name);
         $grid->setModel($this->score->getListByGame($this->gameId, $this->difficultyId));
 
 //        $grid->setFilterRenderType(Filter::RENDER_INNER);
