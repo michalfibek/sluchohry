@@ -13,10 +13,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/** @persistent */
 	public $locale;
 
-	/**  @inject @var \Kdyby\Translation\Translator */
+	/**  @inject @var \Contributte\Translation\Translator */
 	public $translator;
 
-	/** @inject @var \Nette\Security\IAuthorizator */
+	/** @inject @var \Nette\Security\Authorizator */
 	public $acl;
 
 	/** @inject @var \App\Model\Avatar */
@@ -80,12 +80,10 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 	/**
 	 * Enables song duration formatting latte filter.
 	 *
-	 * @param null $class
-	 * @return Nette\Application\UI\ITemplate
-     */
-	protected function createTemplate($class = NULL)
+	 */
+	protected function createTemplate(): Nette\Application\UI\Template
 	{
-		$template = parent::createTemplate($class);
+		$template = parent::createTemplate();
 		$template->addFilter('songTime', function ($s, $precision = 'seconds') {
 			return $this->getSongTimeFormat($s, $precision);
 		});

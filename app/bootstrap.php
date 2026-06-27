@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$configurator = new Nette\Configurator;
+$configurator = new Nette\Bootstrap\Configurator;
 
 // PresentersLocator extension:
 //$configurator->defaultExtensions['decorator'] = Nette\DI\Extensions\DecoratorExtension::class;
@@ -12,7 +12,7 @@ $configurator->setDebugMode(getenv('APP_DEBUG') === '1' ? true : [
 	'secretCookie147@192.168.1.10',
 	'secretCookie147@217.66.188.1'
 ]);
-$configurator->enableDebugger(__DIR__ . '/../log');
+$configurator->enableTracy(__DIR__ . '/../log');
 
 $configurator->setTempDirectory(__DIR__ . '/../temp');
 

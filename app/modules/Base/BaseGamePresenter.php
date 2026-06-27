@@ -51,7 +51,7 @@ abstract class BaseGamePresenter extends BasePresenter
     {
         if (!$recordId) $recordId = date("dHis");
         if (!$recordKey) $recordKey = $recordId;
-        $this->gameHistory->offsetSet($recordKey,$recordId);
+        $this->gameHistory->offsetSet((string) $recordKey, $recordId);
     }
 
     protected function historyGetAll()

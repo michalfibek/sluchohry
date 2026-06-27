@@ -24,7 +24,7 @@
                     <li n:foreach="$lastPlaysSolved as $play" class="clearfix difficulty-{$play->related('event_data')->where('name', 'difficulty')->fetch()['value']}">
 
                         <span class="col-xs-12 itm-username">
-                            <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                            <span title="{$play->event_time|date:'d.m.Y - H:i \\h\\o\\d.'}">
                                 <i class="fa fa-calendar"></i>
                             </span>
                             <a n:href="Stats:User $play->user_id" title="{$play->ref('user')['realname']} ({$play->ref('user')['username']})">{$play->ref('user')['realname']|truncate:35}</a>
@@ -66,7 +66,7 @@
                 <ul class="activity-table">
                     <li n:foreach="$lastPlaysClosed as $play" class="clearfix difficulty-{$play->related('event_data')->where('name', 'difficulty')->fetch()['value']}">
                         <span class="col-xs-12 itm-username">
-                            <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                            <span title="{$play->event_time|date:'d.m.Y - H:i \\h\\o\\d.'}">
                                 <i class="fa fa-calendar"></i>
                             </span>
                             <a n:href="Stats:User $play->user_id" title="{$play->ref('user')['realname']} ({$play->ref('user')['username']})">{$play->ref('user')['realname']|truncate:35}</a>
@@ -110,8 +110,8 @@
                             <a n:href="Stats:User $evt->user_id" title="{$evt->ref('user')['realname']} ({$evt->ref('user')['username']})">{$evt->ref('user')['realname']|truncate:18}</a>
                         </span>
                         <span class="col-xs-5 itm-evtdate text-right">
-                            <span title="{$evt->event_time|date:'%A %e.%m.%Y - %R hod.'}">
-                                {$evt->event_time|date:'%A %R'}
+                            <span title="{$evt->event_time|date:'d.m.Y - H:i \\h\\o\\d.'}">
+                                {$evt->event_time|date:'H:i'}
                             </span>
                         </span>
                     </li>

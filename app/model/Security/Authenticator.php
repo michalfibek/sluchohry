@@ -10,7 +10,7 @@ use Tracy\Debugger;
 
 
 
-class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
+class Authenticator extends Model\Base implements Nette\Security\Authenticator
 {
 	const
 		DEFAULT_ROLE = 'guest';
@@ -21,22 +21,23 @@ class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
 	/** @var Group */
 	private $groupModel;
 
-	public function __construct(Model\User $userModel, Model\Group $groupModel)
+	/** @var Passwords */
+	private $passwords;
+
+	public function __construct(Model\User $userModel, Model\Group $groupModel, Passwords $passwords)
 	{
 		$this->userModel = $userModel;
 		$this->groupModel = $groupModel;
+		$this->passwords = $passwords;
 	}
 
 	/**
 	 * Performs an authentication.
-	 * @param array $credentials
-	 * @return Nette\Security\Identity
 	 * @throws Nette\Security\AuthenticationException
 	 */
-	public function authenticate(array $credentials)
+	public function authenticate(string $user, string $password): Nette\Security\IIdentity
 	{
-		list($username, $password) = $credentials;
-
+		$username = $user;
 		$userRow = $this->userModel->getByColumn('username', $username);
 
 		if (!$userRow) {
@@ -47,12 +48,12 @@ class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
 
 			throw new Nette\Security\AuthenticationException('front.auth.loginForm.usernameIncorrect', self::IDENTITY_NOT_FOUND);
 
-		} elseif (!Passwords::verify($password, $userRow['password'])) {
+		} elseif (!$this->passwords->verify($password, $userRow['password'])) {
 			throw new Nette\Security\AuthenticationException('front.auth.loginForm.passwordIncorrect', self::INVALID_CREDENTIAL);
 
-		} elseif (Passwords::needsRehash($userRow['password'])) {
+		} elseif ($this->passwords->needsRehash($userRow['password'])) {
 			$userRow->update(array(
-				'password' => Passwords::hash($password),
+				'password' => $this->passwords->hash($password),
 			));
 		}
 
@@ -66,7 +67,7 @@ class Authenticator extends Model\Base implements Nette\Security\IAuthenticator
 		unset($userArr['role_id']);
 		unset($userArr['password']);
 
-		return new Nette\Security\Identity($userRow['id'], $roles, $userArr);
+		return new Nette\Security\SimpleIdentity($userRow['id'], $roles, $userArr);
 	}
 
 }

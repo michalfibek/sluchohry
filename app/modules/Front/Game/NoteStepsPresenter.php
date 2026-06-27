@@ -93,9 +93,9 @@ class NoteStepsPresenter extends \App\Module\Base\Presenters\BaseGamePresenter
 //        $this->template->shiftSigns = ['+1','-1','+2'];
     }
 
-    protected function createTemplate($class = NULL)
+    protected function createTemplate(): Nette\Application\UI\Template
     {
-        $template = parent::createTemplate($class);
+        $template = parent::createTemplate();
         $template->addFilter('shiftArrows', function ($input) {
             return $this->getNoteShiftArrows($input);
         });

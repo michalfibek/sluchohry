@@ -82,7 +82,7 @@ protected function createComponentLoginForm()
 {
 	$form = new Nette\Application\UI\Form;
 	$form->setTranslator(
-		$this->translator->domain('front.auth.loginForm')
+		$this->translator->createPrefixedTranslator('front.auth.loginForm')
 	);
 	$form->addText('username', 'username')
 		->setRequired('requiredUsername');
@@ -127,7 +127,7 @@ protected function createComponentLoginForm()
 	{
 		$form = new Nette\Application\UI\Form;
 		$form->setTranslator(
-			$this->translator->domain('front.auth.loginForm')
+			$this->translator->createPrefixedTranslator('front.auth.loginForm')
 		);
 		$form->addText('username', 'username')
 			->setRequired('requiredUsername');

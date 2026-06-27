@@ -2,10 +2,10 @@
 
 namespace App\Components\Charts;
 
-use Kdyby\Translation\Translator;
+use Contributte\Translation\Translator;
 use Nette,
     Nette\Application\UI,
-    Nette\Security\IAuthorizator,
+    Nette\Security\Authorizator,
     Nette\Security\User,
     App\Model,
     Grido\Grid,
@@ -120,6 +120,5 @@ class RatingChart extends UI\Control
 
 interface IRatingChartFactory
 {
-    /** @return RatingChart */
-    function create();
+    function create(): RatingChart;
 }

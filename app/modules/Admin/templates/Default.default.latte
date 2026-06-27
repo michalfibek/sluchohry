@@ -19,7 +19,7 @@
                 <ul class="activity-table">
                     <li n:foreach="$lastPlays as $play" class="clearfix">
                         <span class="col-xs-12 itm-username">
-                            <span title="{$play->event_time|date:'%A %e.%m.%Y - %R hod.'}">
+                            <span title="{$play->event_time|date:'d.m.Y - H:i \\h\\o\\d.'}">
                                 <i class="fa fa-calendar"></i>
                             </span>
                             <a n:href="Stats:User $play->user_id" title="{$play->ref('user')['realname']} ({$play->ref('user')['username']})">{$play->ref('user')['realname']|truncate:35}</a>

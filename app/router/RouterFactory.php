@@ -27,22 +27,19 @@ class RouterFactory
 			$this->useHttps = false;
 	}
 
-	/**
-	 * @return \Nette\Application\IRouter
-	 */
-	public function create()
+	public function create(): Nette\Routing\Router
 	{
 		$flags = $this->useHttps ? Route::SECURED : 0;
 
 		$router = new RouteList();
 
-		$router[] = new Route('index.php', 'Front:Default:default', $flags | Route::ONE_WAY);
+		$router->addRoute('index.php', 'Front:Default:default', $flags | Route::ONE_WAY);
 
 		$router[] = $adminRouter = new RouteList('Admin');
 
 		$localeDef = '[<locale=cs cs|en>/]';
 
-		$adminRouter[] = new Route($localeDef.'admin/<presenter>/<action>[/<id>]', array(
+		$adminRouter->addRoute($localeDef.'admin/<presenter>/<action>[/<id>]', array(
 			'presenter' => 'Default',
 			'action' => 'default',
 			'id' => NULL,
@@ -50,7 +47,7 @@ class RouterFactory
 
 		$router[] = $frontRouter = new RouteList('Front');
 
-		$frontRouter[] = new Route($localeDef.'<presenter>/<action>[/<id>]', array(
+		$frontRouter->addRoute($localeDef.'<presenter>/<action>[/<id>]', array(
 			'presenter' => array(
 				Route::VALUE => 'Default',
 				Route::PATTERN => '[^(s|game)][a-z][a-z0-9.-]*',
@@ -59,7 +56,7 @@ class RouterFactory
 			'id' => NULL,
 		), $flags);
 
-		$frontRouter[] = new Route($localeDef.'game/<presenter>/<action>[/<id>]', array(
+		$frontRouter->addRoute($localeDef.'game/<presenter>/<action>[/<id>]', array(
 			'module' => 'Game',
 			'presenter' => array(
 				Route::VALUE => 'Default',

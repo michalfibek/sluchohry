@@ -17,7 +17,7 @@ class UserProfile extends UI\Control
     /** @var App\Model\Group */
     private $groupModel;
 
-    /** @var Nette\Security\IAuthorizator */
+    /** @var Nette\Security\Authorizator */
     private $acl;
 
     /** @var Nette\Security\User */
@@ -68,12 +68,11 @@ class UserProfile extends UI\Control
     /** @var App\Model\Avatar */
     private $avatar;
 
-    /** @var Kdyby\Translation\Translator */
+    /** @var \Contributte\Translation\Translator */
     private $translator;
 
-    public function __construct(App\Model\User $userModel, App\Model\Group $groupModel, Nette\Security\IAuthorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar, Kdyby\Translation\Translator $translator)
+    public function __construct(App\Model\User $userModel, App\Model\Group $groupModel, Nette\Security\Authorizator $acl, Nette\Security\User $user, App\Model\Avatar $avatar, \Contributte\Translation\Translator $translator)
     {
-        parent::__construct();
         $this->userModel = $userModel;
         $this->groupModel = $groupModel;
         $this->acl = $acl;
@@ -339,6 +338,5 @@ class UserProfile extends UI\Control
 
 interface IUserProfileFactory
 {
-    /** @return UserProfile */
-    function create();
+    function create(): UserProfile;
 }

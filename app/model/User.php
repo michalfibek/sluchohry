@@ -9,6 +9,15 @@ use Tracy\Debugger;
 
 class User extends Base
 {
+    /** @var Passwords */
+    private $passwords;
+
+    public function __construct(\Nette\Database\Context $connection, Passwords $passwords)
+    {
+        parent::__construct($connection);
+        $this->passwords = $passwords;
+    }
+
     public function insert($data)
     {
         if (isset($data['group_id'])) {
@@ -17,7 +26,7 @@ class User extends Base
         }
 
 
-        $data['password'] = Passwords::hash($data['password']);
+        $data['password'] = $this->passwords->hash($data['password']);
 
         $insert = parent::insert($data);
 
@@ -58,7 +67,7 @@ class User extends Base
         if (isset($data['password']))
         {
             if (strlen($data['password']) > 0 ) // correct password length verification is already in form
-                $data['password'] = Passwords::hash($data['password']);
+                $data['password'] = $this->passwords->hash($data['password']);
             else
                 unset($data['password']);
         }
