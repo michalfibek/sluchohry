@@ -129,7 +129,8 @@ class Song extends Base
 
         if (count($markersAll) < $cubeSplits) $cubeSplits = count($markersAll);
 
-        $randKeys = array_rand($markersAll, $cubeSplits);
+        // array_rand() returns a plain int (not an array) when picking a single element
+        $randKeys = (array) array_rand($markersAll, $cubeSplits);
 
         $markers[] = array(0, $markersAll[$randKeys[0]]->timecode);
 
