@@ -11,6 +11,7 @@ var Song = $class({
         var songCtrl = [];
         var songCount = songDefs.length;
         for(var i = 0; i < songCount; i++) {
+            songDefs[i].html5 = true; // iOS mutes Web Audio API output when the ring/silent switch is on; <audio> elements aren't affected
             songCtrl.push(new Howl(songDefs[i]));
         }
 
