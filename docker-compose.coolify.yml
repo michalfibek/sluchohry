@@ -9,7 +9,7 @@ services:
       DB_USER: sluchohry
       DB_PASSWORD: '${DB_PASSWORD}'
     volumes:
-      - 'sluchohry_uploads:/var/www/html/uploads'
+      - 'sluchohry_songs:/var/www/html/www/assets/sounds/songs'
       - 'sluchohry_sessions:/var/www/html/sessions'
       - 'sluchohry_log:/var/www/html/log'
     ports:
@@ -36,7 +36,7 @@ services:
     pids_limit: 256
     restart: unless-stopped
 volumes:
-  sluchohry_uploads: null
+  sluchohry_songs: null
   sluchohry_sessions: null
   sluchohry_log: null
   sluchohry_db: null

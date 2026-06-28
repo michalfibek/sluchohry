@@ -1,6 +1,11 @@
+# Runtime data — not part of the codebase, persisted via Docker volumes in
+# production (see docker-compose.coolify.yml), never committed.
 log/*
 temp/*
 sessions/*
+uploads/*
+www/assets/sounds/songs/*
+
 node_modules/*
 vendor/*
 
@@ -12,6 +17,8 @@ app/config/config.local.neon
 .idea/*
 @dropbox/*
 
+# Belt-and-suspenders: catches any other stray song files outside the
+# directories above, and editor backup files.
 *.mp3
 *.bak
 

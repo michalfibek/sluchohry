@@ -26,10 +26,14 @@ COPY . .
 RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader \
   && rm -rf /root/.composer
 
-# Runtime-writable data that isn't part of the image: uploads, sessions, logs.
-# Coolify mounts persistent volumes over these (see docker-compose.coolify.yml).
-RUN mkdir -p uploads sessions log temp \
-  && chown -R www-data:www-data uploads sessions log temp
+# Runtime-writable data that isn't part of the image. uploads/ is just
+# temp staging for in-progress uploads (Song::save() moves the finished
+# file out and deletes it, so it doesn't need to survive a redeploy) —
+# www/assets/sounds/songs is the actual permanent song library, sessions
+# and log persist for continuity. Coolify mounts persistent volumes over
+# the latter three (see docker-compose.coolify.yml).
+RUN mkdir -p uploads sessions log temp www/assets/sounds/songs \
+  && chown -R www-data:www-data uploads sessions log temp www/assets/sounds/songs
 
 COPY docker/prod-entrypoint.sh /usr/local/bin/prod-entrypoint.sh
 RUN chmod +x /usr/local/bin/prod-entrypoint.sh
