@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile.local
       args:
-        PHP_VERSION: ${PHP_VERSION:-7.0}
+        PHP_VERSION: ${PHP_VERSION:-8.4}
     ports:
       - '8080:80'
     volumes:

@@ -1,9 +1,12 @@
 # Runtime data — not part of the codebase, persisted via Docker volumes in
 # production (see docker-compose.coolify.yml), never committed.
 log/*
+!log/.gitkeep
 temp/*
 sessions/*
+!sessions/.gitkeep
 uploads/*
+!uploads/.gitkeep
 www/assets/sounds/songs/*
 
 node_modules/*
@@ -29,5 +32,6 @@ stats/*
 .env
 docker/db-init/*
 !docker/db-init/.gitkeep
+!docker/db-init/*.sh
 
 CLAUDE.md

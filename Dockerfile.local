@@ -8,7 +8,10 @@ ARG PHP_VERSION
 # using whatever codename this image actually is, instead of hardcoding one.
 RUN set -eux; \
     if ! apt-get update; then \
-      codename="$(. /etc/os-release && echo "$VERSION_CODENAME")"; \
+      codename="$(. /etc/os-release && echo "${VERSION_CODENAME:-}")"; \
+      if [ -z "$codename" ]; then \
+        codename="$(. /etc/os-release && echo "$VERSION" | sed 's/.*(\(.*\)).*/\1/')"; \
+      fi; \
       { echo "deb http://archive.debian.org/debian ${codename} main"; \
         echo "deb http://archive.debian.org/debian-security ${codename}/updates main"; \
       } > /etc/apt/sources.list; \
@@ -52,7 +55,7 @@ RUN if dpkg --compare-versions "${PHP_VERSION}" lt "7.2.5"; then \
 WORKDIR /var/www/html
 
 COPY docker/local-entrypoint.sh /usr/local/bin/local-entrypoint.sh
-RUN chmod +x /usr/local/bin/local-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/local-entrypoint.sh && chmod +x /usr/local/bin/local-entrypoint.sh
 
 ENTRYPOINT ["local-entrypoint.sh"]
 CMD ["apache2-foreground"]

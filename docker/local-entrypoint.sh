@@ -3,6 +3,9 @@ set -e
 
 cd /var/www/html
 
+mkdir -p sessions log uploads
+chmod 777 sessions log
+
 needs_install=0
 if [ ! -d vendor ]; then
   needs_install=1
