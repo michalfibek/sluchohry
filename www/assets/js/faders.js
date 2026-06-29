@@ -299,7 +299,8 @@ var Game = $class({
                 if (payload['score'] > 0) {
 
                     //$('.result-score').find('span').empty().append(payload['score']);
-                    $('.result-score').find('span').animateNumber(
+                    $('.result-score').find('i').hide();
+                    $('.result-score').find('span').show().animateNumber(
                         {
                             number: parseInt(payload['score'])
                         },
