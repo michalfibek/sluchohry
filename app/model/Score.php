@@ -62,7 +62,7 @@ class Score extends Base
         return $return;
     }
 
-    public function getListByGame($gameId, $difficultyId, $groupLimit = NULL)
+    public function getListByGame($gameId, $difficultyId, $groupLimit = NULL, $limit = NULL)
     {
         // Joined in a single query instead of looping every user and fetching
         // their score one by one (was ~5000+ extra round trips on this table).
@@ -78,7 +78,12 @@ class Score extends Base
             $params[] = $groupLimit;
         }
 
-        $sql .= ' ORDER BY `user`.`username` ASC';
+        $sql .= ' ORDER BY `score` DESC, `user`.`username` ASC';
+
+        if ($limit !== NULL) {
+            $sql .= ' LIMIT ?';
+            $params[] = $limit;
+        }
 
         $result = array();
         foreach ($this->db->query($sql, ...$params) as $key => $row) {

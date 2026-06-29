@@ -73,14 +73,12 @@ class RatingChart extends UI\Control
         $grid = new Datagrid();
         $this->addComponent($grid, $name);
         $grid->setPrimaryKey('user_id');
-        $grid->setDataSource($this->score->getListByGame($this->gameId, $this->difficultyId));
+        $grid->setDataSource($this->score->getListByGame($this->gameId, $this->difficultyId, NULL, 15));
 
         $grid->addColumnText('realname', 'front.ratings.name');
         $grid->addColumnNumber('score', 'front.ratings.score');
 
-        $grid->setDefaultSort(array('score' => 'DESC'));
-
-        $grid->setDefaultPerPage(15);
+        $grid->setPagination(false);
 
         $grid->setTranslator($this->translator);
 
