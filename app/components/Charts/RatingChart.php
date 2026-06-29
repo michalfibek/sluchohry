@@ -75,7 +75,8 @@ class RatingChart extends UI\Control
         $grid->setPrimaryKey('user_id');
         $grid->setDataSource($this->score->getListByGame($this->gameId, $this->difficultyId, NULL, 15));
 
-        $grid->addColumnText('realname', 'front.ratings.name');
+        $grid->addColumnText('realname', 'front.ratings.name')
+            ->setRenderer(fn($item) => Nette\Utils\Strings::truncate($item['realname'], 32));
         $grid->addColumnNumber('score', 'front.ratings.score');
 
         $grid->setPagination(false);
