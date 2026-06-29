@@ -14,8 +14,15 @@ services:
       - 'sluchohry_log:/var/www/html/log'
     ports:
       - '80'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     depends_on:
-      - sluchohry-db
+      sluchohry-db:
+        condition: service_healthy
     cpus: 0.5
     mem_limit: 512m
     mem_reservation: 256m
@@ -30,6 +37,12 @@ services:
       MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
     volumes:
       - 'sluchohry_db:/var/lib/mysql'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     cpus: 0.75
     mem_limit: 768m
     mem_reservation: 384m
