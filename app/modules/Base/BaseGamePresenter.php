@@ -43,12 +43,6 @@ abstract class BaseGamePresenter extends BasePresenter
     {
         parent::startup();
 
-        if ($this->isSignalReceiver($this, 'gameStart') || $this->isSignalReceiver($this, 'gameEnd') || $this->isSignalReceiver($this, 'gameForceEnd')) {
-            $this->processSignal();
-        }
-
-        $this->gameHistory = $this->getSession(__CLASS__); // get session by specific game name
-
         $this->onGameStart[] = function ($result) {
             $this->logger->onGameStart($this->user, $result);
         };
@@ -58,6 +52,12 @@ abstract class BaseGamePresenter extends BasePresenter
         $this->onGameForceEnd[] = function ($result) {
             $this->logger->onGameForceEnd($this->user, $result);
         };
+
+        if ($this->isSignalReceiver($this, 'gameStart') || $this->isSignalReceiver($this, 'gameEnd') || $this->isSignalReceiver($this, 'gameForceEnd')) {
+            $this->processSignal();
+        }
+
+        $this->gameHistory = $this->getSession(__CLASS__); // get session by specific game name
     }
 
     protected function historyAdd($recordId = NULL, $recordKey = NULL)
