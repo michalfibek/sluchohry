@@ -20,6 +20,7 @@ var Song = $class({
         this.songCtrl = new Howl({
             src: scope.songUrl,
             sprite: scope.spriteDef,
+            html5: true, // iOS mutes Web Audio API output when the ring/silent switch is on; <audio> elements aren't affected
             onload: function() { // after sound file loads, do these...
                 g.showGame();
             }

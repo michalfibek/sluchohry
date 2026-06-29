@@ -56,6 +56,7 @@ var Song = $class({
             var base64data = songBase64.result;
             songControl = new Howl({
                 src: base64data,
+                html5: true, // iOS mutes Web Audio API output when the ring/silent switch is on; <audio> elements aren't affected
                 onplay: function() {
                     scope.showPlayMarker();
                 },
